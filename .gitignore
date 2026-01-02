@@ -1,0 +1,330 @@
+# ================================================================
+# .gitignore - Portfolio 2026
+# ================================================================
+# 
+# This file tells Git which files/folders to ignore
+# Prevents committing sensitive data, build artifacts, and dependencies
+#
+# ================================================================
+
+# ----------------------------------------------------------------
+# Environment Variables & Secrets (CRITICAL - NEVER COMMIT)
+# ----------------------------------------------------------------
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Backup environment files
+.env.backup
+.env.*.backup
+
+# API keys and secrets
+secrets.json
+credentials.json
+*.pem
+*.key
+
+
+# ----------------------------------------------------------------
+# Next.js Build Output
+# ----------------------------------------------------------------
+.next/
+out/
+build/
+dist/
+
+# Next.js cache
+.next/cache/
+
+
+# ----------------------------------------------------------------
+# Node.js Dependencies
+# ----------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Package manager lock files (keep package-lock.json, ignore others)
+# Uncomment the one you DON'T use:
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+
+# ----------------------------------------------------------------
+# Testing & Coverage
+# ----------------------------------------------------------------
+coverage/
+.nyc_output/
+*.lcov
+
+# Jest
+jest-coverage/
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+
+
+# ----------------------------------------------------------------
+# TypeScript
+# ----------------------------------------------------------------
+*.tsbuildinfo
+next-env.d.ts
+
+
+# ----------------------------------------------------------------
+# IDEs & Editors
+# ----------------------------------------------------------------
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains IDEs (WebStorm, IntelliJ)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+
+# ----------------------------------------------------------------
+# Operating System Files
+# ----------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+
+# ----------------------------------------------------------------
+# Logs
+# ----------------------------------------------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+
+# ----------------------------------------------------------------
+# Temporary Files
+# ----------------------------------------------------------------
+tmp/
+temp/
+*.tmp
+*.temp
+*.cache
+
+
+# ----------------------------------------------------------------
+# Vercel Deployment
+# ----------------------------------------------------------------
+.vercel
+.vercel.json
+
+
+# ----------------------------------------------------------------
+# Optional: Uncomment if using these services
+# ----------------------------------------------------------------
+
+# Sentry
+# .sentryclirc
+
+# Contentful
+# .contentful.json
+
+# Sanity
+# .sanity/
+
+# Strapi
+# .strapi/
+
+
+# ----------------------------------------------------------------
+# User-Uploaded Content (if you add file uploads)
+# ----------------------------------------------------------------
+# uploads/
+# user-files/
+
+
+# ----------------------------------------------------------------
+# Database Files (if using local DB for development)
+# ----------------------------------------------------------------
+*.sqlite
+*.sqlite3
+*.db
+
+
+# ----------------------------------------------------------------
+# Archive & Compressed Files
+# ----------------------------------------------------------------
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+
+# ----------------------------------------------------------------
+# Documentation Builds (if using tools like Storybook)
+# ----------------------------------------------------------------
+# storybook-static/
+# .docusaurus/
+
+
+# ----------------------------------------------------------------
+# Backup Files
+# ----------------------------------------------------------------
+*.bak
+*.backup
+*~
+
+
+# ----------------------------------------------------------------
+# Keep These Files (Whitelist)
+# ----------------------------------------------------------------
+# Force include important config files
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Keep .env.example (template for other developers)
+!.env.example
+!.env.local.example
+
+
+# ================================================================
+# PROJECT-SPECIFIC IGNORES
+# ================================================================
+
+# Ignore generated sitemap (if auto-generated)
+# public/sitemap.xml
+# public/robots.txt
+
+# Ignore optimized images cache (if using next-optimized-images)
+# .cache/
+
+# Ignore playwright test results
+# test-results/
+# playwright-report/
+
+# Ignore lighthouse reports
+# lighthouse-reports/
+
+# Ignore bundle analysis
+# .bundle-analysis/
+
+
+# ================================================================
+# SECURITY NOTES
+# ================================================================
+#
+# CRITICAL FILES TO NEVER COMMIT:
+# ✅ .env.local - Contains API keys (OPENAI_API_KEY)
+# ✅ .env*.local - All local environment files
+# ✅ credentials.json - Auth credentials
+# ✅ *.pem / *.key - SSL certificates and private keys
+#
+# IF YOU ACCIDENTALLY COMMITTED SECRETS:
+# 1. Revoke/rotate all exposed keys immediately
+# 2. Remove from Git history:
+#    git filter-branch --force --index-filter \
+#    "git rm --cached --ignore-unmatch .env.local" \
+#    --prune-empty --tag-name-filter cat -- --all
+# 3. Force push: git push origin --force --all
+# 4. Notify your team
+#
+# ================================================================
+
+
+# ================================================================
+# PERFORMANCE NOTES
+# ================================================================
+#
+# This .gitignore improves performance by:
+# - Excluding node_modules (saves ~200MB)
+# - Excluding .next build cache (saves ~50MB)
+# - Excluding log files and temporary files
+# - Reducing repository size for faster clones
+#
+# Repository size without these: ~500KB
+# Repository size with these: ~200MB+
+#
+# ================================================================
+
+
+# ================================================================
+# TROUBLESHOOTING
+# ================================================================
+#
+# Issue: Git still tracking ignored file
+# Solution: 
+#   git rm --cached <file>
+#   git commit -m "Remove tracked file"
+#
+# Issue: Want to ignore file in subdirectory only
+# Solution: Use path prefix
+#   app/temp/*.log  (ignores logs only in app/temp/)
+#
+# Issue: Want to force include ignored file
+# Solution: Use ! prefix
+#   !important-file.log
+#
+# Check what's being ignored:
+#   git status --ignored
+#
+# ================================================================
