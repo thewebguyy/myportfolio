@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables for theming */
+:root {
+  --color-primary: 234 179 124; /* #eabe7c */
+  --color-secondary: 35 150 127; /* #23967f */
+  --color-background: 20 21 22; /* #141516 */
+  --color-foreground: 255 255 255;
+}
+
+.dark {
+  --color-background: 20 21 22;
+  --color-foreground: 255 255 255;
+}
+
+.light {
+  --color-background: 255 255 255;
+  --color-foreground: 20 21 22;
+}
+
+/* Base styles */
+@layer base {
+  * {
+    @apply border-gray-700;
+  }
+  
+  body {
+    @apply bg-gray-950 text-gray-400 antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-white font-serif;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-950;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-800 rounded-full hover:bg-gray-700;
+  }
+}
+
+/* Component utilities */
+@layer components {
+  /* Glassmorphism effect */
+  .glass {
+    @apply bg-gray-900/50 backdrop-blur-lg border border-gray-800;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+
+  /* Focus styles for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-4 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-gray-950;
+  }
+
+  /* Button base */
+  .btn {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-200 focus-ring;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-black hover:bg-primary-dark;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-primary text-primary hover:bg-primary/10;
+  }
+
+  /* Card styles */
+  .card {
+    @apply glass rounded-xl p-6 transition-all duration-300 hover:border-gray-700;
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-20 lg:py-32;
+  }
+}
+
+/* Animations */
+@layer utilities {
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 20px rgba(234, 179, 124, 0.3);
+    }
+    to {
+      box-shadow: 0 0 30px rgba(234, 179, 124, 0.6);
+    }
+  }
+
+  /* Text selection */
+  ::selection {
+    @apply bg-primary/30 text-white;
+  }
+
+  /* Skip to content link (accessibility) */
+  .skip-to-content {
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50;
+    @apply bg-primary text-black px-4 py-2 rounded-lg focus-ring;
+  }
+}
+
+/* Loading states */
+.loading {
+  @apply animate-pulse;
+}
+
+.loading-skeleton {
+  @apply bg-gray-800 rounded animate-pulse;
+}
+
+/* Print styles */
+@media print {
+  body {
+    @apply bg-white text-black;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
