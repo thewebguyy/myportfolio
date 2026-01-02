@@ -1,18 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { openai, PROJECT_RECOMMENDER_PROMPT, handleOpenAIError } from '@/lib/openai'
 import { projects } from '@/lib/projects'
+import { createRateLimiter, getRateLimitHeaders } from '@/lib/rateLimit'
 
-/**
- * AI Project Recommender API Route
- * 
- * Uses GPT-4 to semantically match user interests with portfolio projects
- * 
- * @route POST /api/recommend-project
- * @body { interest: string } - User's technical interest
- * @returns { recommendation: RecommendationResult }
- */
+// Rate limiter: 10 requests per hour per IP
+const rateLimiter = createRateLimiter({
+  limit: 10,
+  windowInSeconds: 3600, // 1 hour
+})
+
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const rateLimitResult = rateLimiter(request)
+    
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { 
+          error: 'Rate limit exceeded. Please try again later.',
+          retryAfter: new Date(rateLimitResult.reset).toISOString(),
+        },
+        { 
+          status: 429,
+          headers: getRateLimitHeaders(rateLimitResult),
+        }
+      )
+    }
+
     // Parse request body
     const body = await request.json()
     const { interest } = body
@@ -21,25 +35,29 @@ export async function POST(request: NextRequest) {
     if (!interest || typeof interest !== 'string') {
       return NextResponse.json(
         { error: 'Invalid input. Please provide an interest string.' },
-        { status: 400 }
+        { 
+          status: 400,
+          headers: getRateLimitHeaders(rateLimitResult),
+        }
       )
     }
 
-    if (interest.length < 3) {
+    if (interest.length < 3 || interest.length > 200) {
       return NextResponse.json(
-        { error: 'Interest must be at least 3 characters long.' },
-        { status: 400 }
+        { error: 'Interest must be between 3 and 200 characters.' },
+        { 
+          status: 400,
+          headers: getRateLimitHeaders(rateLimitResult),
+        }
       )
     }
 
-    if (interest.length > 200) {
-      return NextResponse.json(
-        { error: 'Interest must be less than 200 characters.' },
-        { status: 400 }
-      )
-    }
+    // Sanitize input to prevent prompt injection
+    const sanitizedInterest = interest
+      .replace(/[<>]/g, '') // Remove HTML tags
+      .substring(0, 200) // Enforce max length
 
-    // Prepare project data for AI
+    // Prepare project data
     const projectsData = projects.map(p => ({
       id: p.id,
       title: p.title,
@@ -49,42 +67,40 @@ export async function POST(request: NextRequest) {
       tech: p.tech,
     }))
 
-    // Call OpenAI API
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4-turbo-preview',
-      messages: [
-        {
-          role: 'system',
-          content: PROJECT_RECOMMENDER_PROMPT,
-        },
-        {
-          role: 'user',
-          content: `User's interest: "${interest}"
+    // Call OpenAI API with timeout
+    const completion = await Promise.race([
+      openai.chat.completions.create({
+        model: 'gpt-4-turbo-preview',
+        messages: [
+          {
+            role: 'system',
+            content: PROJECT_RECOMMENDER_PROMPT,
+          },
+          {
+            role: 'user',
+            content: `User's interest: "${sanitizedInterest}"
           
 Available projects:
 ${JSON.stringify(projectsData, null, 2)}
 
-Analyze the user's interest and recommend the SINGLE most relevant project. Consider:
-1. Technical stack overlap
-2. Problem domain similarity
-3. Complexity level
-4. Practical applications
-
-Return ONLY a JSON object (no markdown, no code blocks) with this exact structure:
+Return ONLY a JSON object with this structure:
 {
-  "projectId": "exact-project-id-from-list",
+  "projectId": "exact-project-id",
   "matchScore": 0-100,
-  "reasoning": "2-3 sentences explaining why this is the best match",
+  "reasoning": "2-3 sentences",
   "techOverlap": ["tech1", "tech2"]
 }`,
-        },
-      ],
-      temperature: 0.7,
-      max_tokens: 500,
-      response_format: { type: 'json_object' },
-    })
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 500,
+        response_format: { type: 'json_object' },
+      }),
+      new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout')), 25000)
+      ),
+    ])
 
-    // Parse AI response
     const rawResponse = completion.choices[0].message.content
     if (!rawResponse) {
       throw new Error('Empty response from OpenAI')
@@ -92,16 +108,10 @@ Return ONLY a JSON object (no markdown, no code blocks) with this exact structur
 
     const aiResponse = JSON.parse(rawResponse)
 
-    // Validate AI response structure
-    if (!aiResponse.projectId || !aiResponse.reasoning) {
-      throw new Error('Invalid AI response structure')
-    }
-
-    // Get full project details
+    // Validate and sanitize AI response
     const recommendedProject = projects.find(p => p.id === aiResponse.projectId)
     
     if (!recommendedProject) {
-      // Fallback to first featured project if AI returned invalid ID
       const fallbackProject = projects.find(p => p.featured) || projects[0]
       
       return NextResponse.json({
@@ -109,55 +119,50 @@ Return ONLY a JSON object (no markdown, no code blocks) with this exact structur
           projectId: fallbackProject.id,
           title: fallbackProject.title,
           category: fallbackProject.category,
-          reasoning: `Based on your interest in "${interest}", this project showcases relevant technical skills.`,
+          reasoning: `Based on your interest, this project showcases relevant skills.`,
           matchScore: 70,
           techOverlap: fallbackProject.tech.slice(0, 3),
           liveUrl: fallbackProject.liveUrl,
         },
+      }, {
+        headers: getRateLimitHeaders(rateLimitResult),
       })
     }
 
-    // Return successful recommendation
     return NextResponse.json({
       recommendation: {
         projectId: recommendedProject.id,
         title: recommendedProject.title,
         category: recommendedProject.category,
         reasoning: aiResponse.reasoning,
-        matchScore: aiResponse.matchScore || 85,
+        matchScore: Math.min(100, Math.max(0, aiResponse.matchScore || 85)),
         techOverlap: aiResponse.techOverlap || recommendedProject.tech.slice(0, 3),
         liveUrl: recommendedProject.liveUrl,
       },
+    }, {
+      headers: getRateLimitHeaders(rateLimitResult),
     })
 
   } catch (error: any) {
     console.error('Project recommendation error:', error)
-
-    // Handle OpenAI-specific errors
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json(
       { 
         error: errorMessage,
-        fallback: 'Try browsing the case studies page directly for project details.'
+        fallback: 'Try browsing the case studies page directly.'
       },
       { status: error.status || 500 }
     )
   }
 }
 
-/**
- * Handle OPTIONS request for CORS
- */
 export async function OPTIONS() {
-  return NextResponse.json(
-    {},
-    {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    }
-  )
+  return NextResponse.json({}, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
+  })
 }
