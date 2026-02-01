@@ -18,7 +18,7 @@ export function Hero() {
     'AI-Powered Web Applications',
     'Sub-Second Performance Optimization',
   ]
-  
+
   const [currentRole, setCurrentRole] = useState(0)
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
@@ -126,7 +126,7 @@ export function Hero() {
             I architect scalable web systems that handle{' '}
             <strong className="text-white">10,000+ concurrent users</strong>, integrate{' '}
             <strong className="text-white">AI/ML pipelines</strong> for intelligent UX, and obsess over{' '}
-            <strong className="text-white">sub-1s load times</strong>. Currently exploring edge computing 
+            <strong className="text-white">sub-1s load times</strong>. Currently exploring edge computing
             and AI agents for 2026.
           </motion.p>
 
@@ -149,7 +149,7 @@ export function Hero() {
             transition={{ delay: 1 }}
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
           >
-            
+            <a
               href="#case-studies"
               className="btn btn-primary text-center group"
             >
@@ -158,7 +158,7 @@ export function Hero() {
                 →
               </span>
             </a>
-            
+            <a
               href="#contact"
               className="btn btn-secondary text-center group"
             >

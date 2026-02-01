@@ -18,13 +18,13 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: { slug: string } 
+export async function generateMetadata({
+  params
+}: {
+  params: { slug: string }
 }): Promise<Metadata> {
   const project = getProjectById(params.slug)
-  
+
   if (!project) {
     return {
       title: 'Case Study Not Found',
@@ -42,10 +42,10 @@ export async function generateMetadata({
   }
 }
 
-export default function CaseStudyPage({ 
-  params 
-}: { 
-  params: { slug: string } 
+export default function CaseStudyPage({
+  params
+}: {
+  params: { slug: string }
 }) {
   const project = getProjectById(params.slug)
 
@@ -84,7 +84,7 @@ export default function CaseStudyPage({
           {/* Quick Links */}
           <div className="flex flex-wrap gap-4">
             {project.liveUrl && (
-              
+              <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -95,7 +95,7 @@ export default function CaseStudyPage({
               </a>
             )}
             {project.githubUrl && (
-              
+              <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -208,21 +208,21 @@ export default function CaseStudyPage({
 function STARContent({ projectId }: { projectId: string }) {
   // In a real implementation, this would fetch from MDX files or a CMS
   // For now, we'll use inline content for ServiceBridge as an example
-  
+
   if (projectId === 'servicebridge') {
     return (
       <>
         <div className="glass rounded-2xl p-8 mb-8">
           <h2 className="text-3xl font-bold mb-4">Situation</h2>
           <p className="text-gray-300 leading-relaxed">
-            Small businesses and service providers in Lagos, Nigeria struggled with fragmented 
-            communication channels for connecting with customers. The existing ecosystem relied 
-            on WhatsApp groups, Facebook posts, and word-of-mouth, leading to inefficiencies, 
+            Small businesses and service providers in Lagos, Nigeria struggled with fragmented
+            communication channels for connecting with customers. The existing ecosystem relied
+            on WhatsApp groups, Facebook posts, and word-of-mouth, leading to inefficiencies,
             missed opportunities, and trust issues.
           </p>
           <p className="text-gray-300 leading-relaxed mt-4">
-            Market research indicated potential for <strong className="text-primary">5,000+ 
-            service providers</strong> and <strong className="text-primary">50,000+ customers
+            Market research indicated potential for <strong className="text-primary">5,000+
+              service providers</strong> and <strong className="text-primary">50,000+ customers
             </strong> in the Lagos metropolitan area alone.
           </p>
         </div>
@@ -243,29 +243,29 @@ function STARContent({ projectId }: { projectId: string }) {
 
         <div className="glass rounded-2xl p-8 mb-8">
           <h2 className="text-3xl font-bold mb-4">Action</h2>
-          
+
           <h3 className="text-2xl font-semibold mb-3 text-primary">Architecture & System Design</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             Implemented a microservices architecture with the following key components:
           </p>
           <ul className="space-y-3 text-gray-300 mb-6">
             <li>
-              <strong className="text-white">Real-time Matching Engine:</strong> Built with 
-              Socket.io for WebSocket connections, enabling instant notifications when service 
+              <strong className="text-white">Real-time Matching Engine:</strong> Built with
+              Socket.io for WebSocket connections, enabling instant notifications when service
               providers became available or customers posted new requests.
             </li>
             <li>
-              <strong className="text-white">Caching Layer:</strong> Integrated Redis for 
+              <strong className="text-white">Caching Layer:</strong> Integrated Redis for
               session management and frequently-accessed data, achieving a <strong className="text-primary">
-              40% reduction in database queries</strong> and significantly improved response times.
+                40% reduction in database queries</strong> and significantly improved response times.
             </li>
             <li>
-              <strong className="text-white">Database Architecture:</strong> PostgreSQL with 
-              read replicas for high-traffic queries, write-master for transactions, and proper 
+              <strong className="text-white">Database Architecture:</strong> PostgreSQL with
+              read replicas for high-traffic queries, write-master for transactions, and proper
               indexing strategies for search optimization.
             </li>
             <li>
-              <strong className="text-white">Payment Integration:</strong> Stripe Connect with 
+              <strong className="text-white">Payment Integration:</strong> Stripe Connect with
               custom escrow logic to hold funds until service completion, protecting both parties.
             </li>
           </ul>
@@ -312,9 +312,9 @@ function STARContent({ projectId }: { projectId: string }) {
           </div>
 
           <p className="text-gray-300 leading-relaxed">
-            The platform successfully transformed how service providers and customers connect 
-            in Lagos, establishing a new standard for trust and efficiency in the local service 
-            marketplace. The technical architecture has proven scalable, with the system handling 
+            The platform successfully transformed how service providers and customers connect
+            in Lagos, establishing a new standard for trust and efficiency in the local service
+            marketplace. The technical architecture has proven scalable, with the system handling
             peak loads during promotional events without degradation.
           </p>
         </div>
@@ -326,7 +326,7 @@ function STARContent({ projectId }: { projectId: string }) {
   return (
     <div className="glass rounded-2xl p-8">
       <p className="text-gray-300 leading-relaxed">
-        Detailed case study content coming soon. For now, you can explore the live project 
+        Detailed case study content coming soon. For now, you can explore the live project
         and codebase to see the implementation details.
       </p>
     </div>

@@ -32,8 +32,8 @@ export function ContactSection() {
               Let's Build Something <span className="gradient-text">Amazing</span>
             </h2>
             <p className="text-xl text-gray-400 leading-relaxed mb-8">
-              I'm always open to discussions about design, technology, or potential collaborations. 
-              Whether you have a question, want to talk about tech trends, are interested in learning 
+              I'm always open to discussions about design, technology, or potential collaborations.
+              Whether you have a question, want to talk about tech trends, are interested in learning
               more about my work, or considering hiring me, feel free to reach out.
             </p>
 
@@ -83,7 +83,7 @@ export function ContactSection() {
             </div>
 
             {/* CTA Button */}
-            
+            <a
               href="mailto:olabodewebdesigns02@gmail.com"
               className="btn btn-primary w-full mt-8 text-center"
             >
@@ -91,7 +91,7 @@ export function ContactSection() {
             </a>
 
             {/* Download CV */}
-            
+            <a
               href="https://drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9_aHMqsAfG/view?usp=drive_link"
               target="_blank"
               rel="noopener noreferrer"
@@ -122,7 +122,7 @@ function ContactInfo({
   href: string
 }) {
   return (
-    
+    <a
       href={href}
       className="flex items-start gap-4 p-4 bg-gray-800 rounded-lg hover:bg-gray-750 
                transition-colors group"
