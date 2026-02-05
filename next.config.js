@@ -23,7 +23,7 @@ const nextConfig = {
 
   // Performance optimizations
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true,
   },
 
   // Security headers

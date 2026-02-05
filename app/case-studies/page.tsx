@@ -1,3 +1,4 @@
+import React from 'react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -39,7 +40,7 @@ export default function CaseStudiesPage() {
             Case <span className="gradient-text">Studies</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-3xl">
-            Deep technical dives into real-world projects. Each case study includes architecture 
+            Deep technical dives into real-world projects. Each case study includes architecture
             diagrams, challenges faced, solutions implemented, and measurable outcomes.
           </p>
 
@@ -157,7 +158,7 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
             <ArrowRightIcon className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
           </Link>
           {project.liveUrl && (
-            
+            <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"

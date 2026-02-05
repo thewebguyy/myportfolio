@@ -43,7 +43,7 @@ export function Footer() {
             >
               Blog
             </Link>
-            
+            <a
               href="https://github.com/thewebguyy"
               target="_blank"
               rel="noopener noreferrer"

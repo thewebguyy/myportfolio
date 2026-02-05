@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -105,7 +106,7 @@ function CaseStudyCard({ project, index }: { project: any; index: number }) {
             <div className="grid grid-cols-2 gap-4 mb-6">
               {Object.entries(project.metrics).map(([key, value]) => (
                 <div key={key} className="border-l-2 border-primary pl-4">
-                  <div className="text-2xl font-bold text-primary">{value}</div>
+                  <div className="text-2xl font-bold text-primary">{value as React.ReactNode}</div>
                   <div className="text-sm text-gray-500 uppercase tracking-wider">
                     {key.replace(/([A-Z])/g, ' $1').trim()}
                   </div>
@@ -136,7 +137,7 @@ function CaseStudyCard({ project, index }: { project: any; index: number }) {
               <ArrowRightIcon className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
             </Link>
             {project.liveUrl && (
-              
+              <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"

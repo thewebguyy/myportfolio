@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SparklesIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
@@ -209,7 +209,7 @@ export function AIProjectRecommender() {
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                  
+                  <a
                     href={`/case-studies/${recommendation.projectId}`}
                     className="btn btn-primary text-sm text-center group"
                   >
@@ -217,7 +217,7 @@ export function AIProjectRecommender() {
                     <ArrowRightIcon className="w-4 h-4 ml-2 inline-block group-hover:translate-x-1 transition-transform" />
                   </a>
                   {recommendation.liveUrl && (
-                    
+                    <a
                       href={recommendation.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"

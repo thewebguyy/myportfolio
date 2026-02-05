@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  DocumentArrowUpIcon, 
+import {
+  DocumentArrowUpIcon,
   CheckCircleIcon,
   XCircleIcon,
-  LightBulbIcon 
+  LightBulbIcon
 } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
 
@@ -51,7 +51,7 @@ export function ResumeAnalyzer() {
 
   const handleFile = (selectedFile: File) => {
     const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
-    
+
     if (!validTypes.includes(selectedFile.type)) {
       setError('Please upload a PDF or DOCX file')
       return
@@ -115,8 +115,8 @@ export function ResumeAnalyzer() {
               AI Collaboration <span className="gradient-text">Finder</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-              Upload your resume, and my AI will analyze technical overlap to suggest collaboration 
-              opportunities. Built with <strong className="text-primary">GPT-4</strong> and custom 
+              Upload your resume, and my AI will analyze technical overlap to suggest collaboration
+              opportunities. Built with <strong className="text-primary">GPT-4</strong> and custom
               prompt engineering.
             </p>
           </div>
@@ -308,7 +308,7 @@ export function ResumeAnalyzer() {
 
                   {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4">
-                    
+                    <a
                       href="#contact"
                       className="btn btn-primary text-center flex-1"
                     >
@@ -338,11 +338,11 @@ export function ResumeAnalyzer() {
               How This Works (AI Transparency)
             </h4>
             <p className="text-gray-300 leading-relaxed text-sm">
-              This feature uses <strong className="text-primary">GPT-4 Turbo</strong> with custom 
-              prompt engineering to parse resumes and identify technical synergies. I designed the 
-              prompt to focus on <em>collaboration potential</em> rather than competition, reflecting 
-              my belief in community-driven tech. The system achieves ~85% accuracy in skill extraction 
-              (validated against 50 test resumes). All analysis happens server-side; your resume is 
+              This feature uses <strong className="text-primary">GPT-4 Turbo</strong> with custom
+              prompt engineering to parse resumes and identify technical synergies. I designed the
+              prompt to focus on <em>collaboration potential</em> rather than competition, reflecting
+              my belief in community-driven tech. The system achieves ~85% accuracy in skill extraction
+              (validated against 50 test resumes). All analysis happens server-side; your resume is
               never stored.
             </p>
           </motion.div>
