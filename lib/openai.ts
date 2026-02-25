@@ -1,15 +1,41 @@
 import OpenAI from 'openai'
 
-// Validate API key exists
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error('Missing OPENAI_API_KEY environment variable')
+/**
+ * OpenAI Configuration Constants
+ */
+export const AI_CONFIG = {
+  model: 'gpt-4-turbo-preview',
+  defaultTimeout: 30000,
+  maxRetries: 2,
+} as const
+
+// Lazy initialize OpenAI client to prevent crashes during SSR/Build if key is missing
+let openaiInstance: OpenAI | null = null
+
+export const getOpenAIClient = () => {
+  if (openaiInstance) return openaiInstance
+
+  const apiKey = process.env.OPENAI_API_KEY
+  if (!apiKey) {
+    // Return a proxy or throw only when called
+    console.warn('OPENAI_API_KEY is not defined. AI features will fail at runtime.')
+  }
+
+  openaiInstance = new OpenAI({
+    apiKey: apiKey || 'missing-key', // Prevent constructor error, will fail on actual call
+    timeout: AI_CONFIG.defaultTimeout,
+    maxRetries: AI_CONFIG.maxRetries,
+  })
+
+  return openaiInstance
 }
 
-// Initialize OpenAI client with configuration
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  timeout: 30000, // 30 seconds
-  maxRetries: 2,
+// Keep the export for backward compatibility but use a getter or proxy
+export const openai = new Proxy({} as OpenAI, {
+  get: (target, prop) => {
+    const client = getOpenAIClient()
+    return (client as any)[prop]
+  },
 })
 
 /**

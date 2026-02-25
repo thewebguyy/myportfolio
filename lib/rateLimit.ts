@@ -1,7 +1,7 @@
 /**
  * Rate Limiting Utility
  * In-memory rate limiting for API routes
- * For production, consider using Upstash Redis or Vercel Edge Config
+ * For production, consider using Upstash Redis or Vercel KV for persistence
  */
 
 interface RateLimitEntry {
@@ -9,18 +9,8 @@ interface RateLimitEntry {
   resetTime: number
 }
 
-// In-memory store (resets on server restart)
+// In-memory store (resets on server restart/cold start)
 const rateLimitStore = new Map<string, RateLimitEntry>()
-
-// Cleanup old entries every 5 minutes
-setInterval(() => {
-  const now = Date.now()
-  for (const [key, entry] of rateLimitStore.entries()) {
-    if (now > entry.resetTime) {
-      rateLimitStore.delete(key)
-    }
-  }
-}, 5 * 60 * 1000)
 
 export interface RateLimitConfig {
   /** Unique identifier (IP, user ID, etc.) */
@@ -39,10 +29,25 @@ export interface RateLimitResult {
 }
 
 /**
+ * Lazy cleanup of expired entries
+ */
+function cleanupExpired() {
+  const now = Date.now()
+  for (const [key, entry] of rateLimitStore.entries()) {
+    if (now > entry.resetTime) {
+      rateLimitStore.delete(key)
+    }
+  }
+}
+
+/**
  * Check if request should be rate limited
  * Returns success: false if limit exceeded
  */
 export function rateLimit(config: RateLimitConfig): RateLimitResult {
+  // Lazy cleanup occasionally (10% of calls to reduce overhead)
+  if (Math.random() < 0.1) cleanupExpired()
+
   const { identifier, limit, windowInSeconds } = config
   const now = Date.now()
   const windowInMs = windowInSeconds * 1000
@@ -90,25 +95,30 @@ export function rateLimit(config: RateLimitConfig): RateLimitResult {
 /**
  * Get client identifier from request
  * Uses IP address or user ID if authenticated
+ * Mitigates spoofing by prioritizing trusted infrastructure headers
  */
 export function getClientIdentifier(request: Request): string {
-  // Try to get IP from headers (works with Vercel, Cloudflare, etc.)
-  const forwarded = request.headers.get('x-forwarded-for')
-  const realIp = request.headers.get('x-real-ip')
-  const ip = forwarded?.split(',')[0] || realIp || 'unknown'
+  // Priority order for IP headers
+  const headers = request.headers
 
-  // In production with auth, you might use:
-  // const userId = await getUserIdFromSession(request)
-  // return userId || ip
+  // Vercel's trusted IP header
+  const vercelIp = headers.get('x-vercel-forwarded-for')
+  // Cloudflare's trusted IP header
+  const cfIp = headers.get('cf-connecting-ip')
+  // Standard headers (less trusted, but better than nothing)
+  const forwarded = headers.get('x-forwarded-for')
+  const realIp = headers.get('x-real-ip')
+
+  const ip = vercelIp || cfIp || forwarded?.split(',')[0] || realIp || 'unknown'
 
   return ip
 }
 
 /**
- * Rate limit middleware for API routes
+ * Create a rate limiter function for a specific route
  */
 export function createRateLimiter(config: Omit<RateLimitConfig, 'identifier'>) {
-  return function rateLimitMiddleware(request: Request): RateLimitResult {
+  return function checkRateLimit(request: Request): RateLimitResult {
     const identifier = getClientIdentifier(request)
     return rateLimit({ ...config, identifier })
   }

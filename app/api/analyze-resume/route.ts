@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { openai, RESUME_ANALYZER_PROMPT, handleOpenAIError } from '@/lib/openai'
+import { openai, RESUME_ANALYZER_PROMPT, handleOpenAIError, AI_CONFIG } from '@/lib/openai'
 import { createRateLimiter, getRateLimitHeaders } from '@/lib/rateLimit'
 
 // Rate limiter: 5 requests per hour (more strict due to longer processing)
@@ -12,14 +12,14 @@ export async function POST(request: NextRequest) {
   try {
     // Apply rate limiting
     const rateLimitResult = rateLimiter(request)
-    
+
     if (!rateLimitResult.success) {
       return NextResponse.json(
-        { 
+        {
           error: 'Rate limit exceeded. You can analyze 5 resumes per hour.',
           retryAfter: new Date(rateLimitResult.reset).toISOString(),
         },
-        { 
+        {
           status: 429,
           headers: getRateLimitHeaders(rateLimitResult),
         }
@@ -28,15 +28,15 @@ export async function POST(request: NextRequest) {
 
     let resumeText = ''
     const contentType = request.headers.get('content-type')
-    
+
     if (contentType?.includes('multipart/form-data')) {
       const formData = await request.formData()
       const file = formData.get('resume') as File
-      
+
       if (!file) {
         return NextResponse.json(
           { error: 'No resume file provided.' },
-          { 
+          {
             status: 400,
             headers: getRateLimitHeaders(rateLimitResult),
           }
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       if (file.size > 5 * 1024 * 1024) {
         return NextResponse.json(
           { error: 'File too large. Maximum size is 5MB.' },
-          { 
+          {
             status: 400,
             headers: getRateLimitHeaders(rateLimitResult),
           }
@@ -60,21 +60,22 @@ export async function POST(request: NextRequest) {
       resumeText = body.resumeText
     }
 
-    // Validate input
+    // Validate input (after extraction)
     if (!resumeText || typeof resumeText !== 'string') {
       return NextResponse.json(
         { error: 'Invalid input. Please provide resume text.' },
-        { 
+        {
           status: 400,
           headers: getRateLimitHeaders(rateLimitResult),
         }
       )
     }
 
-    if (resumeText.length < 100 || resumeText.length > 10000) {
+    const trimmedText = resumeText.trim()
+    if (trimmedText.length < 100 || trimmedText.length > 10000) {
       return NextResponse.json(
         { error: 'Resume text must be between 100 and 10,000 characters.' },
-        { 
+        {
           status: 400,
           headers: getRateLimitHeaders(rateLimitResult),
         }
@@ -82,14 +83,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Sanitize input
-    const sanitizedText = resumeText
+    const sanitizedText = trimmedText
       .replace(/[<>]/g, '')
       .substring(0, 10000)
 
     // Call OpenAI with timeout
     const completion = await Promise.race([
       openai.chat.completions.create({
-        model: 'gpt-4-turbo-preview',
+        model: AI_CONFIG.model,
         messages: [
           {
             role: 'system',
@@ -117,7 +118,7 @@ Return ONLY JSON:
         max_tokens: 800,
         response_format: { type: 'json_object' },
       }),
-      new Promise<never>((_, reject) => 
+      new Promise<never>((_, reject) =>
         setTimeout(() => reject(new Error('Request timeout')), 30000)
       ),
     ])
@@ -127,7 +128,13 @@ Return ONLY JSON:
       throw new Error('Empty response from OpenAI')
     }
 
-    const analysis = JSON.parse(rawResponse)
+    let analysis;
+    try {
+      analysis = JSON.parse(rawResponse)
+    } catch (e) {
+      console.error('Failed to parse AI JSON response:', rawResponse)
+      throw new Error('Invalid response format from AI service')
+    }
 
     // Validate and sanitize response
     if (
@@ -141,7 +148,7 @@ Return ONLY JSON:
 
     return NextResponse.json({
       analysis: {
-        matchScore: Math.max(0, Math.min(100, analysis.matchScore)),
+        matchScore: Math.round(Math.max(0, Math.min(100, Number(analysis.matchScore) || 0))),
         strengths: analysis.strengths.slice(0, 8),
         gaps: analysis.gaps.slice(0, 5),
         collaborationOpportunities: analysis.collaborationOpportunities.slice(0, 4),
@@ -156,7 +163,7 @@ Return ONLY JSON:
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json(
-      { 
+      {
         error: errorMessage,
         suggestion: 'Contact me directly to discuss collaboration.'
       },

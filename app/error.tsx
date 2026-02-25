@@ -20,7 +20,7 @@ export default function Error({
   useEffect(() => {
     // Log error to monitoring service (e.g., Sentry, LogRocket)
     console.error('Application error:', error)
-    
+
     // In production, send to error tracking service
     if (process.env.NODE_ENV === 'production') {
       // Example: Sentry.captureException(error)
@@ -50,7 +50,7 @@ export default function Error({
           Oops! Something went wrong
         </h1>
         <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-          Don't worry, this happens to the best of us. The error has been logged and 
+          Don't worry, this happens to the best of us. The error has been logged and
           I'll look into it.
         </p>
 
@@ -85,7 +85,7 @@ export default function Error({
             Go to Homepage
           </Link>
 
-          
+          <a
             href="mailto:olabodewebdesigns02@gmail.com?subject=Portfolio Error Report"
             className="btn btn-secondary"
           >

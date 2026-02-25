@@ -2,10 +2,18 @@ import { render, screen } from '@testing-library/react'
 import { Footer } from '@/app/components/sections/Footer'
 
 describe('Footer Component', () => {
+    beforeAll(() => {
+        jest.useFakeTimers()
+        jest.setSystemTime(new Date('2026-01-01'))
+    })
+
+    afterAll(() => {
+        jest.useRealTimers()
+    })
+
     it('renders copyright with current year', () => {
         render(<Footer />)
-        const currentYear = new Date().getFullYear()
-        expect(screen.getByText(new RegExp(`© ${currentYear}`))).toBeInTheDocument()
+        expect(screen.getByText(/© 2026/)).toBeInTheDocument()
     })
 
     it('renders tech stack information', () => {

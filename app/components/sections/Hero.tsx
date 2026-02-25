@@ -12,16 +12,30 @@ import { useState, useEffect } from 'react'
  * - Dual CTAs (case studies + contact)
  * - Smooth scroll to next section
  */
-export function Hero() {
-  const roles = [
-    'High-Scale Distributed Systems',
-    'AI-Powered Web Applications',
-    'Sub-Second Performance Optimization',
-  ]
+const roles = [
+  'High-Scale Distributed Systems',
+  'AI-Powered Web Applications',
+  'Sub-Second Performance Optimization',
+]
 
+/**
+ * Hero Section Component
+ * Features:
+ * - Animated typewriter effect for roles
+ * - Key metrics display
+ * - Dual CTAs (case studies + contact)
+ * - Smooth scroll to next section
+ */
+export function Hero() {
   const [currentRole, setCurrentRole] = useState(0)
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  // Initialize client-side only state
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Typewriter effect
   useEffect(() => {
@@ -44,7 +58,7 @@ export function Hero() {
     }, isDeleting ? 50 : 100)
 
     return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, currentRole, roles])
+  }, [displayText, isDeleting, currentRole])
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -54,28 +68,30 @@ export function Hero() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(35,150,127,0.1),transparent_50%)]" />
       </div>
 
-      {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-primary/30 rounded-full"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-            }}
-            animate={{
-              y: [null, Math.random() * window.innerHeight],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              ease: 'linear',
-            }}
-          />
-        ))}
-      </div>
+      {/* Floating particles - Only render on client to avoid window SSR errors */}
+      {isClient && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-primary/30 rounded-full"
+              initial={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+              }}
+              animate={{
+                y: [null, Math.random() * window.innerHeight],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: Math.random() * 10 + 10,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <motion.div

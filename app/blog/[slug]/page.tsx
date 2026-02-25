@@ -8,33 +8,7 @@ import { ArrowLeftIcon, ClockIcon, CalendarIcon } from '@heroicons/react/24/outl
  * Displays full article content with proper formatting
  */
 
-// Blog posts data (matches blog/page.tsx)
-const blogPosts = [
-  {
-    slug: 'edge-computing-2026',
-    title: 'Why Edge Computing Will Define Web Development in 2026',
-    excerpt: 'Exploring how edge computing is transforming application architecture, reducing latency, and enabling new use cases for distributed systems.',
-    date: '2024-12-15',
-    readTime: 8,
-    category: 'System Design',
-  },
-  {
-    slug: 'ai-agents-production',
-    title: 'Building Production-Ready AI Agents: Lessons Learned',
-    excerpt: 'A practical guide to integrating AI agents into web applications, covering prompt engineering, error handling, and cost optimization.',
-    date: '2024-11-28',
-    readTime: 12,
-    category: 'AI/ML',
-  },
-  {
-    slug: 'green-coding-practices',
-    title: 'Green Coding: Writing Sustainable Software for 2026',
-    excerpt: 'How to measure and reduce the carbon footprint of your applications through efficient algorithms, optimized queries, and smart caching.',
-    date: '2024-10-10',
-    readTime: 10,
-    category: 'Performance',
-  },
-]
+import { blogPosts, getBlogPostBySlug } from '@/lib/blog'
 
 // Generate static params
 export async function generateStaticParams() {
@@ -44,13 +18,13 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: { slug: string } 
+export async function generateMetadata({
+  params
+}: {
+  params: { slug: string }
 }): Promise<Metadata> {
-  const post = blogPosts.find(p => p.slug === params.slug)
-  
+  const post = getBlogPostBySlug(params.slug)
+
   if (!post) {
     return { title: 'Post Not Found' }
   }
@@ -61,12 +35,12 @@ export async function generateMetadata({
   }
 }
 
-export default function BlogPostPage({ 
-  params 
-}: { 
-  params: { slug: string } 
+export default function BlogPostPage({
+  params
+}: {
+  params: { slug: string }
 }) {
-  const post = blogPosts.find(p => p.slug === params.slug)
+  const post = getBlogPostBySlug(params.slug)
 
   if (!post) {
     notFound()
@@ -146,20 +120,20 @@ export default function BlogPostPage({
 function BlogContent({ slug }: { slug: string }) {
   // In production, this would load MDX content
   // For now, we'll provide sample content for the Edge Computing article
-  
+
   if (slug === 'edge-computing-2026') {
     return (
       <>
         <p className="lead text-xl text-gray-300 leading-relaxed">
-          Edge computing is no longer a distant future—it's reshaping how we build web applications 
-          today. As someone who's been deploying to edge networks since 2023, I've witnessed 
-          firsthand how this architectural shift enables experiences that were simply impossible 
+          Edge computing is no longer a distant future—it's reshaping how we build web applications
+          today. As someone who's been deploying to edge networks since 2023, I've witnessed
+          firsthand how this architectural shift enables experiences that were simply impossible
           with traditional cloud-only approaches.
         </p>
 
         <h2>The Latency Problem</h2>
         <p>
-          Traditional cloud architectures route every request through centralized data centers. 
+          Traditional cloud architectures route every request through centralized data centers.
           For a user in Lagos accessing a server in Virginia, this means:
         </p>
         <ul>
@@ -168,15 +142,15 @@ function BlogContent({ slug }: { slug: string }) {
           <li><strong>Unpredictable spikes</strong> during high traffic periods</li>
         </ul>
         <p>
-          This adds up to a <strong className="text-primary">200-300ms delay</strong> before 
-          users even see initial content. In 2026, where users expect sub-100ms interactions, 
+          This adds up to a <strong className="text-primary">200-300ms delay</strong> before
+          users even see initial content. In 2026, where users expect sub-100ms interactions,
           this is unacceptable.
         </p>
 
         <h2>How Edge Computing Solves This</h2>
         <p>
-          Edge networks deploy your code to <strong className="text-primary">hundreds of 
-          locations worldwide</strong>, serving users from the nearest geographic point. Here's 
+          Edge networks deploy your code to <strong className="text-primary">hundreds of
+            locations worldwide</strong>, serving users from the nearest geographic point. Here's
           what I've achieved in production:
         </p>
         <ul>
@@ -187,7 +161,7 @@ function BlogContent({ slug }: { slug: string }) {
 
         <h2>Real-World Implementation: ServiceBridge</h2>
         <p>
-          In my ServiceBridge project, migrating to Vercel Edge Functions reduced API response 
+          In my ServiceBridge project, migrating to Vercel Edge Functions reduced API response
           times by <strong className="text-primary">60%</strong>. Here's the architecture:
         </p>
         <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto">
@@ -232,8 +206,8 @@ export default async function handler(req: Request) {
 
         <div className="bg-primary/10 border-l-4 border-primary p-6 rounded-r-lg my-8">
           <p className="text-gray-300 leading-relaxed m-0">
-            <strong className="text-white">Pro Tip:</strong> Start by moving read-heavy operations 
-            to the edge first. Profile your application to identify which endpoints have the 
+            <strong className="text-white">Pro Tip:</strong> Start by moving read-heavy operations
+            to the edge first. Profile your application to identify which endpoints have the
             highest latency and migrate those incrementally.
           </p>
         </div>
@@ -245,14 +219,14 @@ export default async function handler(req: Request) {
   return (
     <div className="glass rounded-2xl p-8">
       <p className="text-gray-300 leading-relaxed">
-        Full article content coming soon. This post is part of my ongoing series on modern 
+        Full article content coming soon. This post is part of my ongoing series on modern
         web development practices and emerging technologies for 2026.
       </p>
       <p className="text-gray-300 leading-relaxed mt-4">
         Want to discuss this topic? <Link href="#contact" className="text-primary hover:underline">
-        Get in touch</Link> or connect with me on <a href="https://twitter.com/thewebguyy" 
-        target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-        Twitter</a>.
+          Get in touch</Link> or connect with me on <a href="https://twitter.com/thewebguyy"
+            target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+          Twitter</a>.
       </p>
     </div>
   )

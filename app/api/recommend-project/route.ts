@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { openai, PROJECT_RECOMMENDER_PROMPT, handleOpenAIError } from '@/lib/openai'
+import { openai, PROJECT_RECOMMENDER_PROMPT, handleOpenAIError, AI_CONFIG } from '@/lib/openai'
 import { projects } from '@/lib/projects'
 import { createRateLimiter, getRateLimitHeaders } from '@/lib/rateLimit'
 
@@ -13,14 +13,14 @@ export async function POST(request: NextRequest) {
   try {
     // Apply rate limiting
     const rateLimitResult = rateLimiter(request)
-    
+
     if (!rateLimitResult.success) {
       return NextResponse.json(
-        { 
+        {
           error: 'Rate limit exceeded. Please try again later.',
           retryAfter: new Date(rateLimitResult.reset).toISOString(),
         },
-        { 
+        {
           status: 429,
           headers: getRateLimitHeaders(rateLimitResult),
         }
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     if (!interest || typeof interest !== 'string') {
       return NextResponse.json(
         { error: 'Invalid input. Please provide an interest string.' },
-        { 
+        {
           status: 400,
           headers: getRateLimitHeaders(rateLimitResult),
         }
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     if (interest.length < 3 || interest.length > 200) {
       return NextResponse.json(
         { error: 'Interest must be between 3 and 200 characters.' },
-        { 
+        {
           status: 400,
           headers: getRateLimitHeaders(rateLimitResult),
         }
@@ -96,7 +96,7 @@ Return ONLY a JSON object with this structure:
         max_tokens: 500,
         response_format: { type: 'json_object' },
       }),
-      new Promise<never>((_, reject) => 
+      new Promise<never>((_, reject) =>
         setTimeout(() => reject(new Error('Request timeout')), 25000)
       ),
     ])
@@ -106,14 +106,25 @@ Return ONLY a JSON object with this structure:
       throw new Error('Empty response from OpenAI')
     }
 
-    const aiResponse = JSON.parse(rawResponse)
+    let aiResponse;
+    try {
+      aiResponse = JSON.parse(rawResponse)
+    } catch (e) {
+      console.error('Failed to parse AI recommendation JSON:', rawResponse)
+      throw new Error('Invalid response format from AI service')
+    }
 
     // Validate and sanitize AI response
     const recommendedProject = projects.find(p => p.id === aiResponse.projectId)
-    
+
     if (!recommendedProject) {
+      // Safe fallback even if projects array is manipulated/empty
       const fallbackProject = projects.find(p => p.featured) || projects[0]
-      
+
+      if (!fallbackProject) {
+        throw new Error('No projects available for recommendation')
+      }
+
       return NextResponse.json({
         recommendation: {
           projectId: fallbackProject.id,
@@ -129,14 +140,22 @@ Return ONLY a JSON object with this structure:
       })
     }
 
+    // Sanitize and validate match score
+    const rawScore = aiResponse.matchScore
+    const matchScore = typeof rawScore === 'number'
+      ? Math.round(Math.max(0, Math.min(100, rawScore)))
+      : 85
+
     return NextResponse.json({
       recommendation: {
         projectId: recommendedProject.id,
         title: recommendedProject.title,
         category: recommendedProject.category,
-        reasoning: aiResponse.reasoning,
-        matchScore: Math.min(100, Math.max(0, aiResponse.matchScore || 85)),
-        techOverlap: aiResponse.techOverlap || recommendedProject.tech.slice(0, 3),
+        reasoning: aiResponse.reasoning || `Excellent match for your interest in ${sanitizedInterest}.`,
+        matchScore: matchScore,
+        techOverlap: Array.isArray(aiResponse.techOverlap)
+          ? aiResponse.techOverlap.slice(0, 5)
+          : recommendedProject.tech.slice(0, 3),
         liveUrl: recommendedProject.liveUrl,
       },
     }, {
@@ -148,7 +167,7 @@ Return ONLY a JSON object with this structure:
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json(
-      { 
+      {
         error: errorMessage,
         fallback: 'Try browsing the case studies page directly.'
       },
