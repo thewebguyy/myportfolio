@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { projects, getFeaturedProjects } from '@/lib/projects'
+import { projects, getFeaturedProjects, Project } from '@/lib/projects'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 
 /**
@@ -52,7 +52,7 @@ export function BentoGrid() {
                   <p className="text-gray-400 mb-4 text-lg">
                     Real-time marketplace connecting 10,000+ service providers with customers
                   </p>
-                  
+
                   {/* Metrics */}
                   <div className="flex flex-wrap gap-4 mb-6">
                     <MetricBadge label="10K+ Users" />
@@ -76,7 +76,7 @@ export function BentoGrid() {
                 {/* Gradient overlay on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 
                               opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
+
                 {/* Arrow icon */}
                 <ArrowTopRightOnSquareIcon className="absolute top-8 right-8 w-6 h-6 text-primary 
                                                       opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -155,7 +155,7 @@ export function BentoGrid() {
  * Project Card Component
  * Smaller cards for additional projects in the grid
  */
-function ProjectCard({ project, delay }: { project: any; delay: number }) {
+function ProjectCard({ project, delay }: { project: Project; delay: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}

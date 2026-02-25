@@ -10,7 +10,6 @@ import {
   Filler,
   Tooltip,
   Legend,
-  type ChartData,
   type ChartOptions,
 } from 'chart.js'
 import { Radar } from 'react-chartjs-2'
@@ -224,9 +223,8 @@ export function SkillRadar() {
               >
                 <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
                   <div
-                    className={`w-3 h-3 rounded-full ${
-                      group.color === 'primary' ? 'bg-primary' : 'bg-secondary'
-                    }`}
+                    className={`w-3 h-3 rounded-full ${group.color === 'primary' ? 'bg-primary' : 'bg-secondary'
+                      }`}
                   />
                   {group.category}
                 </h3>
@@ -243,9 +241,8 @@ export function SkillRadar() {
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm font-medium text-white">{skill.name}</span>
                         <span
-                          className={`text-sm font-semibold ${
-                            group.color === 'primary' ? 'text-primary' : 'text-secondary'
-                          }`}
+                          className={`text-sm font-semibold ${group.color === 'primary' ? 'text-primary' : 'text-secondary'
+                            }`}
                         >
                           {skill.level}%
                         </span>
@@ -256,11 +253,10 @@ export function SkillRadar() {
                           whileInView={{ width: `${skill.level}%` }}
                           viewport={{ once: true }}
                           transition={{ duration: 1, delay: groupIndex * 0.1 + skillIndex * 0.05 }}
-                          className={`absolute left-0 top-0 h-full rounded-full ${
-                            group.color === 'primary'
+                          className={`absolute left-0 top-0 h-full rounded-full ${group.color === 'primary'
                               ? 'bg-gradient-to-r from-primary to-primary-light'
                               : 'bg-gradient-to-r from-secondary to-secondary-light'
-                          }`}
+                            }`}
                         />
                       </div>
                     </motion.div>
@@ -307,7 +303,7 @@ export function SkillRadar() {
           className="mt-12 text-center"
         >
           <p className="text-sm text-gray-500">
-            💡 <strong className="text-gray-400">Pro tip:</strong> Hover over the radar chart 
+            💡 <strong className="text-gray-400">Pro tip:</strong> Hover over the radar chart
             to see exact proficiency percentages for each domain
           </p>
         </motion.div>

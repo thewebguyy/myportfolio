@@ -178,7 +178,7 @@ export function Hero() {
               href="#contact"
               className="btn btn-secondary text-center group"
             >
-              Let's Connect
+              Let&apos;s Connect
               <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">
                 →
               </span>

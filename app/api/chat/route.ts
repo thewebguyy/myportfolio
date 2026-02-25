@@ -140,14 +140,15 @@ export async function POST(request: NextRequest) {
       },
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Chatbot error:', error)
+    const errorObj = error as { status?: number; message?: string }
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json({
       reply: "I'm having trouble responding right now. Please try again soon or contact Olabode directly.",
     }, {
-      status: error.status || 500,
+      status: errorObj.status || 500,
     })
   }
 }

@@ -19,13 +19,13 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log error to monitoring service (e.g., Sentry, LogRocket)
-    console.error('Application error:', error)
+    console.error('Application error:', error);
 
     // In production, send to error tracking service
     if (process.env.NODE_ENV === 'production') {
       // Example: Sentry.captureException(error)
     }
-  }, [error])
+  }, [error]);
 
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
@@ -50,8 +50,8 @@ export default function Error({
           Oops! Something went wrong
         </h1>
         <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-          Don't worry, this happens to the best of us. The error has been logged and
-          I'll look into it.
+          Don&apos;t worry, this happens to the best of us. The error has been logged and
+          I&apos;ll look into it.
         </p>
 
         {/* Error Details (Development Only) */}
@@ -110,5 +110,5 @@ export default function Error({
         </div>
       </motion.div>
     </div>
-  )
+  );
 }

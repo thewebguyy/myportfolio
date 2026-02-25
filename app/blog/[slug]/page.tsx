@@ -125,8 +125,8 @@ function BlogContent({ slug }: { slug: string }) {
     return (
       <>
         <p className="lead text-xl text-gray-300 leading-relaxed">
-          Edge computing is no longer a distant future—it's reshaping how we build web applications
-          today. As someone who's been deploying to edge networks since 2023, I've witnessed
+          Edge computing is no longer a distant future—it&apos;s reshaping how we build web applications
+          today. As someone who&apos;s been deploying to edge networks since 2023, I&apos;ve witnessed
           firsthand how this architectural shift enables experiences that were simply impossible
           with traditional cloud-only approaches.
         </p>
@@ -150,8 +150,8 @@ function BlogContent({ slug }: { slug: string }) {
         <h2>How Edge Computing Solves This</h2>
         <p>
           Edge networks deploy your code to <strong className="text-primary">hundreds of
-            locations worldwide</strong>, serving users from the nearest geographic point. Here's
-          what I've achieved in production:
+            locations worldwide</strong>, serving users from the nearest geographic point. Here&apos;s
+          what I&apos;ve achieved in production:
         </p>
         <ul>
           <li><strong>P50 latency: 45ms</strong> (down from 180ms)</li>
@@ -162,7 +162,7 @@ function BlogContent({ slug }: { slug: string }) {
         <h2>Real-World Implementation: ServiceBridge</h2>
         <p>
           In my ServiceBridge project, migrating to Vercel Edge Functions reduced API response
-          times by <strong className="text-primary">60%</strong>. Here's the architecture:
+          times by <strong className="text-primary">60%</strong>. Here&apos;s the architecture:
         </p>
         <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto">
           <code>{`// Edge function for real-time matching

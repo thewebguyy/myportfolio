@@ -162,8 +162,9 @@ Return ONLY a JSON object with this structure:
       headers: getRateLimitHeaders(rateLimitResult),
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Project recommendation error:', error)
+    const errorObj = error as { status?: number; message?: string }
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json(
@@ -171,7 +172,7 @@ Return ONLY a JSON object with this structure:
         error: errorMessage,
         fallback: 'Try browsing the case studies page directly.'
       },
-      { status: error.status || 500 }
+      { status: errorObj.status || 500 }
     )
   }
 }

@@ -69,8 +69,8 @@ function TestimonialCard({
                     <StarIcon
                         key={i}
                         className={`w-5 h-5 ${i < testimonial.rating
-                                ? 'text-primary'
-                                : 'text-gray-600'
+                            ? 'text-primary'
+                            : 'text-gray-600'
                             }`}
                     />
                 ))}
@@ -78,7 +78,7 @@ function TestimonialCard({
 
             {/* Testimonial Content */}
             <blockquote className="text-gray-300 leading-relaxed mb-6">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
             </blockquote>
 
             {/* Author Info */}

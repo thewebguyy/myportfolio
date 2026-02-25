@@ -29,10 +29,10 @@ export function ContactSection() {
               Connect With Me
             </span>
             <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6">
-              Let's Build Something <span className="gradient-text">Amazing</span>
+              Let&apos;s Build Something <span className="gradient-text">Amazing</span>
             </h2>
             <p className="text-xl text-gray-400 leading-relaxed mb-8">
-              I'm always open to discussions about design, technology, or potential collaborations.
+              I&apos;m always open to discussions about design, technology, or potential collaborations.
               Whether you have a question, want to talk about tech trends, are interested in learning
               more about my work, or considering hiring me, feel free to reach out.
             </p>

@@ -312,7 +312,7 @@ export function ResumeAnalyzer() {
                       href="#contact"
                       className="btn btn-primary text-center flex-1"
                     >
-                      Let's Collaborate
+                      Let&apos;s Collaborate
                     </a>
                     <button
                       onClick={resetAnalyzer}

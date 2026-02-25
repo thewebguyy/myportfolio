@@ -4,7 +4,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { projects } from '@/lib/projects'
+import { projects, Project } from '@/lib/projects'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 
 /**
@@ -28,7 +28,7 @@ export function CaseStudies() {
             Deep-Dive <span className="gradient-text">Case Studies</span>
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Explore detailed breakdowns of how I've solved complex technical challenges,
+            Explore detailed breakdowns of how I&apos;ve solved complex technical challenges,
             including architecture decisions, performance optimizations, and measurable outcomes
           </p>
         </motion.div>
@@ -60,7 +60,7 @@ export function CaseStudies() {
  * Case Study Card Component
  * Individual project card with preview and metrics
  */
-function CaseStudyCard({ project, index }: { project: any; index: number }) {
+function CaseStudyCard({ project, index }: { project: Project; index: number }) {
   const isEven = index % 2 === 0
 
   return (

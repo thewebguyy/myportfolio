@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: 'Technical articles on AI, system design, performance optimization, and emerging 2026 technologies.',
 }
 
-import { blogPosts } from '@/lib/blog'
+import { blogPosts, BlogPost } from '@/lib/blog'
 
 export default function BlogPage() {
   const featuredPosts = blogPosts.filter(post => post.featured)
@@ -74,7 +74,7 @@ export default function BlogPage() {
 /**
  * Featured Post Card Component
  */
-function FeaturedPostCard({ post }: { post: any }) {
+function FeaturedPostCard({ post }: { post: BlogPost }) {
   return (
     <article className="glass rounded-2xl overflow-hidden hover:border-primary/50 transition-all group">
       <div className="p-8">
@@ -129,7 +129,7 @@ function FeaturedPostCard({ post }: { post: any }) {
 /**
  * Regular Post Card Component
  */
-function RegularPostCard({ post }: { post: any }) {
+function RegularPostCard({ post }: { post: BlogPost }) {
   return (
     <article className="glass rounded-xl p-6 hover:border-primary/50 transition-all group">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

@@ -158,8 +158,9 @@ Return ONLY JSON:
       headers: getRateLimitHeaders(rateLimitResult),
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Resume analysis error:', error)
+    const errorObj = error as { status?: number; message?: string }
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json(
@@ -167,7 +168,7 @@ Return ONLY JSON:
         error: errorMessage,
         suggestion: 'Contact me directly to discuss collaboration.'
       },
-      { status: error.status || 500 }
+      { status: errorObj.status || 500 }
     )
   }
 }

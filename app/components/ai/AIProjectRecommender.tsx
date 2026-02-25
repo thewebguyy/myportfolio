@@ -87,8 +87,8 @@ export function AIProjectRecommender() {
           </div>
 
           <p className="text-gray-300 mb-6 leading-relaxed">
-            Tell me what interests you (e.g., "real-time systems", "AI chatbots", "payment processing"),
-            and I'll use GPT-4 to recommend the most relevant project from my portfolio based on
+            Tell me what interests you (e.g., &quot;real-time systems&quot;, &quot;AI chatbots&quot;, &quot;payment processing&quot;),
+            and I&apos;ll use GPT-4 to recommend the most relevant project from my portfolio based on
             semantic similarity and technical stack overlap.
           </p>
 
