@@ -1,0 +1,59 @@
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+
+./app/api/chat/route.ts
+172:11  Warning: 'errorMessage' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/api/recommend-project/route.ts
+2:65  Warning: 'AI_CONFIG' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/case-studies/ProjectCard.tsx
+9:40  Warning: 'index' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/components/ai/AIProjectRecommender.tsx
+7:15  Warning: 'Project' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/components/sections/BentoGrid.tsx
+4:8  Warning: 'Image' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/components/viz/SkillRadar.tsx
+3:10  Warning: 'useEffect' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./lib/utils.ts
+39:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+39:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+
+
+STDERR:
+Failed to compile.
+
+./playwright.config.ts:1:39
+Type error: Cannot find module '@playwright/test' or its corresponding type declarations.
+
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { defineConfig[33m,[39m devices } [36mfrom[39m [32m'@playwright/test'[39m[33m;[39m[0m
+[0m [90m   |[39m                                       [31m[1m^[22m[39m[0m
+[0m [90m 2 |[39m[0m
+[0m [90m 3 |[39m [90m/**[39m[0m
+[0m [90m 4 |[39m [90m * Playwright Configuration[39m[0m
+Next.js build worker exited with code: 1 and signal: null
+
+
+MESSAGE:
+Command failed: npx next build
+Failed to compile.
+
+./playwright.config.ts:1:39
+Type error: Cannot find module '@playwright/test' or its corresponding type declarations.
+
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { defineConfig[33m,[39m devices } [36mfrom[39m [32m'@playwright/test'[39m[33m;[39m[0m
+[0m [90m   |[39m                                       [31m[1m^[22m[39m[0m
+[0m [90m 2 |[39m[0m
+[0m [90m 3 |[39m [90m/**[39m[0m
+[0m [90m 4 |[39m [90m * Playwright Configuration[39m[0m
+Next.js build worker exited with code: 1 and signal: null

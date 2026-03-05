@@ -1,3 +1,5 @@
+'use client'
+
 import { motion } from 'framer-motion'
 import { testimonials } from '@/lib/testimonials'
 import { StarIcon, CheckBadgeIcon } from '@heroicons/react/24/solid'
