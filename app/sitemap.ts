@@ -3,7 +3,7 @@ import { blogPosts } from '@/lib/blog'
 import { projects } from '@/lib/projects'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://olabode.tech'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://olabodeolusegun.com'
 
     // Core pages
     const routes = ['', '/blog', '/case-studies'].map((route) => ({

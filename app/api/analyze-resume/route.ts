@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { openai, RESUME_ANALYZER_PROMPT, handleOpenAIError, AI_CONFIG } from '@/lib/openai'
 import { createRateLimiter, getRateLimitHeaders } from '@/lib/rateLimit'
+import { PDFParse } from 'pdf-parse'
+import mammoth from 'mammoth'
 
 // Rate limiter: 5 requests per hour (more strict due to longer processing)
 const rateLimiter = createRateLimiter({
@@ -196,14 +198,30 @@ async function extractTextFromFile(file: File): Promise<string> {
     return await file.text()
   }
 
-  // Handle PDF and DOCX with clear error (since libraries are missing)
-  if (
-    fileType === 'application/pdf' ||
-    fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-  ) {
-    throw new Error(
-      'PDF and DOCX extraction is currently in beta. Please paste your resume text directly for analysis.'
-    )
+  // Handle PDF and DOCX
+  if (fileType === 'application/pdf') {
+    try {
+      const arrayBuffer = await file.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
+      const parser = new PDFParse({ data: buffer })
+      const data = await parser.getText()
+      return data.text
+    } catch (error) {
+      console.error('PDF extraction error:', error)
+      throw new Error('Failed to extract text from PDF. Please try a different file or paste text directly.')
+    }
+  }
+
+  if (fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    try {
+      const arrayBuffer = await file.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
+      const result = await mammoth.extractRawText({ buffer })
+      return result.value
+    } catch (error) {
+      console.error('DOCX extraction error:', error)
+      throw new Error('Failed to extract text from DOCX. Please try a different file or paste text directly.')
+    }
   }
 
   throw new Error('Unsupported file type. Please use PDF, DOCX, or plain text.')

@@ -1,31 +1,11 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    Filler,
-} from 'chart.js'
 import { Line, Bar } from 'react-chartjs-2'
+import { registerChartComponents } from '@/lib/chart-config'
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    Filler
-)
+// Initialize charts
+registerChartComponents()
 
 /**
  * ServiceBridge Performance Monitoring Component

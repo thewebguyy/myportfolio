@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { projects, getFeaturedProjects, Project } from '@/lib/projects'
+import { getFeaturedProjects, type Project } from '@/lib/projects'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 
 /**

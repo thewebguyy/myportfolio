@@ -2,20 +2,12 @@
 
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-  type ChartOptions,
-} from 'chart.js'
 import { Radar } from 'react-chartjs-2'
+import { registerChartComponents } from '@/lib/chart-config'
+import type { Chart as ChartJS, ChartOptions } from 'chart.js'
 
 // Register Chart.js components
-ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend)
+registerChartComponents()
 
 /**
  * Skill Radar Chart Component
@@ -254,8 +246,8 @@ export function SkillRadar() {
                           viewport={{ once: true }}
                           transition={{ duration: 1, delay: groupIndex * 0.1 + skillIndex * 0.05 }}
                           className={`absolute left-0 top-0 h-full rounded-full ${group.color === 'primary'
-                              ? 'bg-gradient-to-r from-primary to-primary-light'
-                              : 'bg-gradient-to-r from-secondary to-secondary-light'
+                            ? 'bg-gradient-to-r from-primary to-primary-light'
+                            : 'bg-gradient-to-r from-secondary to-secondary-light'
                             }`}
                         />
                       </div>

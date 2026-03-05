@@ -41,14 +41,15 @@ export function FloatingChatbot() {
       inputRef.current?.focus()
 
       const handleTab = (e: KeyboardEvent) => {
-        if (!chatWindowRef.current) return
-        const focusableElements = chatWindowRef.current.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        )
-        const firstElement = focusableElements[0] as HTMLElement
-        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
-
         if (e.key === 'Tab') {
+          const focusableElements = chatWindowRef.current?.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          )
+          if (!focusableElements || focusableElements.length === 0) return
+
+          const firstElement = focusableElements[0] as HTMLElement
+          const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
+
           if (e.shiftKey) {
             if (document.activeElement === firstElement) {
               lastElement.focus()
@@ -230,9 +231,14 @@ export function FloatingChatbot() {
             {/* Messages */}
             <div
               className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-950/50"
+              role="log"
               aria-live="polite"
-              aria-relevant="additions"
+              aria-relevant="additions text"
             >
+              {/* Screen reader only announcer for streaming content updates */}
+              <div className="sr-only" aria-live="polite" aria-atomic="true">
+                {loading ? "Assistant is typing..." : messages[messages.length - 1]?.role === 'assistant' ? "Assistant: " + messages[messages.length - 1].content : ""}
+              </div>
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
