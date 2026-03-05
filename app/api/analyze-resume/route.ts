@@ -101,9 +101,13 @@ export async function POST(request: NextRequest) {
       .replace(/[<>]/g, '')
       .substring(0, 10000)
 
-    // Call OpenAI with timeout
-    const completion = await Promise.race([
-      openai.chat.completions.create({
+    // Call OpenAI with timeout and AbortController for clean cleanup
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 30000)
+
+    let completion;
+    try {
+      completion = await openai.chat.completions.create({
         model: AI_CONFIG.model,
         messages: [
           {
@@ -131,11 +135,15 @@ Return ONLY JSON:
         temperature: 0.7,
         max_tokens: 800,
         response_format: { type: 'json_object' },
-      }),
-      new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Request timeout')), 30000)
-      ),
-    ])
+      })
+    } catch (err: any) {
+      if (err.name === 'AbortError' || err.message?.includes('timeout')) {
+        throw new Error('Request timeout')
+      }
+      throw err
+    } finally {
+      clearTimeout(timeoutId)
+    }
 
     const rawResponse = completion.choices[0].message.content
     if (!rawResponse) {

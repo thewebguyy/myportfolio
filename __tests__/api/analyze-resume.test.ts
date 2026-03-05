@@ -1,12 +1,15 @@
+/**
+ * @jest-environment node
+ */
 /* eslint-env jest */
 import { NextRequest } from 'next/server'
 import { POST } from '@/app/api/analyze-resume/route'
 import OpenAI from 'openai'
 
-// Mock the OpenAI client
-jest.mock('openai', () => {
-    return jest.fn().mockImplementation(() => {
-        return {
+// Mock the lib/openai module
+jest.mock('@/lib/openai', () => {
+    return {
+        openai: {
             chat: {
                 completions: {
                     create: jest.fn().mockResolvedValue({
@@ -26,9 +29,14 @@ jest.mock('openai', () => {
                     })
                 }
             }
-        }
-    })
+        },
+        RESUME_ANALYZER_PROMPT: 'mock prompt',
+        handleOpenAIError: (err: any) => 'AI service error: ' + err.message,
+        AI_CONFIG: { model: 'gpt-4' }
+    }
 })
+
+import { openai } from '@/lib/openai'
 
 const createMockRequest = (body: any) => {
     return new NextRequest('http://localhost:3000/api/analyze-resume', {
@@ -69,10 +77,9 @@ describe('API Route: analyze-resume', () => {
 
     test('should handle OpenAI error gracefully', async () => {
         // Force a failure in the mock
-        const mockOpenAI = new OpenAI()
-        jest.spyOn(mockOpenAI.chat.completions, 'create').mockRejectedValueOnce(new Error("API Overloaded"))
+        ; (openai.chat.completions.create as jest.Mock).mockRejectedValueOnce(new Error("API Overloaded"))
 
-        const req = createMockRequest({ resumeText: "Failed test case" })
+        const req = createMockRequest({ resumeText: "Tailwind CSS, React, and TypeScript expert with 5 years of experience. I have built several projects including a marketplace and a subscription manager. Looking for new opportunities to collaborate." })
         const res = await POST(req)
 
         // Either 500 or 200 with error depending on implementation
