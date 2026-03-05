@@ -11,7 +11,8 @@ const rateLimiter = createRateLimiter({
 export async function POST(request: NextRequest) {
   try {
     // Apply rate limiting
-    const rateLimitResult = rateLimiter(request)
+    // Apply rate limiting
+    const rateLimitResult = await rateLimiter(request)
 
     if (!rateLimitResult.success) {
       return NextResponse.json(
@@ -26,12 +27,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Check for OpenAI API key explicitly at runtime
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({
+        error: "Resume analysis is currently unavailable. Please ensure the OPENAI_API_KEY is configured.",
+      }, {
+        status: 503,
+        headers: getRateLimitHeaders(rateLimitResult),
+      })
+    }
+
     let resumeText = ''
     const contentType = request.headers.get('content-type')
 
     if (contentType?.includes('multipart/form-data')) {
       const formData = await request.formData()
-      const file = formData.get('resume') as File
+      const fileEntry = formData.get('resume')
+      const file = fileEntry instanceof File ? fileEntry : null
 
       if (!file) {
         return NextResponse.json(
@@ -160,7 +172,11 @@ Return ONLY JSON:
 
   } catch (error: unknown) {
     console.error('Resume analysis error:', error)
-    const errorObj = error as { status?: number; message?: string }
+    let status = 500
+    if (typeof error === 'object' && error !== null && 'status' in error) {
+      const errorWithStatus = error as { status: number }
+      status = errorWithStatus.status
+    }
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json(
@@ -168,7 +184,7 @@ Return ONLY JSON:
         error: errorMessage,
         suggestion: 'Contact me directly to discuss collaboration.'
       },
-      { status: errorObj.status || 500 }
+      { status: status }
     )
   }
 }
@@ -180,12 +196,17 @@ async function extractTextFromFile(file: File): Promise<string> {
     return await file.text()
   }
 
-  // For demo: provide instructions for PDF/DOCX
-  return `
-NOTE: This is a demo. For full PDF/DOCX support, paste your resume text directly.
+  // Handle PDF and DOCX with clear error (since libraries are missing)
+  if (
+    fileType === 'application/pdf' ||
+    fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  ) {
+    throw new Error(
+      'PDF and DOCX extraction is currently in beta. Please paste your resume text directly for analysis.'
+    )
+  }
 
-Contact me at olabodewebdesigns02@gmail.com to discuss collaboration opportunities.
-  `.trim()
+  throw new Error('Unsupported file type. Please use PDF, DOCX, or plain text.')
 }
 
 export async function OPTIONS() {

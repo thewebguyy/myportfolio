@@ -16,13 +16,23 @@ interface Message {
 export async function POST(request: NextRequest) {
   try {
     // Apply rate limiting
-    const rateLimitResult = rateLimiter(request)
+    const rateLimitResult = await rateLimiter(request)
 
     if (!rateLimitResult.success) {
       return NextResponse.json({
         reply: "You've reached the message limit. Please try again later or contact me directly at olabodewebdesigns02@gmail.com.",
       }, {
         status: 429,
+        headers: getRateLimitHeaders(rateLimitResult),
+      })
+    }
+
+    // Check for OpenAI API key explicitly at runtime
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({
+        reply: "AI features are currently unavailable. Please ensure the OPENAI_API_KEY is configured.",
+      }, {
+        status: 503,
         headers: getRateLimitHeaders(rateLimitResult),
       })
     }
@@ -42,7 +52,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Limit to last 10 messages and validate content lengths
-    const recentMessages = messages.slice(-10).map(msg => ({
+    const recentMessages: Message[] = messages.slice(-10).map((msg: Message) => ({
       role: msg.role,
       content: (msg.content || '').substring(0, 500) // Strict length limit on all messages
     }))
@@ -142,13 +152,29 @@ export async function POST(request: NextRequest) {
 
   } catch (error: unknown) {
     console.error('Chatbot error:', error)
-    const errorObj = error as { status?: number; message?: string }
+
+    // Proper typing for error handling
+    let status = 500
+    let message = "I'm having trouble responding right now. Please try again soon or contact Olabode directly."
+
+    if (error instanceof Error) {
+      if (error.message.includes('OPENAI_API_KEY')) {
+        status = 503
+        message = "AI service configuration error. Please contact the administrator."
+      }
+    }
+
+    if (typeof error === 'object' && error !== null && 'status' in error) {
+      const errorWithStatus = error as { status: number }
+      status = errorWithStatus.status
+    }
+
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json({
-      reply: "I'm having trouble responding right now. Please try again soon or contact Olabode directly.",
+      reply: message,
     }, {
-      status: errorObj.status || 500,
+      status,
     })
   }
 }

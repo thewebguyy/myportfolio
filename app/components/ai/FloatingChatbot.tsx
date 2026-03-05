@@ -2,10 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
+import {
   ChatBubbleLeftRightIcon,
   XMarkIcon,
-  PaperAirplaneIcon 
+  PaperAirplaneIcon
 } from '@heroicons/react/24/outline'
 import { SparklesIcon } from '@heroicons/react/24/solid'
 
@@ -47,6 +47,10 @@ export function FloatingChatbot() {
     setInput('')
     setLoading(true)
 
+    // Add a placeholder for the assistant's message that we'll stream into
+    const assistantMessagePlaceholder: Message = { role: 'assistant', content: '' }
+    setMessages((prev) => [...prev, assistantMessagePlaceholder])
+
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -56,21 +60,49 @@ export function FloatingChatbot() {
         }),
       })
 
-      if (!response.ok) throw new Error('Failed to get response')
-
-      const data = await response.json()
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: data.reply,
+      if (!response.ok) {
+        // If it's a JSON error response (like 429 or 503)
+        const contentType = response.headers.get('content-type')
+        if (contentType?.includes('application/json')) {
+          const data = await response.json()
+          setMessages((prev) => {
+            const next = [...prev]
+            next[next.length - 1].content = data.reply || data.error || 'Failed to get response'
+            return next
+          })
+          return
+        }
+        throw new Error('Failed to get response')
       }
 
-      setMessages((prev) => [...prev, assistantMessage])
+      // Handle streaming response
+      const reader = response.body?.getReader()
+      if (!reader) throw new Error('No response body')
+
+      const decoder = new TextDecoder()
+      let done = false
+      let fullContent = ''
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read()
+        done = doneReading
+        const chunkValue = decoder.decode(value)
+        fullContent += chunkValue
+
+        // Update the last message in the list (the assistant's response)
+        setMessages((prev) => {
+          const next = [...prev]
+          next[next.length - 1].content = fullContent
+          return next
+        })
+      }
     } catch (error) {
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: "Sorry, I'm having trouble responding right now. Please try again or contact Olabode directly.",
-      }
-      setMessages((prev) => [...prev, errorMessage])
+      console.error('Chat error:', error)
+      setMessages((prev) => {
+        const next = [...prev]
+        next[next.length - 1].content = "Sorry, I'm having trouble responding right now. Please try again or contact Olabode directly."
+        return next
+      })
     } finally {
       setLoading(false)
     }
@@ -160,11 +192,10 @@ export function FloatingChatbot() {
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] p-3 rounded-xl ${
-                      msg.role === 'user'
+                    className={`max-w-[80%] p-3 rounded-xl ${msg.role === 'user'
                         ? 'bg-primary text-black'
                         : 'bg-gray-800 text-white'
-                    }`}
+                      }`}
                   >
                     <p className="text-sm leading-relaxed">{msg.content}</p>
                   </div>

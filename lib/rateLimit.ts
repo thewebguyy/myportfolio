@@ -1,15 +1,27 @@
+import { Ratelimit } from '@upstash/ratelimit'
+import { Redis } from '@upstash/redis'
+
 /**
  * Rate Limiting Utility
- * In-memory rate limiting for API routes
- * For production, consider using Upstash Redis or Vercel KV for persistence
+ * Persistent rate limiting using Upstash Redis for serverless environments
  */
 
+// Initialize Upstash Redis client
+// Note: If these are not defined, we fall back to in-memory limiting
+const redis = (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
+  ? new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  })
+  : null
+
+// Define types to maintain compatibility
 interface RateLimitEntry {
   count: number
   resetTime: number
 }
 
-// In-memory store (resets on server restart/cold start)
+// In-memory store (fallback for local dev or misconfiguration)
 const rateLimitStore = new Map<string, RateLimitEntry>()
 
 export interface RateLimitConfig {
@@ -23,94 +35,62 @@ export interface RateLimitConfig {
 
 export interface RateLimitResult {
   success: boolean
-  limit: number
   remaining: number
   reset: number
-}
-
-/**
- * Lazy cleanup of expired entries
- */
-function cleanupExpired() {
-  const now = Date.now()
-  for (const [key, entry] of rateLimitStore.entries()) {
-    if (now > entry.resetTime) {
-      rateLimitStore.delete(key)
-    }
-  }
+  limit: number
 }
 
 /**
  * Check if request should be rate limited
- * Returns success: false if limit exceeded
  */
-export function rateLimit(config: RateLimitConfig): RateLimitResult {
-  // Lazy cleanup occasionally (10% of calls to reduce overhead)
-  if (Math.random() < 0.1) cleanupExpired()
-
+export async function rateLimit(config: RateLimitConfig): Promise<RateLimitResult> {
   const { identifier, limit, windowInSeconds } = config
+
+  // Attempt to use Upstash Redis first
+  if (redis) {
+    try {
+      const ratelimit = new Ratelimit({
+        redis: redis,
+        limiter: Ratelimit.slidingWindow(limit, `${windowInSeconds} s`),
+        analytics: true,
+      })
+
+      const { success, remaining, reset } = await ratelimit.limit(identifier)
+      return { success, remaining, reset, limit }
+    } catch (error) {
+      console.error('Upstash rate limit error, falling back to in-memory:', error)
+    }
+  }
+
+  // Fallback: In-memory limiting (original logic)
   const now = Date.now()
   const windowInMs = windowInSeconds * 1000
-
-  // Get or create entry
   let entry = rateLimitStore.get(identifier)
 
   if (!entry || now > entry.resetTime) {
-    // Create new entry or reset expired one
-    entry = {
-      count: 1,
-      resetTime: now + windowInMs,
-    }
+    entry = { count: 1, resetTime: now + windowInMs }
     rateLimitStore.set(identifier, entry)
-
-    return {
-      success: true,
-      limit,
-      remaining: limit - 1,
-      reset: entry.resetTime,
-    }
+    return { success: true, remaining: limit - 1, reset: entry.resetTime, limit }
   }
 
-  // Increment count
   entry.count++
-
-  // Check if limit exceeded
   if (entry.count > limit) {
-    return {
-      success: false,
-      limit,
-      remaining: 0,
-      reset: entry.resetTime,
-    }
+    return { success: false, remaining: 0, reset: entry.resetTime, limit }
   }
 
-  return {
-    success: true,
-    limit,
-    remaining: limit - entry.count,
-    reset: entry.resetTime,
-  }
+  return { success: true, remaining: limit - entry.count, reset: entry.resetTime, limit }
 }
 
 /**
  * Get client identifier from request
- * Uses IP address or user ID if authenticated
- * Mitigates spoofing by prioritizing trusted infrastructure headers
  */
 export function getClientIdentifier(request: Request): string {
-  // Priority order for IP headers
   const headers = request.headers
-
-  // Vercel's trusted IP header
-  const vercelIp = headers.get('x-vercel-forwarded-for')
-  // Cloudflare's trusted IP header
-  const cfIp = headers.get('cf-connecting-ip')
-  // Standard headers (less trusted, but better than nothing)
-  const forwarded = headers.get('x-forwarded-for')
-  const realIp = headers.get('x-real-ip')
-
-  const ip = vercelIp || cfIp || forwarded?.split(',')[0] || realIp || 'unknown'
-
+  const ip = headers.get('x-vercel-forwarded-for') ||
+    headers.get('cf-connecting-ip') ||
+    headers.get('x-forwarded-for')?.split(',')[0] ||
+    headers.get('x-real-ip') ||
+    'unknown'
   return ip
 }
 
@@ -118,9 +98,9 @@ export function getClientIdentifier(request: Request): string {
  * Create a rate limiter function for a specific route
  */
 export function createRateLimiter(config: Omit<RateLimitConfig, 'identifier'>) {
-  return function checkRateLimit(request: Request): RateLimitResult {
+  return async function checkRateLimit(request: Request) {
     const identifier = getClientIdentifier(request)
-    return rateLimit({ ...config, identifier })
+    return await rateLimit({ ...config, identifier })
   }
 }
 

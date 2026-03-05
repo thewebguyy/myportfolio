@@ -25,7 +25,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Verify lockfile existence
+        run: |
+          if [ ! -f package-lock.json ]; then
+            echo "package-lock.json is missing! Please commit your lockfile."
+            exit 1
+          fi
+
+      - name: Install dependencies (Strict)
         run: npm ci
 
       - name: Run linter

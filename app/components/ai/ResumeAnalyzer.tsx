@@ -21,6 +21,8 @@ export function ResumeAnalyzer() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [dragActive, setDragActive] = useState(false)
+  const [mode, setMode] = useState<'upload' | 'paste'>('upload')
+  const [resumeText, setResumeText] = useState('')
 
   // Handle file drop
   const handleDrag = useCallback((e: React.DragEvent) => {
@@ -50,10 +52,14 @@ export function ResumeAnalyzer() {
   }
 
   const handleFile = (selectedFile: File) => {
-    const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+    const validTypes = [
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain'
+    ]
 
-    if (!validTypes.includes(selectedFile.type)) {
-      setError('Please upload a PDF or DOCX file')
+    if (!validTypes.includes(selectedFile.type) && !selectedFile.name.endsWith('.txt')) {
+      setError('Please upload a PDF, DOCX, or TXT file')
       return
     }
 
@@ -68,25 +74,34 @@ export function ResumeAnalyzer() {
   }
 
   async function analyzeResume() {
-    if (!file) return
+    if (mode === 'upload' && !file) return
+    if (mode === 'paste' && !resumeText.trim()) return
 
     setLoading(true)
     setError(null)
 
     try {
-      const formData = new FormData()
-      formData.append('resume', file)
-
-      const response = await fetch('/api/analyze-resume', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to analyze resume')
+      let response;
+      if (mode === 'upload' && file) {
+        const formData = new FormData()
+        formData.append('resume', file)
+        response = await fetch('/api/analyze-resume', {
+          method: 'POST',
+          body: formData,
+        })
+      } else {
+        response = await fetch('/api/analyze-resume', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ resumeText }),
+        })
       }
 
       const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to analyze resume')
+      }
+
       setAnalysis(data.analysis)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
@@ -97,6 +112,7 @@ export function ResumeAnalyzer() {
 
   const resetAnalyzer = () => {
     setFile(null)
+    setResumeText('')
     setAnalysis(null)
     setError(null)
   }
@@ -122,65 +138,101 @@ export function ResumeAnalyzer() {
           </div>
 
           <div className="glass rounded-2xl p-8 lg:p-12">
-            {/* File Upload Area */}
+            {/* Mode Switcher */}
             {!analysis && (
-              <>
-                <div
-                  onDragEnter={handleDrag}
-                  onDragLeave={handleDrag}
-                  onDragOver={handleDrag}
-                  onDrop={handleDrop}
+              <div className="flex gap-4 mb-8">
+                <button
+                  onClick={() => setMode('upload')}
                   className={cn(
-                    'border-2 border-dashed rounded-xl p-12 text-center transition-all',
-                    dragActive
-                      ? 'border-primary bg-primary/5'
-                      : 'border-gray-700 hover:border-gray-600',
-                    file && 'bg-gray-800/50'
+                    'flex-1 py-2 rounded-lg text-sm font-semibold transition-all',
+                    mode === 'upload' ? 'bg-primary text-black' : 'bg-gray-800 text-gray-400'
                   )}
                 >
-                  <input
-                    type="file"
-                    id="resume-upload"
-                    accept=".pdf,.docx"
-                    onChange={handleChange}
-                    className="hidden"
-                  />
-
-                  {!file ? (
-                    <>
-                      <DocumentArrowUpIcon className="w-16 h-16 mx-auto mb-4 text-gray-500" />
-                      <h3 className="text-xl font-semibold mb-2 text-white">
-                        Drop your resume here
-                      </h3>
-                      <p className="text-gray-400 mb-4">
-                        or click to browse (PDF or DOCX, max 5MB)
-                      </p>
-                      <label
-                        htmlFor="resume-upload"
-                        className="btn btn-secondary inline-block cursor-pointer"
-                      >
-                        Choose File
-                      </label>
-                    </>
-                  ) : (
-                    <div className="flex items-center justify-center gap-3">
-                      <CheckCircleIcon className="w-8 h-8 text-green-500" />
-                      <div className="text-left">
-                        <p className="font-semibold text-white">{file.name}</p>
-                        <p className="text-sm text-gray-400">
-                          {(file.size / 1024).toFixed(2)} KB
-                        </p>
-                      </div>
-                      <button
-                        onClick={resetAnalyzer}
-                        className="ml-4 text-red-400 hover:text-red-300 text-sm underline"
-                      >
-                        Remove
-                      </button>
-                    </div>
+                  Upload File
+                </button>
+                <button
+                  onClick={() => setMode('paste')}
+                  className={cn(
+                    'flex-1 py-2 rounded-lg text-sm font-semibold transition-all',
+                    mode === 'paste' ? 'bg-primary text-black' : 'bg-gray-800 text-gray-400'
                   )}
-                </div>
+                >
+                  Paste Text
+                </button>
+              </div>
+            )}
 
+            {/* File Upload Area */}
+            {!analysis && mode === 'upload' && (
+              <div
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={handleDrop}
+                className={cn(
+                  'border-2 border-dashed rounded-xl p-12 text-center transition-all',
+                  dragActive
+                    ? 'border-primary bg-primary/5'
+                    : 'border-gray-700 hover:border-gray-600',
+                  file && 'bg-gray-800/50'
+                )}
+              >
+                <input
+                  type="file"
+                  id="resume-upload"
+                  accept=".pdf,.docx,.txt"
+                  onChange={handleChange}
+                  className="hidden"
+                />
+
+                {!file ? (
+                  <>
+                    <DocumentArrowUpIcon className="w-16 h-16 mx-auto mb-4 text-gray-500" />
+                    <h3 className="text-xl font-semibold mb-2 text-white">
+                      Drop your resume here
+                    </h3>
+                    <p className="text-gray-400 mb-4">
+                      or click to browse (.txt, .pdf, .docx)
+                    </p>
+                    <label
+                      htmlFor="resume-upload"
+                      className="btn btn-secondary inline-block cursor-pointer"
+                    >
+                      Choose File
+                    </label>
+                  </>
+                ) : (
+                  <div className="flex items-center justify-center gap-3">
+                    <CheckCircleIcon className="w-8 h-8 text-green-500" />
+                    <div className="text-left">
+                      <p className="font-semibold text-white">{file.name}</p>
+                      <p className="text-sm text-gray-400">
+                        {(file.size / 1024).toFixed(2)} KB
+                      </p>
+                    </div>
+                    <button
+                      onClick={resetAnalyzer}
+                      className="ml-4 text-red-400 hover:text-red-300 text-sm underline"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Paste Area */}
+            {!analysis && mode === 'paste' && (
+              <textarea
+                value={resumeText}
+                onChange={(e) => setResumeText(e.target.value)}
+                placeholder="Paste your resume content here..."
+                className="w-full h-64 bg-gray-800 border border-gray-700 rounded-xl p-4 text-white placeholder-gray-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
+              />
+            )}
+
+            {!analysis && (
+              <>
                 {/* Error Display */}
                 {error && (
                   <motion.div
@@ -196,13 +248,13 @@ export function ResumeAnalyzer() {
                 {/* Analyze Button */}
                 <motion.button
                   onClick={analyzeResume}
-                  disabled={!file || loading}
-                  whileHover={{ scale: !file || loading ? 1 : 1.02 }}
-                  whileTap={{ scale: !file || loading ? 1 : 0.98 }}
+                  disabled={(mode === 'upload' ? !file : !resumeText.trim()) || loading}
+                  whileHover={{ scale: (mode === 'upload' ? !file : !resumeText.trim()) || loading ? 1 : 1.02 }}
+                  whileTap={{ scale: (mode === 'upload' ? !file : !resumeText.trim()) || loading ? 1 : 0.98 }}
                   className={cn(
                     'w-full mt-6 py-4 rounded-lg font-semibold text-lg transition-all',
                     'focus:outline-none focus:ring-4 focus:ring-primary/50',
-                    !file || loading
+                    (mode === 'upload' ? !file : !resumeText.trim()) || loading
                       ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
                       : 'bg-primary hover:bg-primary-dark text-black'
                   )}

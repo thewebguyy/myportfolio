@@ -47,7 +47,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
                     <div className="flex flex-wrap gap-3 mb-4 pb-4 border-b border-gray-800">
                         {Object.entries(project.metrics).slice(0, 2).map(([key, value]) => (
                             <div key={key} className="text-sm">
-                                <span className="text-primary font-semibold">{value as string}</span>
+                                <span className="text-primary font-semibold">{value || ''}</span>
                                 <span className="text-gray-500 ml-1">
                                     {key.replace(/([A-Z])/g, ' $1').trim()}
                                 </span>

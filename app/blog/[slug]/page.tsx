@@ -215,6 +215,98 @@ export default async function handler(req: Request) {
     )
   }
 
+  if (slug === 'ai-agents-production') {
+    return (
+      <>
+        <p className="lead text-xl text-gray-300 leading-relaxed">
+          AI agents are moving beyond chat boxes and into the core logic of production systems.
+          After building several autonomous systems in 2024, I&apos;ve compiled the essential
+          lessons for making them reliable, cost-effective, and safe for production use.
+        </p>
+
+        <h2>1. The Reliability Gap</h2>
+        <p>
+          The biggest challenge with AI agents isn&apos;t getting them to work—it&apos;s getting them
+          to work <span className="text-primary font-semibold">every single time</span>. LLMs are
+          non-deterministic by nature, which is a nightmare for traditional software engineering.
+        </p>
+        <ul>
+          <li><strong>Strict Schema Enforcement:</strong> Use Zod or JSON Mode to ensure outputs are parsable.</li>
+          <li><strong>Retry Logic with Backoff:</strong> AI services fail frequently; handle it gracefully.</li>
+          <li><strong>Human-in-the-loop (HITL):</strong> For high-stakes actions, always require approval.</li>
+        </ul>
+
+        <h2>2. Optimizing for Latency and Cost</h2>
+        <p>
+          Running GPT-4 for every minor task is a recipe for bankruptcy and slow UX. I recommend a
+          multi-tier approach:
+        </p>
+        <ol>
+          <li><strong>Level 1 (Local/Small):</strong> Use Phi-3 or Llama-3 for basic classification.</li>
+          <li><strong>Level 2 (Speed):</strong> Use GPT-3.5 Turbo or Claude Haiku for context extraction.</li>
+          <li><strong>Level 3 (Logic):</strong> Reserve GPT-4o or Claude 3.5 Sonnet for complex reasoning.</li>
+        </ol>
+
+        <h2>3. Monitoring Agent Health</h2>
+        <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto">
+          <code>{`// Example LangSmith-style logging
+export function traceAgentAction(step: string, data: any) {
+  console.log(\`[AI-TRACE] \${step}\`, {
+    tokens: data.usage.total_tokens,
+    duration: Date.now() - data.startTime,
+    is_hallucination: data.validation_failed
+  })
+}`}</code>
+        </pre>
+
+        <div className="bg-primary/10 border-l-4 border-primary p-6 rounded-r-lg my-8">
+          <p className="text-gray-300 leading-relaxed m-0">
+            <strong>Key Insight:</strong> An agent is only as good as its context. Spend 80% of your time
+            on RAG (Retrieval Augmented Generation) and only 20% on the core prompt.
+          </p>
+        </div>
+      </>
+    )
+  }
+
+  if (slug === 'green-coding-practices') {
+    return (
+      <>
+        <p className="lead text-xl text-gray-300 leading-relaxed">
+          As software engineers, we often forget that code has a physical footprint. In 2026,
+          efficiency isn&apos;t just about speed—it&apos;s about sustainability. Green coding
+          is a set of practices designed to minimize the energy consumption of software.
+        </p>
+
+        <h2>The Three Pillars of Sustainable Code</h2>
+        <ul>
+          <li><strong>Compute Efficiency:</strong> Reducing the CPU cycles required for a task.</li>
+          <li><strong>Data Efficiency:</strong> Minimizing the amount of data transferred over the wire.</li>
+          <li><strong>Lifecycle Efficiency:</strong> Designing software for longevity and minimal updates.</li>
+        </ul>
+
+        <h2>Practical Optimization Wins</h2>
+        <p>
+          In a recent project, I reduced energy consumption by <span className="text-primary font-semibold">35%</span>
+          by implementing these changes:
+        </p>
+        <ul>
+          <li>Migrating from heavy client-side rendering to <strong>React Server Components</strong>.</li>
+          <li>Implementing <strong>aggressive caching</strong> at the edge to reduce database heat.</li>
+          <li>Using <strong>WebP/AVIF</strong> instead of PNGs for hero assets.</li>
+        </ul>
+
+        <div className="bg-gray-900 p-6 rounded-xl border border-gray-800 my-8">
+          <h4 className="text-white mb-2 italic">Why it matters:</h4>
+          <p className="text-sm text-gray-400 m-0 leading-relaxed">
+            The ICT sector is responsible for an estimated 2-4% of global greenhouse gas emissions—on
+            par with the aviation industry. Every KB saved and every ms of CPU time reduced adds up.
+          </p>
+        </div>
+      </>
+    )
+  }
+
   // Default content for other posts
   return (
     <div className="glass rounded-2xl p-8">

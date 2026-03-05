@@ -106,7 +106,7 @@ function CaseStudyCard({ project, index }: { project: Project; index: number }) 
             <div className="grid grid-cols-2 gap-4 mb-6">
               {Object.entries(project.metrics).map(([key, value]) => (
                 <div key={key} className="border-l-2 border-primary pl-4">
-                  <div className="text-2xl font-bold text-primary">{value as React.ReactNode}</div>
+                  <div className="text-2xl font-bold text-primary">{value || ''}</div>
                   <div className="text-sm text-gray-500 uppercase tracking-wider">
                     {key.replace(/([A-Z])/g, ' $1').trim()}
                   </div>

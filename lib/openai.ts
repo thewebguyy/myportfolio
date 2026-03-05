@@ -17,12 +17,14 @@ export const getOpenAIClient = () => {
 
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) {
-    // Return a proxy or throw only when called
-    console.warn('OPENAI_API_KEY is not defined. AI features will fail at runtime.')
+    throw new Error(
+      'OPENAI_API_KEY is not defined. Please configure it in your environment variables. ' +
+      'AI-powered features (Chatbot, Resume Analysis, Project Recommendations) will not function without this key.'
+    )
   }
 
   openaiInstance = new OpenAI({
-    apiKey: apiKey || 'missing-key', // Prevent constructor error, will fail on actual call
+    apiKey,
     timeout: AI_CONFIG.defaultTimeout,
     maxRetries: AI_CONFIG.maxRetries,
   })
@@ -30,11 +32,21 @@ export const getOpenAIClient = () => {
   return openaiInstance
 }
 
-// Keep the export for backward compatibility but use a getter or proxy
+// Proxy to delay initialization until the client is actually used
 export const openai = new Proxy({} as OpenAI, {
   get: (target, prop) => {
-    const client = getOpenAIClient()
-    return (client as any)[prop]
+    try {
+      const client = getOpenAIClient()
+      const value = Reflect.get(client, prop)
+      if (typeof value === 'function') {
+        return value.bind(client)
+      }
+      return value
+    } catch (error) {
+      // Re-throw or handle based on context; here we let it throw
+      // which will be caught by our handleOpenAIError or route try/catch
+      throw error
+    }
   },
 })
 

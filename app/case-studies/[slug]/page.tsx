@@ -137,7 +137,7 @@ export default function CaseStudyPage({
                 {Object.entries(project.metrics).map(([key, value]) => (
                   <div key={key} className="text-center">
                     <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                      {value as string}
+                      {value || ''}
                     </div>
                     <div className="text-sm text-gray-400 uppercase tracking-wider">
                       {key.replace(/([A-Z])/g, ' $1').trim()}

@@ -12,7 +12,8 @@ const rateLimiter = createRateLimiter({
 export async function POST(request: NextRequest) {
   try {
     // Apply rate limiting
-    const rateLimitResult = rateLimiter(request)
+    // Apply rate limiting
+    const rateLimitResult = await rateLimiter(request)
 
     if (!rateLimitResult.success) {
       return NextResponse.json(
@@ -25,6 +26,16 @@ export async function POST(request: NextRequest) {
           headers: getRateLimitHeaders(rateLimitResult),
         }
       )
+    }
+
+    // Check for OpenAI API key explicitly at runtime
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({
+        error: "Project recommendations are currently unavailable. Please ensure the OPENAI_API_KEY is configured.",
+      }, {
+        status: 503,
+        headers: getRateLimitHeaders(rateLimitResult),
+      })
     }
 
     // Parse request body
@@ -164,7 +175,13 @@ Return ONLY a JSON object with this structure:
 
   } catch (error: unknown) {
     console.error('Project recommendation error:', error)
-    const errorObj = error as { status?: number; message?: string }
+
+    let status = 500
+    if (typeof error === 'object' && error !== null && 'status' in error) {
+      const errorWithStatus = error as { status: number }
+      status = errorWithStatus.status
+    }
+
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json(
@@ -172,7 +189,7 @@ Return ONLY a JSON object with this structure:
         error: errorMessage,
         fallback: 'Try browsing the case studies page directly.'
       },
-      { status: errorObj.status || 500 }
+      { status: status }
     )
   }
 }

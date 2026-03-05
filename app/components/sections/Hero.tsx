@@ -69,29 +69,32 @@ export function Hero() {
       </div>
 
       {/* Floating particles - Only render on client to avoid window SSR errors */}
-      {isClient && (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-primary/30 rounded-full"
-              initial={{
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-              }}
-              animate={{
-                y: [null, Math.random() * window.innerHeight],
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration: Math.random() * 10 + 10,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-            />
-          ))}
-        </div>
-      )}
+      {/* Floating particles - Always render container to avoid layout shift, but only show particles on client */}
+      <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-1000 ${isClient ? 'opacity-100' : 'opacity-0'}`}>
+        {isClient && (
+          <>
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-primary/30 rounded-full"
+                initial={{
+                  x: Math.random() * 100 + '%',
+                  y: Math.random() * 100 + '%',
+                }}
+                animate={{
+                  y: [null, Math.random() * 100 + '%'],
+                  opacity: [0, 1, 0],
+                }}
+                transition={{
+                  duration: Math.random() * 10 + 10,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+              />
+            ))}
+          </>
+        )}
+      </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <motion.div
