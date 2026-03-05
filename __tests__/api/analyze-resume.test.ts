@@ -14,9 +14,11 @@ jest.mock('openai', () => {
                             {
                                 message: {
                                     content: JSON.stringify({
-                                        skills: ["React", "TypeScript", "System Design"],
-                                        experience: "Mid-to-Senior level architect with deep distributed systems knowledge.",
-                                        recommendations: ["Learn Rust for low-level systems"]
+                                        matchScore: 85,
+                                        strengths: ["React", "TypeScript", "System Design"],
+                                        gaps: ["Rust"],
+                                        collaborationOpportunities: ["Architecture review", "Performance tuning"],
+                                        reasoning: "Mid-to-Senior level architect with deep distributed systems knowledge."
                                     })
                                 }
                             }
@@ -50,19 +52,19 @@ describe('API Route: analyze-resume', () => {
         expect(res.status).toBe(400)
 
         const data = await res.json()
-        expect(data.error).toBe("No resume text provided")
+        expect(data.error).toBe("Invalid input. Please provide resume text.")
     })
 
     test('should return analysis results when resume text is provided', async () => {
-        const resumeText = "Experienced engineer with a focus on React and System Design."
+        const resumeText = "Experienced engineer with a focus on React and System Design. I have over 5 years of experience building high-scale marketplace platforms and optimizing API payloads for efficiency across different regions."
         const req = createMockRequest({ resumeText })
         const res = await POST(req)
 
         expect(res.status).toBe(200)
 
         const data = await res.json()
-        expect(data.analysis.skills).toContain("React")
-        expect(data.analysis).toHaveProperty("experience")
+        expect(data.analysis.strengths).toContain("React")
+        expect(data.analysis).toHaveProperty("reasoning")
     })
 
     test('should handle OpenAI error gracefully', async () => {
