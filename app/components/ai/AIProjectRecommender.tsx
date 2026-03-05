@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SparklesIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
-import type { Project } from '@/lib/projects'
 
 /**
  * AI Project Recommender Component

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import { Project } from '@/lib/projects'
 
-export function ProjectCard({ project, index }: { project: Project; index: number }) {
+export function ProjectCard({ project, index: _index }: { project: Project; index: number }) {
     return (
         <article className="group glass rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
             {/* Image */}

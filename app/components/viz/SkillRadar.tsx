@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Radar } from 'react-chartjs-2'
 import { registerChartComponents } from '@/lib/chart-config'

@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     // Call OpenAI API with timeout
     const completion = await Promise.race([
       openai.chat.completions.create({
-        model: 'gpt-4-turbo-preview',
+        model: AI_CONFIG.model,
         messages: [
           {
             role: 'system',

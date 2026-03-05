@@ -36,18 +36,18 @@ export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, 
 /**
  * Debounce function for performance optimization
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => ReturnType<T>>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout | null = null
-  
+
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {
       timeout = null
       func(...args)
     }
-    
+
     if (timeout) clearTimeout(timeout)
     timeout = setTimeout(later, wait)
   }

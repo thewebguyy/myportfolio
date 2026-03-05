@@ -155,14 +155,6 @@ export async function POST(request: NextRequest) {
 
     // Proper typing for error handling
     let status = 500
-    let message = "I'm having trouble responding right now. Please try again soon or contact Olabode directly."
-
-    if (error instanceof Error) {
-      if (error.message.includes('OPENAI_API_KEY')) {
-        status = 503
-        message = "AI service configuration error. Please contact the administrator."
-      }
-    }
 
     if (typeof error === 'object' && error !== null && 'status' in error) {
       const errorWithStatus = error as { status: number }
@@ -172,7 +164,7 @@ export async function POST(request: NextRequest) {
     const errorMessage = handleOpenAIError(error)
 
     return NextResponse.json({
-      reply: message,
+      reply: errorMessage,
     }, {
       status,
     })
