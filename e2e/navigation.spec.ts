@@ -2,7 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Navigation & Critical Paths', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto('/')
+        try {
+            await page.goto('/', { waitUntil: 'networkidle' })
+        } catch (error) {
+            console.error('Failed to navigate to homepage:', error)
+            throw error
+        }
     })
 
     test('should load the homepage and show the hero section', async ({ page }) => {
