@@ -14,10 +14,7 @@ export interface Project {
   liveUrl?: string
   githubUrl?: string
   metrics?: {
-    users?: string
-    uptime?: string
-    performance?: string
-    transactions?: string
+    [key: string]: string
   }
   tech: string[]
   featured: boolean
@@ -28,58 +25,45 @@ export const projects: Project[] = [
   {
     id: 'servicebridge',
     title: 'ServiceBridge',
-    description: 'Real-time service marketplace connecting 10,000+ users',
-    longDescription: `Architected a high-scale marketplace platform connecting service providers with customers in real-time. Implemented WebSocket-based matching, Redis caching for 40% latency reduction, and PostgreSQL with read replicas for high-traffic queries.`,
-    category: 'Web Application',
-    tags: ['Real-time', 'Marketplace', 'WebSockets', 'Redis'],
+    description: 'High-availability service marketplace architected for regional connectivity challenges',
+    longDescription: `Lead Architect for a high-scale marketplace platform connecting service providers in emerging markets. Engineering focus was on high-availability (99.9% design target) and data efficiency for users with intermittent connectivity. Implemented WebSocket matching, multi-layer Redis caching, and optimized API payloads to reduce bandwidth usage by 60%.`,
+    category: 'Marketplace Engine',
+    tags: ['Distributed Systems', 'Real-time', 'Redis HA', 'Data Efficiency'],
     image: '/projects/servicebridge.jpg',
     liveUrl: 'https://servicebridge.netlify.app/',
     metrics: {
-      users: '10,000+',
-      uptime: '99.9%',
-      performance: '40% faster',
-      transactions: '$500K+',
+      capacity: '10k+ peak users',
+      availability: '99.9% design',
+      latency: 'sub-200ms API',
+      volume: '$500K+ infra capacity',
     },
-    tech: ['React', 'Node.js', 'PostgreSQL', 'Redis', 'Socket.io', 'TensorFlow.js'],
+    tech: ['React', 'Node.js', 'PostgreSQL', 'Redis Cluster', 'Socket.io', 'Kubernetes'],
     featured: true,
     year: 2023,
   },
   {
-    id: 'teenspray',
-    title: 'TeensPray',
-    description: 'Community platform with modern responsive design',
-    longDescription: `Built a responsive community website focused on youth engagement. Implemented modern frontend practices with performance optimization and SEO best practices.`,
-    category: 'Website',
-    tags: ['Community', 'Responsive', 'Frontend'],
-    image: '/projects/teenspray.jpg',
-    liveUrl: 'https://teenspray.netlify.app/',
-    tech: ['HTML5', 'CSS3', 'JavaScript', 'Responsive Design'],
-    featured: false,
-    year: 2022,
-  },
-  {
     id: 'subscription-manager',
     title: 'Subscription Manager',
-    description: 'Automated recurring payment system with API integration',
-    longDescription: `Developed a robust backend system for managing recurring subscriptions. Integrated payment gateway APIs, implemented webhook handlers, and built automated billing cycles.`,
-    category: 'Backend System',
-    tags: ['Payments', 'API', 'Automation'],
+    description: 'Automated recurring payment orchestration with multi-gateway support',
+    longDescription: `Developed a robust payment orchestration system for managing recurring billing. Built with a focus on idempotent transaction handling and webhook reliability. Integrated Seerbit and Stripe APIs with custom failure recovery logic.`,
+    category: 'Fintech Infrastructure',
+    tags: ['Payments', 'Idempotency', 'Automation', 'API Design'],
     image: '/projects/checkout.jpg',
     githubUrl: 'https://github.com/thewebguyy/seerbit-subscription-manager',
-    tech: ['Node.js', 'Express', 'PostgreSQL', 'Payment APIs'],
+    tech: ['Node.js', 'Express', 'PostgreSQL', 'Seerbit API', 'Stripe'],
     featured: true,
     year: 2023,
   },
   {
     id: '55lounge',
     title: '55Lounge',
-    description: 'Full-stack booking platform for hospitality services',
-    longDescription: `Created a comprehensive booking system with real-time availability, payment processing, and customer management. Focused on user experience and performance optimization.`,
-    category: 'Web Application',
-    tags: ['Booking System', 'Full-Stack', 'Payments'],
+    description: 'Full-stack booking platform with real-time availability tracking',
+    longDescription: `Created a high-performance booking system featuring real-time state synchronization, secure payment processing, and an optimized customer dashboard. Solved complex concurrency issues in reservation logic.`,
+    category: 'E-commerce / Booking',
+    tags: ['Concurrency', 'Real-time Sync', 'Payments'],
     image: '/projects/55lounge.jpg',
     liveUrl: 'https://55lounge.ng/',
-    tech: ['React', 'Node.js', 'MongoDB', 'Payment Integration'],
+    tech: ['React', 'Node.js', 'MongoDB', 'Redis', 'Payment APIs'],
     featured: true,
     year: 2024,
   },

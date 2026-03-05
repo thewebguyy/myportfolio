@@ -25,11 +25,53 @@ export function FloatingChatbot() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const chatWindowRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const lastActiveElement = useRef<HTMLElement | null>(null)
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  // Accessibility: Focus trap and restore
+  useEffect(() => {
+    if (isOpen) {
+      lastActiveElement.current = document.activeElement as HTMLElement
+      inputRef.current?.focus()
+
+      const handleTab = (e: KeyboardEvent) => {
+        if (!chatWindowRef.current) return
+        const focusableElements = chatWindowRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        const firstElement = focusableElements[0] as HTMLElement
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
+
+        if (e.key === 'Tab') {
+          if (e.shiftKey) {
+            if (document.activeElement === firstElement) {
+              lastElement.focus()
+              e.preventDefault()
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              firstElement.focus()
+              e.preventDefault()
+            }
+          }
+        }
+        if (e.key === 'Escape') {
+          setIsOpen(false)
+        }
+      }
+
+      window.addEventListener('keydown', handleTab)
+      return () => window.removeEventListener('keydown', handleTab)
+    } else {
+      lastActiveElement.current?.focus()
+    }
+  }, [isOpen])
 
   // Quick action suggestions
   const quickActions = [
@@ -158,6 +200,9 @@ export function FloatingChatbot() {
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className="fixed bottom-24 right-6 w-[380px] h-[600px] glass rounded-2xl shadow-2xl z-50 
                      flex flex-col overflow-hidden border-primary/20 no-print"
+            role="dialog"
+            aria-label="Chat with Olabode's assistant"
+            ref={chatWindowRef}
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-primary to-secondary p-4 flex items-center justify-between">
@@ -169,8 +214,8 @@ export function FloatingChatbot() {
                   <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-black" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-black">AI Assistant</h3>
-                  <p className="text-xs text-black/70">Always online</p>
+                  <h3 className="font-semibold text-black">Olabode&apos;s Assistant</h3>
+                  <p className="text-xs text-black/70">Always online to help</p>
                 </div>
               </div>
               <button
@@ -183,7 +228,11 @@ export function FloatingChatbot() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-950/50">
+            <div
+              className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-950/50"
+              aria-live="polite"
+              aria-relevant="additions"
+            >
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
@@ -193,8 +242,8 @@ export function FloatingChatbot() {
                 >
                   <div
                     className={`max-w-[80%] p-3 rounded-xl ${msg.role === 'user'
-                        ? 'bg-primary text-black'
-                        : 'bg-gray-800 text-white'
+                      ? 'bg-primary text-black'
+                      : 'bg-gray-800 text-white'
                       }`}
                   >
                     <p className="text-sm leading-relaxed">{msg.content}</p>
@@ -253,10 +302,11 @@ export function FloatingChatbot() {
               <div className="flex gap-2">
                 <input
                   type="text"
+                  ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Ask me anything..."
+                  placeholder="Ask Olabode's AI..."
                   disabled={loading}
                   className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm 
                            text-white placeholder-gray-500 focus:border-primary focus:outline-none 

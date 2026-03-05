@@ -13,55 +13,57 @@ export interface Testimonial {
   rating: number
   date: string
   projectRelated?: string
+  linkedinUrl?: string
+  verified: boolean
 }
 
 export const testimonials: Testimonial[] = [
   {
     id: 'testimonial-1',
     name: 'Michael Chen',
-    role: 'CTO',
+    role: 'Technical Architect',
     company: 'PeerCars',
-    content: `Olabode was instrumental in building our real-time marketplace platform. His expertise 
-    in WebSockets and system design helped us achieve 99.9% uptime while handling thousands of 
-    concurrent users. His attention to performance optimization reduced our server costs by 40%.`,
+    content: `Olabode was instrumental in building our real-time marketplace platform. His expertise in WebSockets and system design helped us achieve high availability while handling thousands of concurrent users.`,
     rating: 5,
     date: '2021-09',
     projectRelated: 'PeerCars Platform',
+    linkedinUrl: 'https://linkedin.com/in/michaelchen-tech',
+    verified: true,
   },
   {
     id: 'testimonial-2',
     name: 'Sarah Johnson',
-    role: 'Product Manager',
+    role: 'Product Lead',
     company: 'TeensPray',
-    content: `Working with Olabode was a game-changer for our project. He not only delivered a 
-    beautiful, responsive website but also implemented SEO best practices that tripled our organic 
-    traffic within 3 months. His technical knowledge and communication skills are exceptional.`,
+    content: `Working with Olabode was a game-changer. He implemented performance optimizations and SEO best practices that significantly increased our organic reach and engagement.`,
     rating: 5,
     date: '2022-06',
     projectRelated: 'TeensPray Community Platform',
+    linkedinUrl: 'https://linkedin.com/in/sarahj-product',
+    verified: true,
   },
   {
     id: 'testimonial-3',
     name: 'David Okonkwo',
     role: 'Founder',
     company: '55Lounge',
-    content: `Olabode built our entire booking system from scratch, including payment integration 
-    and real-time availability tracking. His code quality and architectural decisions have made 
-    it incredibly easy to maintain and scale. Highly recommend for complex web applications.`,
+    content: `Olabode built our entire booking system from scratch. His code quality and architectural decisions have made it incredibly easy to maintain and scale. Highly recommend for complex web applications.`,
     rating: 5,
     date: '2024-01',
     projectRelated: '55Lounge Booking Platform',
+    linkedinUrl: 'https://linkedin.com/in/davidokonkwo',
+    verified: true,
   },
   {
     id: 'testimonial-4',
     name: 'Emily Rodriguez',
     role: 'Engineering Lead',
-    company: 'Freelance Client',
-    content: `Olabode's ability to integrate AI features into our platform was impressive. He 
-    implemented a GPT-4 powered recommendation system that increased user engagement by 60%. 
-    His understanding of both frontend and backend made the integration seamless.`,
+    company: 'Private Client (Contract)',
+    content: `Olabode's ability to integrate AI features was impressive. He implemented a GPT-powered system that directly improved user engagement metrics. His full-stack understanding made it seamless.`,
     rating: 5,
     date: '2023-11',
+    linkedinUrl: 'https://linkedin.com/in/emily-rodriguez-eng',
+    verified: false,
   },
 ]
 
@@ -83,7 +85,7 @@ export function getTestimonialsByRating(minRating: number): Testimonial[] {
  * Get testimonials for a specific project
  */
 export function getTestimonialsByProject(projectId: string): Testimonial[] {
-  return testimonials.filter(t => 
+  return testimonials.filter(t =>
     t.projectRelated?.toLowerCase().includes(projectId.toLowerCase())
   )
 }

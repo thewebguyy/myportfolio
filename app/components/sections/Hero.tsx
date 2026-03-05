@@ -124,12 +124,17 @@ export function Hero() {
             <p className="text-2xl sm:text-3xl md:text-4xl text-gray-300 font-serif">
               Full-Stack Engineer Specializing in
               <br />
-              <span className="text-primary font-semibold">
+              <span
+                className="text-primary font-semibold"
+                aria-live="polite"
+                aria-atomic="true"
+              >
                 {displayText}
                 <motion.span
                   animate={{ opacity: [1, 0] }}
                   transition={{ duration: 0.5, repeat: Infinity }}
                   className="inline-block w-1 h-8 bg-primary ml-1"
+                  aria-hidden="true"
                 />
               </span>
             </p>
@@ -157,8 +162,8 @@ export function Hero() {
             className="flex flex-wrap gap-8 mb-12 justify-center lg:justify-start"
           >
             <Metric value="5+" label="Years Experience" />
-            <Metric value="99.9%" label="Uptime Maintained" />
-            <Metric value="40%" label="Avg Performance Gain" />
+            <Metric value="99.9%" label="Uptime Targets" />
+            <Metric value="40%" label="Avg Perf. Increase" />
           </motion.div>
 
           {/* CTAs */}
