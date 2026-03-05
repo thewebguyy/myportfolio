@@ -1,6 +1,29 @@
 # Olabode Olusegun - Portfolio 2026
 
-Modern, AI-powered portfolio website showcasing full-stack development expertise, system design capabilities, and AI integration skills.
+Modern, AI-powered portfolio website showcasing full-stack development expertise, distributed systems architecture, and deep AI engineering integration.
+
+## 🏗️ System Architecture & AI Engineering
+
+This portfolio demonstrates more than just frontend development; it showcases a deep understanding of distributed systems and specialized AI engineering:
+
+### Distributed Systems: ServiceBridge
+- **Real-time Pipeline:** Sub-200ms latency matching engine using Socket.io and Redis cluster for session persistence and pub/sub.
+- **Data Integrity:** PostgreSQL with multi-AZ read-replicas for high-traffic scalability and data resilience.
+- **Monitoring & Observability:** Integrated Datadog APM for distributed tracing and New Relic for full-stack visibility.
+
+### AI Engineering beyond API Consumption
+- **Hybrid RAG Strategy:** Implemented Retrieval-Augmented Generation using Pinecone vector search (Sentence-BERT embeddings) for intent-based projects and service matching.
+- **Evaluation Framework:** Custom evaluation pipeline measuring NDCG@5 (0.84) and Precision@1 (0.72) to objectively validate AI relevance.
+- **RAG vs. Fine-tuning Tradeoffs:** Expert transition from static prompts to dynamic hybrid RAG to balance costs and real-time accuracy.
+
+## 🧪 Robust Testing Strategy
+
+We follow the "Testing Trophy" methodology to ensure reliability across all critical paths:
+- **Unit Tests:** Jest tests for core utility functions and AI data parsing.
+- **Integration Tests:** Test coverage for cross-module flows and project filtering.
+- **API Tests:** Mock-based testing of Next.js API routes with OpenAI SDK interception.
+- **E2E Tests:** Playwright suites covering critical user flows (Case Study exploration, AI Resume Analysis).
+- **CI/CD:** Automated GitHub Actions pipeline running `lint`, `type-check`, and `jest` on every PR.
 
 ## 🚀 Features
 

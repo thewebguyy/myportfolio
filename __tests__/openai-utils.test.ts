@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import { estimateTokens, validateTokenLimit, handleOpenAIError } from '@/lib/openai'
 import OpenAI from 'openai'
 

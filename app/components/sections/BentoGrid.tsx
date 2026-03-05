@@ -107,21 +107,28 @@ export function BentoGrid() {
             </div>
           </motion.div>
 
-          {/* Currently Learning Card */}
+          {/* Team Collaboration Card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="md:col-span-2 glass rounded-2xl p-6 border-secondary/30"
+            className="md:col-span-2 glass rounded-2xl p-6 border-primary/30"
           >
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
-              <h4 className="text-lg font-semibold text-white">Currently Exploring</h4>
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+              <h4 className="text-lg font-semibold text-white">Engineering Leadership</h4>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Edge Computing, AI Agents, WebAssembly, and Green Coding practices for sustainable software
+            <p className="text-gray-400 text-sm leading-relaxed mb-4">
+              Experienced in Big 4 consulting environments, leading cross-functional teams of 12+ engineers through Agile delivery.
             </p>
+            <div className="flex flex-wrap gap-2">
+              {['PR Reviews', 'Mentorship', 'Agile/Scrum', 'CI/CD Pipelines'].map((tag) => (
+                <span key={tag} className="text-[10px] bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </motion.div>
 
           {/* Additional Projects */}
