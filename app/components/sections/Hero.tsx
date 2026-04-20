@@ -13,9 +13,9 @@ import { useState, useEffect } from 'react'
  * - Smooth scroll to next section
  */
 const roles = [
-  'High-Scale Distributed Systems',
-  'AI-Powered Web Applications',
-  'Sub-Second Performance Optimization',
+  'Strategic Enterprise Audits',
+  'Risk-Driven System Architecture',
+  'Commercial Strategy & ROI',
 ]
 
 /**
@@ -63,9 +63,9 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(234,179,124,0.1),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(35,150,127,0.1),transparent_50%)]" />
+      <div className="absolute inset-0 bg-secondary">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,75,142,0.2),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(0,102,204,0.1),transparent_50%)]" />
       </div>
 
       {/* Floating particles - Only render on client to avoid window SSR errors */}
@@ -110,7 +110,7 @@ export function Hero() {
             transition={{ delay: 0.2 }}
             className="text-sm md:text-base text-primary font-semibold tracking-wider uppercase mb-6"
           >
-            Hello World 👋
+            Senior Strategy & Audit Specialist
           </motion.p>
 
           {/* Main heading with gradient */}
@@ -122,7 +122,7 @@ export function Hero() {
           {/* Typewriter subtitle */}
           <div className="h-24 sm:h-20 md:h-16 mb-8">
             <p className="text-2xl sm:text-3xl md:text-4xl text-gray-300 font-serif">
-              Full-Stack Engineer Specializing in
+              Engineering Excellence in
               <br />
               <span
                 className="text-primary font-semibold"
@@ -147,11 +147,10 @@ export function Hero() {
             transition={{ delay: 0.6 }}
             className="text-lg md:text-xl text-gray-400 max-w-3xl mb-12 leading-relaxed"
           >
-            I architect scalable web systems that handle{' '}
-            <strong className="text-white">10,000+ concurrent users</strong>, integrate{' '}
-            <strong className="text-white">AI/ML pipelines</strong> for intelligent UX, and obsess over{' '}
-            <strong className="text-white">sub-1s load times</strong>. Currently exploring edge computing
-            and AI agents for 2026.
+            I architect strategic audit interfaces that drive ROI, mitigate operational risk, 
+            and provide <strong className="text-white">Big 4-level analytical depth</strong> for 
+            global enterprises. Specializing in <strong className="text-white">AI-driven decision systems</strong> 
+            and <strong className="text-white">commercial risk architecture</strong>.
           </motion.p>
 
           {/* Metrics */}

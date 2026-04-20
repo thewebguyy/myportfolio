@@ -11,14 +11,14 @@ module.exports = {
       colors: {
         // Custom color palette matching original design
         primary: {
-          DEFAULT: '#eabe7c',
-          light: '#f2d4a8',
-          dark: '#d8a860',
+          DEFAULT: '#004B8E',
+          light: '#0066CC',
+          dark: '#003366',
         },
         secondary: {
-          DEFAULT: '#23967f',
-          light: '#2fb89e',
-          dark: '#1c7566',
+          DEFAULT: '#010528',
+          light: '#020a4d',
+          dark: '#00031a',
         },
         gray: {
           50: '#f9fafb',

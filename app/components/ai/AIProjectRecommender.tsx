@@ -2,35 +2,35 @@
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { SparklesIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
+import { SparklesIcon, RocketLaunchIcon, ChartBarIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
+import { DataPanel, InsightCard, RiskMeter, DecisionBlock } from '@/app/components/ui/ConsultingUI'
 
 /**
- * AI Project Recommender Component
- * Uses GPT-4 to semantically match user interests with portfolio projects
- * Demonstrates AI integration and prompt engineering skills
+ * Strategic Opportunity Engine
+ * Upgraded from Project Recommender.
+ * Matches user interests with monetizable business opportunities.
  */
 export function AIProjectRecommender() {
   const [userInterest, setUserInterest] = useState('')
-  const [recommendation, setRecommendation] = useState<RecommendationResult | null>(null)
+  const [opportunity, setOpportunity] = useState<OpportunityResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Predefined suggestion chips
   const suggestions = [
-    'real-time systems',
-    'payment integration',
-    'AI chatbots',
-    'e-commerce platforms',
-    'distributed systems',
+    'Real-time logistics optimization',
+    'AI-driven credit scoring',
+    'Automated supply chain audits',
+    'Carbon footprint tracking SaaS',
+    'Predictive maintenance for manufacturing',
   ]
 
-  async function getRecommendation() {
+  async function getOpportunity() {
     if (!userInterest.trim()) return
 
     setLoading(true)
     setError(null)
-    setRecommendation(null)
+    setOpportunity(null)
 
     try {
       const response = await fetch('/api/recommend-project', {
@@ -39,211 +39,161 @@ export function AIProjectRecommender() {
         body: JSON.stringify({ interest: userInterest }),
       })
 
-      if (!response.ok) {
-        throw new Error('Failed to get recommendation')
-      }
-
       const data = await response.json()
-      setRecommendation(data.recommendation)
+      if (!response.ok) throw new Error(data.error || 'Failed to generate opportunity')
+      setOpportunity(data.opportunity)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      setError(err instanceof Error ? err.message : 'Strategic analysis failed')
     } finally {
       setLoading(false)
     }
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !loading) {
-      getRecommendation()
-    }
-  }
-
   return (
-    <section className="section bg-gray-900">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="section bg-secondary relative">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="glass rounded-2xl p-8 lg:p-12 border-primary/20"
+          className="space-y-12"
         >
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-6">
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-            >
-              <SparklesIcon className="w-8 h-8 text-primary" />
-            </motion.div>
-            <div>
-              <h3 className="text-2xl lg:text-3xl font-bold text-white">
-                AI Project Recommender
-              </h3>
-              <p className="text-sm text-gray-400 mt-1">
-                Powered by GPT-4 Semantic Analysis
-              </p>
-            </div>
+          <div className="text-center space-y-4">
+            <span className="text-primary text-sm font-black uppercase tracking-[0.3em]">Opportunity Engine</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white">
+              Strategic <span className="gradient-text">Opportunity Matcher</span>
+            </h2>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-serif italic">
+              Map your business interests to high-ROI technical initiatives and monetizable models.
+            </p>
           </div>
 
-          <p className="text-gray-300 mb-6 leading-relaxed">
-            Tell me what interests you (e.g., &quot;real-time systems&quot;, &quot;AI chatbots&quot;, &quot;payment processing&quot;),
-            and I&apos;ll use GPT-4 to recommend the most relevant project from my portfolio based on
-            semantic similarity and technical stack overlap.
-          </p>
-
-          {/* Suggestion Chips */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            <span className="text-sm text-gray-400">Try:</span>
-            {suggestions.map((suggestion) => (
-              <motion.button
-                key={suggestion}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setUserInterest(suggestion)}
-                className="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm 
-                         rounded-full transition-colors border border-gray-700 hover:border-primary/50"
-              >
-                {suggestion}
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Input Section */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-8">
-            <input
-              type="text"
-              value={userInterest}
-              onChange={(e) => setUserInterest(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="e.g., distributed systems, payment integration..."
-              className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 
-                       text-white placeholder-gray-500 focus:border-primary focus:outline-none 
-                       focus:ring-4 focus:ring-primary/20 transition-all"
-              disabled={loading}
-            />
-            <motion.button
-              onClick={getRecommendation}
-              disabled={loading || !userInterest.trim()}
-              whileHover={{ scale: loading ? 1 : 1.02 }}
-              whileTap={{ scale: loading ? 1 : 0.98 }}
-              className={cn(
-                'px-6 py-3 rounded-lg font-semibold transition-all whitespace-nowrap',
-                'focus:outline-none focus:ring-4 focus:ring-primary/50',
-                loading || !userInterest.trim()
-                  ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                  : 'bg-primary hover:bg-primary-dark text-black'
-              )}
-            >
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <LoadingSpinner />
-                  Analyzing...
-                </span>
-              ) : (
-                'Recommend'
-              )}
-            </motion.button>
-          </div>
-
-          {/* Error State */}
-          <AnimatePresence>
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg"
-              >
-                <p className="text-red-400 text-sm">⚠️ {error}</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Recommendation Result */}
-          <AnimatePresence mode="wait">
-            {recommendation && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="bg-gray-800/50 rounded-xl p-6 border border-primary/30"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <span className="inline-block px-3 py-1 bg-primary/20 text-primary text-xs 
-                                   font-semibold rounded-full mb-3">
-                      BEST MATCH
-                    </span>
-                    <h4 className="text-2xl font-bold text-white">{recommendation.title}</h4>
-                    <p className="text-sm text-gray-400 mt-1">{recommendation.category}</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-primary">
-                      {recommendation.matchScore}%
-                    </div>
-                    <div className="text-xs text-gray-500">Match Score</div>
-                  </div>
-                </div>
-
-                <p className="text-gray-300 mb-4 leading-relaxed">
-                  {recommendation.reasoning}
-                </p>
-
-                {/* Tech Stack Overlap */}
-                {recommendation.techOverlap && recommendation.techOverlap.length > 0 && (
-                  <div className="mb-4">
-                    <p className="text-sm text-gray-400 mb-2">Tech Stack Overlap:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {recommendation.techOverlap.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-1 bg-primary/20 text-primary text-xs rounded border border-primary/30"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                  <a
-                    href={`/case-studies/${recommendation.projectId}`}
-                    className="btn btn-primary text-sm text-center group"
+          <div className="glass rounded-3xl p-8 lg:p-12 border-primary/10">
+            {/* Input Section */}
+            <div className="space-y-6">
+              <div className="flex flex-wrap gap-2 mb-4 justify-center">
+                <span className="text-[10px] text-gray-500 uppercase font-black w-full text-center mb-2">Industry Focus Areas</span>
+                {suggestions.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    onClick={() => setUserInterest(suggestion)}
+                    className="px-3 py-1 bg-gray-900 hover:bg-primary/20 text-gray-400 hover:text-primary text-[10px] 
+                             font-black uppercase rounded-full transition-all border border-gray-800 hover:border-primary/40"
                   >
-                    View Full Case Study
-                    <ArrowRightIcon className="w-4 h-4 ml-2 inline-block group-hover:translate-x-1 transition-transform" />
-                  </a>
-                  {recommendation.liveUrl && (
-                    <a
-                      href={recommendation.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-secondary text-sm text-center"
-                    >
-                      Live Demo
-                    </a>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
 
-          {/* AI Transparency Footer */}
-          <div className="mt-8 pt-6 border-t border-gray-800">
-            <div className="flex items-start gap-3 text-sm text-gray-400">
-              <SparklesIcon className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold text-gray-300 mb-1">How This Works</p>
-                <p className="leading-relaxed">
-                  This feature uses <strong className="text-primary">GPT-4 Turbo</strong> with custom
-                  prompt engineering to analyze semantic similarity between your interest and my projects.
-                  It considers technical stack, problem domain, and implementation complexity to find the
-                  best match. Response time: ~2-3 seconds.
-                </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    value={userInterest}
+                    onChange={(e) => setUserInterest(e.target.value)}
+                    placeholder="Enter industry, technical domain, or business challenge..."
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-6 py-5 
+                             text-white placeholder-gray-600 focus:border-primary focus:outline-none 
+                             transition-all font-serif italic"
+                    disabled={loading}
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-700">
+                    <SparklesIcon className="w-5 h-5" />
+                  </div>
+                </div>
+                <button
+                  onClick={getOpportunity}
+                  disabled={loading || !userInterest.trim()}
+                  className={cn(
+                    'px-10 py-5 rounded-xl font-black uppercase tracking-widest transition-all',
+                    loading || !userInterest.trim()
+                      ? 'bg-gray-800 text-gray-600 cursor-not-allowed'
+                      : 'bg-primary hover:bg-primary-light text-white shadow-xl shadow-primary/20'
+                  )}
+                >
+                  {loading ? 'Analyzing Market Fit...' : 'Generate Opportunity'}
+                </button>
               </div>
             </div>
+
+            {error && (
+              <div className="mt-8 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-500 text-xs font-bold uppercase text-center tracking-widest">
+                ⚠️ {error}
+              </div>
+            )}
+
+            {/* Results */}
+            <AnimatePresence mode="wait">
+              {opportunity && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -30 }}
+                  className="mt-12 space-y-8"
+                >
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2 space-y-6">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <span className="text-[10px] font-black uppercase text-primary tracking-[0.3em] mb-2 block">Strategic Recommendation</span>
+                          <h3 className="text-3xl font-bold text-white">{opportunity.title}</h3>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-3xl font-black text-primary">{opportunity.feasibility}%</div>
+                          <div className="text-[10px] text-gray-500 uppercase font-black">Feasibility</div>
+                        </div>
+                      </div>
+                      
+                      <div className="p-6 bg-gray-950 rounded-2xl border border-gray-800 space-y-4">
+                        <div className="flex items-center gap-2 text-xs font-black text-gray-500 uppercase tracking-widest">
+                          <ChartBarIcon className="w-4 h-4 text-primary" />
+                          Strategic Reasoning
+                        </div>
+                        <p className="text-gray-400 font-serif leading-relaxed italic">{opportunity.strategicReasoning}</p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <InsightCard title="ROI Potential" value={opportunity.roiPotential} description="Estimated financial return" />
+                        <InsightCard title="Risk Level" value={opportunity.riskLevel} description="Implementation complexity" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <DataPanel title="Business Model">
+                        <p className="text-sm text-gray-400 font-serif italic mb-4">{opportunity.businessModel}</p>
+                        <div className="space-y-3">
+                          <div className="text-[10px] text-gray-600 uppercase font-black">Required Infrastructure</div>
+                          <div className="flex flex-wrap gap-2">
+                            {opportunity.requiredTech.map(tech => (
+                              <span key={tech} className="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase rounded border border-primary/20">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </DataPanel>
+                      
+                      <DecisionBlock 
+                        title="Strategic Move" 
+                        action={`Pivot focus towards ${opportunity.title.toLowerCase()} integration.`} 
+                        impact="Market Leadership Potential"
+                        priority="High"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center pt-8 border-t border-gray-900">
+                    <button 
+                      onClick={() => setOpportunity(null)}
+                      className="flex items-center gap-2 text-[10px] font-black text-gray-600 uppercase tracking-widest hover:text-white transition-all"
+                    >
+                      <ArrowPathIcon className="w-4 h-4" />
+                      Reset Analysis
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
       </div>
@@ -251,28 +201,23 @@ export function AIProjectRecommender() {
   )
 }
 
-/**
- * Loading Spinner Component
- */
 function LoadingSpinner() {
   return (
     <motion.div
       animate={{ rotate: 360 }}
       transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-      className="w-4 h-4 border-2 border-black border-t-transparent rounded-full"
+      className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
     />
   )
 }
 
-/**
- * Type definitions
- */
-interface RecommendationResult {
-  projectId: string
+interface OpportunityResult {
+  opportunityId: string
   title: string
-  category: string
-  reasoning: string
-  matchScore: number
-  techOverlap?: string[]
-  liveUrl?: string
+  feasibility: number
+  roiPotential: string
+  riskLevel: string
+  strategicReasoning: string
+  businessModel: string
+  requiredTech: string[]
 }
