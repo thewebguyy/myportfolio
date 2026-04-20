@@ -84,7 +84,12 @@
   }
 
   .btn-secondary {
-    @apply border border-surface-2 text-white font-sans font-semibold text-[14px] px-7 py-3 rounded-[6px] transition-all duration-200 hover:border-primary/40 hover:bg-primary-glow;
+    @apply border border-surface-2 text-white font-sans font-semibold text-[14px] px-7 py-3 rounded-[6px] transition-all duration-200;
+    /* Use raw CSS vars for hover: opacity modifiers (/40) break in @apply when colors are defined as var() references */
+    &:hover {
+      border-color: var(--border-accent);
+      background-color: var(--primary-glow);
+    }
   }
 
   .pill-tag {

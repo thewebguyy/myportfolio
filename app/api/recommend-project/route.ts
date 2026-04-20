@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { openai, STRATEGIC_OPPORTUNITY_PROMPT, handleOpenAIError, AI_CONFIG } from '@/lib/openai'
+import { openai, TECHNICAL_OPPORTUNITY_PROMPT, handleOpenAIError, AI_CONFIG } from '@/lib/openai'
 import { projects } from '@/lib/projects'
 import { createRateLimiter, getRateLimitHeaders } from '@/lib/rateLimit'
 
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     const completion = await openai.chat.completions.create({
       model: AI_CONFIG.model,
       messages: [
-        { role: 'system', content: STRATEGIC_OPPORTUNITY_PROMPT },
+        { role: 'system', content: TECHNICAL_OPPORTUNITY_PROMPT },
         {
           role: 'user',
           content: `Market Interest: "${sanitizedInterest}"\n\nConsultant Capabilities:\n${JSON.stringify(capabilities, null, 2)}`,
