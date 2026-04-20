@@ -3,154 +3,110 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { projects, Project } from '@/lib/projects'
-import { flagshipCaseStudies, CaseStudy } from '@/lib/case-studies'
-import { ArrowRightIcon } from '@heroicons/react/24/outline'
+import { projects } from '@/lib/projects'
 
-/**
- * Case Studies Section
- * Showcases outcome-driven project narratives and strategic audits
- */
+const REAL_PROJECTS_IDS = ['servicebridge', '55lounge', 'subscription-manager', 'checkout-system']
+
 export function CaseStudies() {
-  return (
-    <section id="case-studies" className="section bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <span className="text-primary text-sm font-black uppercase tracking-[0.3em]">
-            Impact Analysis
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6">
-            Real-World <span className="gradient-text">Outcomes</span>
-          </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto font-serif italic">
-            Quantifiable results from enterprise audits and strategic technical interventions.
-          </p>
-        </motion.div>
+  const selectedProjects = REAL_PROJECTS_IDS.map(id => projects.find(p => p.id === id)).filter(Boolean)
 
-        <div className="space-y-12">
-          {flagshipCaseStudies.map((study, index) => (
-            <FlagshipStudyCard key={study.id} study={study} index={index} />
-          ))}
-          
-          <div className="pt-16 border-t border-gray-800">
-            <h3 className="text-2xl font-bold mb-12 text-center text-gray-500 uppercase tracking-widest">Technical Implementation Archive</h3>
-            {projects.slice(0, 2).map((project, index) => (
-              <CaseStudyCard key={project.id} project={project} index={index + 3} />
-            ))}
-          </div>
+  return (
+    <section id="projects" className="section-padding bg-background">
+      <div className="max-w-[1280px] mx-auto px-6">
+        {/* Header */}
+        <div className="mb-24">
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="label mb-4 block"
+          >
+            Deep dives
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="h2 text-white mb-4"
+          >
+            Engineering, in detail
+          </motion.h2>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <Link href="/case-studies" className="btn btn-primary inline-flex items-center gap-2">
-            View All Audits & Projects
-            <ArrowRightIcon className="w-5 h-5" />
-          </Link>
-        </motion.div>
+        {/* Case Studies List */}
+        <div className="flex flex-col">
+          {selectedProjects.map((project, index) => (
+            <CaseStudyRow 
+              key={project!.id} 
+              project={project!} 
+              number={index + 1} 
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
 }
 
-function FlagshipStudyCard({ study, index }: { study: CaseStudy; index: number }) {
-  const isEven = index % 2 === 0
-
+function CaseStudyRow({ project, number }: { project: any, number: number }) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-      className="glass rounded-3xl overflow-hidden border-primary/20 group hover:border-primary/40 transition-all"
-    >
-      <div className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
-        <div className="lg:w-2/5 bg-gray-950 p-8 lg:p-12 border-r border-gray-800">
-          <span className="text-primary text-[10px] font-black uppercase tracking-widest mb-4 block">{study.category} Impact Audit</span>
-          <h3 className="text-3xl font-bold text-white mb-8">{study.title}</h3>
-          
-          <div className="space-y-6">
-             <ImpactMetric label="Financial Impact" value={study.financialImpact} color="green" />
-             <ImpactMetric label="Efficiency Gain" value={study.efficiencyGain} color="blue" />
-             <ImpactMetric label="Risk Reduction" value={study.riskReduction} color="red" />
+    <div className="group border-t border-surface-2 pt-12 pb-12 transition-all duration-300">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+        {/* Left: Metadata (2 cols on 12-col grid -> ~16% or 5-col split -> 2/5 = 40%) */}
+        {/* Let's follow the "5-column grid" logic by using 5 cols and splitting 2/3 */}
+        <div className="md:col-span-5 flex flex-col relative">
+          <div className="display absolute -top-4 -left-2 text-surface-2 opacity-100 transition-colors duration-300 group-hover:text-primary/15 pointer-events-none select-none text-[80px]">
+            {number.toString().padStart(2, '0')}
+          </div>
+          <div className="relative pt-10">
+            <h3 className="font-sans font-semibold text-[24px] text-white mb-2">
+              {project.title}
+            </h3>
+            <div className="font-mono text-[11px] text-text-muted mb-4">
+              {project.year}
+            </div>
+            <div className="pill-tag w-fit">
+              {project.category}
+            </div>
           </div>
         </div>
-        
-        <div className="lg:w-3/5 p-8 lg:p-12 bg-secondary/50 flex flex-col justify-between">
-           <div className="space-y-8">
-             <div className="grid md:grid-cols-2 gap-8">
-               <div>
-                 <h4 className="text-[10px] text-gray-500 uppercase font-black mb-3">Before State</h4>
-                 <p className="text-sm text-gray-400 font-serif italic">{study.beforeState}</p>
-               </div>
-               <div>
-                 <h4 className="text-[10px] text-primary uppercase font-black mb-3">After State</h4>
-                 <p className="text-sm text-white font-serif italic">{study.afterState}</p>
-               </div>
-             </div>
-             
-             <div>
-               <h4 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Strategic Action</h4>
-               <p className="text-gray-300 leading-relaxed italic">&quot;{study.solution}&quot;</p>
-             </div>
-           </div>
 
-           <Link href={`/case-studies/${study.id}`} className="mt-8 inline-flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-widest group">
-             Read Comprehensive Outcome Analysis 
-             <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-           </Link>
+        {/* Right: Narrative & Breakdown (3 cols on 5-col grid) */}
+        <div className="md:col-span-7">
+          <div className="flex flex-col gap-8">
+            {/* Narrative */}
+            <p className="text-[16px] text-text-secondary leading-[1.7]">
+              {project.longDescription.split('.').slice(0, 3).join('.')}.
+            </p>
+
+            {/* Metrics */}
+            <div className="flex flex-wrap gap-6">
+              {project.metrics && Object.entries(project.metrics).slice(0, 4).map(([key, val]) => (
+                <div key={key} className="flex flex-col">
+                  <span className="font-mono text-[10px] text-text-muted uppercase tracking-wider">{key}</span>
+                  <span className="text-[14px] text-white font-medium">{val as string}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Tech Stack */}
+            <div className="flex flex-wrap gap-2">
+              {project.tech.map((t: string) => (
+                <span key={t} className="pill-tag">{t}</span>
+              ))}
+            </div>
+
+            {/* Link */}
+            <Link 
+              href={`/#projects`} 
+              className="text-[14px] text-primary font-medium flex items-center gap-2 group/link"
+            >
+              View project 
+              <span className="transition-transform group-hover/link:translate-x-1">→</span>
+            </Link>
+          </div>
         </div>
       </div>
-    </motion.article>
-  )
-}
-
-function ImpactMetric({ label, value, color }: { label: string, value: string, color: 'green' | 'blue' | 'red' }) {
-  const colors = {
-    green: 'text-green-500 bg-green-500/10 border-green-500/20',
-    blue: 'text-blue-500 bg-blue-500/10 border-blue-500/20',
-    red: 'text-red-500 bg-red-500/10 border-red-500/20'
-  }
-  return (
-    <div className={`p-4 rounded-xl border ${colors[color]}`}>
-      <div className="text-[10px] uppercase font-black opacity-60 mb-1">{label}</div>
-      <div className="text-xl font-bold">{value}</div>
     </div>
-  )
-}
-
-function CaseStudyCard({ project, index }: { project: Project; index: number }) {
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-      className="flex items-center gap-8 py-8 border-b border-gray-800 last:border-0 group"
-    >
-      <div className="flex-1">
-        <div className="flex justify-between items-start mb-2">
-          <h4 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{project.title}</h4>
-          <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{project.year}</span>
-        </div>
-        <p className="text-sm text-gray-400 mb-4 line-clamp-2">{project.description}</p>
-        <div className="flex flex-wrap gap-2">
-          {project.tech.slice(0, 4).map(t => (
-            <span key={t} className="text-[10px] bg-gray-900 px-2 py-0.5 rounded text-gray-500">{t}</span>
-          ))}
-        </div>
-      </div>
-      <Link href={`/case-studies/${project.id}`} className="p-3 rounded-full bg-gray-900 border border-gray-800 text-gray-400 hover:text-primary transition-all">
-        <ArrowRightIcon className="w-5 h-5" />
-      </Link>
-    </motion.article>
   )
 }

@@ -1,240 +1,166 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ArrowDownIcon } from '@heroicons/react/24/outline'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 
-/**
- * Hero Section Component
- * Features:
- * - Animated typewriter effect for roles
- * - Key metrics display
- * - Dual CTAs (case studies + contact)
- * - Smooth scroll to next section
- */
-const roles = [
-  'Strategic Enterprise Audits',
-  'Risk-Driven System Architecture',
-  'Commercial Strategy & ROI',
+const PHRASES = [
+  "I build products that handle real money.",
+  "I engineer systems that serve real users.",
+  "I write code that ships to production.",
 ]
 
-/**
- * Hero Section Component
- * Features:
- * - Animated typewriter effect for roles
- * - Key metrics display
- * - Dual CTAs (case studies + contact)
- * - Smooth scroll to next section
- */
 export function Hero() {
-  const [currentRole, setCurrentRole] = useState(0)
-  const [displayText, setDisplayText] = useState('')
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [isClient, setIsClient] = useState(false)
+  const [index, setIndex] = useState(0)
+  const [scrolled, setScrolled] = useState(false)
 
-  // Initialize client-side only state
   useEffect(() => {
-    setIsClient(true)
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % PHRASES.length)
+    }, 3000)
+    return () => clearInterval(timer)
   }, [])
 
-  // Typewriter effect
   useEffect(() => {
-    const currentText = roles[currentRole]
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        if (displayText.length < currentText.length) {
-          setDisplayText(currentText.slice(0, displayText.length + 1))
-        } else {
-          setTimeout(() => setIsDeleting(true), 2000)
-        }
-      } else {
-        if (displayText.length > 0) {
-          setDisplayText(displayText.slice(0, -1))
-        } else {
-          setIsDeleting(false)
-          setCurrentRole((prev) => (prev + 1) % roles.length)
-        }
-      }
-    }, isDeleting ? 50 : 100)
-
-    return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, currentRole])
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 100)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-secondary">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,75,142,0.2),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(0,102,204,0.1),transparent_50%)]" />
-      </div>
-
-      {/* Floating particles - Only render on client to avoid window SSR errors */}
-      {/* Floating particles - Always render container to avoid layout shift, but only show particles on client */}
-      <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-1000 ${isClient ? 'opacity-100' : 'opacity-0'}`}>
-        {isClient && (
-          <>
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-primary/30 rounded-full"
-                initial={{
-                  x: Math.random() * 100 + '%',
-                  y: Math.random() * 100 + '%',
-                }}
-                animate={{
-                  y: [null, Math.random() * 100 + '%'],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: Math.random() * 10 + 10,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-              />
-            ))}
-          </>
-        )}
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center lg:text-left"
-        >
-          {/* Pretitle */}
-          <motion.p
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-sm md:text-base text-primary font-semibold tracking-wider uppercase mb-6"
+    <section className="relative min-h-screen flex items-center bg-hero-gradient px-6 lg:px-0">
+      <div className="max-w-[1280px] mx-auto w-full">
+        <div className="max-w-[800px]">
+          {/* Label */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 600, ease: [0.16, 1, 0.3, 1] }}
+            className="label mb-6"
           >
-            System Architect & AI Engineer
-          </motion.p>
+            Full-Stack Engineer — Lagos, Nigeria
+          </motion.div>
 
-          {/* Main heading with gradient */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
-            <span className="text-white">I am </span>
-            <span className="gradient-text">Olabode Olusegun</span>
-          </h1>
+          {/* Name */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 800, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="display text-white mb-4"
+          >
+            Olabode Olusegun
+          </motion.h1>
 
-          {/* Typewriter subtitle */}
-          <div className="h-24 sm:h-20 md:h-16 mb-8">
-            <p className="text-2xl sm:text-3xl md:text-4xl text-gray-300 font-serif">
-              Engineering High-Scale
-              <br />
-              <span
-                className="text-primary font-semibold"
-                aria-live="polite"
-                aria-atomic="true"
+          {/* Sliding Subtitle */}
+          <div className="h-[40px] md:h-[48px] overflow-hidden mb-8">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={PHRASES[index]}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="font-serif italic text-[24px] md:text-[32px] text-text-secondary leading-tight"
               >
-                {displayText}
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.5, repeat: Infinity }}
-                  className="inline-block w-1 h-8 bg-primary ml-1"
-                  aria-hidden="true"
-                />
-              </span>
-            </p>
+                {PHRASES[index]}
+              </motion.p>
+            </AnimatePresence>
           </div>
 
-          {/* Value proposition */}
+          {/* Description */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-lg md:text-xl text-gray-400 max-w-3xl mb-12 leading-relaxed"
+            transition={{ duration: 600, delay: 0.4 }}
+            className="text-[18px] text-text-secondary leading-[1.7] max-w-[520px] mb-10"
           >
-            Software Engineer building <strong className="text-white">AI-powered decision systems</strong> for 
-            real-world scale. Specialized in <strong className="text-white">distributed orchestration</strong>, 
-            resilient architecture, and <strong className="text-white">Big 4-level strategic intelligence</strong>.
+            Five years building full-stack web products — from real-time marketplaces and payment infrastructure to AI-powered applications. Based in Lagos. Available globally.
           </motion.p>
-
-          {/* Metrics */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="flex flex-wrap gap-8 mb-12 justify-center lg:justify-start"
-          >
-            <Metric value="10K+" label="Concurrent Users" />
-            <Metric value="99.9%" label="System Reliability" />
-            <Metric value="<2s" label="Audit Latency" />
-          </motion.div>
 
           {/* CTAs */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="flex flex-wrap gap-4 justify-center lg:justify-start"
+            transition={{ duration: 600, delay: 0.5 }}
+            className="flex items-center gap-3 mb-16"
           >
-            <a
-              href="#case-studies"
-              className="btn btn-primary text-center group"
-            >
-              View Strategic Audits
-              <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">
-                →
-              </span>
+            <a href="#work" className="btn-primary">
+              See my work
             </a>
-            <Link
-              href="/system-architecture"
-              className="btn btn-secondary text-center group"
-            >
-              System Design Spec
-              <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform font-mono">
-                [v2.0]
-              </span>
-            </Link>
-            <a
-              href="#contact"
-              className="btn bg-gray-900 border border-gray-800 text-gray-400 hover:text-white text-center group"
-            >
-              Consultation
+            <a href="#contact" className="btn-secondary">
+              Get in touch
             </a>
           </motion.div>
-        </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.a
-          href="#bento"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 no-print"
-          aria-label="Scroll to next section"
-        >
+          {/* Metrics */}
           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="flex flex-col items-center gap-2 text-gray-500 hover:text-primary transition-colors"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 600, delay: 0.7 }}
+            className="flex items-center gap-12"
           >
-            <span className="text-sm">Scroll</span>
-            <ArrowDownIcon className="w-6 h-6" />
+            <Metric value="5+" label="years experience" />
+            <div className="w-[1px] h-10 bg-surface-2" />
+            <Metric value="10k+" label="peak concurrent users" />
+            <div className="w-[1px] h-10 bg-surface-2" />
+            <Metric value="3" label="production AI integrations" />
           </motion.div>
-        </motion.a>
+        </div>
       </div>
+
+      {/* Scroll Indicator */}
+      <AnimatePresence>
+        {!scrolled && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          >
+            <motion.div
+              animate={{ y: [0, 4, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="w-4 h-4 flex items-center justify-center"
+            >
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L6 6L11 1" stroke="#505050" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
 
-/**
- * Metric Component
- * Displays a single metric with value and label
- */
 function Metric({ value, label }: { value: string; label: string }) {
+  const [displayValue, setDisplayValue] = useState("0")
+
+  useEffect(() => {
+    let start = 0
+    const end = parseInt(value.replace(/\D/g, ''))
+    const suffix = value.replace(/[0-9]/g, '')
+    const duration = 1200
+    const increment = end / (duration / 16)
+    
+    const timer = setInterval(() => {
+      start += increment
+      if (start >= end) {
+        setDisplayValue(value)
+        clearInterval(timer)
+      } else {
+        setDisplayValue(Math.floor(start) + suffix)
+      }
+    }, 16)
+    
+    return () => clearInterval(timer)
+  }, [value])
+
   return (
-    <div className="text-center lg:text-left">
-      <div className="text-3xl md:text-4xl font-bold text-primary mb-1">
-        {value}
-      </div>
-      <div className="text-sm text-gray-500 uppercase tracking-wider">
-        {label}
-      </div>
+    <div className="flex flex-col gap-2">
+      <span className="text-[28px] font-semibold text-white leading-none">{displayValue}</span>
+      <span className="font-mono text-[10px] uppercase text-text-muted tracking-wider">{label}</span>
     </div>
   )
-}
+}

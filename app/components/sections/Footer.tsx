@@ -2,12 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowUpIcon } from '@heroicons/react/24/outline'
 
-/**
- * Footer Component
- * Site footer with copyright and back-to-top button
- */
 export function Footer() {
   const currentYear = new Date().getFullYear()
 
@@ -16,70 +11,75 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative bg-gray-950 border-t border-gray-800 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          {/* Copyright */}
-          <div className="text-center md:text-left">
-            <p className="text-gray-400 text-sm">
-              © {currentYear} Olabode Olusegun. All rights reserved.
-            </p>
-            <p className="text-gray-500 text-xs mt-1">
-              Built with Next.js, TypeScript, and Tailwind CSS
-            </p>
-          </div>
-
-          {/* Links */}
-          <div className="flex gap-6 text-sm">
-            <Link
-              href="/case-studies"
-              className="text-gray-400 hover:text-primary transition-colors"
-            >
-              Case Studies
-            </Link>
-            <Link
-              href="/blog"
-              className="text-gray-400 hover:text-primary transition-colors"
-            >
-              Blog
-            </Link>
-            <a
-              href="https://github.com/thewebguyy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-primary transition-colors"
-            >
-              GitHub
-            </a>
-          </div>
-
-          {/* Back to top button */}
-          <motion.button
-            onClick={scrollToTop}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="p-3 bg-gray-800 hover:bg-primary rounded-lg transition-colors 
-                     group focus:outline-none focus:ring-4 focus:ring-primary/50"
-            aria-label="Back to top"
-          >
-            <ArrowUpIcon className="w-5 h-5 text-gray-400 group-hover:text-black transition-colors" />
-          </motion.button>
-        </div>
-
-        {/* Decoration line */}
-        <div className="mt-8 pt-8 border-t border-gray-800">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-            <p>
-              Designed and developed with ❤️ in Lagos, Nigeria
-            </p>
-            <div className="flex gap-4">
-              <span>Performance: 100/100</span>
-              <span>•</span>
-              <span>Accessibility: WCAG 2.2 AA</span>
+    <footer className="bg-background border-t border-surface-2 py-16">
+      <div className="max-w-[1280px] mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+          {/* Col 1: Logo & Info */}
+          <div className="md:col-span-5">
+            <div className="font-mono font-bold text-[18px] text-white tracking-tighter mb-4">
+              Olabode<span className="text-primary">.</span>
             </div>
+            <p className="text-[12px] text-text-muted leading-relaxed max-w-[240px]">
+              © {currentYear} Olabode Olusegun.<br />
+              All rights reserved.<br /><br />
+              Lagos — Worldwide
+            </p>
+          </div>
+
+          {/* Col 2: Navigation */}
+          <div className="md:col-span-3">
+            <h4 className="font-mono text-[10px] uppercase text-text-muted tracking-widest mb-6">Navigation</h4>
+            <ul className="space-y-4">
+              {['Work', 'AI', 'Writing', 'Contact'].map((item) => (
+                <li key={item}>
+                  <Link 
+                    href={`#${item.toLowerCase()}`} 
+                    className="font-mono text-[12px] text-text-secondary hover:text-primary transition-colors"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 3: Social */}
+          <div className="md:col-span-3">
+            <h4 className="font-mono text-[10px] uppercase text-text-muted tracking-widest mb-6">Social</h4>
+            <ul className="space-y-4">
+              {[
+                { name: 'LinkedIn', url: 'https://linkedin.com/in/thewebguyy' },
+                { name: 'GitHub', url: 'https://github.com/thewebguyy' },
+                { name: 'Twitter', url: 'https://twitter.com/thewebguyy' }
+              ].map((link) => (
+                <li key={link.name}>
+                  <a 
+                    href={link.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="font-mono text-[12px] text-text-secondary hover:text-primary transition-colors"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Back to top */}
+          <div className="md:col-span-1 flex justify-end items-start">
+            <button 
+              onClick={scrollToTop}
+              className="p-2 border border-surface-2 rounded-full hover:border-primary transition-colors group"
+              aria-label="Back to top"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-text-muted group-hover:text-primary transition-colors">
+                <path d="M10 15V5M10 5L5 10M10 5L15 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
     </footer>
   )
-}
+}
