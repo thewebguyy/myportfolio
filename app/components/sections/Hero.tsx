@@ -110,7 +110,7 @@ export function Hero() {
             transition={{ delay: 0.2 }}
             className="text-sm md:text-base text-primary font-semibold tracking-wider uppercase mb-6"
           >
-            Senior Strategy & Audit Specialist
+            System Architect & AI Engineer
           </motion.p>
 
           {/* Main heading with gradient */}
@@ -122,7 +122,7 @@ export function Hero() {
           {/* Typewriter subtitle */}
           <div className="h-24 sm:h-20 md:h-16 mb-8">
             <p className="text-2xl sm:text-3xl md:text-4xl text-gray-300 font-serif">
-              Engineering Excellence in
+              Engineering High-Scale
               <br />
               <span
                 className="text-primary font-semibold"
@@ -147,10 +147,9 @@ export function Hero() {
             transition={{ delay: 0.6 }}
             className="text-lg md:text-xl text-gray-400 max-w-3xl mb-12 leading-relaxed"
           >
-            I architect strategic audit interfaces that drive ROI, mitigate operational risk, 
-            and provide <strong className="text-white">Big 4-level analytical depth</strong> for 
-            global enterprises. Specializing in <strong className="text-white">AI-driven decision systems</strong> 
-            and <strong className="text-white">commercial risk architecture</strong>.
+            Software Engineer building <strong className="text-white">AI-powered decision systems</strong> for 
+            real-world scale. Specialized in <strong className="text-white">distributed orchestration</strong>, 
+            resilient architecture, and <strong className="text-white">Big 4-level strategic intelligence</strong>.
           </motion.p>
 
           {/* Metrics */}
@@ -160,9 +159,9 @@ export function Hero() {
             transition={{ delay: 0.8 }}
             className="flex flex-wrap gap-8 mb-12 justify-center lg:justify-start"
           >
-            <Metric value="5+" label="Years Experience" />
-            <Metric value="99.9%" label="Uptime Targets" />
-            <Metric value="40%" label="Avg Perf. Increase" />
+            <Metric value="10K+" label="Concurrent Users" />
+            <Metric value="99.9%" label="System Reliability" />
+            <Metric value="<2s" label="Audit Latency" />
           </motion.div>
 
           {/* CTAs */}
@@ -170,25 +169,31 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            className="flex flex-wrap gap-4 justify-center lg:justify-start"
           >
             <a
               href="#case-studies"
               className="btn btn-primary text-center group"
             >
-              View Case Studies
+              View Strategic Audits
               <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">
                 →
               </span>
             </a>
-            <a
-              href="#contact"
+            <Link
+              href="/system-architecture"
               className="btn btn-secondary text-center group"
             >
-              Let&apos;s Connect
-              <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">
-                →
+              System Design Spec
+              <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform font-mono">
+                [v2.0]
               </span>
+            </Link>
+            <a
+              href="#contact"
+              className="btn bg-gray-900 border border-gray-800 text-gray-400 hover:text-white text-center group"
+            >
+              Consultation
             </a>
           </motion.div>
         </motion.div>

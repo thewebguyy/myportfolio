@@ -10,28 +10,18 @@ import { Playground } from './components/Playground'
 import { ContactSection } from './components/sections/ContactSection'
 import { Footer } from './components/sections/Footer'
 import { FloatingChatbot } from './components/ai/FloatingChatbot'
+import { SystemStatus } from './components/ui/SystemStatus'
 
 /**
  * Strategy & Audit Interface
  * Repositioned for consulting, audit, and strategy.
- * 
- * Section Flow:
- * 1. Hero - Strategy Hook
- * 2. ConsultingInterface - Flagship AI Audit Tool
- * 3. Testimonials - Social Proof (Enterprise)
- * 4. BentoGrid - Strategic Engagements
- * 5. CaseStudies - Audit Deep Dives
- * 6. ResumeAnalyzer - Talent Intelligence
- * 7. AIProjectRecommender - Opportunity Engine
- * 8. SkillRadar - Competency Mapping
- * 9. Playground - Technical Sandbox
- * 10. Contact - Consultation Booking
  */
 export default function HomePage() {
   return (
     <div className="relative bg-secondary">
       {/* Main Content */}
       <Hero />
+      <SystemStatus />
       <ConsultingInterface />
       <Testimonials />
       <BentoGrid />

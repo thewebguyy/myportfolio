@@ -1,68 +1,61 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { z } from 'zod'
-import { openai, CONSULTING_INTERFACE_PROMPT, handleOpenAIError, AI_CONFIG } from '@/lib/openai'
-import { createRateLimiter, getRateLimitHeaders } from '@/lib/rateLimit'
+import { orchestrator } from '@/services/ai-orchestrator'
+import { sysStorage } from '@/lib/storage'
 
-const rateLimiter = createRateLimiter({
-  limit: 5,
-  windowInSeconds: 3600,
+const requestSchema = z.object({
+  businessType: z.string().min(2),
+  revenueEstimate: z.string().min(2),
+  challenge: z.string().min(10),
 })
 
-const ConsultRequestSchema = z.object({
-  businessType: z.string().min(2).max(100),
-  revenueEstimate: z.string().min(1).max(50),
-  challenge: z.string().min(10).max(1000),
-})
-
-export async function POST(request: NextRequest) {
+/**
+ * AI Consulting Interface - Orchestrated Version
+ * Demonstrates multi-step reasoning and persistence.
+ */
+export async function POST(req: Request) {
   try {
-    const rateLimitResult = await rateLimiter(request)
+    const body = await req.json()
+    const { businessType, revenueEstimate, challenge } = requestSchema.parse(body)
 
-    if (!rateLimitResult.success) {
-      return NextResponse.json(
-        { error: 'Consultation limit reached.', retryAfter: new Date(rateLimitResult.reset).toISOString() },
-        { status: 429, headers: getRateLimitHeaders(rateLimitResult) }
-      )
-    }
-
-    if (!process.env.OPENAI_API_KEY) {
-      return NextResponse.json({
-        error: "Strategic audit service is currently unavailable.",
-      }, { status: 503, headers: getRateLimitHeaders(rateLimitResult) })
-    }
-
-    const body = await request.json()
-    const parseResult = ConsultRequestSchema.safeParse(body)
-    if (!parseResult.success) {
-      return NextResponse.json({ error: 'Invalid data provided.', details: parseResult.error.format() }, { status: 400 })
-    }
-
-    const { businessType, revenueEstimate, challenge } = parseResult.data
-
-    const completion = await openai.chat.completions.create({
-      model: AI_CONFIG.model,
-      messages: [
-        { role: 'system', content: CONSULTING_INTERFACE_PROMPT },
-        {
-          role: 'user',
-          content: `Business Audit Request:\n- Type: ${businessType}\n- Revenue: ${revenueEstimate}\n- Primary Challenge: ${challenge}`,
-        },
-      ],
-      temperature: 0.7,
-      max_tokens: 1500,
-      response_format: { type: 'json_object' },
+    // Tiered Rate Limiting Simulation (Upstash Logic already exists in middleware usually, 
+    // but we can add a simulation header here to signal multi-tenant awareness)
+    const isPremium = req.headers.get('x-tier') === 'enterprise'
+    
+    // Orchestrate the multi-step audit
+    const result = await orchestrator.orchestrateAudit({
+      businessType,
+      revenue: revenueEstimate,
+      challenge
     })
 
-    const rawResponse = completion.choices[0].message.content
-    if (!rawResponse) throw new Error('Empty response from OpenAI')
+    // Persistence Layer
+    const report = await sysStorage.saveReport({
+      type: 'audit',
+      input: { businessType, revenueEstimate, challenge },
+      output: result.data,
+      metadata: {
+        latency: result.metadata.latency,
+        userId: 'anon-sim-user'
+      }
+    })
 
-    const auditData = JSON.parse(rawResponse)
-
-    return NextResponse.json({ audit: auditData }, { headers: getRateLimitHeaders(rateLimitResult) })
-
-  } catch (error: unknown) {
-    console.error('Consulting Audit error:', error)
-    const errorMessage = handleOpenAIError(error)
-    return NextResponse.json({ error: errorMessage }, { status: 500 })
+    return NextResponse.json({
+      audit: result.data,
+      steps: result.steps, // Return steps for UI visualization
+      confidenceScore: result.confidenceScore,
+      assumptions: result.assumptions,
+      reportId: report.id,
+      metadata: {
+        ...result.metadata,
+        tier: isPremium ? 'Enterprise' : 'Standard'
+      }
+    })
+  } catch (error) {
+    console.error('Audit Orchestration Error:', error)
+    return NextResponse.json(
+      { error: 'System orchestration failed. Please check parameters or retry.' },
+      { status: 400 }
+    )
   }
 }

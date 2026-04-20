@@ -140,14 +140,23 @@ export function BentoGrid() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-16"
         >
           <Link
             href="/case-studies"
             className="inline-flex items-center gap-2 text-primary hover:text-primary-light 
-                     font-semibold transition-colors group"
+                     text-xs font-black uppercase tracking-widest transition-all group"
           >
-            View All Case Studies
+            View Strategic Archive
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
+          </Link>
+          <div className="w-1.5 h-1.5 rounded-full bg-gray-800 hidden sm:block" />
+          <Link
+            href="/system-architecture"
+            className="inline-flex items-center gap-2 text-gray-500 hover:text-white 
+                     text-xs font-black uppercase tracking-widest transition-all group"
+          >
+            Review System Specs
             <span className="group-hover:translate-x-1 transition-transform">→</span>
           </Link>
         </motion.div>
