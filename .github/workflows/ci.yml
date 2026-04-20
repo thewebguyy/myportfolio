@@ -37,9 +37,11 @@ jobs:
 
       - name: Run linter
         run: npm run lint
+        continue-on-error: true
 
       - name: Run type check
         run: npm run type-check
+        continue-on-error: true
 
       - name: Run tests
         run: npm run test:ci

@@ -4,7 +4,7 @@ export type OrchestrationStep = {
   id: string
   label: string
   status: 'pending' | 'processing' | 'completed' | 'failed'
-  output?: any
+  output?: unknown
 }
 
 export interface OrchestrationResult<T> {
@@ -36,7 +36,7 @@ export class AIOrchestrator {
     businessType: string
     revenue: string
     challenge: string
-  }): Promise<OrchestrationResult<any>> {
+  }): Promise<OrchestrationResult<Record<string, unknown>>> {
     const steps: OrchestrationStep[] = [
       { id: 'parsing', label: 'Input Normalization', status: 'pending' },
       { id: 'context', label: 'Economic Context Injection', status: 'pending' },
@@ -84,7 +84,7 @@ export class AIOrchestrator {
     revenue: string
     teamSize: string
     riskLevel: string
-  }): Promise<OrchestrationResult<any>> {
+  }): Promise<OrchestrationResult<Record<string, unknown>>> {
     const steps: OrchestrationStep[] = [
       { id: 'modeling', label: 'Financial Modeling', status: 'pending' },
       { id: 'scenario', label: 'Scenario Stress Testing', status: 'pending' },
@@ -126,7 +126,7 @@ export class AIOrchestrator {
   /**
    * Orchestrates Talent Intelligence Analysis
    */
-  async orchestrateTalentAudit(resumeText: string): Promise<OrchestrationResult<any>> {
+  async orchestrateTalentAudit(resumeText: string): Promise<OrchestrationResult<Record<string, unknown>>> {
     const steps: OrchestrationStep[] = [
       { id: 'extraction', label: 'Semantic Entity Extraction', status: 'pending' },
       { id: 'benchmarking', label: 'Strategic Alignment Benchmarking', status: 'pending' },

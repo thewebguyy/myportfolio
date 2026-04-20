@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
     console.error('Chatbot error:', error)
     let status = 500
     if (typeof error === 'object' && error !== null && 'status' in error) {
-      status = (error as any).status
+      status = (error as Record<string, unknown>).status as number
     }
     const errorMessage = handleOpenAIError(error)
 

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import { CpuChipIcon, CubeTransparentIcon, GlobeAltIcon, BoltIcon } from '@heroicons/react/24/outline'
 
 /**
@@ -62,8 +61,8 @@ export function SystemStatus() {
   )
 }
 
-function StatusItem({ icon: Icon, label, value, color }: { icon: any, label: string, value: string, color: string }) {
-  const colorMap: any = {
+function StatusItem({ icon: Icon, label, value, color }: { icon: React.ElementType, label: string, value: string, color: string }) {
+  const colorMap: Record<string, string> = {
     primary: 'text-primary border-primary/20 bg-primary/5',
     yellow: 'text-yellow-500 border-yellow-500/20 bg-yellow-500/5',
     green: 'text-green-500 border-green-500/20 bg-green-500/5',

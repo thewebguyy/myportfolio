@@ -2,11 +2,10 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import Link from 'next/link'
 import { projects, Project } from '@/lib/projects'
 import { flagshipCaseStudies, CaseStudy } from '@/lib/case-studies'
-import { ArrowRightIcon, TrendingUpIcon, ChartBarSquareIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline'
+import { ArrowRightIcon } from '@heroicons/react/24/outline'
 
 /**
  * Case Studies Section

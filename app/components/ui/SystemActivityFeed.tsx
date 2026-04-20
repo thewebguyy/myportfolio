@@ -1,10 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { sysStorage, SystemReport } from '@/lib/storage'
-import { ClockIcon, BoltIcon, GlobeAltIcon } from '@heroicons/react/24/outline'
-import { cn } from '@/lib/utils'
+import { BoltIcon } from '@heroicons/react/24/outline'
 
 /**
  * System Activity Feed
@@ -41,13 +39,13 @@ export function SystemActivityFeed() {
         </div>
         
         <div className="flex-1 flex gap-12 animate-marquee hover:pause-marquee">
-          {activities.length > 0 ? activities.map((act, i) => (
+          {activities.length > 0 ? activities.map((act, _i) => (
             <ActivityItem key={act.id} report={act} />
           )) : (
             <span className="text-[10px] text-gray-700 uppercase font-black">Scanning System Nodes...</span>
           )}
           {/* Double for continuous scroll effect */}
-          {activities.map((act, i) => (
+          {activities.map((act, _i) => (
             <ActivityItem key={`${act.id}-clone`} report={act} />
           ))}
         </div>

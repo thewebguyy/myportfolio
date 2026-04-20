@@ -14,9 +14,25 @@ import {
 import { cn } from '@/lib/utils'
 import { DataPanel, InsightCard, RiskMeter, DecisionBlock } from '@/app/components/ui/ConsultingUI'
 
+interface SimulationResult {
+  projectedOutcome: string
+  financialImpact: string
+  tradeOffs: string[]
+  scenarios: {
+    bestCase: string
+    worstCase: string
+  }
+  trustSignals: {
+    whyItWorks: string
+    whereItMayFail: string
+    confidenceScore: number
+  }
+  actionSteps: string[]
+}
+
 export function DecisionSimulator() {
   const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<SimulationResult | null>(null)
   const [formData, setFormData] = useState({
     cost: '',
     revenue: '',

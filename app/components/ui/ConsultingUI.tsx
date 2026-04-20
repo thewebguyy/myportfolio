@@ -50,7 +50,7 @@ export function InsightCard({ title, value, description, trend, icon: Icon }: {
   value: string | number
   description: string
   trend?: { value: string, positive: boolean }
-  icon?: any
+  icon?: React.ElementType
 }) {
   return (
     <div className="glass p-6 rounded-xl border-primary/20 hover:border-primary/40 transition-all group">

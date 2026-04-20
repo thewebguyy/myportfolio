@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowLeftIcon, ServerStackIcon, CpuChipIcon, ShieldCheckIcon, GlobeAltIcon } from '@heroicons/react/24/outline'
 import { DataPanel } from '@/app/components/ui/ConsultingUI'
@@ -124,7 +123,7 @@ export default function SystemArchitecturePage() {
   )
 }
 
-function ArchNode({ icon: Icon, label, sub }: { icon: any, label: string, sub: string }) {
+function ArchNode({ icon: Icon, label, sub }: { icon: React.ElementType, label: string, sub: string }) {
   return (
     <div className="text-center space-y-3 p-6 bg-gray-900 rounded-2xl border border-gray-800">
       <Icon className="w-8 h-8 text-primary mx-auto" />

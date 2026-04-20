@@ -8,8 +8,8 @@ export interface SystemReport {
   id: string
   type: 'audit' | 'talent' | 'opportunity'
   timestamp: string
-  input: any
-  output: any
+  input: Record<string, unknown>
+  output: Record<string, unknown>
   metadata: {
     latency: number
     userId: string

@@ -15,12 +15,24 @@ import { cn } from '@/lib/utils'
 import { DataPanel, InsightCard, RiskMeter, DecisionBlock } from '@/app/components/ui/ConsultingUI'
 import { TechnicalDetails } from '@/app/components/ui/TechnicalDetails'
 
+interface OrchestrationStep {
+  id: string
+  label: string
+  status: 'pending' | 'processing' | 'completed' | 'failed'
+}
+
+interface AuditMetadata {
+  latency: number
+  tokens: number
+  tier: string
+}
+
 export function ResumeAnalyzer() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [analysis, setAnalysis] = useState<TalentAnalysis | null>(null)
-  const [steps, setSteps] = useState<any[]>([])
-  const [metadata, setMetadata] = useState<any>(null)
+  const [steps, setSteps] = useState<OrchestrationStep[]>([])
+  const [metadata, setMetadata] = useState<AuditMetadata | null>(null)
   const [resumeText, setResumeText] = useState('')
 
   async function analyzeResume() {

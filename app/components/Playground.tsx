@@ -4,8 +4,6 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
   PlayIcon, 
-  CodeBracketIcon,
-  LightBulbIcon,
   ArrowPathIcon,
   ServerIcon,
   CpuChipIcon
@@ -15,11 +13,19 @@ import {
  * Enterprise API Playground
  * Advanced tester for system orchestration endpoints.
  */
+interface PlaygroundResponse {
+  metadata?: {
+    latency: number
+    tokens: number
+  }
+  [key: string]: unknown
+}
+
 export function Playground() {
   const [activeTab, setActiveTab] = useState<'api' | 'code'>('api')
   const [apiEndpoint, setApiEndpoint] = useState('/api/consult')
   const [apiBody, setApiBody] = useState('{\n  "businessType": "Fintech",\n  "revenueEstimate": "$5M",\n  "challenge": "Scaling payment infrastructure for 50k users."\n}')
-  const [apiResponse, setApiResponse] = useState<any>(null)
+  const [apiResponse, setApiResponse] = useState<PlaygroundResponse | null>(null)
   const [loading, setLoading] = useState(false)
 
   const apiExamples = [

@@ -250,11 +250,12 @@ export default async function handler(req: Request) {
         <h2>3. Monitoring Agent Health</h2>
         <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto">
           <code>{`// Example LangSmith-style logging
-export function traceAgentAction(step: string, data: any) {
+export function traceAgentAction(step: string, data: unknown) {
+  const d = data as any; // Cast for demo purposes
   console.log(\`[AI-TRACE] \${step}\`, {
-    tokens: data.usage.total_tokens,
-    duration: Date.now() - data.startTime,
-    is_hallucination: data.validation_failed
+    tokens: d.usage.total_tokens,
+    duration: Date.now() - d.startTime,
+    is_hallucination: d.validation_failed
   })
 }`}</code>
         </pre>

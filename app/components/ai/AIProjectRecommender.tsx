@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { SparklesIcon, RocketLaunchIcon, ChartBarIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
+import { SparklesIcon, ChartBarIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
 import { DataPanel, InsightCard, RiskMeter, DecisionBlock } from '@/app/components/ui/ConsultingUI'
 
@@ -201,15 +201,6 @@ export function AIProjectRecommender() {
   )
 }
 
-function LoadingSpinner() {
-  return (
-    <motion.div
-      animate={{ rotate: 360 }}
-      transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-      className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
-    />
-  )
-}
 
 interface OpportunityResult {
   opportunityId: string
