@@ -16,7 +16,8 @@
     --text-secondary: #8899BB;
     --text-muted: #3D4F6E;
     --border: #0D1A3E;
-    --border-accent: rgba(0, 75, 142, 0.40);
+    --border-accent: rgba(0, 75, 142, 0.40);  /* primary @ 40% */
+    --border-secondary: rgba(26, 111, 173, 0.30); /* secondary @ 30% */
   }
 
   body {
@@ -93,7 +94,11 @@
   }
 
   .pill-tag {
-    @apply font-mono text-[10px] bg-surface-2 text-text-secondary px-2 py-0.5 rounded-[4px] border border-transparent hover:border-secondary/30 transition-colors;
+    @apply font-mono text-[10px] bg-surface-2 text-text-secondary px-2 py-0.5 rounded-[4px] border border-transparent transition-colors;
+    /* Use raw CSS var: opacity modifier /30 breaks in @apply when colors are defined as var() references */
+    &:hover {
+      border-color: var(--border-secondary);
+    }
   }
 }
 
