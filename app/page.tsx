@@ -5,31 +5,46 @@ import { Testimonials } from './components/sections/Testimonials'
 import { AIProjectRecommender } from './components/ai/AIProjectRecommender'
 import { ResumeAnalyzer } from './components/ai/ResumeAnalyzer'
 import { ConsultingInterface } from './components/ai/ConsultingInterface'
+import { DecisionSimulator } from './components/ai/DecisionSimulator'
 import { SkillRadar } from './components/viz/SkillRadar'
 import { Playground } from './components/Playground'
 import { ContactSection } from './components/sections/ContactSection'
 import { Footer } from './components/sections/Footer'
 import { FloatingChatbot } from './components/ai/FloatingChatbot'
 import { SystemStatus } from './components/ui/SystemStatus'
+import { SystemActivityFeed } from './components/ui/SystemActivityFeed'
 
 /**
- * Strategy & Audit Interface
- * Repositioned for consulting, audit, and strategy.
+ * Outcome-Driven Decision System
  */
 export default function HomePage() {
   return (
     <div className="relative bg-secondary">
+      {/* Live System Context */}
+      <SystemActivityFeed />
+      
       {/* Main Content */}
       <Hero />
       <SystemStatus />
-      <ConsultingInterface />
+      
+      <section className="bg-secondary/50 py-20 border-y border-gray-900">
+         <DecisionSimulator />
+      </section>
+
+      <CaseStudies />
+      
+      <div className="grid lg:grid-cols-2 bg-gray-950 border-y border-gray-900">
+        <ConsultingInterface />
+        <ResumeAnalyzer />
+      </div>
+
       <Testimonials />
       <BentoGrid />
-      <CaseStudies />
-      <div className="grid lg:grid-cols-2 bg-gray-950 border-y border-gray-900">
-        <ResumeAnalyzer />
+      
+      <div className="bg-secondary py-20">
         <AIProjectRecommender />
       </div>
+
       <SkillRadar />
       <Playground />
       <ContactSection />

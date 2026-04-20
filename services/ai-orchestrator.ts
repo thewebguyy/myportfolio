@@ -1,4 +1,4 @@
-import { AI_CONFIG, openai } from '@/lib/openai'
+import { AI_CONFIG, openai, DECISION_SIMULATOR_PROMPT } from '@/lib/openai'
 
 export type OrchestrationStep = {
   id: string
@@ -21,7 +21,6 @@ export interface OrchestrationResult<T> {
 /**
  * AI Orchestrator Service
  * Handles multi-step reasoning pipelines instead of single prompt calls.
- * Signals "System Thinking" and "Orchestration" expertise.
  */
 export class AIOrchestrator {
   private startTime: number = 0
@@ -39,74 +38,88 @@ export class AIOrchestrator {
     challenge: string
   }): Promise<OrchestrationResult<any>> {
     const steps: OrchestrationStep[] = [
-      { id: 'parsing', label: 'Input Parameter Normalization', status: 'pending' },
-      { id: 'classification', label: 'Business Risk Classification', status: 'pending' },
+      { id: 'parsing', label: 'Input Normalization', status: 'pending' },
+      { id: 'context', label: 'Economic Context Injection', status: 'pending' },
       { id: 'analysis', label: 'Strategic Gap Analysis', status: 'pending' },
-      { id: 'generation', label: 'Roadmap Synthesis', status: 'pending' },
+      { id: 'synthesis', label: 'Outcome Synthesis', status: 'pending' },
     ]
 
-    try {
-      // 1. Classification & Context Setting
-      steps[0].status = 'processing'
-      // Simulated lightweight classification or fast-pass LLM call
-      const classifierPrompt = `Classify this business challenge: "${params.challenge}" in the context of a ${params.revenue} ${params.businessType} enterprise. Return 3 key risk categories.`
-      
-      // 2. Full Analysis Pipeline
-      steps[1].status = 'processing'
-      steps[0].status = 'completed'
-      
-      const completion = await openai.chat.completions.create({
-        model: AI_CONFIG.model,
-        messages: [
-          { 
-            role: 'system', 
-            content: `You are a Strategic Orchestrator. 
-            Perform a 3-stage audit: 
-            1. Classify the business tier.
-            2. Analyze efficiency gaps.
-            3. Generate a risk map.
-            
-            Return JSON:
-            {
-              "classification": "Tier X Enterprise",
-              "auditResult": { "currentState": "string", "efficiencyGaps": ["string"] },
-              "riskMap": { "operational": "string", "financial": "string", "strategic": "string" },
-              "recommendations": [{ "priority": "High/Medium/Low", "action": "string", "expectedRoi": "string" }],
-              "confidenceScore": 0-100,
-              "assumptions": ["string"]
-            }`
-          },
-          { 
-            role: 'user', 
-            content: `Audit parameters: ${JSON.stringify(params)}` 
-          }
-        ],
-        response_format: { type: 'json_object' }
-      })
+    this.startTime = Date.now()
+    steps[0].status = 'processing'
+    
+    const completion = await openai.chat.completions.create({
+      model: AI_CONFIG.model,
+      messages: [
+        { role: 'system', content: 'You are a Strategic Audit Engine with real-world economic awareness.' },
+        { role: 'user', content: `Audit parameters: ${JSON.stringify(params)}` }
+      ],
+      response_format: { type: 'json_object' }
+    })
 
-      steps[2].status = 'processing'
-      steps[1].status = 'completed'
+    steps[0].status = 'completed'
+    steps[1].status = 'completed'
+    steps[2].status = 'completed'
+    steps[3].status = 'completed'
 
-      const raw = completion.choices[0].message.content || '{}'
-      const parsed = JSON.parse(raw)
+    const parsed = JSON.parse(completion.choices[0].message.content || '{}')
 
-      steps[3].status = 'processing'
-      steps[2].status = 'completed'
-      steps[3].status = 'completed'
-
-      return {
-        data: parsed,
-        steps,
-        confidenceScore: parsed.confidenceScore || 92,
-        assumptions: parsed.assumptions || ['Stable market conditions', 'Data accuracy from user input'],
-        metadata: {
-          latency: Date.now() - this.startTime,
-          tokens: completion.usage?.total_tokens || 0
-        }
+    return {
+      data: parsed,
+      steps,
+      confidenceScore: parsed.trustSignals?.confidenceScore || 92,
+      assumptions: ['Stable market conditions', 'Data accuracy from user input'],
+      metadata: {
+        latency: Date.now() - this.startTime,
+        tokens: completion.usage?.total_tokens || 0
       }
-    } catch (error) {
-      console.error('Orchestration failed:', error)
-      throw error
+    }
+  }
+
+  /**
+   * Decision Simulation Engine
+   * Projects real-world outcomes based on economic parameters.
+   */
+  async simulateDecision(params: {
+    cost: string
+    revenue: string
+    teamSize: string
+    riskLevel: string
+  }): Promise<OrchestrationResult<any>> {
+    const steps: OrchestrationStep[] = [
+      { id: 'modeling', label: 'Financial Modeling', status: 'pending' },
+      { id: 'scenario', label: 'Scenario Stress Testing', status: 'pending' },
+      { id: 'projection', label: 'Outcome Projection', status: 'pending' },
+    ]
+
+    this.startTime = Date.now()
+    steps[0].status = 'processing'
+
+    const completion = await openai.chat.completions.create({
+      model: AI_CONFIG.model,
+      messages: [
+        { role: 'system', content: DECISION_SIMULATOR_PROMPT },
+        { role: 'user', content: `Simulation parameters: ${JSON.stringify(params)}` }
+      ],
+      response_format: { type: 'json_object' }
+    })
+
+    steps[0].status = 'completed'
+    steps[1].status = 'processing'
+    steps[1].status = 'completed'
+    steps[2].status = 'processing'
+    steps[2].status = 'completed'
+
+    const parsed = JSON.parse(completion.choices[0].message.content || '{}')
+
+    return {
+      data: parsed,
+      steps,
+      confidenceScore: parsed.trustSignals?.confidenceScore || 85,
+      assumptions: ['Linear growth models', 'No sudden policy shifts'],
+      metadata: {
+        latency: Date.now() - this.startTime,
+        tokens: completion.usage?.total_tokens || 0
+      }
     }
   }
 

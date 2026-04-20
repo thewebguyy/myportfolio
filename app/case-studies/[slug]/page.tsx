@@ -5,8 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { projects, getProjectById } from '@/lib/projects'
 import { flagshipCaseStudies } from '@/lib/case-studies'
-import { ArrowLeftIcon, ShieldCheckIcon, ChartBarIcon, MagnifyingGlassIcon, LightBulbIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftIcon, ShieldCheckIcon, ChartBarIcon, MagnifyingGlassIcon, LightBulbIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 import { RiskMeter, InsightCard, DataPanel } from '@/app/components/ui/ConsultingUI'
+import { cn } from '@/lib/utils'
 
 // Generate static params for all projects and flagship studies
 export async function generateStaticParams() {
@@ -42,7 +43,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               <ArrowLeftIcon className="w-4 h-4" />
               Strategic Archive
             </Link>
-            <div className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Confidential Strategy Audit</div>
+            <div className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Outcome-Driven Strategic Audit</div>
           </div>
         </nav>
 
@@ -56,29 +57,28 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               </div>
               <h1 className="text-5xl md:text-7xl font-bold text-white leading-[1.1]">{study.title}</h1>
               <p className="text-xl text-gray-400 font-serif italic leading-relaxed">{study.context}</p>
+              
               <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-900">
-                {study.metrics.map((m, i) => (
-                  <div key={i}>
-                    <div className="text-xs text-gray-600 uppercase font-black mb-1">{m.label}</div>
-                    <div className="text-2xl font-bold text-white">{m.value}</div>
-                  </div>
-                ))}
+                 <OutcomeMiniMetric label="Financial" value={study.financialImpact} color="green" />
+                 <OutcomeMiniMetric label="Efficiency" value={study.efficiencyGain} color="blue" />
+                 <OutcomeMiniMetric label="Risk" value={study.riskReduction} color="red" />
               </div>
             </div>
+
             <div className="relative">
                <div className="absolute inset-0 bg-primary/10 blur-[100px] rounded-full" />
-               <DataPanel title="Executive Summary" className="relative z-10">
-                 <div className="space-y-6">
-                   <div>
-                     <h4 className="text-[10px] text-gray-500 uppercase font-black mb-2">Primary Goal</h4>
-                     <p className="text-sm text-white italic">&quot;{study.goal}&quot;</p>
-                   </div>
-                   <div className="p-4 bg-gray-950 rounded-xl border border-gray-800">
-                     <h4 className="text-[10px] text-gray-500 uppercase font-black mb-2">Core Problem</h4>
-                     <p className="text-xs text-gray-400 leading-relaxed">{study.problem}</p>
-                   </div>
-                 </div>
-               </DataPanel>
+               <div className="grid gap-6 relative z-10">
+                  <DataPanel title="Before State">
+                     <p className="text-sm text-gray-400 font-serif italic italic leading-relaxed">
+                        {study.beforeState}
+                     </p>
+                  </DataPanel>
+                  <DataPanel title="After State" className="border-primary/30">
+                     <p className="text-sm text-white font-serif italic leading-relaxed">
+                        {study.afterState}
+                     </p>
+                  </DataPanel>
+               </div>
             </div>
           </div>
         </section>
@@ -88,6 +88,20 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12">
             {/* Sticky Sidebar */}
             <aside className="lg:col-span-4 h-fit lg:sticky lg:top-32 space-y-8">
+              <DataPanel title="Outcome Metrics">
+                 <div className="space-y-6">
+                    {study.outcomes.map((o, i) => (
+                       <div key={i} className="flex justify-between items-end border-b border-gray-800 pb-2">
+                          <div>
+                             <div className="text-[10px] text-gray-500 uppercase font-black">{o.label}</div>
+                             <div className="text-[9px] text-primary uppercase font-black">{o.subValue}</div>
+                          </div>
+                          <div className="text-2xl font-bold text-white">{o.value}</div>
+                       </div>
+                    ))}
+                 </div>
+              </DataPanel>
+
               <DataPanel title="Audit Controls">
                 <div className="space-y-6">
                   {study.recommendations.map((rec, i) => (
@@ -126,7 +140,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                       {i + 1}
                     </div>
                     <div>
-                      <h3 className="text-xs font-black text-gray-500 uppercase tracking-[0.3em]">Step 0{i+1}</h3>
+                      <h3 className="text-xs font-black text-gray-500 uppercase tracking-[0.3em]">Analysis Node 0{i+1}</h3>
                       <h2 className="text-3xl font-bold text-white">{step.step}</h2>
                     </div>
                   </div>
@@ -137,7 +151,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                     <div className="bg-primary/5 border border-primary/20 p-6 rounded-2xl flex gap-4">
                       <MagnifyingGlassIcon className="w-6 h-6 text-primary flex-shrink-0" />
                       <div>
-                        <h4 className="text-[10px] text-primary uppercase font-black mb-1">Key Analytical Finding</h4>
+                        <h4 className="text-[10px] text-primary uppercase font-black mb-1">Analytical Result</h4>
                         <p className="text-sm text-white font-bold leading-relaxed">{step.finding}</p>
                       </div>
                     </div>
@@ -148,8 +162,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               {/* Recommendation Grid */}
               <div className="space-y-12 pt-12 border-t border-gray-900">
                  <div className="text-center space-y-2">
-                   <h2 className="text-4xl font-bold text-white">Strategic Roadmap</h2>
-                   <p className="text-gray-500 text-sm font-serif italic">Data-driven recommendations for immediate implementation.</p>
+                   <h2 className="text-4xl font-bold text-white">Strategic Execution</h2>
+                   <p className="text-gray-500 text-sm font-serif italic">High-fidelity recommendations based on audited findings.</p>
                  </div>
                  <div className="grid md:grid-cols-2 gap-6">
                     {study.recommendations.map((rec, i) => (
@@ -157,8 +171,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                         key={i}
                         title={rec.title}
                         value={rec.impact}
-                        description="Projected impact on operational margins and risk profile."
-                        trend={{ value: 'ROI High', positive: true }}
+                        description="Projected outcome and margin shift upon successful execution."
+                        trend={{ value: 'Impact High', positive: true }}
                       />
                     ))}
                  </div>
@@ -166,13 +180,13 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
               {/* Footer CTA */}
               <div className="p-12 bg-primary rounded-[3rem] text-center space-y-6 shadow-2xl shadow-primary/20">
-                <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter">Ready for Audit?</h2>
+                <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter">Ready for Outcome Simulation?</h2>
                 <p className="text-white/80 font-serif italic text-lg max-w-xl mx-auto">
-                  Book a strategic consultation to run this intelligence engine on your business operations.
+                  Run your business parameters through the Decision Simulator to project real-world impact.
                 </p>
                 <div className="flex justify-center gap-4 pt-4">
-                  <a href="/#contact" className="px-8 py-4 bg-white text-primary rounded-2xl font-black uppercase tracking-widest hover:bg-gray-100 transition-all">Book Consultation</a>
-                  <Link href="/case-studies" className="px-8 py-4 bg-secondary text-white rounded-2xl font-black uppercase tracking-widest hover:bg-black transition-all">View Other Audits</Link>
+                  <Link href="/#contact" className="px-8 py-4 bg-white text-primary rounded-2xl font-black uppercase tracking-widest hover:bg-gray-100 transition-all">Book Consultation</Link>
+                  <Link href="/case-studies" className="px-8 py-4 bg-secondary text-white rounded-2xl font-black uppercase tracking-widest hover:bg-black transition-all">Back to Archive</Link>
                 </div>
               </div>
             </div>
@@ -186,7 +200,6 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   if (project) {
     return (
       <main className="min-h-screen bg-secondary">
-         {/* Simple version of legacy project page but with new colors */}
          <div className="pt-32 pb-20 px-6 max-w-4xl mx-auto space-y-12">
             <Link href="/case-studies" className="text-xs font-black text-gray-500 uppercase tracking-widest flex items-center gap-2 hover:text-primary transition-all">
               <ArrowLeftIcon className="w-4 h-4" />
@@ -208,21 +221,24 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                  </div>
                ))}
             </div>
-            <div className="space-y-6">
-               <h3 className="text-sm font-black text-white uppercase tracking-widest">Stack Infrastructure</h3>
-               <div className="flex flex-wrap gap-2">
-                 {project.tech.map(t => (
-                   <span key={t} className="px-3 py-1 bg-gray-900 border border-gray-800 rounded text-xs text-gray-400">{t}</span>
-                 ))}
-               </div>
-            </div>
-            <div className="pt-12 border-t border-gray-900">
-               <p className="text-gray-500 italic text-sm">Full implementation STAR breakdown for this legacy project is available upon request.</p>
-            </div>
          </div>
       </main>
     )
   }
 
   return notFound()
+}
+
+function OutcomeMiniMetric({ label, value, color }: { label: string, value: string, color: 'green' | 'blue' | 'red' }) {
+  const colors = {
+    green: 'text-green-500',
+    blue: 'text-blue-500',
+    red: 'text-red-500'
+  }
+  return (
+    <div>
+      <div className="text-[10px] text-gray-600 uppercase font-black mb-1">{label}</div>
+      <div className={cn("text-xl font-bold", colors[color])}>{value}</div>
+    </div>
+  )
 }

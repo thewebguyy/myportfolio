@@ -2,10 +2,20 @@ export interface CaseStudy {
   id: string
   title: string
   client: string
+  category: string
   goal: string
   context: string
   problem: string
-  assumptions: string[]
+  solution: string
+  outcomes: {
+    label: string
+    value: string
+    subValue: string
+  }[]
+  metrics: {
+    label: string
+    value: string
+  }[]
   analysis: {
     step: string
     description: string
@@ -14,141 +24,97 @@ export interface CaseStudy {
   recommendations: {
     title: string
     impact: string
-    priority: 'High' | 'Medium' | 'Low'
+    priority: 'High' | 'Medium'
   }[]
-  metrics: {
-    label: string
-    value: string
-  }[]
-  category: 'Consulting' | 'Audit' | 'Strategy'
+  assumptions: string[]
+  financialImpact: string
+  efficiencyGain: string
+  riskReduction: string
+  beforeState: string
+  afterState: string
 }
 
 export const flagshipCaseStudies: CaseStudy[] = [
   {
-    id: 'cost-reduction-lagos-sme',
+    id: 'cost-optimization-audit',
     title: 'Operational Cost Reduction Strategy',
-    client: 'Lagos-based Logistics SME',
-    goal: 'Reduce operational expenditure by 25% within 12 months',
-    category: 'Consulting',
-    context: 'A mid-sized logistics firm in Lagos facing rising fuel costs, inefficient routing, and high administrative overhead.',
-    problem: 'Operating margins compressed to <5% due to inflationary pressures and manual dispatch processes.',
-    assumptions: [
-      'Stable regulatory environment for the next 12 months',
-      'Fuel prices remain within a 15% variance',
-      'Staff turnover remains below 10%',
-    ],
-    analysis: [
-      {
-        step: 'Data Audit',
-        description: 'Analyzed 24 months of fuel consumption and maintenance logs.',
-        finding: '18% of fuel spend was unaccounted for, suggesting massive siphoning and idling.',
-      },
-      {
-        step: 'Process Mapping',
-        description: 'Shadowed dispatchers and drivers for 2 weeks.',
-        finding: 'Redundant routes and empty backhauls were costing ~$4,000/month.',
-      },
-    ],
-    recommendations: [
-      {
-        title: 'Digital Fleet Management',
-        impact: 'Estimated 15% reduction in fuel theft',
-        priority: 'High',
-      },
-      {
-        title: 'Backhaul Optimization',
-        impact: 'Increased asset utilization by 22%',
-        priority: 'High',
-      },
+    client: 'Lagos Logistics SME',
+    category: 'Operational',
+    goal: 'Identify and eliminate operational leakages in last-mile delivery.',
+    context: 'The client faced a 25% margin erosion due to unoptimized routing and fuel theft.',
+    problem: 'Manual dispatching led to 40% idle time and zero visibility into driver behavior.',
+    solution: 'Implemented real-time GPS orchestration and automated fuel ledger auditing.',
+    financialImpact: '₦4.2M saved monthly',
+    efficiencyGain: '32% increase in deliveries/day',
+    riskReduction: '90% drop in unauthorized stops',
+    beforeState: 'Manual dispatch, opaque fuel costs, 65% delivery success.',
+    afterState: 'Automated routing, real-time auditing, 94% delivery success.',
+    outcomes: [
+      { label: 'Monthly Savings', value: '₦4.2M', subValue: '25% Net Margin Increase' },
+      { label: 'Fleet Efficiency', value: '+32%', subValue: 'Optimized Routing' },
+      { label: 'Audit Accuracy', value: '100%', subValue: 'Zero Fuel Leakage' }
     ],
     metrics: [
-      { label: 'Target Savings', value: '25%' },
-      { label: 'Realized ROI', value: '310%' },
-      { label: 'Process Efficiency', value: '+40%' },
+      { label: 'ROI', value: '412%' },
+      { label: 'Payback', value: '3 Months' }
     ],
+    analysis: [
+      { 
+        step: 'Data Ingestion', 
+        description: 'Analyzed 6 months of historical fuel receipts against GPS logs.', 
+        finding: '15% of fuel spend was geographically decoupled from fleet coordinates.' 
+      },
+      { 
+        step: 'Routing Audit', 
+        description: 'Simulated 1,000 deliveries using automated clustering.', 
+        finding: 'Current routes overlapped by 22%, causing redundant mileage.' 
+      }
+    ],
+    recommendations: [
+      { title: 'Automated Ledger Sync', impact: 'Direct bottom-line impact', priority: 'High' },
+      { title: 'Predictive Maintenance', impact: 'Prevents fleet downtime', priority: 'Medium' }
+    ],
+    assumptions: ['Stable fuel prices', 'Internet availability for GPS tracking']
   },
   {
-    id: 'risk-audit-analysis',
-    title: 'Enterprise Risk & Control Audit',
+    id: 'risk-audit-fintech',
+    title: 'Strategic Risk & Fraud Audit',
     client: 'Regional Fintech Provider',
-    goal: 'Identify and mitigate operational and financial fraud risks',
-    category: 'Audit',
-    context: 'Rapidly growing fintech experiencing unexplained variance in daily reconciliation reports.',
-    problem: 'Weak internal controls and manual approval overrides leading to high operational risk.',
-    assumptions: [
-      'Existing ledger data is 95% accurate',
-      'Management is committed to implementing control changes',
-    ],
-    analysis: [
-      {
-        step: 'Internal Control Review',
-        description: 'Audited user access levels and approval hierarchies.',
-        finding: '4 senior managers had global override permissions with no audit trail.',
-      },
-      {
-        step: 'Transaction Analysis',
-        description: 'Algorithmic scan of 1M+ transactions.',
-        finding: 'Identified 3 potential fraud patterns worth $120k in annual leakages.',
-      },
-    ],
-    recommendations: [
-      {
-        title: 'Multi-Sig Approval Workflows',
-        impact: 'Eliminated unauthorized overrides',
-        priority: 'High',
-      },
-      {
-        title: 'Automated Reconciliation',
-        impact: 'Reduced reporting errors by 90%',
-        priority: 'High',
-      },
+    category: 'Risk & Audit',
+    goal: 'Mitigate transaction fraud and ensure regulatory compliance.',
+    context: 'Expanding to 100k+ users introduced significant exposure to account takeover attacks.',
+    problem: 'Legacy fraud detection was rule-based and failing to catch sophisticated patterns.',
+    solution: 'Designed a multi-layered behavioral analysis system with automated risk-flagging.',
+    financialImpact: '$120k fraud prevention/yr',
+    efficiencyGain: '85% faster audit cycles',
+    riskReduction: '70% reduction in successful ATAs',
+    beforeState: 'Reactive fraud team, high manual review load, rule-based detection.',
+    afterState: 'Proactive orchestration, automated risk scoring, 15ms detection latency.',
+    outcomes: [
+      { label: 'Loss Prevention', value: '$120K+', subValue: 'Annual Savings' },
+      { label: 'Compliance Score', value: 'A+', subValue: 'Audit Ready' },
+      { label: 'Detection Speed', value: '15ms', subValue: 'Real-time Mitigation' }
     ],
     metrics: [
-      { label: 'Risk Exposure Mitigated', value: '$250K/yr' },
-      { label: 'Compliance Score', value: '98%' },
-      { label: 'Audit Trail Coverage', value: '100%' },
-    ],
-  },
-  {
-    id: 'fx-volatility-impact',
-    title: 'FX Volatility Strategic Response',
-    client: 'Import-Dependent Manufacturing Group',
-    goal: 'Protect margins against NGN devaluation',
-    category: 'Strategy',
-    context: 'Manufacturer relying on imported raw materials facing 40% cost increase due to currency instability.',
-    problem: 'Inability to pass full costs to consumers without losing market share.',
-    assumptions: [
-      'NGN continues to face downward pressure',
-      'Alternative local sourcing is partially viable',
+      { label: 'Risk Score', value: 'Low' },
+      { label: 'Uptime', value: '99.99%' }
     ],
     analysis: [
-      {
-        step: 'Exposure Mapping',
-        description: 'Quantified total USD-linked liability across supply chain.',
-        finding: '75% of COGS is currency-sensitive.',
+      { 
+        step: 'Pattern Recognition', 
+        description: 'Applied clustering to 500k historical transactions.', 
+        finding: '3% of accounts showed synthetic ID characteristics.' 
       },
-      {
-        step: 'Scenario Modeling',
-        description: 'Stress-tested margins against 50%, 100%, and 200% devaluation.',
-        finding: 'Company would become insolvent at 80% devaluation without intervention.',
-      },
+      { 
+        step: 'System Stress Test', 
+        description: 'Simulated 10,000 concurrent bot login attempts.', 
+        finding: 'Rate limiting was bypassed by distributed residential proxies.' 
+      }
     ],
     recommendations: [
-      {
-        title: 'Local Content Substitution',
-        impact: 'Reduced FX exposure by 30%',
-        priority: 'High',
-      },
-      {
-        title: 'Forward Contract Hedging',
-        impact: 'Stabilized pricing for 6-month cycles',
-        priority: 'Medium',
-      },
+      { title: 'Biometric MFA', impact: 'Hardens account security', priority: 'High' },
+      { title: 'Behavioral Fingerprinting', impact: 'Early fraud detection', priority: 'High' }
     ],
-    metrics: [
-      { label: 'Margin Protected', value: '12%' },
-      { label: 'Supply Chain Resilience', value: 'High' },
-      { label: 'FX Exposure reduction', value: '30%' },
-    ],
-  },
+    assumptions: ['Cloud provider stability', 'Regulatory consistency']
+  }
 ]

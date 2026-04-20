@@ -18,8 +18,7 @@ export const getOpenAIClient = () => {
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) {
     throw new Error(
-      'OPENAI_API_KEY is not defined. Please configure it in your environment variables. ' +
-      'AI-powered features (Chatbot, Resume Analysis, Project Recommendations) will not function without this key.'
+      'OPENAI_API_KEY is not defined. Please configure it in your environment variables.'
     )
   }
 
@@ -32,7 +31,6 @@ export const getOpenAIClient = () => {
   return openaiInstance
 }
 
-// Proxy to delay initialization until the client is actually used
 export const openai = new Proxy({} as OpenAI, {
   get: (target, prop) => {
     try {
@@ -43,189 +41,126 @@ export const openai = new Proxy({} as OpenAI, {
       }
       return value
     } catch (error) {
-      // Re-throw or handle based on context; here we let it throw
-      // which will be caught by our handleOpenAIError or route try/catch
       throw error
     }
   },
 })
 
 /**
- * System prompt for AI Business Advisor
- * Focuses on structured problem solving, frameworks, and strategic depth.
+ * REAL-WORLD ECONOMIC CONTEXT
+ * Injected into all decision-making prompts.
  */
-export const CONSULTING_ADVISOR_PROMPT = `You are a Senior Strategy Consultant for Olabode Olusegun's Strategy & Audit Interface.
+const ECONOMIC_CONTEXT = `
+CURRENT ECONOMIC CONTEXT:
+- High FX Volatility (especially in emerging markets like Nigeria/Lagos).
+- Rising Inflation (impacts OPEX and procurement).
+- Market Pressure: Pivot towards automation and AI to offset labor costs.
+- Global Interest Rates: Capital is expensive; focus on high-ROI, low-burn strategies.
+`
+
+/**
+ * System prompt for AI Business Advisor
+ */
+export const CONSULTING_ADVISOR_PROMPT = `You are an Elite Strategy Consultant.
+${ECONOMIC_CONTEXT}
 
 YOUR IDENTITY:
-- You operate with Big 4-level analytical depth (McKinsey, BCG, Deloitte).
-- You use structured frameworks (MECE, SWOT, Porter's Five Forces, Cost-Benefit Analysis).
-- You prioritize commercial awareness and risk mitigation.
+- Big 4 analytical depth (McKinsey, BCG level).
+- Focus on commercial outcomes and risk mitigation.
 
-CAPABILITIES:
-1. Analyze complex business problems.
-2. Provide structured consulting responses.
-3. Use frameworks to break down challenges.
+RESPONSE STRUCTURE (Strictly follow this for every insight):
+1. **Insight**: High-level analytical finding.
+2. **Financial Implication**: Specific impact on margins, revenue, or valuation (₦ / $).
+3. **Risk Implication**: Operational or strategic pitfalls.
+4. **Action Step**: Immediate, concrete task to mitigate risk or capture value.
 
-RESPONSE STRUCTURE:
-1. **Problem Breakdown**: Identify root causes and key drivers.
-2. **Key Insights**: 2-3 high-level analytical findings.
-3. **Strategic Options**: Mutually exclusive, collectively exhaustive (MECE) options.
-4. **Recommended Action**: Data-driven next step with expected impact.
+TRUST SIGNALS:
+- Clearly state "Why this works" vs "Where it may fail".
+- Provide a confidence score (0-100%).`
 
-GUIDELINES:
-- Be professional, authoritative, and concise.
-- Direct users to specific consulting case studies (/case-studies) or strategy insights (/blog).
-- If asked about Olabode, highlight his expertise in System Design, ROI-driven engineering, and AI Strategy.
-- Never use generic filler. Every sentence must provide analytical value.`
+/**
+ * Decision Simulation Engine Prompt
+ */
+export const DECISION_SIMULATOR_PROMPT = `You are a Decision Simulation Engine.
+${ECONOMIC_CONTEXT}
+
+TASK: Based on user inputs (Cost, Revenue, Team Size, Risk Level), project real-world outcomes.
+
+Output JSON:
+{
+  "projectedOutcome": "Detailed narrative of the result after 12 months",
+  "financialImpact": "Estimated ROI and Margin shift (₦ / $)",
+  "tradeOffs": ["Trade-off 1", "Trade-off 2"],
+  "scenarios": {
+    "bestCase": "High-execution success state",
+    "worstCase": "Market-failure or technical-debt state"
+  },
+  "trustSignals": {
+    "whyItWorks": "Strategic advantage used",
+    "whereItMayFail": "Potential blindspots",
+    "confidenceScore": 0-100
+  },
+  "actionSteps": ["Step 1", "Step 2"]
+}`
 
 /**
  * Strategic Opportunity Engine prompt
- * Matches skills to business models, feasibility, and risk.
  */
 export const STRATEGIC_OPPORTUNITY_PROMPT = `You are a Strategic Opportunity Engine.
-Your task: Analyze the user's technical or business interest and recommend a MONETIZABLE STRATEGIC OPPORTUNITY.
-
-Consider these factors:
-1. Technical feasibility (using Olabode's stack).
-2. Market demand and ROI potential.
-3. Implementation risk and mitigation.
+${ECONOMIC_CONTEXT}
+Analyze market fitness and ROI.
 
 Output format (JSON only):
 {
   "opportunityId": "id-from-list",
-  "title": "Business Model/Opportunity Name",
+  "title": "Business Model Name",
   "feasibility": 0-100,
   "roiPotential": "High/Medium/Low",
   "riskLevel": "Low/Medium/High",
-  "strategicReasoning": "3-4 sentences on market fit and technical execution",
-  "businessModel": "How this generates value",
+  "strategicReasoning": "Contextual analysis including FX and inflation impact",
+  "financialImplication": "Specific margin impact",
+  "actionStep": "Concrete implementation move",
+  "businessModel": "Value generation path",
   "requiredTech": ["tech1", "tech2"]
-}
-
-Be specific about how Olabode's skills in real-time systems or AI can be leveraged for this business opportunity.`
-
-/**
- * Talent Risk & Hiring Intelligence prompt
- * Identifies hiring risks, retention predictions, and skill gaps.
- */
-export const TALENT_INTELLIGENCE_PROMPT = `You are a Talent Intelligence Engine.
-Analyze the provided resume for collaboration potential with Olabode Olusegun's strategy team.
-
-YOUR TASK:
-Analyze the resume and output JSON (no markdown):
-{
-  "hiringRiskScore": 0-100,
-  "retentionRisk": "Low/Medium/High",
-  "skillGapSeverity": "Low/Medium/High",
-  "alignmentSignals": {
-    "cultural": "Brief assessment",
-    "technical": "Specific overlap/gap",
-    "strategic": "Vision alignment"
-  },
-  "collaborationOpportunities": [
-    "Specific high-value strategic initiative",
-    "Second concrete collaboration area"
-  ],
-  "riskMitigation": "One key step to ensure successful collaboration",
-  "reasoning": "Executive summary of the match"
-}
-
-GUIDELINES:
-- hiringRiskScore: 0-40 (High Risk), 41-70 (Moderate), 71-100 (Low Risk/High Potential).
-- Focus on strategic synergy and technical depth.`
+}`
 
 /**
  * AI Consulting Interface prompt
  */
 export const CONSULTING_INTERFACE_PROMPT = `You are a Strategic Audit & Strategy Engine.
-Based on the business type, revenue, and challenge, provide a professional audit and strategy map.
+${ECONOMIC_CONTEXT}
 
 Output JSON:
 {
   "auditResult": {
-    "currentState": "Brief analysis",
+    "currentState": "Analysis reflecting current market pressures",
     "efficiencyGaps": ["gap1", "gap2"]
   },
   "riskMap": {
     "operational": "description",
-    "financial": "description",
+    "financial": "description (includes FX/Inflation risk)",
     "strategic": "description"
   },
   "recommendations": [
     {
       "priority": "High/Medium/Low",
       "action": "Specific task",
-      "expectedRoi": "Percentage or value"
+      "financialImpact": "Expected ₦ / $ change",
+      "riskMitigation": "How to prevent failure",
+      "expectedRoi": "Percentage"
     }
   ],
-  "timeline": "Implementation phases (e.g., Q1-Q3)"
-}
+  "trustSignals": {
+    "whyItWorks": "string",
+    "whereItMayFail": "string",
+    "confidenceScore": 0-100
+  }
+}`
 
-Be analytical, realistic, and commercially focused.`
-
-/**
- * Enhanced error handling for OpenAI API calls
- */
 export function handleOpenAIError(error: unknown): string {
   if (error instanceof OpenAI.APIError) {
-    console.error('OpenAI API Error:', {
-      status: error.status,
-      message: error.message,
-      code: error.code,
-      type: error.type,
-    })
-
-    // Rate limiting
-    if (error.status === 429) {
-      return 'AI service is experiencing high demand. Please try again in a moment.'
-    }
-
-    // Authentication errors
-    if (error.status === 401 || error.status === 403) {
-      return 'AI service authentication error. Please contact the administrator.'
-    }
-
-    // Invalid request
-    if (error.status === 400) {
-      return 'Invalid request format. Please check your input and try again.'
-    }
-
-    // Server errors
-    if (error.status && error.status >= 500) {
-      return 'AI service is temporarily unavailable. Please try again later.'
-    }
-
-    // Generic API error
+    if (error.status === 429) return 'System at peak capacity. Retrying...'
     return `AI service error: ${error.message}`
   }
-
-  // Network errors
-  if (error instanceof Error) {
-    if (error.message.includes('timeout')) {
-      return 'Request timed out. Please try again.'
-    }
-    if (error.message.includes('network')) {
-      return 'Network error. Please check your connection and try again.'
-    }
-  }
-
-  // Unknown errors
-  console.error('Unknown error:', error)
-  return 'An unexpected error occurred. Please try again or contact support.'
-}
-
-/**
- * Token estimation helper
- * Rough estimate: 1 token ≈ 4 characters for English text
- */
-export function estimateTokens(text: string): number {
-  return Math.ceil(text.length / 4)
-}
-
-/**
- * Validate token limits before API call
- */
-export function validateTokenLimit(text: string, maxTokens: number = 8000): boolean {
-  const estimatedTokens = estimateTokens(text)
-  return estimatedTokens <= maxTokens
+  return 'An unexpected error occurred in the reasoning engine.'
 }

@@ -36,10 +36,10 @@ export function ConsultingInterface() {
     setError(null)
     setAudit(null)
     setSteps([
-      { id: 'parsing', label: 'Initializing Orchestrator...', status: 'processing' },
-      { id: 'classification', label: 'Pending Classification', status: 'pending' },
+      { id: 'parsing', label: 'Input Normalization', status: 'processing' },
+      { id: 'context', label: 'Economic Modeling', status: 'pending' },
       { id: 'analysis', label: 'Strategic Gap Analysis', status: 'pending' },
-      { id: 'generation', label: 'Finalizing Report', status: 'pending' },
+      { id: 'generation', label: 'Outcome Synthesis', status: 'pending' },
     ])
 
     try {
@@ -65,7 +65,7 @@ export function ConsultingInterface() {
   const downloadReport = () => {
     if (!audit) return
     const content = `
-STRATEGIC AUDIT REPORT
+STRATEGIC AUDIT REPORT (Outcome Driven)
 Generated: ${new Date().toLocaleString()}
 ----------------------------------------
 BUSINESS: ${formData.businessType}
@@ -75,18 +75,18 @@ CHALLENGE: ${formData.challenge}
 AUDIT OVERVIEW:
 ${audit.auditResult.currentState}
 
-RISK MAP:
-- Operational: ${audit.riskMap.operational}
-- Financial: ${audit.riskMap.financial}
-- Strategic: ${audit.riskMap.strategic}
+TRUST SIGNALS:
+- Why it works: ${audit.trustSignals.whyItWorks}
+- Where it may fail: ${audit.trustSignals.whereItMayFail}
+- Confidence: ${audit.trustSignals.confidenceScore}%
 
 RECOMMENDATIONS:
-${audit.recommendations.map(r => `[${r.priority}] ${r.action} (ROI: ${r.expectedRoi})`).join('\n')}
-
-SYSTEM METADATA:
-- Confidence Score: ${audit.confidenceScore}%
-- Latency: ${metadata?.latency}ms
-- Orchestration Steps: 4
+${audit.recommendations.map(r => `
+[${r.priority}] ${r.action}
+- Financial Impact: ${r.financialImpact}
+- Risk Mitigation: ${r.riskMitigation}
+- ROI: ${r.expectedRoi}
+`).join('\n')}
     `
     const blob = new Blob([content], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
@@ -98,8 +98,6 @@ SYSTEM METADATA:
 
   return (
     <section className="section bg-secondary relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/4" />
-      
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -108,12 +106,12 @@ SYSTEM METADATA:
           className="space-y-12"
         >
           <div className="text-center space-y-4">
-            <span className="text-primary text-sm font-black uppercase tracking-[0.4em]">Audit Interface v2.0</span>
+            <span className="text-primary text-sm font-black uppercase tracking-[0.4em]">Audit Interface v2.1</span>
             <h2 className="text-4xl md:text-5xl font-bold text-white">
-              AI-Powered <span className="gradient-text">Strategic Audit</span>
+              Strategic <span className="gradient-text">Audit Engine</span>
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto font-serif italic">
-              Multi-step orchestration pipeline for enterprise-grade strategic analysis.
+              Generating actionable intelligence under real-world economic pressures.
             </p>
           </div>
 
@@ -122,39 +120,30 @@ SYSTEM METADATA:
               <div className="grid md:grid-cols-2 gap-8 mb-8">
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                      <BuildingOfficeIcon className="w-4 h-4 text-primary" />
-                      Business Type
-                    </label>
+                    <label className="block text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Sector / Model</label>
                     <input 
                       type="text"
-                      placeholder="e.g. Fintech, Manufacturing"
-                      className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-4 text-white focus:border-primary focus:outline-none transition-all"
+                      placeholder="e.g. B2B SaaS, Logistics"
+                      className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-4 text-white focus:border-primary focus:outline-none"
                       value={formData.businessType}
                       onChange={e => setFormData({...formData, businessType: e.target.value})}
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                      <CurrencyDollarIcon className="w-4 h-4 text-primary" />
-                      Revenue Estimate
-                    </label>
+                    <label className="block text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Scale (Annual Revenue)</label>
                     <input 
                       type="text"
-                      placeholder="e.g. $5M - $10M"
-                      className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-4 text-white focus:border-primary focus:outline-none transition-all"
+                      placeholder="e.g. $2M"
+                      className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-4 text-white focus:border-primary focus:outline-none"
                       value={formData.revenueEstimate}
                       onChange={e => setFormData({...formData, revenueEstimate: e.target.value})}
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <ExclamationTriangleIcon className="w-4 h-4 text-primary" />
-                    Key Challenge
-                  </label>
+                  <label className="block text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Primary Operational Bottleneck</label>
                   <textarea 
-                    placeholder="Describe the primary bottleneck..."
+                    placeholder="Describe the challenge..."
                     className="w-full h-[148px] bg-gray-950 border border-gray-800 rounded-xl p-4 text-white font-mono text-sm focus:border-primary focus:outline-none resize-none"
                     value={formData.challenge}
                     onChange={e => setFormData({...formData, challenge: e.target.value})}
@@ -162,137 +151,99 @@ SYSTEM METADATA:
                 </div>
               </div>
 
-              {error && (
-                <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-center gap-3">
-                  <ExclamationTriangleIcon className="w-5 h-5 text-red-500" />
-                  <p className="text-red-400 text-xs font-bold uppercase">{error}</p>
-                </div>
-              )}
-
               <button
                 onClick={runAudit}
                 disabled={loading || !formData.businessType || !formData.challenge}
-                className={cn(
-                  "w-full py-5 rounded-2xl font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3",
-                  "bg-primary hover:bg-primary-light text-white shadow-2xl shadow-primary/30"
-                )}
+                className="w-full py-5 rounded-2xl font-black uppercase tracking-widest bg-primary hover:bg-primary-light text-white shadow-2xl transition-all flex items-center justify-center gap-3"
               >
-                Run Strategic Audit
+                Execute Strategic Audit
                 <BoltIcon className="w-5 h-5" />
               </button>
 
               <TechnicalDetails 
-                flow={['POST /api/consult', 'Zod Validation', 'AI Orchestrator', 'Redis Rate Limiting', 'Persistence Layer']}
-                prompt="System: Strategic Orchestrator. Audit context: 3-stage pipeline (Classification, Analysis, Synthesis). Format: Strict JSON."
-                logic="Tiered rate limiting (5 req/hr anon). Request isolation via session-id hashing. LocalStorage persistence abstraction."
+                flow={['POST /api/consult', 'Context Injection', 'Orchestration Pipeline', 'Output Synthesis']}
+                prompt="System: Elite Consultant. Context: FX Volatility/Inflation. Format: Outcome-Driven JSON."
+                logic="Decision logic factors in capital cost and risk reduction vectors."
               />
             </div>
           ) : loading ? (
-            <div className="max-w-4xl mx-auto space-y-8">
-               <div className="glass p-12 rounded-3xl border-primary/20 text-center space-y-8">
-                  <div className="relative w-24 h-24 mx-auto">
-                    <div className="absolute inset-0 border-4 border-primary/10 rounded-full" />
-                    <motion.div 
-                      animate={{ rotate: 360 }} 
-                      transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                      className="absolute inset-0 border-4 border-t-primary rounded-full" 
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <CommandLineIcon className="w-8 h-8 text-primary animate-pulse" />
+            <div className="max-w-4xl mx-auto glass p-12 rounded-3xl border-primary/20 text-center space-y-8">
+               <div className="w-16 h-16 border-4 border-primary/10 border-t-primary rounded-full animate-spin mx-auto" />
+               <div className="text-xl font-bold text-white uppercase tracking-widest">Orchestrating Audit...</div>
+               <div className="flex justify-center gap-2">
+                  {steps.map((step, i) => (
+                    <div key={i} className={cn(
+                      "px-3 py-1 rounded text-[10px] font-black uppercase border",
+                      step.status === 'completed' ? 'border-green-500/30 text-green-500' :
+                      step.status === 'processing' ? 'border-primary/30 text-primary animate-pulse' : 'border-gray-800 text-gray-700'
+                    )}>
+                      {step.label}
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-white uppercase tracking-widest">Orchestrating System...</h3>
-                    <p className="text-gray-500 font-serif italic">Multi-step reasoning pipeline active.</p>
-                  </div>
-                  <div className="grid md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-                     {steps.map((step, i) => (
-                       <div key={i} className={cn(
-                         "p-3 rounded-xl border transition-all text-[10px] font-black uppercase tracking-tighter",
-                         step.status === 'completed' ? 'bg-green-500/10 border-green-500/30 text-green-500' :
-                         step.status === 'processing' ? 'bg-primary/10 border-primary/30 text-primary animate-pulse' :
-                         'bg-gray-900 border-gray-800 text-gray-700'
-                       )}>
-                         {step.label}
-                       </div>
-                     ))}
-                  </div>
+                  ))}
                </div>
             </div>
           ) : audit && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-8"
-            >
-              {/* Results Dashboard */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
               <div className="grid lg:grid-cols-3 gap-8">
-                {/* Audit Overview */}
-                <DataPanel title="Audit Overview" className="lg:col-span-1">
-                  <div className="space-y-6">
-                    <div className="flex justify-between items-center bg-primary/5 p-4 rounded-xl border border-primary/10">
-                      <div>
-                         <div className="text-[10px] text-primary uppercase font-black">Confidence Score</div>
-                         <div className="text-2xl font-bold text-white">{audit.confidenceScore}%</div>
+                <DataPanel title="System Insight">
+                   <div className="space-y-6">
+                      <div className="p-4 bg-primary/5 border border-primary/10 rounded-xl">
+                         <div className="text-[10px] text-primary uppercase font-black mb-1">Confidence Score</div>
+                         <div className="text-2xl font-bold text-white">{audit.trustSignals.confidenceScore}%</div>
                       </div>
-                      <ShieldCheckIcon className="w-8 h-8 text-primary" />
-                    </div>
-                    <div>
-                      <div className="text-[10px] text-gray-500 uppercase font-black mb-2">Current State Analysis</div>
-                      <p className="text-sm text-white font-serif leading-relaxed italic">&quot;{audit.auditResult.currentState}&quot;</p>
-                    </div>
-                  </div>
+                      <p className="text-sm text-gray-400 font-serif italic leading-relaxed">
+                        &quot;{audit.auditResult.currentState}&quot;
+                      </p>
+                      <div className="space-y-3 pt-4 border-t border-gray-900">
+                         <div className="text-[10px] text-gray-500 uppercase font-black">Strategic Logic</div>
+                         <p className="text-[11px] text-white italic opacity-80">{audit.trustSignals.whyItWorks}</p>
+                      </div>
+                   </div>
                 </DataPanel>
 
-                {/* Risk Map */}
-                <DataPanel title="Risk Map" className="lg:col-span-2">
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <RiskBlock title="Operational" description={audit.riskMap.operational} color="red" />
-                    <RiskBlock title="Financial" description={audit.riskMap.financial} color="yellow" />
-                    <RiskBlock title="Strategic" description={audit.riskMap.strategic} color="blue" />
-                  </div>
-                  <div className="mt-8 pt-6 border-t border-gray-800 flex justify-between items-center">
-                    <div>
-                      <h4 className="text-[10px] text-gray-500 uppercase font-black mb-1">Execution Latency</h4>
-                      <div className="flex items-center gap-2 text-primary font-mono text-xs">
-                        <ClockIcon className="w-3 h-3" />
-                        {metadata?.latency}ms
+                <DataPanel title="Outcome Risk Map" className="lg:col-span-2">
+                   <div className="grid md:grid-cols-3 gap-4">
+                      <RiskBlock title="Financial" description={audit.riskMap.financial} color="yellow" />
+                      <RiskBlock title="Operational" description={audit.riskMap.operational} color="red" />
+                      <RiskBlock title="Strategic" description={audit.riskMap.strategic} color="blue" />
+                   </div>
+                   <div className="mt-8 pt-6 border-t border-gray-800 flex justify-between items-center">
+                      <div className="p-3 bg-red-500/5 border border-red-500/20 rounded-xl max-w-md">
+                         <h5 className="text-[10px] text-red-500 uppercase font-black mb-1">Warning: Where it may fail</h5>
+                         <p className="text-[10px] text-gray-500">{audit.trustSignals.whereItMayFail}</p>
                       </div>
-                    </div>
-                    <button 
-                      onClick={downloadReport}
-                      className="flex items-center gap-2 px-4 py-2 bg-gray-900 border border-gray-800 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-gray-800 transition-all"
-                    >
-                      <ArrowDownTrayIcon className="w-3 h-3" />
-                      Export Report
-                    </button>
-                  </div>
+                      <button onClick={downloadReport} className="flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-widest">
+                         <ArrowDownTrayIcon className="w-4 h-4" /> Export Audit
+                      </button>
+                   </div>
                 </DataPanel>
               </div>
 
-              {/* Recommendations */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-black text-white uppercase tracking-[0.4em] text-center mb-8">Executive Recommendations</h3>
-                <div className="grid md:grid-cols-3 gap-6">
-                  {audit.recommendations.map((rec, i) => (
-                    <DecisionBlock 
-                      key={i}
-                      title={`Strategy ${i+1}`}
-                      action={rec.action}
-                      impact={`ROI: ${rec.expectedRoi}`}
-                      priority={rec.priority}
-                    />
-                  ))}
-                </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                 {audit.recommendations.map((rec, i) => (
+                   <div key={i} className="p-6 bg-gray-950 border border-gray-900 rounded-2xl space-y-4">
+                      <div className="flex justify-between items-start">
+                         <span className={cn(
+                           "px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-tighter",
+                           rec.priority === 'High' ? 'bg-red-500/10 text-red-500' : 'bg-yellow-500/10 text-yellow-500'
+                         )}>{rec.priority} Priority</span>
+                         <span className="text-[10px] text-green-500 font-bold">{rec.expectedRoi} ROI</span>
+                      </div>
+                      <h4 className="text-white font-bold text-sm">{rec.action}</h4>
+                      <div className="space-y-2">
+                         <div className="text-[9px] text-gray-600 uppercase font-black">Financial Implication</div>
+                         <p className="text-[11px] text-gray-400 italic">{rec.financialImpact}</p>
+                      </div>
+                      <div className="pt-3 border-t border-gray-900">
+                         <div className="text-[9px] text-primary uppercase font-black mb-1">Mitigation Step</div>
+                         <p className="text-[11px] text-gray-500">{rec.riskMitigation}</p>
+                      </div>
+                   </div>
+                 ))}
               </div>
 
-              <div className="flex justify-center gap-6 pt-8">
-                <button 
-                  onClick={() => setAudit(null)}
-                  className="px-8 py-4 bg-gray-900 border border-gray-800 text-gray-400 hover:text-white rounded-xl uppercase text-xs font-black tracking-widest transition-all"
-                >
-                  New Strategic Run
-                </button>
+              <div className="flex justify-center pt-8">
+                 <button onClick={() => setAudit(null)} className="btn btn-secondary px-12">New Strategic Run</button>
               </div>
             </motion.div>
           )}
@@ -308,30 +259,17 @@ function RiskBlock({ title, description, color }: { title: string, description: 
     yellow: 'border-yellow-500/30 text-yellow-500 bg-yellow-500/5',
     blue: 'border-blue-500/30 text-blue-500 bg-blue-500/5'
   }
-  
   return (
     <div className={cn("p-4 rounded-xl border", colors[color])}>
-      <h5 className="text-[10px] font-black uppercase mb-2 tracking-widest">{title} Risk</h5>
-      <p className="text-xs text-gray-300 leading-relaxed font-serif italic">{description}</p>
+      <h5 className="text-[10px] font-black uppercase mb-2">{title}</h5>
+      <p className="text-[11px] text-gray-400 italic leading-relaxed">{description}</p>
     </div>
   )
 }
 
 interface ConsultingAudit {
-  auditResult: {
-    currentState: string
-    efficiencyGaps: string[]
-  }
-  riskMap: {
-    operational: string
-    financial: string
-    strategic: string
-  }
-  recommendations: {
-    priority: 'High' | 'Medium' | 'Low'
-    action: string
-    expectedRoi: string
-  }[]
-  confidenceScore: number
-  assumptions: string[]
+  auditResult: { currentState: string; efficiencyGaps: string[] }
+  riskMap: { operational: string; financial: string; strategic: string }
+  recommendations: { priority: string; action: string; financialImpact: string; riskMitigation: string; expectedRoi: string }[]
+  trustSignals: { whyItWorks: string; whereItMayFail: string; confidenceScore: number }
 }

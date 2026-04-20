@@ -5,12 +5,12 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { projects, Project } from '@/lib/projects'
-import { flagshipCaseStudies } from '@/lib/case-studies'
-import { ArrowRightIcon } from '@heroicons/react/24/outline'
+import { flagshipCaseStudies, CaseStudy } from '@/lib/case-studies'
+import { ArrowRightIcon, TrendingUpIcon, ChartBarSquareIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline'
 
 /**
  * Case Studies Section
- * Showcases in-depth project narratives and strategic audits
+ * Showcases outcome-driven project narratives and strategic audits
  */
 export function CaseStudies() {
   return (
@@ -23,19 +23,17 @@ export function CaseStudies() {
           className="text-center mb-16"
         >
           <span className="text-primary text-sm font-black uppercase tracking-[0.3em]">
-            Strategic Narratives
+            Impact Analysis
           </span>
           <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6">
-            Enterprise <span className="gradient-text">Audits & Strategy</span>
+            Real-World <span className="gradient-text">Outcomes</span>
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto font-serif italic">
-            Detailed breakdowns of operational audits, risk mitigation strategies, and 
-            measurable ROI delivered for global organizations.
+            Quantifiable results from enterprise audits and strategic technical interventions.
           </p>
         </motion.div>
 
         <div className="space-y-12">
-          {/* Show flagship case studies first */}
           {flagshipCaseStudies.map((study, index) => (
             <FlagshipStudyCard key={study.id} study={study} index={index} />
           ))}
@@ -48,7 +46,6 @@ export function CaseStudies() {
           </div>
         </div>
 
-        {/* CTA to full case studies page */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -65,7 +62,7 @@ export function CaseStudies() {
   )
 }
 
-function FlagshipStudyCard({ study, index }: { study: any; index: number }) {
+function FlagshipStudyCard({ study, index }: { study: CaseStudy; index: number }) {
   const isEven = index % 2 === 0
 
   return (
@@ -77,54 +74,57 @@ function FlagshipStudyCard({ study, index }: { study: any; index: number }) {
       className="glass rounded-3xl overflow-hidden border-primary/20 group hover:border-primary/40 transition-all"
     >
       <div className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
-        <div className="lg:w-2/5 bg-gray-950 p-8 lg:p-12 flex flex-col justify-center border-r border-gray-800">
-          <span className="text-primary text-[10px] font-black uppercase tracking-widest mb-4">{study.category} Audit</span>
-          <h3 className="text-3xl font-bold text-white mb-6">{study.title}</h3>
-          <div className="space-y-4">
-             {study.metrics.map((m: any, i: number) => (
-               <div key={i} className="flex justify-between items-end border-b border-gray-800 pb-2">
-                 <span className="text-[10px] text-gray-500 uppercase font-black">{m.label}</span>
-                 <span className="text-xl font-bold text-primary">{m.value}</span>
-               </div>
-             ))}
+        <div className="lg:w-2/5 bg-gray-950 p-8 lg:p-12 border-r border-gray-800">
+          <span className="text-primary text-[10px] font-black uppercase tracking-widest mb-4 block">{study.category} Impact Audit</span>
+          <h3 className="text-3xl font-bold text-white mb-8">{study.title}</h3>
+          
+          <div className="space-y-6">
+             <ImpactMetric label="Financial Impact" value={study.financialImpact} color="green" />
+             <ImpactMetric label="Efficiency Gain" value={study.efficiencyGain} color="blue" />
+             <ImpactMetric label="Risk Reduction" value={study.riskReduction} color="red" />
           </div>
         </div>
-        <div className="lg:w-3/5 p-8 lg:p-12 bg-secondary/50">
-           <div className="mb-6">
-             <h4 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Context & Problem</h4>
-             <p className="text-gray-300 font-serif italic text-lg leading-relaxed">{study.context}</p>
-           </div>
-           <div className="grid md:grid-cols-2 gap-8 mb-8">
-             <div>
-               <h4 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Strategic Findings</h4>
-               <ul className="space-y-2">
-                 {study.analysis.map((a: any, i: number) => (
-                   <li key={i} className="text-xs text-gray-400 flex gap-2">
-                     <span className="text-primary font-bold">»</span>
-                     {a.finding}
-                   </li>
-                 ))}
-               </ul>
+        
+        <div className="lg:w-3/5 p-8 lg:p-12 bg-secondary/50 flex flex-col justify-between">
+           <div className="space-y-8">
+             <div className="grid md:grid-cols-2 gap-8">
+               <div>
+                 <h4 className="text-[10px] text-gray-500 uppercase font-black mb-3">Before State</h4>
+                 <p className="text-sm text-gray-400 font-serif italic">{study.beforeState}</p>
+               </div>
+               <div>
+                 <h4 className="text-[10px] text-primary uppercase font-black mb-3">After State</h4>
+                 <p className="text-sm text-white font-serif italic">{study.afterState}</p>
+               </div>
              </div>
+             
              <div>
-               <h4 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Recommendations</h4>
-               <ul className="space-y-2">
-                 {study.recommendations.map((r: any, i: number) => (
-                   <li key={i} className="text-xs text-gray-400 flex gap-2">
-                     <span className="text-green-500 font-bold">✓</span>
-                     {r.title}
-                   </li>
-                 ))}
-               </ul>
+               <h4 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Strategic Action</h4>
+               <p className="text-gray-300 leading-relaxed italic">&quot;{study.solution}&quot;</p>
              </div>
            </div>
-           <Link href={`/case-studies/${study.id}`} className="inline-flex items-center gap-2 text-primary text-xs font-black uppercase tracking-widest group">
-             Read Full Strategic Analysis 
+
+           <Link href={`/case-studies/${study.id}`} className="mt-8 inline-flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-widest group">
+             Read Comprehensive Outcome Analysis 
              <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
            </Link>
         </div>
       </div>
     </motion.article>
+  )
+}
+
+function ImpactMetric({ label, value, color }: { label: string, value: string, color: 'green' | 'blue' | 'red' }) {
+  const colors = {
+    green: 'text-green-500 bg-green-500/10 border-green-500/20',
+    blue: 'text-blue-500 bg-blue-500/10 border-blue-500/20',
+    red: 'text-red-500 bg-red-500/10 border-red-500/20'
+  }
+  return (
+    <div className={`p-4 rounded-xl border ${colors[color]}`}>
+      <div className="text-[10px] uppercase font-black opacity-60 mb-1">{label}</div>
+      <div className="text-xl font-bold">{value}</div>
+    </div>
   )
 }
 
@@ -137,9 +137,6 @@ function CaseStudyCard({ project, index }: { project: Project; index: number }) 
       transition={{ delay: index * 0.1 }}
       className="flex items-center gap-8 py-8 border-b border-gray-800 last:border-0 group"
     >
-      <div className="hidden md:block w-32 h-32 relative flex-shrink-0 rounded-xl overflow-hidden">
-        <Image src={project.image} alt={project.title} fill className="object-cover grayscale group-hover:grayscale-0 transition-all" />
-      </div>
       <div className="flex-1">
         <div className="flex justify-between items-start mb-2">
           <h4 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{project.title}</h4>
