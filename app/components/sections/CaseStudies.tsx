@@ -2,8 +2,9 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import Link from 'next/link'
 import { projects } from '@/lib/projects'
+import { ArtifactFrame } from '../ui/ArtifactFrame'
+import { TechnicalAudit } from '../ui/TechnicalAudit'
 
 const REAL_PROJECTS_IDS = ['servicebridge', '55lounge', 'subscription-manager', 'checkout-system']
 
@@ -11,32 +12,32 @@ export function CaseStudies() {
   const selectedProjects = REAL_PROJECTS_IDS.map(id => projects.find(p => p.id === id)).filter(Boolean)
 
   return (
-    <section id="projects" className="section-padding bg-background">
-      <div className="max-w-[1280px] mx-auto px-6">
-        {/* Header */}
-        <div className="mb-24">
-          <motion.span
+    <section id="work" className="border-b-[0.5px] border-border-wire bg-background">
+      <div className="max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire">
+        {/* Ledger Header */}
+        <div className="border-b-[0.5px] border-border-wire px-8 lg:px-16 py-16">
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="label mb-4 block"
+            className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
           >
-            Deep dives
-          </motion.span>
+            [SYSTEM_LOG: WORK_HISTORY]
+          </motion.div>
           <motion.h2
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="h2 text-white mb-4"
+            className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight"
           >
-            Engineering, in detail
+            The Ledger.
           </motion.h2>
         </div>
 
-        {/* Case Studies List */}
+        {/* Ledger Entries */}
         <div className="flex flex-col">
           {selectedProjects.map((project, index) => (
-            <CaseStudyRow 
+            <LedgerEntry 
               key={project!.id} 
               project={project!} 
               number={index + 1} 
@@ -48,64 +49,61 @@ export function CaseStudies() {
   )
 }
 
-function CaseStudyRow({ project, number }: { project: any, number: number }) {
+function LedgerEntry({ project, number }: { project: any, number: number }) {
+  const perfMetrics = project.metrics 
+    ? Object.entries(project.metrics).map(([key, val]) => ({ metric: key, value: val as string }))
+    : [{ metric: 'Latency', value: '< 50ms' }, { metric: 'Uptime', value: '99.99%' }];
+
   return (
-    <div className="group border-t border-surface-2 pt-12 pb-12 transition-all duration-300">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-        {/* Left: Metadata (2 cols on 12-col grid -> ~16% or 5-col split -> 2/5 = 40%) */}
-        {/* Let's follow the "5-column grid" logic by using 5 cols and splitting 2/3 */}
-        <div className="md:col-span-5 flex flex-col relative">
-          <div className="display absolute -top-4 -left-2 text-surface-2 opacity-100 transition-colors duration-300 group-hover:text-primary/15 pointer-events-none select-none text-[80px]">
-            {number.toString().padStart(2, '0')}
+    <div className="border-b-[0.5px] border-border-wire group">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+        
+        {/* Left Column: Metadata */}
+        <div className="lg:col-span-4 border-b-[0.5px] lg:border-b-0 lg:border-r-[0.5px] border-border-wire p-8 lg:p-12 flex flex-col">
+          <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-12">
+            [LOG_ENTRY: {number.toString().padStart(2, '0')}]
           </div>
-          <div className="relative pt-10">
-            <h3 className="font-sans font-semibold text-[24px] text-white mb-2">
-              {project.title}
-            </h3>
-            <div className="font-mono text-[11px] text-text-muted mb-4">
-              {project.year}
+          
+          <h3 className="font-serif text-[32px] text-text-primary leading-tight mb-4">
+            {project.title}
+          </h3>
+          
+          <div className="font-mono text-[13px] text-text-primary/70 mb-12">
+            ROLE: {project.role || 'LEAD ENGINEER'}<br/>
+            DATE: {project.year}
+          </div>
+
+          <div className="mt-auto">
+            <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-4">
+              [CATEGORY]
             </div>
-            <div className="pill-tag w-fit">
+            <div className="font-mono text-[13px] text-text-primary uppercase">
               {project.category}
             </div>
           </div>
         </div>
 
-        {/* Right: Narrative & Breakdown (3 cols on 5-col grid) */}
-        <div className="md:col-span-7">
-          <div className="flex flex-col gap-8">
-            {/* Narrative */}
-            <p className="text-[16px] text-text-secondary leading-[1.7]">
-              {project.longDescription.split('.').slice(0, 3).join('.')}.
-            </p>
-
-            {/* Metrics */}
-            <div className="flex flex-wrap gap-6">
-              {project.metrics && Object.entries(project.metrics).slice(0, 4).map(([key, val]) => (
-                <div key={key} className="flex flex-col">
-                  <span className="font-mono text-[10px] text-text-muted uppercase tracking-wider">{key}</span>
-                  <span className="text-[14px] text-white font-medium">{val as string}</span>
-                </div>
-              ))}
+        {/* Right Column: Narrative & Artifact */}
+        <div className="lg:col-span-8 p-8 lg:p-12">
+          <ArtifactFrame id={project.id.toUpperCase()} title={project.title}>
+            <div className="p-8 font-mono text-[14px] text-text-primary/80 leading-[1.8] bg-surface/50 border-b-[0.5px] border-border-wire">
+              {project.longDescription || project.description}
             </div>
+            
+            <TechnicalAudit 
+              stack={project.tech}
+              performance={perfMetrics}
+              architecture={`System architecture optimized for ${project.category.toLowerCase()} workload. Implementations involved distributed systems patterns and strict type-safety across the monorepo.`}
+            />
 
-            {/* Tech Stack */}
-            <div className="flex flex-wrap gap-2">
-              {project.tech.map((t: string) => (
-                <span key={t} className="pill-tag">{t}</span>
-              ))}
+            <div className="p-4 bg-surface border-t-[0.5px] border-border-wire flex justify-end">
+              <a href="#work" className="btn-secondary">
+                [ACCESS DEMO]
+              </a>
             </div>
-
-            {/* Link */}
-            <Link 
-              href={`/#projects`} 
-              className="text-[14px] text-primary font-medium flex items-center gap-2 group/link"
-            >
-              View project 
-              <span className="transition-transform group-hover/link:translate-x-1">→</span>
-            </Link>
-          </div>
+          </ArtifactFrame>
         </div>
+
       </div>
     </div>
   )

@@ -5,24 +5,19 @@
 @layer base {
   :root {
     --background: #010528;
-    --foreground: #ffffff;
-    --primary: #004B8E;
-    --primary-light: #0066CC;
-    --primary-glow: rgba(0, 75, 142, 0.12);
-    --secondary: #1A6FAD;
-    --surface: #07102E;
-    --surface-2: #0D1A3E;
-    --text-primary: #FFFFFF;
-    --text-secondary: #8899BB;
-    --text-muted: #3D4F6E;
-    --border: #0D1A3E;
-    --border-accent: rgba(0, 75, 142, 0.40);  /* primary @ 40% */
-    --border-secondary: rgba(26, 111, 173, 0.30); /* secondary @ 30% */
+    --text-primary: #F4F3EF;
+    --text-accent: #3A7BD5;
+    --border-wire: #1C2540;
+    --surface: #0D1535;
+  }
+
+  * {
+    border-radius: 0 !important;
+    box-shadow: none !important;
   }
 
   body {
-    @apply bg-background text-text-primary antialiased selection:bg-primary selection:text-white;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    @apply bg-background text-text-primary antialiased selection:bg-text-accent selection:text-background font-mono;
   }
 
   /* Typography Scale */
@@ -30,74 +25,55 @@
     @apply font-serif font-normal text-[96px] leading-[1.0] tracking-tight;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-normal tracking-tight;
+  }
+
   h1 {
-    @apply font-serif font-normal text-[64px] leading-[1.1] tracking-tight;
+    @apply text-[64px] leading-[1.1];
   }
 
   h2 {
-    @apply font-sans font-semibold text-[48px] leading-[1.15] tracking-tight;
+    @apply text-[48px] leading-[1.15];
   }
 
   h3 {
-    @apply font-sans font-semibold text-[32px] leading-[1.2] tracking-tight;
-  }
-
-  h4 {
-    @apply font-sans font-medium text-[20px] leading-[1.3] tracking-tight;
+    @apply text-[32px] leading-[1.2];
   }
 
   p, .body {
-    @apply font-sans font-normal text-[16px] leading-[1.7] text-text-secondary;
+    @apply font-mono font-normal text-[14px] leading-[1.7] text-text-primary;
   }
 
   .small {
-    @apply font-sans font-normal text-[13px] leading-[1.5] text-text-secondary;
+    @apply font-mono font-normal text-[12px] leading-[1.5] text-text-primary/70;
   }
 
   .label {
-    @apply font-mono font-medium text-[11px] uppercase tracking-[0.1em] text-primary;
-  }
-
-  /* Global Entrance Animation */
-  .reveal {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .reveal.active {
-    opacity: 1;
-    transform: translateY(0);
+    @apply font-mono font-medium text-[11px] uppercase tracking-[0.1em] text-text-accent;
   }
 }
 
 @layer components {
   .section-padding {
-    @apply py-[120px] px-6 lg:px-0;
+    @apply py-[120px] px-6 lg:px-8;
   }
 
   .container-grid {
-    @apply max-w-[1280px] mx-auto w-full grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4 lg:gap-6;
+    @apply max-w-[1440px] mx-auto w-full grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-0 border-x border-border-wire;
   }
 
   .btn-primary {
-    @apply bg-primary text-white font-sans font-semibold text-[14px] px-7 py-3 rounded-[6px] transition-all duration-200 hover:bg-primary-light;
-  }
-
-  .btn-secondary {
-    @apply border border-surface-2 text-white font-sans font-semibold text-[14px] px-7 py-3 rounded-[6px] transition-all duration-200;
-    /* Use raw CSS vars for hover: opacity modifiers (/40) break in @apply when colors are defined as var() references */
+    @apply bg-background border-[0.5px] border-border-wire text-text-primary font-mono text-[14px] uppercase tracking-wider px-6 py-3 transition-colors duration-300;
     &:hover {
-      border-color: var(--border-accent);
-      background-color: var(--primary-glow);
+      @apply bg-text-primary text-background;
     }
   }
 
-  .pill-tag {
-    @apply font-mono text-[10px] bg-surface-2 text-text-secondary px-2 py-0.5 rounded-[4px] border border-transparent transition-colors;
-    /* Use raw CSS var: opacity modifier /30 breaks in @apply when colors are defined as var() references */
+  .btn-secondary {
+    @apply bg-surface border-[0.5px] border-border-wire text-text-primary font-mono text-[14px] uppercase tracking-wider px-6 py-3 transition-colors duration-300;
     &:hover {
-      border-color: var(--border-secondary);
+      @apply bg-text-primary text-background;
     }
   }
 }
@@ -114,18 +90,18 @@
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background: var(--background);
+  border-left: 0.5px solid var(--border-wire);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--surface-2);
-  border-radius: 10px;
+  background: var(--border-wire);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: var(--text-accent);
 }

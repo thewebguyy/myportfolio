@@ -5,70 +5,89 @@ import Link from 'next/link'
 import { blogPosts } from '@/lib/blog'
 
 export function BlogSection() {
-  const featuredPosts = blogPosts.slice(0, 3)
+  const featuredPosts = blogPosts.slice(0, 5)
 
   return (
-    <section id="writing" className="section-padding bg-background">
-      <div className="max-w-[1280px] mx-auto px-6">
-        {/* Header */}
-        <div className="mb-16">
-          <motion.span
+    <section id="writing" className="border-b-[0.5px] border-border-wire bg-background">
+      <div className="max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire">
+        {/* Archive Header */}
+        <div className="border-b-[0.5px] border-border-wire px-8 lg:px-16 py-16">
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="label mb-4 block"
+            className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
           >
-            Writing
-          </motion.span>
+            [SYSTEM_LOG: DOCUMENTATION_ARCHIVE]
+          </motion.div>
           <motion.h2
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="h2 text-white mb-4"
+            className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight"
           >
-            Technical thinking
+            The Archive.
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="font-mono text-[14px] text-text-primary/70 max-w-[600px] mt-6 leading-[1.8]"
+          >
+            Technical thinking, architectural decisions, and post-mortems. High-density scanning enabled.
+          </motion.p>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Documentation List */}
+        <div className="flex flex-col">
+          {/* Table Header */}
+          <div className="hidden md:grid grid-cols-12 border-b-[0.5px] border-border-wire px-8 lg:px-16 py-4 font-mono text-[11px] text-text-accent/60 uppercase tracking-widest bg-surface/30">
+            <div className="col-span-2">Date</div>
+            <div className="col-span-2">Category</div>
+            <div className="col-span-6">Title & Summary</div>
+            <div className="col-span-2 text-right">Action</div>
+          </div>
+
           {featuredPosts.map((post, index) => (
-            <motion.article
+            <motion.div
               key={post.slug}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="group cursor-pointer relative"
+              transition={{ delay: index * 0.05, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
               <Link href={`/blog/${post.slug}`}>
-                <div className="flex flex-col h-full">
-                  <span className="font-mono text-[10px] uppercase text-secondary tracking-[0.1em] mb-3">
-                    {post.category}
-                  </span>
+                <div className="group grid grid-cols-1 md:grid-cols-12 border-b-[0.5px] border-border-wire px-8 lg:px-16 py-8 transition-colors hover:bg-surface/50 items-start">
                   
-                  <h3 className="font-sans font-semibold text-[20px] text-white leading-[1.3] mb-3 line-clamp-2 transition-colors group-hover:text-primary">
-                    {post.title}
-                  </h3>
+                  {/* Date */}
+                  <div className="md:col-span-2 font-mono text-[13px] text-text-primary/70 mb-4 md:mb-0 pt-1">
+                    {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                  </div>
                   
-                  <p className="text-[14px] text-text-secondary leading-[1.6] mb-6 line-clamp-3">
-                    {post.excerpt}
-                  </p>
+                  {/* Category */}
+                  <div className="md:col-span-2 font-mono text-[11px] text-text-accent uppercase tracking-widest mb-4 md:mb-0 pt-1">
+                    [{post.category}]
+                  </div>
                   
-                  <div className="mt-auto pt-6 border-b border-surface-2 group-hover:border-primary transition-colors duration-300 pb-6 flex items-center justify-between">
-                    <div className="font-mono text-[11px] text-text-muted">
-                      {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} · {post.readTime} min read
-                    </div>
-                    
-                    <div className="text-text-muted transition-all duration-300 group-hover:text-primary group-hover:translate-x-1">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 10H15M15 10L10 5M15 10L10 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div>
+                  {/* Content */}
+                  <div className="md:col-span-6 pr-8">
+                    <h3 className="font-serif text-[24px] text-text-primary leading-tight mb-2 group-hover:text-text-primary transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="font-mono text-[13px] text-text-primary/60 leading-[1.6]">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                  
+                  {/* Action */}
+                  <div className="hidden md:flex col-span-2 justify-end pt-1">
+                    <span className="font-mono text-[11px] text-text-accent/0 group-hover:text-text-accent uppercase tracking-widest transition-colors">
+                      [READ_DOC]
+                    </span>
                   </div>
                 </div>
               </Link>
-            </motion.article>
+            </motion.div>
           ))}
         </div>
       </div>

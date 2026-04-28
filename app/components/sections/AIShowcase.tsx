@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CandidateScreener } from '../ai/CandidateScreener'
 import { OpportunityMatcher } from '../ai/OpportunityMatcher'
 import { TechnicalAudit } from '../ai/TechnicalAudit'
+import { ArtifactFrame } from '../ui/ArtifactFrame'
 
 const AI_TOOLS = [
   {
@@ -36,75 +37,70 @@ export function AIShowcase() {
   const ActiveComponent = AI_TOOLS.find(t => t.id === activeDemo)?.component
 
   return (
-    <section id="ai" className="section-padding bg-background">
-      <div className="max-w-[1280px] mx-auto px-6">
-        {/* Header */}
-        <div className="mb-16">
-          <motion.span
+    <section id="ai" className="border-b-[0.5px] border-border-wire bg-background">
+      <div className="max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire">
+        {/* Intelligence Suite Header */}
+        <div className="border-b-[0.5px] border-border-wire px-8 lg:px-16 py-16">
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="label mb-4 block"
+            className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
           >
-            What I can build
-          </motion.span>
+            [SYSTEM_LOG: PROPRIETARY_MODULES]
+          </motion.div>
           <motion.h2
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="h2 text-white mb-4"
+            className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight"
           >
-            AI integration, production-ready
+            The Intelligence Suite.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="body max-w-[600px]"
+            className="font-mono text-[14px] text-text-primary/70 max-w-[600px] mt-6 leading-[1.8]"
           >
-            Three live AI tools I built — try them.
+            Terminal interfaces for AI simulators and orchestration engines.
           </motion.p>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        {/* Modules Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-b-[0.5px] border-border-wire">
           {AI_TOOLS.map((tool, index) => (
-            <motion.div
+            <div
               key={tool.title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className={`group bg-surface border rounded-[12px] p-8 relative transition-all duration-300 ${activeDemo === tool.id ? 'border-primary shadow-2xl shadow-primary/10' : 'border-surface-2 hover:border-primary/30'}`}
+              className={`border-b-[0.5px] md:border-b-0 md:border-r-[0.5px] last:border-r-0 border-border-wire p-8 flex flex-col transition-colors duration-300 ${activeDemo === tool.id ? 'bg-surface' : 'bg-background hover:bg-surface/50'}`}
             >
-              {/* Top Accent */}
-              {activeDemo === tool.id && (
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-primary rounded-t-[12px]" />
-              )}
+              <div className="font-mono text-[11px] text-text-accent mb-6 tracking-widest uppercase">
+                [MODULE: {tool.id.toUpperCase()}]
+              </div>
               
-              <h3 className="font-sans font-semibold text-[20px] text-white mb-3">
+              <h3 className="font-serif text-[24px] text-text-primary mb-4">
                 {tool.title}
               </h3>
               
-              <p className="text-[14px] text-text-secondary leading-[1.6] mb-6 min-h-[64px]">
+              <p className="font-mono text-[13px] text-text-primary/70 leading-[1.6] mb-8 flex-grow">
                 {tool.description}
               </p>
               
-              <div className="font-mono text-[12px] text-text-muted mb-8">
+              <div className="font-mono text-[11px] text-text-accent/60 mb-8 uppercase">
                 {tool.tech}
               </div>
               
               <button 
                 onClick={() => setActiveDemo(activeDemo === tool.id ? null : tool.id)} 
-                className={`w-full block text-center py-3 rounded-[6px] font-semibold transition-all ${activeDemo === tool.id ? 'bg-primary text-background' : 'bg-surface-2 text-white hover:bg-surface-3'}`}
+                className={`w-full py-3 font-mono text-[13px] tracking-wider uppercase transition-colors duration-300 border-[0.5px] border-border-wire ${activeDemo === tool.id ? 'bg-text-primary text-background' : 'bg-surface text-text-primary hover:bg-text-primary hover:text-background'}`}
               >
-                {activeDemo === tool.id ? 'Close demo' : 'Try demo'}
+                {activeDemo === tool.id ? '[ TERMINATE_DEMO ]' : '[ INITIALIZE_DEMO ]'}
               </button>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        {/* Demo Area */}
+        {/* Active Demo Area */}
         <AnimatePresence mode="wait">
           {activeDemo && ActiveComponent && (
             <motion.div
@@ -112,25 +108,23 @@ export function AIShowcase() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden"
+              className="overflow-hidden bg-background"
             >
-              <div className="pt-12 border-t border-surface-2">
-                <ActiveComponent />
+              <div className="p-8 lg:p-16">
+                <ArtifactFrame id={activeDemo.toUpperCase()} title="LIVE ORCHESTRATION">
+                  <div className="p-8 bg-[#020816] font-mono border-t-[0.5px] border-border-wire min-h-[400px]">
+                    <div className="text-text-accent mb-8 text-[12px] opacity-80 uppercase tracking-widest">
+                      &gt; SYSTEM READY. AWAITING INPUT...
+                    </div>
+                    <ActiveComponent />
+                  </div>
+                </ArtifactFrame>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center text-[14px] text-text-muted mt-12"
-        >
-          Rate-limited, input-validated, and streaming. Built the way production AI features should be built.
-        </motion.p>
       </div>
     </section>
   )
 }
-

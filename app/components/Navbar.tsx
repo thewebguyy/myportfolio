@@ -4,13 +4,11 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const NAV_LINKS = [
-    { label: 'Work', href: '/#work' },
-    { label: 'Projects', href: '/#projects' },
-    { label: 'Writing', href: '/blog' },
-    { label: 'Contact', href: '/#contact' },
+    { label: '[WORK]', href: '/#work' },
+    { label: '[AI_MODULES]', href: '/#ai' },
+    { label: '[ARCHIVE]', href: '/#writing' },
 ]
 
 export function Navbar() {
@@ -27,7 +25,7 @@ export function Navbar() {
     }, [])
 
     useEffect(() => {
-        const sectionIds = ['work', 'projects', 'contact']
+        const sectionIds = ['work', 'ai', 'writing']
         const observers: IntersectionObserver[] = []
 
         sectionIds.forEach((id) => {
@@ -73,28 +71,28 @@ export function Navbar() {
             <header
                 className={`
                     fixed top-0 left-0 right-0 z-50
-                    transition-all duration-300 h-[72px] flex items-center
+                    transition-all duration-300 h-[64px] flex items-center
                     ${scrolled
-                        ? 'bg-background/85 backdrop-blur-[20px] border-b border-surface-2'
-                        : 'bg-transparent border-b border-transparent'
+                        ? 'bg-background/90 backdrop-blur-md border-b-[0.5px] border-border-wire'
+                        : 'bg-transparent border-b-[0.5px] border-transparent'
                     }
                 `}
                 role="banner"
             >
                 <nav
-                    className="max-w-[1280px] mx-auto w-full px-6 flex items-center justify-between"
+                    className="max-w-[1440px] mx-auto w-full px-6 lg:px-8 flex items-center justify-between border-x-[0.5px] border-transparent h-full"
                     aria-label="Main navigation"
                 >
                     {/* Left: Logo & Name */}
                     <Link
                         href="/"
-                        className="flex items-center gap-3 group"
+                        className="flex items-center gap-4 group"
                         aria-label="Olabode Olusegun – home"
                     >
-                        <div className="w-8 h-8 border border-primary/30 flex items-center justify-center font-mono text-[14px] text-primary">
+                        <div className="w-8 h-8 border-[0.5px] border-text-accent flex items-center justify-center font-mono text-[12px] text-text-accent bg-background">
                             OO
                         </div>
-                        <span className="font-sans font-medium text-white text-[14px] tracking-tight">
+                        <span className="font-mono font-medium text-text-primary text-[12px] uppercase tracking-widest hidden md:block">
                             Olabode Olusegun
                         </span>
                     </Link>
@@ -107,10 +105,10 @@ export function Navbar() {
                                     href={href}
                                     onClick={() => handleNavClick(href)}
                                     className={`
-                                        text-[14px] font-normal transition-colors duration-150
+                                        text-[11px] font-mono tracking-widest transition-colors duration-150 uppercase
                                         ${isActive(href)
-                                            ? 'text-primary'
-                                            : 'text-text-secondary hover:text-white'
+                                            ? 'text-text-accent'
+                                            : 'text-text-primary/60 hover:text-text-primary'
                                         }
                                     `}
                                 >
@@ -124,19 +122,19 @@ export function Navbar() {
                     <div className="hidden md:flex items-center">
                         <Link
                             href="/#contact"
-                            className="px-4 py-[6px] text-[13px] font-medium rounded-full border border-primary/60 text-primary transition-all duration-200 hover:bg-primary/10 hover:border-primary"
+                            className="px-4 py-2 text-[11px] font-mono tracking-widest uppercase border-[0.5px] border-border-wire bg-surface text-text-primary transition-colors duration-300 hover:bg-text-primary hover:text-background"
                         >
-                            Hire me
+                            [ INIT_CONNECTION ]
                         </Link>
                     </div>
 
                     {/* Mobile Hamburger */}
                     <button
-                        className="md:hidden text-text-secondary hover:text-white transition-colors"
+                        className="md:hidden text-text-primary/60 hover:text-text-primary transition-colors font-mono text-[11px] uppercase tracking-widest"
                         onClick={() => setMenuOpen(true)}
                         aria-label="Open menu"
                     >
-                        <Bars3Icon className="w-6 h-6" />
+                        [MENU]
                     </button>
                 </nav>
             </header>
@@ -151,22 +149,22 @@ export function Navbar() {
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
                         className="fixed inset-0 z-[60] bg-background flex flex-col p-6"
                     >
-                        <div className="flex justify-between items-center h-[72px]">
+                        <div className="flex justify-between items-center h-[64px]">
                             <Link
                                 href="/"
                                 onClick={() => setMenuOpen(false)}
-                                className="flex items-center gap-3"
+                                className="flex items-center gap-4"
                             >
-                                <div className="w-8 h-8 border border-primary/30 flex items-center justify-center font-mono text-[14px] text-primary">
+                                <div className="w-8 h-8 border-[0.5px] border-text-accent flex items-center justify-center font-mono text-[12px] text-text-accent">
                                     OO
                                 </div>
                             </Link>
                             <button
-                                className="text-text-secondary hover:text-white transition-colors"
+                                className="text-text-primary/60 hover:text-text-primary transition-colors font-mono text-[11px] uppercase tracking-widest"
                                 onClick={() => setMenuOpen(false)}
                                 aria-label="Close menu"
                             >
-                                <XMarkIcon className="w-8 h-8" />
+                                [CLOSE]
                             </button>
                         </div>
 
@@ -176,20 +174,20 @@ export function Navbar() {
                                     key={href}
                                     href={href}
                                     onClick={() => handleNavClick(href)}
-                                    className="text-[48px] font-sans font-medium text-white hover:text-primary transition-colors"
+                                    className="text-[32px] font-serif text-text-primary hover:text-text-accent transition-colors"
                                 >
                                     {label}
                                 </Link>
                             ))}
                         </div>
 
-                        <div className="py-8 border-t border-surface-2">
+                        <div className="py-8 border-t-[0.5px] border-border-wire">
                             <Link
                                 href="/#contact"
                                 onClick={() => setMenuOpen(false)}
-                                className="btn-primary w-full block text-center py-4"
+                                className="w-full block text-center py-4 border-[0.5px] border-border-wire bg-surface text-text-primary font-mono text-[11px] tracking-widest uppercase hover:bg-text-primary hover:text-background transition-colors"
                             >
-                                Hire me
+                                [ INIT_CONNECTION ]
                             </Link>
                         </div>
                     </motion.div>
