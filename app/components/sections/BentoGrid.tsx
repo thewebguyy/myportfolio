@@ -31,7 +31,7 @@ export function BentoGrid() {
             viewport={{ once: true }}
             className="h2 text-white mb-4"
           >
-            What I've built
+            What I&apos;ve built
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}

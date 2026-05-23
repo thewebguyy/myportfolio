@@ -23,7 +23,7 @@ export function Testimonials() {
             viewport={{ once: true }}
             className="h2 text-white mb-4"
           >
-            From people I've worked with
+            From people I&apos;ve worked with
           </motion.h2>
         </div>
 
@@ -50,7 +50,7 @@ export function Testimonials() {
 
               {/* Quote */}
               <blockquote className="font-serif italic text-[18px] text-text-secondary leading-[1.6] mb-8">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
               </blockquote>
 
               {/* Author & Footer */}

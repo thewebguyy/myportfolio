@@ -156,7 +156,7 @@ export function TechnicalAudit() {
                      <div className="space-y-8">
                         <PerformanceMeter label="Confidence Score" score={audit.trustSignals.confidenceScore} />
                         <p className="font-serif italic text-[18px] text-text-secondary leading-relaxed">
-                          "{audit.auditResult.currentState}"
+                          &quot;{audit.auditResult.currentState}&quot;
                         </p>
                         <div className="space-y-3 pt-6 border-t border-surface-2">
                            <div className="font-mono text-[10px] text-text-muted uppercase tracking-widest">Engineering Principle</div>

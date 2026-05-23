@@ -115,7 +115,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             <div className="p-16 bg-surface border border-surface-2 rounded-[24px] text-center space-y-8">
               <h2 className="text-[32px] font-semibold text-white">Scale this system?</h2>
               <p className="body max-w-[520px] mx-auto">
-                Let's discuss how these patterns can be applied to your technical infrastructure.
+                Let&apos;s discuss how these patterns can be applied to your technical infrastructure.
               </p>
               <div className="flex justify-center gap-4 pt-4">
                 <Link href="/#contact" className="btn-primary">Get in touch</Link>

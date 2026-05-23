@@ -19,8 +19,6 @@ export default function CaseStudiesPage() {
   return (
     <CaseStudiesClient
       sortedProjects={sortedProjects}
-      totalProjects={projects.length}
-      featuredCount={projects.filter(p => p.featured).length}
     />
   )
 }

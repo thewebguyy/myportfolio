@@ -70,7 +70,7 @@ export function SystemActivityFeed() {
 
 function ActivityItem({ report }: { report: SystemReport }) {
   const time = new Date(report.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  const business = report.input.businessType || 'Enterprise'
+  const business = (report.input.businessType as string) || 'Enterprise'
   
   return (
     <div className="flex items-center gap-4 text-[10px] text-gray-400 font-mono">

@@ -1,20 +1,20 @@
 # Olabode Olusegun - Portfolio 2026
 
-Modern, AI-powered portfolio website showcasing full-stack development expertise, distributed systems architecture, and deep AI engineering integration.
+A modern, high-fidelity portfolio website showcasing full-stack development expertise, distributed systems architecture, and professional AI engineering integration.
 
 ## 🏗️ System Architecture & AI Engineering
 
-This portfolio demonstrates more than just frontend development; it showcases a deep understanding of distributed systems and specialized AI engineering:
+This portfolio demonstrates robust software engineering principles applied to web application design and AI integration:
 
-### Distributed Systems: ServiceBridge
-- **Real-time Pipeline:** Sub-200ms latency matching engine using Socket.io and Redis cluster for session persistence and pub/sub.
-- **Data Integrity:** PostgreSQL with multi-AZ read-replicas for high-traffic scalability and data resilience.
-- **Monitoring & Observability:** Integrated Datadog APM for distributed tracing and New Relic for full-stack visibility.
+### System & Persistence Design
+- **Structured Persistency:** Lightweight data persistence abstraction (`lib/storage.ts`) supporting generated strategy reports with local storage serialization.
+- **Fail-safe Rate Limiting:** Rate limiting middleware configured for API routes, falling back gracefully to system defaults if service interfaces are absent.
+- **Type-Safe API Boundaries:** Zod request schema validations applied on all API endpoints for strict request/response data compliance.
 
-### AI Engineering beyond API Consumption
-- **Hybrid RAG Strategy:** Implemented Retrieval-Augmented Generation using Pinecone vector search (Sentence-BERT embeddings) for intent-based projects and service matching.
-- **Evaluation Framework:** Custom evaluation pipeline measuring NDCG@5 (0.84) and Precision@1 (0.72) to objectively validate AI relevance.
-- **RAG vs. Fine-tuning Tradeoffs:** Expert transition from static prompts to dynamic hybrid RAG to balance costs and real-time accuracy.
+### Factual AI Engineering
+- **Multi-Step Reasoners:** Multi-step strategic analysis pipelines (`services/ai-orchestrator.ts`) instead of simple prompt-reply loops, allowing structured output projection.
+- **Robust Error Handling:** Diagnostic wrappers (`lib/openai.ts`) mapping raw LLM and connection errors (timeouts, network drops, rate limits) into clear user-facing messages.
+- **AI-Driven Tools:** Full-stack integration of interactive tools (Resume Analyzer, Decision Simulator, Engineering Assistant) using verified models.
 
 ## 🧪 Robust Testing Strategy
 
@@ -28,18 +28,18 @@ We follow the "Testing Trophy" methodology to ensure reliability across all crit
 ## 🚀 Features
 
 ### AI-Powered Components
-- **Project Recommender**: GPT-4 semantic matching for portfolio projects
-- **Resume Analyzer**: AI-powered skill gap analysis and collaboration finder
-- **Floating Chatbot**: Real-time Q&A assistant for portfolio navigation
+- **Project Recommender**: GPT-based semantic matching for portfolio projects.
+- **Resume Analyzer**: AI-powered skill gap analysis and collaboration finder.
+- **Decision Simulator**: Project outcome modeling against operational constraints.
+- **Floating Chatbot**: Real-time Q&A assistant for portfolio navigation.
 
 ### Interactive Visualizations
-- **Skill Radar Chart**: Interactive proficiency visualization across technical domains
-- **API Playground**: Live testing environment for AI endpoints
+- **Skill Radar Chart**: Interactive proficiency visualization across technical domains.
+- **System Activity Feed**: Marquee ticker of live simulated and saved system reports.
 
-### Performance Optimizations
-- **Sub-1s Load Time**: Next.js 14 with App Router, image optimization, code splitting
-- **WCAG 2.2 Level AA**: Full accessibility compliance with keyboard navigation
-- **Dark Mode**: System preference detection with smooth transitions
+### Performance & Accessibility
+- **Sub-1s Load Time**: Next.js 14 with App Router, image optimization, and code splitting.
+- **Dark Mode**: Sovereign terminal center theme with deep navy surfaces and vibrant highlights.
 
 ## 🛠️ Tech Stack
 
@@ -50,8 +50,8 @@ We follow the "Testing Trophy" methodology to ensure reliability across all crit
 - **Animations**: Framer Motion
 
 ### AI Integration
-- **LLM**: OpenAI GPT-4 Turbo
-- **APIs**: Custom prompt engineering for semantic analysis
+- **LLM**: OpenAI GPT-4o
+- **APIs**: Custom prompt engineering for strategic analysis
 
 ### Data Visualization
 - **Charts**: Chart.js with react-chartjs-2
@@ -85,16 +85,6 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 OPENAI_API_KEY=sk-your-api-key-here
 NEXT_PUBLIC_SITE_URL=https://olabodeolusegun.com
 ```
-
-## 📊 Performance Metrics
-
-| Metric | Target | Current |
-|--------|--------|---------|
-| Lighthouse Performance | 100 | 100 |
-| First Contentful Paint | <1.0s | 0.8s |
-| Largest Contentful Paint | <1.5s | 1.2s |
-| Time to Interactive | <2.0s | 1.8s |
-| Accessibility Score | 100 | 100 |
 
 ## 🏗️ Project Structure
 ```

@@ -15,7 +15,7 @@ export function ContactSection() {
               viewport={{ once: true }}
               className="text-[48px] md:text-[64px] font-semibold text-white leading-[1.1] mb-8"
             >
-              Let's build something real.
+              Let&apos;s build something real.
             </motion.h2>
             
             <motion.p
@@ -24,7 +24,7 @@ export function ContactSection() {
               viewport={{ once: true }}
               className="text-[18px] text-text-secondary leading-[1.7] mb-12 max-w-[480px]"
             >
-              I'm available for engineering roles and high-impact freelance projects. Based in Lagos, working globally.
+              I&apos;m available for engineering roles and high-impact freelance projects. Based in Lagos, working globally.
             </motion.p>
 
             {/* Availability Status */}

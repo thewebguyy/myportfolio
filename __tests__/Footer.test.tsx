@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import { Footer } from '@/app/components/sections/Footer'
 
 describe('Footer Component', () => {
@@ -16,16 +17,19 @@ describe('Footer Component', () => {
         expect(screen.getByText(/© 2026/)).toBeInTheDocument()
     })
 
-    it('renders tech stack information', () => {
-        render(<Footer />)
-        expect(screen.getByText(/Built with Next.js, TypeScript, and Tailwind CSS/i)).toBeInTheDocument()
-    })
-
     it('renders navigation links', () => {
         render(<Footer />)
-        expect(screen.getByRole('link', { name: /Case Studies/i })).toBeInTheDocument()
-        expect(screen.getByRole('link', { name: /Blog/i })).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: /Work/i })).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: /AI/i })).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: /Writing/i })).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: /Contact/i })).toBeInTheDocument()
+    })
+
+    it('renders external links', () => {
+        render(<Footer />)
+        expect(screen.getByRole('link', { name: /LinkedIn/i })).toBeInTheDocument()
         expect(screen.getByRole('link', { name: /GitHub/i })).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: /Twitter/i })).toBeInTheDocument()
     })
 
     it('renders back to top button', () => {
@@ -35,6 +39,6 @@ describe('Footer Component', () => {
 
     it('renders location information', () => {
         render(<Footer />)
-        expect(screen.getByText(/Lagos, Nigeria/i)).toBeInTheDocument()
+        expect(screen.getByText(/Lagos — Worldwide/i)).toBeInTheDocument()
     })
 })

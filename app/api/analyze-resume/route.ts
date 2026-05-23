@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { orchestrator } from '@/services/ai-orchestrator'
 import { sysStorage } from '@/lib/storage'
+import { handleOpenAIError } from '@/lib/openai'
 
 const requestSchema = z.object({
   resumeText: z.string().min(50),
@@ -13,8 +14,25 @@ const requestSchema = z.object({
  */
 export async function POST(req: Request) {
   try {
-    const body = await req.json()
-    const { resumeText } = requestSchema.parse(body)
+    let body;
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid input. Please provide resume text." },
+        { status: 400 }
+      )
+    }
+
+    const parseResult = requestSchema.safeParse(body)
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { error: "Invalid input. Please provide resume text." },
+        { status: 400 }
+      )
+    }
+
+    const { resumeText } = parseResult.data
 
     const result = await orchestrator.orchestrateTalentAudit(resumeText)
 
@@ -39,9 +57,10 @@ export async function POST(req: Request) {
     })
   } catch (error) {
     console.error('Talent Orchestration Error:', error)
+    const errorMessage = handleOpenAIError(error)
     return NextResponse.json(
-      { error: 'Talent risk modeling failed. Ensure resume text is clear.' },
-      { status: 400 }
+      { error: errorMessage },
+      { status: 500 }
     )
   }
 }

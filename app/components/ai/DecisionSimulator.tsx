@@ -12,7 +12,7 @@ import {
   ChartBarIcon
 } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
-import { DataPanel, InsightCard, RiskMeter, DecisionBlock } from '@/app/components/ui/ConsultingUI'
+import { ArchitecturePanel, EngineeringDecisionBlock } from '@/app/components/ui/EngineeringUI'
 
 interface SimulationResult {
   projectedOutcome: string
@@ -146,7 +146,7 @@ export function DecisionSimulator() {
         ) : result && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
             <div className="grid lg:grid-cols-3 gap-8">
-              <DataPanel title="Outcome Projection" className="lg:col-span-2">
+              <ArchitecturePanel title="Outcome Projection" className="lg:col-span-2">
                  <p className="text-xl text-white font-serif italic leading-relaxed mb-8">
                     &quot;{result.projectedOutcome}&quot;
                  </p>
@@ -159,17 +159,17 @@ export function DecisionSimulator() {
                        <h4 className="text-[10px] text-yellow-500 uppercase font-black mb-2">Key Trade-offs</h4>
                        <ul className="space-y-1">
                           {result.tradeOffs.map((t: string, i: number) => (
-                            <li key={i} className="text-xs text-gray-400 flex gap-2">
-                               <span className="text-yellow-500/50">•</span> {t}
-                            </li>
+                             <li key={i} className="text-xs text-gray-400 flex gap-2">
+                                <span className="text-yellow-500/50">•</span> {t}
+                             </li>
                           ))}
                        </ul>
                     </div>
                  </div>
-              </DataPanel>
+              </ArchitecturePanel>
               
               <div className="space-y-6">
-                 <DataPanel title="Scenario Stress Test">
+                 <ArchitecturePanel title="Scenario Stress Test">
                     <div className="space-y-4">
                        <div className="p-4 bg-green-500/5 border border-green-500/20 rounded-xl">
                           <h5 className="text-[10px] text-green-500 uppercase font-black mb-1">Best Case</h5>
@@ -180,7 +180,7 @@ export function DecisionSimulator() {
                           <p className="text-[11px] text-gray-400">{result.scenarios.worstCase}</p>
                        </div>
                     </div>
-                 </DataPanel>
+                 </ArchitecturePanel>
 
                  <div className="p-6 bg-primary/10 border border-primary/20 rounded-2xl">
                     <div className="flex justify-between items-center mb-4">
@@ -197,7 +197,7 @@ export function DecisionSimulator() {
 
             <div className="grid md:grid-cols-3 gap-6">
                {result.actionSteps.map((step: string, i: number) => (
-                 <DecisionBlock 
+                 <EngineeringDecisionBlock 
                    key={i} 
                    title={`Execution Step 0${i+1}`}
                    action={step}

@@ -2,13 +2,7 @@
 const nextConfig = {
   // Enable React strict mode for better development experience
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-
+  // transpilePackages: ['framer-motion'],
   // Image optimization configuration
   images: {
     formats: ['image/avif', 'image/webp'],
