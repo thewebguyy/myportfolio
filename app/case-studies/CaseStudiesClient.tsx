@@ -28,7 +28,7 @@ export function CaseStudiesClient({ sortedProjects }: {
                     </h1>
                     <p className="text-xl text-gray-400 max-w-3xl font-serif italic leading-relaxed">
                         A collection of enterprise audits, operational strategies, and high-impact technical implementations.
-                        Each case study represents a commitment to ROI-driven engineering and analytical depth.
+                        Each case study represents a production system built and shipped under real constraints.
                     </p>
                 </div>
             </section>

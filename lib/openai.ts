@@ -90,7 +90,7 @@ TASK: Based on technical inputs (Load, Concurrency, Stack, Infrastructure), proj
 Output JSON:
 {
   "projectedOutcome": "Detailed narrative of system performance under specified load",
-  "technicalImpact": "Estimated latency, throughput, and resource utilization",
+  "systemImpact": "Estimated latency, throughput, and resource utilization",
   "tradeOffs": ["Trade-off 1", "Trade-off 2"],
   "scenarios": {
     "optimalExecution": "System state with perfect resources",
@@ -109,7 +109,7 @@ Output JSON:
  */
 export const TECHNICAL_OPPORTUNITY_PROMPT = `You are an Engineering Opportunity Engine.
 ${ENGINEERING_CONTEXT}
-Analyze technical feasibility and performance ROI.
+Analyze technical feasibility and implementation complexity.
 
 Output format (JSON only):
 {
@@ -119,9 +119,7 @@ Output format (JSON only):
   "performancePotential": "High/Medium/Low",
   "complexityLevel": "Low/Medium/High",
   "technicalReasoning": "Contextual analysis including scalability and maintenance impact",
-  "latencyImplication": "Specific impact on system speed",
-  "actionStep": "Concrete engineering move",
-  "implementationPath": "Detailed technical roadmap",
+  "approach": "Detailed technical approach",
   "requiredTech": ["tech1", "tech2"]
 }`
 
@@ -147,7 +145,7 @@ Output JSON:
       "priority": "High/Medium/Low",
       "action": "Specific engineering task",
       "technicalImpact": "Expected change in system metrics",
-      "riskMitigation": "How to prevent system failure",
+      "developmentPlan": "How to implement safely",
       "expectedPerfGain": "Percentage/Metric"
     }
   ],

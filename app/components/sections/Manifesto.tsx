@@ -16,7 +16,7 @@ export function Manifesto() {
               viewport={{ once: true }}
               className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
             >
-              [SYSTEM_LOG: PROFESSIONAL_MANIFESTO]
+              [HOW I WORK]
             </motion.div>
             
             <motion.h2
@@ -25,8 +25,8 @@ export function Manifesto() {
               viewport={{ once: true }}
               className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight leading-[1.1]"
             >
-              Engineering is not a cost center.<br />
-              <span className="opacity-70">It is a lever for market dominance.</span>
+              Build it right. Ship it fast.<br />
+              <span className="opacity-70">Keep it running.</span>
             </motion.h2>
           </div>
 
@@ -38,9 +38,7 @@ export function Manifesto() {
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
             >
-              I architect systems that transform operational friction into compounding return on investment. 
-              Code for the sake of code is technical debt; code deployed to capture market share, 
-              streamline user acquisition, and fortify enterprise security is an asset.
+              {/* PLACEHOLDER A: What you care about in engineering practice */}
             </motion.p>
             
             <motion.p
@@ -49,9 +47,16 @@ export function Manifesto() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              I have spent the past five years engineering highly concurrent infrastructure, rigorous type-safe 
-              platforms, and proprietary AI workflows for scaling businesses. My methodology strips away the superfluous 
-              to deliver absolute reliability, unyielding performance, and measurable business outcomes.
+              {/* PLACEHOLDER B: Your methodology (reliability, latency, constrained-connectivity) */}
+            </motion.p>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.25 }}
+            >
+              {/* PLACEHOLDER C: What you've built that proves it */}
             </motion.p>
             
             <motion.div
@@ -62,11 +67,11 @@ export function Manifesto() {
               className="pt-8 mt-8 border-t-[0.5px] border-border-wire"
             >
               <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-4">
-                [REQUIRE_ARCHITECTURAL_INSIGHT?]
+                [CONTACT]
               </div>
               <a href="#contact" className="inline-flex items-center gap-3 text-text-primary hover:text-text-accent transition-colors duration-300 uppercase tracking-widest text-[13px]">
                 <span className="w-2 h-2 bg-text-accent inline-block"></span>
-                [Connection Initialization for High-Stakes Projects]
+                Get in touch
               </a>
             </motion.div>
           </div>

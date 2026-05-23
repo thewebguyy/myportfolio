@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline'
 
 /**
- * Enterprise API Playground
+ * API Playground
  * Advanced tester for system orchestration endpoints.
  */
 interface PlaygroundResponse {
@@ -30,13 +30,13 @@ export function Playground() {
 
   const apiExamples = [
     {
-      name: 'Strategic Audit Engine',
+      name: 'Technical Audit',
       endpoint: '/api/consult',
       method: 'POST',
       body: '{\n  "businessType": "Fintech",\n  "revenueEstimate": "$5M",\n  "challenge": "Scaling payment infrastructure for 50k users."\n}',
     },
     {
-      name: 'Talent Intelligence',
+      name: 'Resume Analyzer',
       endpoint: '/api/analyze-resume',
       method: 'POST',
       body: '{\n  "resumeText": "5 years experience in distributed systems and AI orchestration..."\n}',

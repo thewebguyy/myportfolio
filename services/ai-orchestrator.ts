@@ -39,9 +39,9 @@ export class AIOrchestrator {
   }): Promise<OrchestrationResult<Record<string, unknown>>> {
     const steps: OrchestrationStep[] = [
       { id: 'parsing', label: 'Input Normalization', status: 'pending' },
-      { id: 'context', label: 'Economic Context Injection', status: 'pending' },
-      { id: 'analysis', label: 'Strategic Gap Analysis', status: 'pending' },
-      { id: 'synthesis', label: 'Outcome Synthesis', status: 'pending' },
+      { id: 'context', label: 'Stack Context Injection', status: 'pending' },
+      { id: 'analysis', label: 'Architecture Gap Analysis', status: 'pending' },
+      { id: 'synthesis', label: 'Recommendation Synthesis', status: 'pending' },
     ]
 
     this.startTime = Date.now()
@@ -50,7 +50,7 @@ export class AIOrchestrator {
     const completion = await openai.chat.completions.create({
       model: AI_CONFIG.model,
       messages: [
-        { role: 'system', content: 'You are a Strategic Audit Engine with real-world economic awareness.' },
+        { role: 'system', content: 'You are a Technical Audit Engine. Analyse system architecture and produce engineering recommendations.' },
         { role: 'user', content: `Audit parameters: ${JSON.stringify(params)}` }
       ],
       response_format: { type: 'json_object' }
@@ -83,7 +83,7 @@ export class AIOrchestrator {
     cost: string
     revenue: string
     teamSize: string
-    riskLevel: string
+    complexityLevel: string
   }): Promise<OrchestrationResult<Record<string, unknown>>> {
     const steps: OrchestrationStep[] = [
       { id: 'modeling', label: 'Financial Modeling', status: 'pending' },
@@ -124,13 +124,13 @@ export class AIOrchestrator {
   }
 
   /**
-   * Orchestrates Talent Intelligence Analysis
+   * Orchestrates Resume Analysis
    */
   async orchestrateTalentAudit(resumeText: string): Promise<OrchestrationResult<Record<string, unknown>>> {
     const steps: OrchestrationStep[] = [
       { id: 'extraction', label: 'Semantic Entity Extraction', status: 'pending' },
-      { id: 'benchmarking', label: 'Strategic Alignment Benchmarking', status: 'pending' },
-      { id: 'risk_scoring', label: 'Hiring Risk Modeling', status: 'pending' },
+      { id: 'benchmarking', label: 'Technical Alignment Benchmarking', status: 'pending' },
+      { id: 'risk_scoring', label: 'Skill Gap Analysis', status: 'pending' },
     ]
 
     steps[0].status = 'processing'
@@ -140,15 +140,14 @@ export class AIOrchestrator {
       messages: [
         { 
           role: 'system', 
-          content: `You are a Talent Intelligence Orchestrator.
+          content: `You are a Resume Analysis Engine.
           Analyze the resume and return JSON:
           {
-            "hiringRiskScore": 0-100,
-            "retentionRisk": "Low/Medium/High",
-            "skillGapSeverity": "Low/Medium/High",
+            "matchScore": 0-100,
+            "skillGap": "Low/Medium/High",
             "alignmentSignals": { "cultural": "string", "technical": "string", "strategic": "string" },
             "collaborationOpportunities": ["string"],
-            "riskMitigation": "string",
+            "developmentPlan": "string",
             "reasoning": "string",
             "confidenceScore": 0-100,
             "assumptions": ["string"]

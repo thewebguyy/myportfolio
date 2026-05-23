@@ -8,7 +8,7 @@ import { ArchitecturePanel, TechnicalInsightCard, PerformanceMeter, EngineeringD
 
 /**
  * Opportunity Matcher
- * Matches technical domains with monetizable engineering initiatives.
+ * Maps a technical domain to a concrete, production-ready project recommendation.
  */
 export function OpportunityMatcher() {
   const [userInterest, setUserInterest] = useState('')
@@ -58,12 +58,12 @@ export function OpportunityMatcher() {
           className="space-y-12"
         >
           <div className="text-center space-y-4">
-            <span className="label">Opportunity Engine</span>
+            <span className="label">Demo</span>
             <h2 className="h2 text-white">
-              Opportunity Matcher
+              Project Recommender
             </h2>
             <p className="body max-w-2xl mx-auto">
-              Map your engineering domains to high-impact technical initiatives and production-ready architectures.
+              Describe a technical domain or problem space. Get a concrete project recommendation with stack, feasibility score, and implementation path.
             </p>
           </div>
 
@@ -148,18 +148,18 @@ export function OpportunityMatcher() {
                           <ChartBarIcon className="w-4 h-4 text-primary" />
                           Technical Reasoning
                         </div>
-                        <p className="font-serif italic text-[18px] text-text-secondary leading-relaxed">{opportunity.strategicReasoning}</p>
+                        <p className="font-serif italic text-[18px] text-text-secondary leading-relaxed">{opportunity.technicalReasoning}</p>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <TechnicalInsightCard title="Performance ROI" value={opportunity.roiPotential} description="Projected outcome of implementation" />
-                        <TechnicalInsightCard title="Complexity" value={opportunity.riskLevel} description="Implementation difficulty" />
+                        <TechnicalInsightCard title="Performance Potential" value={opportunity.performancePotential} description="Projected outcome of implementation" />
+                        <TechnicalInsightCard title="Complexity" value={opportunity.complexityLevel} description="Implementation difficulty" />
                       </div>
                     </div>
 
                     <div className="md:col-span-4 space-y-8">
                       <ArchitecturePanel title="Stack Recommendation">
-                        <p className="text-[14px] text-text-secondary mb-6">{opportunity.businessModel}</p>
+                        <p className="text-[14px] text-text-secondary mb-6">{opportunity.approach}</p>
                         <div className="space-y-4">
                           <div className="font-mono text-[10px] text-text-muted uppercase tracking-widest">Core Tech</div>
                           <div className="flex flex-wrap gap-2">
@@ -204,9 +204,9 @@ interface OpportunityResult {
   opportunityId: string
   title: string
   feasibility: number
-  roiPotential: string
-  riskLevel: string
-  strategicReasoning: string
-  businessModel: string
+  performancePotential: string
+  complexityLevel: string
+  technicalReasoning: string
+  approach: string
   requiredTech: string[]
 }

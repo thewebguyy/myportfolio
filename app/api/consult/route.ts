@@ -10,7 +10,7 @@ const requestSchema = z.object({
 })
 
 /**
- * AI Consulting Interface - Orchestrated Version
+ * Technical Audit — Orchestrated Version
  * Demonstrates multi-step reasoning and persistence.
  */
 export async function POST(req: Request) {
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       }
     })
   } catch (error) {
-    console.error('Audit Orchestration Error:', error)
+    console.error('Technical Audit Error:', error)
     return NextResponse.json(
       { error: 'System orchestration failed. Please check parameters or retry.' },
       { status: 400 }

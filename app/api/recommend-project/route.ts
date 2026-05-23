@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json({
-        error: "Strategic analysis is currently unavailable.",
+        error: "Project recommender is currently unavailable.",
       }, { status: 503, headers: getRateLimitHeaders(rateLimitResult) })
     }
 
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
         { role: 'system', content: TECHNICAL_OPPORTUNITY_PROMPT },
         {
           role: 'user',
-          content: `Market Interest: "${sanitizedInterest}"\n\nConsultant Capabilities:\n${JSON.stringify(capabilities, null, 2)}`,
+          content: `Technical Domain: "${sanitizedInterest}"\n\nEngineering Capabilities:\n${JSON.stringify(capabilities, null, 2)}`,
         },
       ],
       temperature: 0.7,
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ opportunity }, { headers: getRateLimitHeaders(rateLimitResult) })
 
   } catch (error: unknown) {
-    console.error('Strategic Opportunity error:', error)
+    console.error('Project Recommender error:', error)
     const errorMessage = handleOpenAIError(error)
     return NextResponse.json({ error: errorMessage }, { status: 500 })
   }

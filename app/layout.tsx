@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { ThemeProvider } from './components/ThemeProvider'
 import { Navbar } from './components/Navbar'
+import { FloatingChatbot } from './components/ai/FloatingChatbot'
 import './globals.css'
 
 // Font configuration with display swap for performance
@@ -25,11 +26,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://olabodeolusegun.com'),
   title: {
-    default: 'Olabode Olusegun - Systems Architect',
+    default: 'Olabode Olusegun — Full-Stack Engineer',
     template: '%s | Olabode Olusegun'
   },
-  description: 'Lagos-based Systems Architect and Principal Design Engineer focusing on high-performance, resilient engineering environments.',
-  keywords: ['Systems Architect', 'Design Engineer', 'Lagos', 'Nigeria', 'React', 'Node.js', 'TypeScript', 'Engineering'],
+  description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
+  keywords: ['Full-Stack Engineer', 'Fintech', 'Marketplace', 'Design Engineer', 'Lagos', 'Nigeria', 'React', 'Node.js', 'TypeScript', 'Engineering'],
   authors: [{ name: 'Olabode Olusegun' }],
   creator: 'Olabode Olusegun',
   openGraph: {
@@ -37,13 +38,13 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://olabodeolusegun.com',
     title: 'Olabode Olusegun - Systems Architect',
-    description: 'Lagos-based Systems Architect and Principal Design Engineer focusing on high-performance, resilient engineering environments.',
-    siteName: 'Olabode Olusegun Dossier',
+    description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
+    siteName: 'Olabode Olusegun',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Olabode Olusegun - Systems Architect',
-    description: 'Lagos-based Systems Architect and Principal Design Engineer focusing on high-performance, resilient engineering environments.',
+    description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
     creator: '@thewebguyy',
   },
   robots: {
@@ -86,6 +87,7 @@ export default function RootLayout({
 
           <Analytics />
           <SpeedInsights />
+          <FloatingChatbot />
         </ThemeProvider>
       </body>
     </html>

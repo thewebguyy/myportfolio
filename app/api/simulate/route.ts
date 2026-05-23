@@ -7,12 +7,12 @@ const requestSchema = z.object({
   cost: z.string().min(1),
   revenue: z.string().min(1),
   teamSize: z.string().min(1),
-  riskLevel: z.string().min(1),
+  complexityLevel: z.string().min(1),
 })
 
 /**
  * Decision Simulation API
- * Projects outcomes and financial impacts.
+ * Projects technical outcomes and system impacts.
  */
 export async function POST(req: Request) {
   try {

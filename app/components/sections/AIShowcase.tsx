@@ -10,22 +10,22 @@ import { ArtifactFrame } from '../ui/ArtifactFrame'
 const AI_TOOLS = [
   {
     id: 'screener',
-    title: "AI Candidate Screener",
-    description: "Engineered for high-volume recruitment: handles structured output and real-time streaming analysis.",
+    title: "Resume Analyzer",
+    description: "Multi-step semantic extraction over resume text. Demonstrates JSON schema enforcement, streaming output, and structured confidence scoring.",
     tech: "JSON Schema · OpenAI GPT-4 · Streaming",
     component: CandidateScreener
   },
   {
     id: 'matcher',
-    title: "Opportunity Matcher",
-    description: "Automated semantic matching engine with rate-limited API design for technical market analysis.",
+    title: "Project Recommender",
+    description: "Maps a technical domain to a concrete project recommendation. Rate-limited at 10 req/hour, validated with Zod.",
     tech: "Semantic Search · Zod · Rate Limiting",
     component: OpportunityMatcher
   },
   {
     id: 'audit',
     title: "Technical Audit Tool",
-    description: "Multi-step prompt orchestration for system diagnostics, generating deep technical insights.",
+    description: "Multi-step prompt orchestration for system diagnostics. Takes stack and bottleneck as input; returns structured recommendations with priority scoring.",
     tech: "Prompt Engineering · Edge Functions",
     component: TechnicalAudit
   }
@@ -47,7 +47,7 @@ export function AIShowcase() {
             viewport={{ once: true }}
             className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
           >
-            [SYSTEM_LOG: PROPRIETARY_MODULES]
+            [DEMOS]
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
@@ -55,7 +55,7 @@ export function AIShowcase() {
             viewport={{ once: true }}
             className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight"
           >
-            The Intelligence Suite.
+            AI Engineering.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -63,7 +63,7 @@ export function AIShowcase() {
             viewport={{ once: true }}
             className="font-mono text-[14px] text-text-primary/70 max-w-[600px] mt-6 leading-[1.8]"
           >
-            Terminal interfaces for AI simulators and orchestration engines.
+            Live demos built on streaming responses, Zod validation, rate limiting, and prompt injection defence. Each tool is a real endpoint — try it.
           </motion.p>
         </div>
 
@@ -94,7 +94,7 @@ export function AIShowcase() {
                 onClick={() => setActiveDemo(activeDemo === tool.id ? null : tool.id)} 
                 className={`w-full py-3 font-mono text-[13px] tracking-wider uppercase transition-colors duration-300 border-[0.5px] border-border-wire ${activeDemo === tool.id ? 'bg-text-primary text-background' : 'bg-surface text-text-primary hover:bg-text-primary hover:text-background'}`}
               >
-                {activeDemo === tool.id ? '[ TERMINATE_DEMO ]' : '[ INITIALIZE_DEMO ]'}
+                {activeDemo === tool.id ? 'Close' : 'Try it'}
               </button>
             </div>
           ))}

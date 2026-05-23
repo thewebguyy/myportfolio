@@ -27,7 +27,7 @@ export interface CaseStudy {
     priority: 'High' | 'Medium'
   }[]
   assumptions: string[]
-  financialImpact: string
+  systemImpact: string
   efficiencyGain: string
   riskReduction: string
   beforeState: string

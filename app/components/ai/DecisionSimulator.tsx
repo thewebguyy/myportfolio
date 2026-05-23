@@ -16,11 +16,11 @@ import { ArchitecturePanel, EngineeringDecisionBlock } from '@/app/components/ui
 
 interface SimulationResult {
   projectedOutcome: string
-  financialImpact: string
+  systemImpact: string
   tradeOffs: string[]
   scenarios: {
-    bestCase: string
-    worstCase: string
+    optimalExecution: string
+    edgeCase: string
   }
   trustSignals: {
     whyItWorks: string
@@ -37,7 +37,7 @@ export function DecisionSimulator() {
     cost: '',
     revenue: '',
     teamSize: '',
-    riskLevel: 'Medium'
+    complexityLevel: 'Medium'
   })
 
   async function runSimulation() {
@@ -116,11 +116,11 @@ export function DecisionSimulator() {
                     </div>
                  </div>
                  <div>
-                    <label className="text-[10px] text-gray-500 uppercase font-black mb-3 block">Acceptable Risk Level</label>
+                    <label className="text-[10px] text-gray-500 uppercase font-black mb-3 block">Complexity Level</label>
                     <select 
                       className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-4 text-white focus:border-primary focus:outline-none"
-                      value={formData.riskLevel}
-                      onChange={e => setFormData({...formData, riskLevel: e.target.value})}
+                      value={formData.complexityLevel}
+                      onChange={e => setFormData({...formData, complexityLevel: e.target.value})}
                     >
                       <option>Low</option>
                       <option>Medium</option>
@@ -133,7 +133,7 @@ export function DecisionSimulator() {
               onClick={runSimulation}
               className="w-full py-5 bg-primary text-white rounded-2xl font-black uppercase tracking-widest hover:bg-primary-light transition-all flex items-center justify-center gap-3"
             >
-              Simulate Strategic Outcome
+              Run Simulation
               <BoltIcon className="w-5 h-5" />
             </button>
           </div>
@@ -141,7 +141,6 @@ export function DecisionSimulator() {
           <div className="max-w-4xl mx-auto glass p-20 rounded-3xl border-primary/20 text-center space-y-6">
              <div className="w-16 h-16 border-4 border-primary/10 border-t-primary rounded-full animate-spin mx-auto" />
              <div className="text-xl font-bold text-white uppercase tracking-widest">Running Scenario Models...</div>
-             <p className="text-gray-500 font-serif italic italic">Applying FX volatility and inflation vectors.</p>
           </div>
         ) : result && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
@@ -152,8 +151,8 @@ export function DecisionSimulator() {
                  </p>
                  <div className="grid md:grid-cols-2 gap-6">
                     <div className="p-6 bg-gray-950 rounded-2xl border border-gray-800">
-                       <h4 className="text-[10px] text-primary uppercase font-black mb-2">Financial Outcome</h4>
-                       <div className="text-2xl font-bold text-white">{result.financialImpact}</div>
+                       <h4 className="text-[10px] text-primary uppercase font-black mb-2">System Impact</h4>
+                       <div className="text-2xl font-bold text-white">{result.systemImpact}</div>
                     </div>
                     <div className="p-6 bg-gray-950 rounded-2xl border border-gray-800">
                        <h4 className="text-[10px] text-yellow-500 uppercase font-black mb-2">Key Trade-offs</h4>
@@ -172,12 +171,12 @@ export function DecisionSimulator() {
                  <ArchitecturePanel title="Scenario Stress Test">
                     <div className="space-y-4">
                        <div className="p-4 bg-green-500/5 border border-green-500/20 rounded-xl">
-                          <h5 className="text-[10px] text-green-500 uppercase font-black mb-1">Best Case</h5>
-                          <p className="text-[11px] text-gray-400">{result.scenarios.bestCase}</p>
+                          <h5 className="text-[10px] text-green-500 uppercase font-black mb-1">Optimal Execution</h5>
+                          <p className="text-[11px] text-gray-400">{result.scenarios.optimalExecution}</p>
                        </div>
                        <div className="p-4 bg-red-500/5 border border-red-500/20 rounded-xl">
-                          <h5 className="text-[10px] text-red-500 uppercase font-black mb-1">Worst Case</h5>
-                          <p className="text-[11px] text-gray-400">{result.scenarios.worstCase}</p>
+                          <h5 className="text-[10px] text-red-500 uppercase font-black mb-1">Edge Case</h5>
+                          <p className="text-[11px] text-gray-400">{result.scenarios.edgeCase}</p>
                        </div>
                     </div>
                  </ArchitecturePanel>

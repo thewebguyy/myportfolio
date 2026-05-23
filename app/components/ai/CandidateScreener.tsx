@@ -67,9 +67,9 @@ export function CandidateScreener() {
     <section id="candidate-screener" className="bg-background py-24 border-t border-surface-2">
       <div className="max-w-[1280px] mx-auto px-6">
         <div className="text-center space-y-4 mb-16">
-          <span className="label">Engineering Intelligence</span>
+          <span className="label">Demo</span>
           <h2 className="h2 text-white">
-            Candidate Screener
+            Resume Analyzer
           </h2>
           <p className="body max-w-2xl mx-auto">
             Analyze technical alignment and engineering fit using multi-step semantic extraction.
@@ -98,7 +98,7 @@ export function CandidateScreener() {
                   resumeText.length < 50 ? "bg-surface-2 text-text-muted cursor-not-allowed" : "bg-primary hover:scale-[0.98] text-background"
                 )}
               >
-                Screen Candidate
+                Analyze Resume
                 <DocumentMagnifyingGlassIcon className="w-4 h-4" />
               </button>
             </div>
@@ -138,12 +138,12 @@ export function CandidateScreener() {
               <div className="lg:col-span-4 space-y-8">
                 <ArchitecturePanel title="Engineering Fit">
                   <div className="space-y-8 py-4">
-                    <PerformanceMeter label="Overall Alignment" score={analysis.hiringRiskScore} />
+                    <PerformanceMeter label="Overall Alignment" score={analysis.matchScore} />
                     <div className="grid grid-cols-1 gap-4">
                       <div className="p-4 bg-background rounded-[8px] border border-surface-2">
-                        <div className="font-mono text-[10px] text-text-muted uppercase mb-1">Retention Outlook</div>
-                        <div className={cn("font-sans font-semibold uppercase text-[13px]", analysis.retentionRisk === 'Low' ? 'text-secondary' : 'text-primary')}>
-                          {analysis.retentionRisk} Probability
+                        <div className="font-mono text-[10px] text-text-muted uppercase mb-1">Skill Gap Analysis</div>
+                        <div className={cn("font-sans font-semibold uppercase text-[13px]", analysis.skillGap === 'Low' ? 'text-secondary' : 'text-primary')}>
+                          {analysis.skillGap} Probability
                         </div>
                       </div>
                       <div className="p-4 bg-background rounded-[8px] border border-surface-2">
@@ -195,8 +195,8 @@ export function CandidateScreener() {
 }
 
 interface TalentAnalysis {
-  hiringRiskScore: number
-  retentionRisk: 'Low' | 'Medium' | 'High'
+  matchScore: number
+  skillGap: 'Low' | 'Medium' | 'High'
   skillGapSeverity: string
   alignmentSignals: {
     cultural: string

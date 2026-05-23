@@ -3,24 +3,20 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  ChatBubbleLeftRightIcon,
   XMarkIcon,
   PaperAirplaneIcon,
-  ShieldCheckIcon,
-  AcademicCapIcon
+  CodeBracketIcon
 } from '@heroicons/react/24/outline'
-import { SparklesIcon } from '@heroicons/react/24/solid'
 
 /**
- * AI Business Advisor
- * Advanced consulting interface for strategic Q&A.
+ * Engineering Assistant — Q&A about projects, stack choices, and AI integrations.
  */
 export function FloatingChatbot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Welcome to the Strategic Audit Interface. I am your AI Business Advisor. How can I assist with your operational or technical strategy today?",
+      content: "Hi. I'm an AI assistant trained on Olabode's engineering work. Ask me about the projects, the stack choices, or any of the AI integrations on this site.",
     },
   ])
   const [input, setInput] = useState('')
@@ -34,10 +30,10 @@ export function FloatingChatbot() {
   }, [messages])
 
   const quickActions = [
-    'Analyze my business model',
-    'Audit technical risk',
-    'Evaluate ROI potential',
-    'Strategic frameworks',
+    'Tell me about ServiceBridge',
+    'How do you handle rate limiting?',
+    'Walk me through the AI orchestration',
+    "What's your stack?",
   ]
 
   async function sendMessage() {
@@ -92,7 +88,7 @@ export function FloatingChatbot() {
     } catch (error) {
       setMessages((prev) => {
         const next = [...prev]
-        next[next.length - 1].content = "Strategic advisory currently unavailable. Please reach out via formal channels."
+        next[next.length - 1].content = "Assistant currently unavailable. Please reach out via LinkedIn."
         return next
       })
     } finally {
@@ -111,7 +107,7 @@ export function FloatingChatbot() {
         <div className="relative">
           <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
           <div className="relative bg-secondary border border-primary/40 p-4 rounded-full shadow-2xl">
-            {isOpen ? <XMarkIcon className="w-6 h-6 text-primary" /> : <ShieldCheckIcon className="w-6 h-6 text-primary" />}
+            {isOpen ? <XMarkIcon className="w-6 h-6 text-primary" /> : <CodeBracketIcon className="w-6 h-6 text-primary" />}
           </div>
         </div>
       </motion.button>
@@ -129,13 +125,13 @@ export function FloatingChatbot() {
             <div className="bg-gray-900 border-b border-gray-800 p-5 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-primary/10 border border-primary/30 rounded flex items-center justify-center">
-                  <AcademicCapIcon className="w-6 h-6 text-primary" />
+                  <CodeBracketIcon className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-[0.2em]">Strategy Advisor</h3>
+                  <h3 className="text-sm font-black text-white uppercase tracking-[0.2em]">Engineering Assistant</h3>
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">Analytical Mode Active</span>
+                    <span className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">Online</span>
                   </div>
                 </div>
               </div>
@@ -203,7 +199,7 @@ export function FloatingChatbot() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-                  placeholder="Inquire about strategy or audit..."
+                  placeholder="Ask about the projects or the stack..."
                   className="flex-1 bg-gray-950 border border-gray-800 rounded px-4 py-3 text-xs text-white placeholder-gray-600 focus:border-primary focus:outline-none transition-all"
                 />
                 <button
@@ -215,8 +211,8 @@ export function FloatingChatbot() {
                 </button>
               </div>
               <div className="mt-3 flex justify-between items-center text-[9px] font-black uppercase text-gray-600 tracking-widest">
-                <span>Enterprise Strategy Engine</span>
-                <span>ROI Focused</span>
+                <span>GPT-4o</span>
+                <span>gpt-4o · streaming</span>
               </div>
             </div>
           </motion.div>

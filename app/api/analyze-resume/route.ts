@@ -9,7 +9,7 @@ const requestSchema = z.object({
 })
 
 /**
- * Talent Intelligence Engine - Orchestrated Version
+ * Resume Analyzer — Orchestrated Version
  * Demonstrates semantic extraction and risk modeling.
  */
 export async function POST(req: Request) {
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       metadata: result.metadata
     })
   } catch (error) {
-    console.error('Talent Orchestration Error:', error)
+    console.error('Resume Analysis Error:', error)
     const errorMessage = handleOpenAIError(error)
     return NextResponse.json(
       { error: errorMessage },

@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 export function Hero() {
   return (
@@ -14,10 +15,7 @@ export function Hero() {
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-8 flex flex-wrap gap-4"
           >
-            <span>[SYS.INIT]</span>
-            <span>OLABODE OLUSEGUN</span>
-            <span>v2.0.4</span>
-            <span className="opacity-60">LOC: LAGOS_NG</span>
+            <span>OLABODE OLUSEGUN · LAGOS, NG</span>
           </motion.div>
 
           {/* Name / Monolith Headline */}
@@ -25,10 +23,9 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[56px] md:text-[80px] lg:text-[104px] leading-[0.95] text-text-primary mb-12 font-serif tracking-tight"
+            className="text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] text-text-primary mb-12 font-serif tracking-tight"
           >
-            Sovereign Engineering <br />
-            <span className="opacity-70">Environment.</span>
+            Full-stack engineer building production systems for African fintech and marketplace platforms.
           </motion.h1>
 
           {/* Description */}
@@ -38,9 +35,8 @@ export function Hero() {
             transition={{ duration: 0.3, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="font-mono text-[14px] text-text-primary/80 leading-[1.8] max-w-[640px] mb-16"
           >
-            I architect high-concurrency systems, resilient interfaces, and proprietary technical 
-            infrastructure. Every line of code serves the purpose of demonstrating engineering credibility 
-            and absolute consistency. Built for zero latency.
+            {/* PLACEHOLDER: Hero subhead */}
+            I focus on building reliable systems that scale gracefully. Always exploring new ways to optimize performance and developer experience.
           </motion.p>
 
           {/* CTAs */}
@@ -48,12 +44,35 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-6"
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-8"
           >
-            <a href="#contact" className="font-mono text-[13px] text-text-accent uppercase tracking-widest hover:text-text-primary transition-colors duration-300 flex items-center gap-3">
-              <span className="w-2 h-2 bg-text-accent inline-block"></span>
-              [Connection Initialization]
-            </a>
+            <div className="flex items-center gap-6">
+              <a href="#contact" className="font-mono text-[13px] text-text-accent uppercase tracking-widest hover:text-text-primary transition-colors duration-300 flex items-center gap-3">
+                <span className="w-2 h-2 bg-text-accent inline-block"></span>
+                Get in touch
+              </a>
+              {process.env.NEXT_PUBLIC_RESUME_URL && (
+                <a href={process.env.NEXT_PUBLIC_RESUME_URL} target="_blank" rel="noopener noreferrer" className="font-mono text-[13px] text-text-primary/70 uppercase tracking-widest hover:text-text-primary transition-colors duration-300 flex items-center gap-3">
+                  Download CV
+                </a>
+              )}
+            </div>
+            
+            <div className="flex items-center gap-4 sm:ml-auto">
+              <div className="flex items-center gap-3">
+                <span className="text-text-secondary text-[10px]">●</span>
+                <span className="font-mono text-[11px] text-text-primary/70 uppercase tracking-widest">Open to senior engineering roles</span>
+              </div>
+              <div className="w-12 h-12 border-[0.5px] border-border-wire overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 rounded-full">
+                <Image 
+                  src="/headshot.jpg" 
+                  alt="Olabode Olusegun" 
+                  width={48} 
+                  height={48} 
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

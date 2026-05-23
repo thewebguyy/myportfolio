@@ -78,7 +78,7 @@ export function TechnicalAudit() {
           className="space-y-12"
         >
           <div className="text-center space-y-4">
-            <span className="label">Diagnostic Engine</span>
+            <span className="label">Demo</span>
             <h2 className="h2 text-white">
               Technical Performance Audit
             </h2>
@@ -179,8 +179,8 @@ export function TechnicalAudit() {
                            <EngineeringDecisionBlock 
                             key={i}
                             title={rec.action}
-                            action={rec.financialImpact}
-                            impact={rec.expectedRoi}
+                            action={rec.technicalImpact}
+                            impact={rec.expectedPerfGain}
                             priority={rec.priority as any}
                            />
                          ))}
@@ -218,6 +218,6 @@ export function TechnicalAudit() {
 interface EngineeringAudit {
   auditResult: { currentState: string; efficiencyGaps: string[] }
   riskMap: { operational: string; financial: string; strategic: string }
-  recommendations: { priority: string; action: string; financialImpact: string; riskMitigation: string; expectedRoi: string }[]
+  recommendations: { priority: string; action: string; technicalImpact: string; developmentPlan: string; expectedPerfGain: string }[]
   trustSignals: { whyItWorks: string; whereItMayFail: string; confidenceScore: number }
 }
