@@ -5,7 +5,8 @@ import { testimonials } from '@/lib/testimonials'
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="section-padding bg-background">
+    <>
+      <section id="testimonials" className="section-padding bg-background">
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Header */}
         <div className="mb-16">
@@ -78,6 +79,15 @@ export function Testimonials() {
         </div>
       </div>
     </section>
+      <div className="max-w-[1280px] mx-auto px-6 pb-16">
+        <p className="text-[12px] text-text-muted font-mono tracking-wide text-center">
+          * These testimonials are from colleagues and clients I&apos;ve worked with. You can verify them on my{' '}
+          <a href="https://linkedin.com/in/thewebguyy" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-text-primary underline underline-offset-4">
+            LinkedIn profile
+          </a>.
+        </p>
+      </div>
+    </>
   )
 }
 

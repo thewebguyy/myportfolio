@@ -4,16 +4,18 @@
 
 @layer base {
   :root {
-    --background: #010528;
-    --text-primary: #F4F3EF;
+    --background: #020816;
+    --surface: #0a1124;
+    --surface-2: #111a32;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #475569;
     --text-accent: #3A7BD5;
-    --border-wire: #1C2540;
-    --surface: #0D1535;
-  }
-
-  * {
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    --border-wire: rgba(255, 255, 255, 0.1);
+    --primary: #3A7BD5;
+    --primary-light: #5b95e8;
+    --secondary: #f59e0b;
+    --secondary-light: #fbbf24;
   }
 
   body {
@@ -22,7 +24,7 @@
 
   /* Typography Scale */
   .display {
-    @apply font-serif font-normal text-[96px] leading-[1.0] tracking-tight;
+    @apply font-serif font-normal text-[64px] md:text-[96px] leading-[1.0] tracking-tight;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -30,15 +32,15 @@
   }
 
   h1 {
-    @apply text-[64px] leading-[1.1];
+    @apply text-[48px] md:text-[64px] leading-[1.1];
   }
 
-  h2 {
-    @apply text-[48px] leading-[1.15];
+  h2, .h2 {
+    @apply text-[36px] md:text-[48px] leading-[1.15];
   }
 
   h3 {
-    @apply text-[32px] leading-[1.2];
+    @apply text-[28px] md:text-[32px] leading-[1.2];
   }
 
   p, .body {
@@ -56,7 +58,7 @@
 
 @layer components {
   .section-padding {
-    @apply py-[120px] px-6 lg:px-8;
+    @apply py-24 lg:py-32 px-6 lg:px-8;
   }
 
   .container-grid {
@@ -64,17 +66,30 @@
   }
 
   .btn-primary {
-    @apply bg-background border-[0.5px] border-border-wire text-text-primary font-mono text-[14px] uppercase tracking-wider px-6 py-3 transition-colors duration-300;
+    @apply inline-flex items-center justify-center bg-primary text-white font-semibold rounded px-6 py-3 transition-colors duration-300;
     &:hover {
-      @apply bg-text-primary text-background;
+      @apply bg-primary-light;
     }
   }
 
   .btn-secondary {
-    @apply bg-surface border-[0.5px] border-border-wire text-text-primary font-mono text-[14px] uppercase tracking-wider px-6 py-3 transition-colors duration-300;
+    @apply inline-flex items-center justify-center bg-secondary text-background font-semibold rounded px-6 py-3 transition-colors duration-300;
     &:hover {
-      @apply bg-text-primary text-background;
+      @apply bg-secondary-light;
     }
+  }
+
+  .pill-tag {
+    @apply px-3 py-1 bg-surface border border-border-wire rounded-full text-[10px] uppercase font-mono tracking-widest text-text-secondary;
+  }
+
+  .glass {
+    background-color: rgba(10, 17, 36, 0.5);
+    @apply backdrop-blur-md border border-border-wire rounded-xl;
+  }
+
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary;
   }
 }
 

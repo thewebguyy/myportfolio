@@ -11,9 +11,16 @@ module.exports = {
       colors: {
         background: 'var(--background)',
         surface: 'var(--surface)',
+        'surface-2': 'var(--surface-2)',
         'text-primary': 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'text-muted': 'var(--text-muted)',
         'text-accent': 'var(--text-accent)',
         'border-wire': 'var(--border-wire)',
+        primary: 'var(--primary)',
+        'primary-light': 'var(--primary-light)',
+        secondary: 'var(--secondary)',
+        'secondary-light': 'var(--secondary-light)',
       },
       fontFamily: {
         serif: ['var(--font-cormorant)', 'serif'],

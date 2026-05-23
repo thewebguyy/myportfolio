@@ -6,9 +6,9 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const NAV_LINKS = [
-    { label: '[WORK]', href: '/#work' },
-    { label: '[AI_MODULES]', href: '/#ai' },
-    { label: '[ARCHIVE]', href: '/#writing' },
+    { label: 'Work', href: '/#work' },
+    { label: 'AI', href: '/#ai' },
+    { label: 'Writing', href: '/#writing' },
 ]
 
 export function Navbar() {
@@ -119,22 +119,34 @@ export function Navbar() {
                     </ul>
 
                     {/* Right: CTA Button */}
-                    <div className="hidden md:flex items-center">
+                    <div className="hidden md:flex items-center gap-6">
+                        {process.env.NEXT_PUBLIC_RESUME_URL && process.env.NEXT_PUBLIC_RESUME_URL !== 'https://drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9_aHMqsAfG/view?usp=drive_link' && (
+                            <a
+                                href={process.env.NEXT_PUBLIC_RESUME_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[11px] font-mono tracking-widest uppercase text-text-primary/60 hover:text-text-primary transition-colors"
+                            >
+                                CV
+                            </a>
+                        )}
                         <Link
                             href="/#contact"
                             className="px-4 py-2 text-[11px] font-mono tracking-widest uppercase border-[0.5px] border-border-wire bg-surface text-text-primary transition-colors duration-300 hover:bg-text-primary hover:text-background"
                         >
-                            [ INIT_CONNECTION ]
+                            Contact
                         </Link>
                     </div>
 
                     {/* Mobile Hamburger */}
                     <button
-                        className="md:hidden text-text-primary/60 hover:text-text-primary transition-colors font-mono text-[11px] uppercase tracking-widest"
+                        className="md:hidden text-text-primary/60 hover:text-text-primary transition-colors"
                         onClick={() => setMenuOpen(true)}
                         aria-label="Open menu"
                     >
-                        [MENU]
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
                     </button>
                 </nav>
             </header>
@@ -160,11 +172,13 @@ export function Navbar() {
                                 </div>
                             </Link>
                             <button
-                                className="text-text-primary/60 hover:text-text-primary transition-colors font-mono text-[11px] uppercase tracking-widest"
+                                className="text-text-primary/60 hover:text-text-primary transition-colors"
                                 onClick={() => setMenuOpen(false)}
                                 aria-label="Close menu"
                             >
-                                [CLOSE]
+                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
                             </button>
                         </div>
 
@@ -181,13 +195,23 @@ export function Navbar() {
                             ))}
                         </div>
 
-                        <div className="py-8 border-t-[0.5px] border-border-wire">
+                        <div className="py-8 border-t-[0.5px] border-border-wire flex flex-col gap-4">
+                            {process.env.NEXT_PUBLIC_RESUME_URL && process.env.NEXT_PUBLIC_RESUME_URL !== 'https://drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9_aHMqsAfG/view?usp=drive_link' && (
+                                <a
+                                    href={process.env.NEXT_PUBLIC_RESUME_URL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full block text-center py-4 text-text-primary font-mono text-[11px] tracking-widest uppercase hover:text-text-accent transition-colors"
+                                >
+                                    CV
+                                </a>
+                            )}
                             <Link
                                 href="/#contact"
                                 onClick={() => setMenuOpen(false)}
                                 className="w-full block text-center py-4 border-[0.5px] border-border-wire bg-surface text-text-primary font-mono text-[11px] tracking-widest uppercase hover:bg-text-primary hover:text-background transition-colors"
                             >
-                                [ INIT_CONNECTION ]
+                                Contact
                             </Link>
                         </div>
                     </motion.div>

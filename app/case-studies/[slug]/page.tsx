@@ -9,11 +9,15 @@ import { projects, getProjectById } from '@/lib/projects'
 import { ArrowLeftIcon, ServerStackIcon, CpuChipIcon, ShieldCheckIcon, GlobeAltIcon, CommandLineIcon } from '@heroicons/react/24/outline'
 import { PerformanceMeter, TechnicalInsightCard, ArchitecturePanel } from '@/app/components/ui/EngineeringUI'
 import { cn } from '@/lib/utils'
+import { caseStudyContent } from '@/lib/case-study-content'
+import ServiceBridgeArchitecture from '@/app/components/visuals/ServiceBridgeArchitecture'
 
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
   const project = getProjectById(params.slug)
 
   if (!project) notFound()
+
+  const content = caseStudyContent[params.slug]
 
   return (
     <main className="min-h-screen bg-background selection:bg-primary/30">
@@ -81,35 +85,92 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
           {/* Main Content: Implementation Details */}
           <div className="lg:col-span-8 space-y-24">
-            <div className="space-y-12">
-              <h2 className="text-[32px] font-semibold text-white">Engineering Challenges</h2>
-              <div className="p-10 bg-surface rounded-[12px] border border-surface-2">
-                <p className="body">
-                  Building {project.title} required solving complex distributed systems problems, 
-                  specifically around concurrency and real-time data synchronization.
-                </p>
-              </div>
-            </div>
+            {content ? (
+              <>
+                <div className="space-y-8">
+                  <h2 className="text-[32px] font-semibold text-white">The Problem</h2>
+                  <div className="p-10 bg-surface rounded-[12px] border border-surface-2 body">
+                    <p>{content.problem}</p>
+                  </div>
+                </div>
 
-            <div className="space-y-12">
-               <h2 className="text-[32px] font-semibold text-white">Technical Insights</h2>
-               <div className="grid md:grid-cols-2 gap-6">
-                  <TechnicalInsightCard 
-                    title="Scale Isolation"
-                    value="10k+ Users"
-                    description="Implemented multi-tenant request isolation to prevent cascading failures."
-                    trend={{ value: 'Stable', positive: true }}
-                    icon={ServerStackIcon}
-                  />
-                  <TechnicalInsightCard 
-                    title="Latency Optimization"
-                    value="<200ms"
-                    description="Reduced P99 latency through aggressive edge caching and Redis optimization."
-                    trend={{ value: 'Optimized', positive: true }}
-                    icon={CpuChipIcon}
-                  />
-               </div>
-            </div>
+                <div className="space-y-8">
+                  <h2 className="text-[32px] font-semibold text-white">Constraints</h2>
+                  <ul className="list-disc list-inside space-y-3 body pl-4">
+                    {content.constraints.map((c: string, i: number) => <li key={i}>{c}</li>)}
+                  </ul>
+                </div>
+
+                <div className="space-y-8">
+                  <h2 className="text-[32px] font-semibold text-white">Architecture</h2>
+                  {params.slug === 'servicebridge' && (
+                    <div className="my-8 rounded-xl overflow-hidden border border-surface-2 bg-surface">
+                      <ServiceBridgeArchitecture />
+                    </div>
+                  )}
+                  <p className="body">{content.architectureNotes}</p>
+                </div>
+
+                <div className="space-y-8">
+                  <h2 className="text-[32px] font-semibold text-white">Key Decisions</h2>
+                  <div className="grid gap-6">
+                    {content.keyDecisions.map((kd: any, i: number) => (
+                      <div key={i} className="p-8 bg-surface rounded-[12px] border border-surface-2 space-y-4">
+                        <h3 className="text-[18px] font-semibold text-white">{kd.decision}</h3>
+                        <p className="body text-text-secondary"><span className="text-white font-medium">Rationale:</span> {kd.rationale}</p>
+                        <p className="body text-text-muted"><span className="text-secondary font-medium">Tradeoff:</span> {kd.tradeoff}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <h2 className="text-[32px] font-semibold text-white">Post-Mortem: What Broke</h2>
+                  <div className="p-8 bg-surface/50 border-l-4 border-secondary rounded-r-[12px] border-y border-r border-surface-2 body">
+                    <p>{content.whatBroke}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <h2 className="text-[32px] font-semibold text-white">Reflection: What Changed</h2>
+                  <div className="p-8 bg-surface/50 border border-surface-2 rounded-[12px] body italic">
+                    <p>{content.whatChanged}</p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="space-y-12">
+                  <h2 className="text-[32px] font-semibold text-white">Engineering Challenges</h2>
+                  <div className="p-10 bg-surface rounded-[12px] border border-surface-2">
+                    <p className="body">
+                      Building {project.title} required solving complex distributed systems problems, 
+                      specifically around concurrency and real-time data synchronization.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-12">
+                   <h2 className="text-[32px] font-semibold text-white">Technical Insights</h2>
+                   <div className="grid md:grid-cols-2 gap-6">
+                      <TechnicalInsightCard 
+                        title="Scale Isolation"
+                        value="10k+ Users"
+                        description="Implemented multi-tenant request isolation to prevent cascading failures."
+                        trend={{ value: 'Stable', positive: true }}
+                        icon={ServerStackIcon}
+                      />
+                      <TechnicalInsightCard 
+                        title="Latency Optimization"
+                        value="<200ms"
+                        description="Reduced P99 latency through aggressive edge caching and Redis optimization."
+                        trend={{ value: 'Optimized', positive: true }}
+                        icon={CpuChipIcon}
+                      />
+                   </div>
+                </div>
+              </>
+            )}
 
             {/* Footer CTA */}
             <div className="p-16 bg-surface border border-surface-2 rounded-[24px] text-center space-y-8">

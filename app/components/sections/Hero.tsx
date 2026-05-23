@@ -51,7 +51,7 @@ export function Hero() {
                 <span className="w-2 h-2 bg-text-accent inline-block"></span>
                 Get in touch
               </a>
-              {process.env.NEXT_PUBLIC_RESUME_URL && (
+              {process.env.NEXT_PUBLIC_RESUME_URL && process.env.NEXT_PUBLIC_RESUME_URL !== 'https://drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9_aHMqsAfG/view?usp=drive_link' && (
                 <a href={process.env.NEXT_PUBLIC_RESUME_URL} target="_blank" rel="noopener noreferrer" className="font-mono text-[13px] text-text-primary/70 uppercase tracking-widest hover:text-text-primary transition-colors duration-300 flex items-center gap-3">
                   Download CV
                 </a>
@@ -63,13 +63,17 @@ export function Hero() {
                 <span className="text-text-secondary text-[10px]">●</span>
                 <span className="font-mono text-[11px] text-text-primary/70 uppercase tracking-widest">Open to senior engineering roles</span>
               </div>
-              <div className="w-12 h-12 border-[0.5px] border-border-wire overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 rounded-full">
+              <div className="w-12 h-12 border-[0.5px] border-border-wire overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 rounded-full bg-surface relative flex items-center justify-center">
+                <span className="font-mono text-[10px] text-text-accent">OO</span>
                 <Image 
                   src="/headshot.jpg" 
                   alt="Olabode Olusegun" 
-                  width={48} 
-                  height={48} 
-                  className="object-cover w-full h-full"
+                  fill
+                  className="object-cover z-10"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
                 />
               </div>
             </div>

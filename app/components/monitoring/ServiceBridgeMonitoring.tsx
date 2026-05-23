@@ -87,6 +87,13 @@ export default function ServiceBridgeMonitoring() {
 
     return (
         <div className="w-full mt-12 mb-16 p-8 glass rounded-3xl border border-white/10 relative overflow-hidden group">
+            {/* Honesty Banner */}
+            <div className="mb-8 p-3 bg-surface border border-border-wire rounded-lg text-center">
+                <p className="text-[11px] text-text-secondary font-mono tracking-wide">
+                    DEMONSTRATION DATA — These charts use representative values to illustrate the metrics tracked in production. They do not reflect a live deployment.
+                </p>
+            </div>
+
             {/* Grafana-style Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 pb-6 border-b border-white/5">
                 <div>
@@ -94,17 +101,17 @@ export default function ServiceBridgeMonitoring() {
                         <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                         <h3 className="text-xl font-bold text-white tracking-tight">System Reliability Dashboard</h3>
                     </div>
-                    <p className="text-gray-400 text-xs font-medium">Real-time Performance Metrics • Last 24 Hours</p>
+                    <p className="text-gray-400 text-xs font-medium">Performance Metrics • Illustrative</p>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
                     <div className="px-3 py-1 bg-gray-900 border border-white/5 rounded-md flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                        <span className="text-[10px] text-gray-300 font-bold">UPTIME: 99.992%</span>
+                        <span className="text-[10px] text-gray-300 font-bold">TARGET UPTIME: 99.9%</span>
                     </div>
                     <div className="px-3 py-1 bg-gray-900 border border-white/5 rounded-md flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                        <span className="text-[10px] text-gray-300 font-bold">ERROR RATE: 0.02%</span>
+                        <span className="text-[10px] text-gray-300 font-bold">TARGET ERROR RATE: &lt;0.1%</span>
                     </div>
                 </div>
             </div>
