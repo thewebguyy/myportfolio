@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 
 export function ContactSection() {
@@ -32,9 +32,9 @@ export function ContactSection() {
       }
 
       setStatus('submitted')
-    } catch (err: any) {
+    } catch (err: unknown) {
       setStatus('error')
-      setErrorMessage(err.message || 'An unexpected error occurred.')
+      setErrorMessage(err instanceof Error ? err.message : 'An unexpected error occurred.')
     }
   }
 

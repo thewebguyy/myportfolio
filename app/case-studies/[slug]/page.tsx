@@ -1,14 +1,14 @@
 'use client'
 
 import React from 'react'
-import { Metadata } from 'next'
+// Metadata removed
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { projects, getProjectById } from '@/lib/projects'
-import { ArrowLeftIcon, ServerStackIcon, CpuChipIcon, ShieldCheckIcon, GlobeAltIcon, CommandLineIcon } from '@heroicons/react/24/outline'
+import { getProjectById } from '@/lib/projects'
+import { ArrowLeftIcon, ServerStackIcon, CpuChipIcon, CommandLineIcon } from '@heroicons/react/24/outline'
 import { PerformanceMeter, TechnicalInsightCard, ArchitecturePanel } from '@/app/components/ui/EngineeringUI'
-import { cn } from '@/lib/utils'
+// cn removed
 import { caseStudyContent } from '@/lib/case-study-content'
 import ServiceBridgeArchitecture from '@/app/components/visuals/ServiceBridgeArchitecture'
 
@@ -19,8 +19,23 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
   const content = caseStudyContent[params.slug]
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: project.title,
+    description: project.longDescription || project.description,
+    author: {
+      '@type': 'Person',
+      name: 'Olabode Olusegun'
+    }
+  }
+
   return (
     <main className="min-h-screen bg-background selection:bg-primary/30">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Navigation Header */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-surface-2 px-6 py-4">
         <div className="max-w-[1280px] mx-auto flex justify-between items-center">
@@ -114,7 +129,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                 <div className="space-y-8">
                   <h2 className="text-[32px] font-semibold text-white">Key Decisions</h2>
                   <div className="grid gap-6">
-                    {content.keyDecisions.map((kd: any, i: number) => (
+                    {content.keyDecisions.map((kd: { decision: string; rationale: string; tradeoff: string }, i: number) => (
                       <div key={i} className="p-8 bg-surface rounded-[12px] border border-surface-2 space-y-4">
                         <h3 className="text-[18px] font-semibold text-white">{kd.decision}</h3>
                         <p className="body text-text-secondary"><span className="text-white font-medium">Rationale:</span> {kd.rationale}</p>

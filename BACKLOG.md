@@ -11,9 +11,10 @@ The following items were identified during the Phase 2 & 3 audits but deferred f
 - **JSON-LD Structured Data**: Need to inject proper schema.org JSON-LD for the candidate profile and blog posts for SEO.
 
 ### AI Demos & Content
-- **Migrating AI demos**: Consider migrating from OpenAI to Anthropic if latency/cost factors warrant it.
-- **`docs/AI_ARCHITECTURE.md` generation**: Needs a deep dive document for recruiters asking about the RAG implementation.
-- **Blog Post Chronology**: Verify and update blog post dates and content alignment.
+- **Anthropic Migration**: Claude model string `claude-opus-4-7` confirmed against Anthropic documentation as of May 2026. Update if Anthropic releases a newer model before deployment.
+- **Migrating remaining AI demos**: Consider migrating structured output demos from OpenAI to Anthropic if latency/cost factors warrant it.
+- **`docs/AI_ARCHITECTURE.md` generation**: Needs a deep dive document for recruiters asking about the RAG implementation. (Addressed in Phase 4A)
+- **Blog Post Chronology**: Verify and update blog post dates and content alignment. (Addressed in Phase 4A)
 
 ### Missing Integrations
 - **Full Link-Check Audit**: Run a script to ensure no dead links exist in the new structure.

@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SparklesIcon, ChartBarIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
-import { ArchitecturePanel, TechnicalInsightCard, PerformanceMeter, EngineeringDecisionBlock } from '@/app/components/ui/EngineeringUI'
+import { ArchitecturePanel, TechnicalInsightCard, EngineeringDecisionBlock } from '@/app/components/ui/EngineeringUI'
 
 /**
  * Opportunity Matcher

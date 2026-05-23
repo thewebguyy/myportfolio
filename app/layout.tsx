@@ -40,12 +40,21 @@ export const metadata: Metadata = {
     title: 'Olabode Olusegun - Systems Architect',
     description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
     siteName: 'Olabode Olusegun',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Olabode Olusegun - Full-Stack Engineer'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Olabode Olusegun - Systems Architect',
     description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
     creator: '@thewebguyy',
+    images: ['/twitter-image']
   },
   robots: {
     index: true,
@@ -60,6 +69,25 @@ export const metadata: Metadata = {
   },
 }
 
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Olabode Olusegun',
+  url: 'https://olabodeolusegun.com',
+  jobTitle: 'Full-Stack Engineer',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Lagos',
+    addressCountry: 'NG'
+  },
+  sameAs: [
+    'https://linkedin.com/in/thewebguyy',
+    'https://github.com/thewebguyy',
+    'https://twitter.com/thewebguyy',
+    'https://instagram.com/thewebguyy'
+  ]
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -70,6 +98,10 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
       </head>
       <body className="font-mono antialiased bg-background text-text-primary selection:bg-text-accent selection:text-background">
         <ThemeProvider

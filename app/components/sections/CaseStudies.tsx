@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { projects } from '@/lib/projects'
+import { projects, type Project } from '@/lib/projects'
 import { ArtifactFrame } from '../ui/ArtifactFrame'
 import { TechnicalAudit } from '../ui/TechnicalAudit'
 
@@ -39,7 +39,7 @@ export function CaseStudies() {
           {selectedProjects.map((project, index) => (
             <LedgerEntry 
               key={project!.id} 
-              project={project!} 
+              project={project as Project} 
               number={index + 1} 
             />
           ))}
@@ -49,7 +49,7 @@ export function CaseStudies() {
   )
 }
 
-function LedgerEntry({ project, number }: { project: any, number: number }) {
+function LedgerEntry({ project, number }: { project: Project, number: number }) {
   const perfMetrics = project.metrics 
     ? Object.entries(project.metrics).map(([key, val]) => ({ metric: key, value: val as string }))
     : [{ metric: 'Latency', value: '< 50ms' }, { metric: 'Uptime', value: '99.99%' }];

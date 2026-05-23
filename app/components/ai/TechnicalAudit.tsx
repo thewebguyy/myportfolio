@@ -1,15 +1,14 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   ExclamationTriangleIcon,
-  CommandLineIcon,
   ArrowPathIcon,
   BoltIcon
 } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
-import { ArchitecturePanel, TechnicalInsightCard, PerformanceMeter, EngineeringDecisionBlock } from '@/app/components/ui/EngineeringUI'
+import { ArchitecturePanel, TechnicalInsightCard, EngineeringDecisionBlock } from '@/app/components/ui/EngineeringUI'
 
 interface OrchestrationStep {
   id: string
@@ -25,10 +24,10 @@ interface AuditMetadata {
 
 export function TechnicalAudit() {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [audit, setAudit] = useState<EngineeringAudit | null>(null)
   const [steps, setSteps] = useState<OrchestrationStep[]>([])
-  const [metadata, setMetadata] = useState<AuditMetadata | null>(null)
+  // metadata removed
   const [formData, setFormData] = useState({
     businessType: '',
     revenueEstimate: '',
@@ -181,7 +180,7 @@ export function TechnicalAudit() {
                             title={rec.action}
                             action={rec.technicalImpact}
                             impact={rec.expectedPerfGain}
-                            priority={rec.priority as any}
+                            priority={rec.priority as 'High' | 'Medium' | 'Low'}
                            />
                          ))}
                       </div>

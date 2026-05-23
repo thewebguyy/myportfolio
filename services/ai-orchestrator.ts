@@ -1,4 +1,5 @@
 import { AI_CONFIG, openai, DECISION_SIMULATOR_PROMPT } from '@/lib/openai'
+import { z } from 'zod'
 
 export type OrchestrationStep = {
   id: string
@@ -164,13 +165,41 @@ export class AIOrchestrator {
     steps[2].status = 'processing'
     steps[2].status = 'completed'
 
-    const parsed = JSON.parse(completion.choices[0].message.content || '{}')
+    let parsedJson;
+    try {
+      parsedJson = JSON.parse(completion.choices[0].message.content || '{}')
+    } catch {
+      throw new Error('LLM did not return valid JSON')
+    }
+
+    const TalentAuditResponseSchema = z.object({
+      matchScore: z.number().min(0).max(100),
+      skillGap: z.enum(['Low', 'Medium', 'High']),
+      alignmentSignals: z.object({
+        cultural: z.string(),
+        technical: z.string(),
+        strategic: z.string()
+      }),
+      collaborationOpportunities: z.array(z.string()),
+      developmentPlan: z.string(),
+      reasoning: z.string(),
+      confidenceScore: z.number().min(0).max(100),
+      assumptions: z.array(z.string())
+    })
+
+    const validatedAudit = TalentAuditResponseSchema.safeParse(parsedJson)
+    if (!validatedAudit.success) {
+      console.error('Zod Validation Failure:', validatedAudit.error.format())
+      throw new Error('LLM response failed schema validation')
+    }
+
+    const data = validatedAudit.data
 
     return {
-      data: parsed,
+      data,
       steps,
-      confidenceScore: parsed.confidenceScore || 88,
-      assumptions: parsed.assumptions || ['Resume content is verified', 'Technical definitions match industry standards'],
+      confidenceScore: data.confidenceScore,
+      assumptions: data.assumptions,
       metadata: {
         latency: Date.now() - this.startTime,
         tokens: completion.usage?.total_tokens || 0

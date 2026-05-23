@@ -46,8 +46,24 @@ export default function BlogPostPage({
     notFound()
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    author: {
+      '@type': 'Person',
+      name: 'Olabode Olusegun'
+    }
+  }
+
   return (
     <main className="min-h-screen bg-gray-950">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <article className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           {/* Back Link */}
@@ -120,6 +136,65 @@ export default function BlogPostPage({
 function BlogContent({ slug }: { slug: string }) {
   // In production, this would load MDX content
   // For now, we'll provide sample content for the Edge Computing article
+
+  if (slug === 'websocket-matching-layer') {
+    return (
+      <>
+        <p className="lead text-xl text-gray-300 leading-relaxed">
+          The initial version of ServiceBridge relied on HTTP short-polling for match notifications. Under load, this caused database connection pool exhaustion and unacceptable 5+ second latency. Here is why I rewrote the matching layer with WebSockets.
+        </p>
+
+        <h2>The Problem: Stateless Polling at Scale</h2>
+        <p>
+          In a multi-sided marketplace, timing is everything. When a homeowner posts a job, the platform must notify nearby tradespeople immediately. The MVP approach used standard HTTP polling: clients would ping the server every 5 seconds asking, <i>&quot;Any new jobs?&quot;</i>
+        </p>
+        <p>
+          This worked fine for the first hundred users. But as concurrent active users scaled, the architecture buckled. Every poll required an authentication check, a database query, and a JSON response. 
+        </p>
+        <ul>
+          <li><strong>Database Exhaustion:</strong> Thousands of queries per minute just to return <code>[]</code> (no new matches).</li>
+          <li><strong>Latency:</strong> A match could take up to 5 seconds to surface on the client, creating a race condition where users felt the app was unresponsive.</li>
+          <li><strong>Wasted Bandwidth:</strong> High overhead of HTTP headers for empty payloads.</li>
+        </ul>
+
+        <h2>The Decision: Persistent Stateful Connections</h2>
+        <p>
+          I decided to migrate from stateless HTTP polling to persistent stateful connections using WebSockets via <code>Socket.io</code>. 
+        </p>
+        <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto">
+          <code>{`// Example of the new WebSocket Event Architecture
+export const setupMatchingGateway = (io: Server) => {
+  io.on('connection', (socket) => {
+    // 1. Authenticate and join location-based room
+    socket.join(\`zone_\${socket.user.serviceArea}\`);
+    
+    // 2. Listen for dispatch events directly
+    socket.on('job_accepted', async (data) => {
+      await handleJobAcceptance(socket.user.id, data.jobId);
+    });
+  });
+}`}</code>
+        </pre>
+        <p>
+          Instead of clients asking the server if anything happened, the server pushes the event to the client the millisecond a match occurs.
+        </p>
+
+        <h2>The Tradeoffs</h2>
+        <p>
+          The performance gains were immediate: <strong>sub-100ms latency</strong> for dispatch notifications. But this came at the cost of significant infrastructure complexity.
+        </p>
+        <p>
+          I now had to manage sticky sessions at the load balancer level. Handling connection drops on mobile devices (e.g., when a user drives through a tunnel) required aggressive client-side reconnection logic and offline-queueing. Most importantly, scaling from one Node.js instance to a fleet required implementing a Redis Pub/Sub adapter so an event published on Node A would reach a user connected to Node B.
+        </p>
+        <div className="bg-gray-900 p-6 rounded-xl border border-gray-800 my-8">
+          <h4 className="text-white mb-2 italic">Hindsight / What I&apos;d do differently:</h4>
+          <p className="text-sm text-gray-400 m-0 leading-relaxed">
+            I would have evaluated Server-Sent Events (SSE) before committing to full bidirectional WebSockets. In the ServiceBridge architecture, the client-to-server payload volume was relatively low compared to server-to-client notifications. SSE over HTTP/2 might have delivered the same push-latency benefits without the headache of managing sticky WebSocket connections.
+          </p>
+        </div>
+      </>
+    )
+  }
 
   if (slug === 'edge-computing-2026') {
     return (

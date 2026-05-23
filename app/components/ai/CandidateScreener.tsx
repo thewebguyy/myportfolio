@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   DocumentMagnifyingGlassIcon, 
   CpuChipIcon,
@@ -25,7 +25,7 @@ interface AuditMetadata {
 
 export function CandidateScreener() {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [analysis, setAnalysis] = useState<TalentAnalysis | null>(null)
   const [steps, setSteps] = useState<OrchestrationStep[]>([])
   const [metadata, setMetadata] = useState<AuditMetadata | null>(null)
@@ -35,7 +35,7 @@ export function CandidateScreener() {
     if (resumeText.length < 50) return
 
     setLoading(true)
-    setError(null)
+    setErrorMsg(null)
     setAnalysis(null)
     setSteps([
       { id: 'extraction', label: 'Processing...', status: 'processing' },
@@ -57,7 +57,7 @@ export function CandidateScreener() {
       setSteps(data.steps)
       setMetadata(data.metadata)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Analysis failed')
+      setErrorMsg(err instanceof Error ? err.message : 'Analysis failed')
     } finally {
       setLoading(false)
     }
@@ -168,6 +168,9 @@ export function CandidateScreener() {
                       &quot;{analysis.reasoning}&quot;
                     </p>
                     <div className="pt-6 border-t border-surface-2 flex justify-between items-center font-mono text-[10px] text-text-muted uppercase tracking-widest">
+                       {errorMsg && (
+                        <div className="text-red-400 text-sm">{errorMsg}</div>
+                       )}
                        <div className="flex items-center gap-2">
                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
                          Confidence: {analysis.confidenceScore}%

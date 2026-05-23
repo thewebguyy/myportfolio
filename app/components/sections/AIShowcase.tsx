@@ -69,7 +69,7 @@ export function AIShowcase() {
 
         {/* Modules Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-b-[0.5px] border-border-wire">
-          {AI_TOOLS.map((tool, index) => (
+          {AI_TOOLS.map((tool) => (
             <div
               key={tool.title}
               className={`border-b-[0.5px] md:border-b-0 md:border-r-[0.5px] last:border-r-0 border-border-wire p-8 flex flex-col transition-colors duration-300 ${activeDemo === tool.id ? 'bg-surface' : 'bg-background hover:bg-surface/50'}`}

@@ -1,17 +1,14 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   CurrencyDollarIcon, 
-  UserGroupIcon, 
-  ExclamationTriangleIcon,
-  PresentationChartLineIcon,
-  BoltIcon,
-  ShieldCheckIcon,
-  ChartBarIcon
+  ChartBarIcon,
+  UserGroupIcon,
+  BoltIcon
 } from '@heroicons/react/24/outline'
-import { cn } from '@/lib/utils'
+// cn removed
 import { ArchitecturePanel, EngineeringDecisionBlock } from '@/app/components/ui/EngineeringUI'
 
 interface SimulationResult {

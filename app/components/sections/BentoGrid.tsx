@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { projects } from '@/lib/projects'
+import { projects, type Project } from '@/lib/projects'
 
 export function BentoGrid() {
   // Map projects to their specific slots
@@ -77,7 +77,7 @@ export function BentoGrid() {
                 ...checkoutSystem!,
                 title: "Scalable Checkout Infrastructure",
                 description: "High-throughput payment processing engine with idempotent transaction handling and multi-gateway fallbacks."
-              } as any} 
+              } as unknown} 
               isWide 
             />
           </div>
@@ -101,7 +101,7 @@ export function BentoGrid() {
   )
 }
 
-function BentoCard({ project, isHero, isWide, className = "" }: { project: any, isHero?: boolean, isWide?: boolean, className?: string }) {
+function BentoCard({ project, isHero, isWide, className = "" }: { project: Project, isHero?: boolean, isWide?: boolean, className?: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}

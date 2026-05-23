@@ -65,9 +65,31 @@ export async function POST(request: NextRequest) {
     const rawResponse = completion.choices[0].message.content
     if (!rawResponse) throw new Error('Empty response from OpenAI')
 
-    const opportunity = JSON.parse(rawResponse)
+    let parsedJson;
+    try {
+      parsedJson = JSON.parse(rawResponse)
+    } catch {
+      throw new Error('LLM did not return valid JSON')
+    }
 
-    return NextResponse.json({ opportunity }, { headers: getRateLimitHeaders(rateLimitResult) })
+    const OpportunityResponseSchema = z.object({
+      opportunityId: z.string(),
+      title: z.string(),
+      feasibility: z.number().min(0).max(100),
+      performancePotential: z.enum(['High', 'Medium', 'Low']),
+      complexityLevel: z.enum(['High', 'Medium', 'Low']),
+      technicalReasoning: z.string(),
+      approach: z.string(),
+      requiredTech: z.array(z.string())
+    })
+
+    const validatedOpportunity = OpportunityResponseSchema.safeParse(parsedJson)
+    if (!validatedOpportunity.success) {
+      console.error('Zod Validation Failure:', validatedOpportunity.error.format())
+      throw new Error('LLM response failed schema validation')
+    }
+
+    return NextResponse.json({ opportunity: validatedOpportunity.data }, { headers: getRateLimitHeaders(rateLimitResult) })
 
   } catch (error: unknown) {
     console.error('Project Recommender error:', error)

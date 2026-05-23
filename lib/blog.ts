@@ -15,6 +15,15 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
     {
+        slug: 'websocket-matching-layer',
+        title: 'Why I Rewrote the Matching Layer with WebSockets',
+        excerpt: 'Migrating from stateless polling to persistent stateful connections to achieve sub-100ms latency in a multi-sided marketplace.',
+        date: '2026-05-22',
+        readTime: 8,
+        category: 'System Design',
+        featured: true,
+    },
+    {
         slug: 'edge-computing-2026',
         title: 'Why Edge Computing Will Define Web Development in 2026',
         excerpt: 'Exploring how edge computing is transforming application architecture, reducing latency, and enabling new use cases for distributed systems.',
