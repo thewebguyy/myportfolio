@@ -8,7 +8,7 @@ import {
   BoltIcon
 } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
-import { ArchitecturePanel, TechnicalInsightCard, EngineeringDecisionBlock } from '@/app/components/ui/EngineeringUI'
+import { ArchitecturePanel, TechnicalInsightCard, EngineeringDecisionBlock, PerformanceMeter } from '@/app/components/ui/EngineeringUI'
 
 interface OrchestrationStep {
   id: string
@@ -16,15 +16,8 @@ interface OrchestrationStep {
   status: 'pending' | 'processing' | 'completed' | 'failed'
 }
 
-interface AuditMetadata {
-  latency: number
-  tokens: number
-  tier: string
-}
-
 export function TechnicalAudit() {
   const [loading, setLoading] = useState(false)
-  const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [audit, setAudit] = useState<EngineeringAudit | null>(null)
   const [steps, setSteps] = useState<OrchestrationStep[]>([])
   // metadata removed
@@ -38,7 +31,6 @@ export function TechnicalAudit() {
     if (!formData.businessType || !formData.challenge) return
 
     setLoading(true)
-    setError(null)
     setAudit(null)
     setSteps([
       { id: 'parsing', label: 'Input Normalization', status: 'processing' },
@@ -59,9 +51,8 @@ export function TechnicalAudit() {
       
       setAudit(data.audit)
       setSteps(data.steps)
-      setMetadata(data.metadata)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Technical audit failed')
+      console.error(err)
     } finally {
       setLoading(false)
     }

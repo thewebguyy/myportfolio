@@ -69,7 +69,7 @@ function LedgerEntry({ project, number }: { project: Project, number: number }) 
           </h3>
           
           <div className="font-mono text-[13px] text-text-primary/70 mb-12">
-            ROLE: {project.role || 'LEAD ENGINEER'}<br/>
+            ROLE: {(project as Project & { role?: string }).role || 'LEAD ENGINEER'}<br/>
             DATE: {project.year}
           </div>
 

@@ -1,123 +1,75 @@
-# Olabode Olusegun - Portfolio 2026
+# Olabode Olusegun — Engineering Portfolio 2026
 
-A modern, high-fidelity portfolio website showcasing full-stack development expertise, distributed systems architecture, and professional AI engineering integration.
+This repository contains the source code for my 2026 engineering portfolio. It is built to demonstrate both frontend execution and systems engineering judgment, featuring a polyglot AI architecture, dynamic content orchestration, and strict type safety.
 
-## 🏗️ System Architecture & AI Engineering
+## 🏗️ Technical Architecture
 
-This portfolio demonstrates robust software engineering principles applied to web application design and AI integration:
+This application is built on **Next.js 14 (App Router)** and deployed on Vercel. 
 
-### System & Persistence Design
-- **Structured Persistency:** Lightweight data persistence abstraction (`lib/storage.ts`) supporting generated strategy reports with local storage serialization.
-- **Fail-safe Rate Limiting:** Rate limiting middleware configured for API routes, falling back gracefully to system defaults if service interfaces are absent.
-- **Type-Safe API Boundaries:** Zod request schema validations applied on all API endpoints for strict request/response data compliance.
-
-### Factual AI Engineering
-- **Multi-Step Reasoners:** Multi-step strategic analysis pipelines (`services/ai-orchestrator.ts`) instead of simple prompt-reply loops, allowing structured output projection.
-- **Robust Error Handling:** Diagnostic wrappers (`lib/openai.ts`) mapping raw LLM and connection errors (timeouts, network drops, rate limits) into clear user-facing messages.
-- **AI-Driven Tools:** Full-stack integration of interactive tools (Resume Analyzer, Decision Simulator, Engineering Assistant) using verified models.
-
-## 🧪 Robust Testing Strategy
-
-We follow the "Testing Trophy" methodology to ensure reliability across all critical paths:
-- **Unit Tests:** Jest tests for core utility functions and AI data parsing.
-- **Integration Tests:** Test coverage for cross-module flows and project filtering.
-- **API Tests:** Mock-based testing of Next.js API routes with OpenAI SDK interception.
-- **E2E Tests:** Playwright suites covering critical user flows (Case Study exploration, AI Resume Analysis).
-- **CI/CD:** Automated GitHub Actions pipeline running `lint`, `type-check`, and `jest` on every PR.
-
-## 🚀 Features
-
-### AI-Powered Components
-- **Project Recommender**: GPT-based semantic matching for portfolio projects.
-- **Resume Analyzer**: AI-powered skill gap analysis and collaboration finder.
-- **Decision Simulator**: Project outcome modeling against operational constraints.
-- **Floating Chatbot**: Real-time Q&A assistant for portfolio navigation.
-
-### Interactive Visualizations
-- **Skill Radar Chart**: Interactive proficiency visualization across technical domains.
-- **System Activity Feed**: Marquee ticker of live simulated and saved system reports.
-
-### Performance & Accessibility
-- **Sub-1s Load Time**: Next.js 14 with App Router, image optimization, and code splitting.
-- **Dark Mode**: Sovereign terminal center theme with deep navy surfaces and vibrant highlights.
-
-## 🛠️ Tech Stack
-
-### Core
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-
-### AI Integration
-- **LLM**: OpenAI GPT-4o
-- **APIs**: Custom prompt engineering for strategic analysis
-
-### Data Visualization
-- **Charts**: Chart.js with react-chartjs-2
+### Core Stack
+- **Framework**: Next.js 14 (React 18)
+- **Styling**: Tailwind CSS, Framer Motion (for physics-based animations)
+- **Language**: TypeScript (Strict Mode)
+- **Validation**: Zod (for API payloads and LLM structured outputs)
 - **Icons**: Heroicons
 
-### Deployment
-- **Platform**: Vercel Edge Network
-- **Analytics**: Vercel Analytics & Speed Insights
+### Polyglot AI Strategy
+The portfolio includes interactive AI modules designed to simulate real-world engineering workflows. Rather than using a single model for all tasks, the architecture routes workloads based on the task constraints:
 
-## 📦 Installation
-```bash
-# Clone repository
-git clone https://github.com/thewebguyy/portfolio-2026.git
-cd portfolio-2026
+- **Anthropic Claude (`claude-opus-4-7`)**: Powers the open-ended engineering chat assistant. Utilized for its superior instruction-following and nuanced technical communication via the Anthropic SDK with Edge streaming.
+- **OpenAI (GPT-4o)**: Drives the structured output tasks (Resume Analyzer, Technical Audit). Outputs are coerced into JSON mode and strictly validated against Zod schemas on the backend before being delivered to the client.
 
-# Install dependencies
-npm install
+For detailed information on how these models are orchestrated and secured against injection, see [`docs/AI_ARCHITECTURE.md`](docs/AI_ARCHITECTURE.md).
 
-# Set up environment variables
-cp .env.local.example .env.local
-# Add your OPENAI_API_KEY
+## 🚀 Getting Started
 
-# Run development server
-npm run dev
-```
+To run this project locally:
 
-Open [http://localhost:3000](http://localhost:3000) to view the site.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/portfolio-2026.git
+   cd portfolio-2026
+   ```
 
-## 🔑 Environment Variables
-```bash
-OPENAI_API_KEY=sk-your-api-key-here
-NEXT_PUBLIC_SITE_URL=https://olabodeolusegun.com
-```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-## 🏗️ Project Structure
-```
-portfolio-2026/
-├── app/
-│   ├── components/     # React components
-│   ├── api/           # API routes
-│   ├── case-studies/  # Case study pages
-│   └── blog/          # Blog posts
-├── lib/               # Utilities and data
-└── public/            # Static assets
-```
+3. **Configure environment variables:**
+   Copy the example environment file and populate the required keys.
+   ```bash
+   cp .env.local.example .env.local
+   ```
+   *Note: To run the AI features locally, you will need active API keys for both OpenAI and Anthropic.*
 
-## 🚢 Deployment
-```bash
-# Build for production
-npm run build
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
 
-# Deploy to Vercel
-npx vercel --prod
-```
+5. **Verify the build:**
+   ```bash
+   npm run type-check
+   npm run lint
+   npm run test:ci
+   npm run build
+   ```
 
-## 📝 License
+## 📂 Project Structure
 
-© 2024-2026 Olabode Olusegun. All rights reserved.
+- `/app` — Next.js 14 App Router pages, layouts, and API routes.
+- `/app/components/ui` — Reusable, atomic UI components.
+- `/app/components/sections` — Major page sections (Hero, Case Studies, AI Showcase).
+- `/app/components/ai` — Client-side React components for the interactive AI modules.
+- `/lib` — Utility functions, typed content (projects, blog posts), and API clients.
+- `/services` — Backend orchestration logic (e.g., `ai-orchestrator.ts`).
+- `/docs` — Deep-dive technical documentation for recruiters and engineering managers.
 
-## 📧 Contact
+## 📝 Content Philosophy
 
-- **Email**: olabodewebdesigns02@gmail.com
-- **LinkedIn**: [olabode-olusegun](https://www.linkedin.com/in/olabode-olusegun-8328141bb/)
-- **GitHub**: [@thewebguyy](https://github.com/thewebguyy)
-- **Twitter**: [@thewebguyy](https://twitter.com/thewebguyy)
+The content in this portfolio is structured around **engineering trade-offs**. Case studies explicitly document *why* a technology was chosen and *what* was given up in exchange. The aesthetic aims for a "developer-tool" feel — high information density, terminal-inspired typography, and subtle, precise interactions.
 
 ---
 
-Built with ❤️ in Lagos, Nigeria 🇳🇬
+*This project is actively maintained. Please ensure you are running the latest version before initiating a build.*

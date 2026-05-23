@@ -77,7 +77,7 @@ export function BentoGrid() {
                 ...checkoutSystem!,
                 title: "Scalable Checkout Infrastructure",
                 description: "High-throughput payment processing engine with idempotent transaction handling and multi-gateway fallbacks."
-              } as unknown} 
+              } as Project} 
               isWide 
             />
           </div>
@@ -101,7 +101,7 @@ export function BentoGrid() {
   )
 }
 
-function BentoCard({ project, isHero, isWide, className = "" }: { project: Project, isHero?: boolean, isWide?: boolean, className?: string }) {
+function BentoCard({ project, isHero, className = "" }: { project: Project, isHero?: boolean, isWide?: boolean, className?: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
