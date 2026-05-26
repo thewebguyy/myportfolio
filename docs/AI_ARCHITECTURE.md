@@ -18,7 +18,7 @@ Client Request -> Next.js API Route -> Rate Limiter -> Prompt Builder -> LLM (Op
 
 ## Cross-Cutting Concerns
 - **Rate Limiting**: Built on an Upstash/Redis pattern with an in-memory fallback mechanism to ensure demo stability.
-- **Schema Validation**: All structured outputs are strictly parsed through Zod. If the LLM hallucinates a property or provides a malformed response, the orchestrator catches the validation error before it reaches the client.
+- **Schema Validation**: Structured outputs from `/api/recommend-project` and `/api/analyze-resume` are validated through Zod schemas. `/api/consult` and `/api/simulate` currently parse LLM responses as JSON without structural validation; extending coverage to those routes is on the backlog.
 - **Prompt Injection Defense**: Evaluates incoming text against known injection patterns (e.g., "ignore previous instructions", "system prompt") and short-circuits malicious requests.
 - **Model Routing**: The system employs a polyglot model strategy, routing structured data tasks to OpenAI and open-ended chat tasks to Anthropic.
 

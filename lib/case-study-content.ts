@@ -20,12 +20,11 @@ export const caseStudyContent: Record<string, CaseStudyContent> = {
       "Sub-100ms latency for match delivery to clients",
       "Resiliency against mobile client network partitions",
       "Secure, compliant payouts without bringing PCI data in-house",
-      "Scale to [PLACEHOLDER: scale numbers] concurrent sessions",
       "Zero-downtime deployment requirements"
     ],
     architectureNotes: "The architecture evolved into an event-driven system anchored by Node.js and Redis. Edge connections are terminated via WebSockets, allowing instant bidirectional communication without the overhead of HTTP headers on every payload. Behind the load balancer, Node instances fan out events using Redis Pub/Sub, while persistent state transitions are asynchronously flushed to a highly available Postgres cluster.",
-    whatBroke: "[PLACEHOLDER: what broke post-mortem event]",
-    whatChanged: "[PLACEHOLDER: what changed/reflection]",
+    whatBroke: "",
+    whatChanged: "",
     keyDecisions: [
       {
         decision: "Migrated the client-to-server match delivery from short-polling to persistent WebSockets (Socket.io).",

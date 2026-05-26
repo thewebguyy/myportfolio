@@ -19,3 +19,6 @@ The following items were identified during the Phase 2 & 3 audits but deferred f
 ### Missing Integrations
 - **Full Link-Check Audit**: Run a script to ensure no dead links exist in the new structure.
 - **GitHub Contribution Graph**: Consider integrating a live contribution graph for the About section.
+
+### Schema Validation Coverage
+- **Extend Zod validation to `/api/consult` and `/api/simulate`**: These routes currently parse LLM responses as raw JSON without structural validation. A schema failure in either route reaches the client unguarded. Extend `TalentAuditResponseSchema` pattern to both routes. Tracked in `docs/AI_ARCHITECTURE.md` under Schema Validation.

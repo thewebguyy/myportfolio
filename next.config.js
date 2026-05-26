@@ -2,7 +2,7 @@
 const nextConfig = {
   // Enable React strict mode for better development experience
   reactStrictMode: true,
-  // transpilePackages: ['framer-motion'],
+  transpilePackages: ['framer-motion'],
   // Image optimization configuration
   images: {
     formats: ['image/avif', 'image/webp'],

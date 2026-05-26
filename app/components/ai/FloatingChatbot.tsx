@@ -211,8 +211,8 @@ export function FloatingChatbot() {
                 </button>
               </div>
               <div className="mt-3 flex justify-between items-center text-[9px] font-black uppercase text-gray-600 tracking-widest">
-                <span>GPT-4o</span>
-                <span>gpt-4o · streaming</span>
+                <span>Claude Opus 4.7</span>
+                <span>claude-opus-4-7 · streaming</span>
               </div>
             </div>
           </motion.div>

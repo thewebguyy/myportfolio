@@ -18,20 +18,28 @@ jest.mock('@/lib/openai', () => {
                                 message: {
                                     content: JSON.stringify({
                                         matchScore: 85,
-                                        strengths: ["React", "TypeScript", "System Design"],
-                                        gaps: ["Rust"],
+                                        skillGap: "Low",
+                                        alignmentSignals: {
+                                            cultural: "Strong alignment with engineering-first culture",
+                                            technical: "Deep React and TypeScript expertise",
+                                            strategic: "System design thinking at scale"
+                                        },
                                         collaborationOpportunities: ["Architecture review", "Performance tuning"],
-                                        reasoning: "Mid-to-Senior level architect with deep distributed systems knowledge."
+                                        developmentPlan: "Focus on Rust and distributed systems tooling",
+                                        reasoning: "Mid-to-Senior level architect with deep distributed systems knowledge.",
+                                        confidenceScore: 90,
+                                        assumptions: ["Stable infrastructure", "Active collaboration"]
                                     })
                                 }
                             }
-                        ]
+                        ],
+                        usage: { total_tokens: 150 }
                     })
                 }
             }
         },
         RESUME_ANALYZER_PROMPT: 'mock prompt',
-        handleOpenAIError: (err: any) => 'AI service error: ' + err.message,
+        handleOpenAIError: (err: unknown) => 'AI service error: ' + (err instanceof Error ? err.message : String(err)),
         AI_CONFIG: { model: 'gpt-4' }
     }
 })
@@ -71,7 +79,7 @@ describe('API Route: analyze-resume', () => {
         expect(res.status).toBe(200)
 
         const data = await res.json()
-        expect(data.analysis.strengths).toContain("React")
+        expect(data.analysis.collaborationOpportunities).toContain("Architecture review")
         expect(data.analysis).toHaveProperty("reasoning")
     })
 

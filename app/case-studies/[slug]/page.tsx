@@ -1,6 +1,16 @@
 'use client'
 
 import React from 'react'
+
+const PLACEHOLDER_RE = /\[PLACEHOLDER[^\]]*\]/
+
+function hasPlaceholder(value: string): boolean {
+  return PLACEHOLDER_RE.test(value)
+}
+
+function filterConstraints(items: string[]): string[] {
+  return items.filter(item => !hasPlaceholder(item))
+}
 // Metadata removed
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -109,12 +119,17 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                   </div>
                 </div>
 
-                <div className="space-y-8">
-                  <h2 className="text-[32px] font-semibold text-white">Constraints</h2>
-                  <ul className="list-disc list-inside space-y-3 body pl-4">
-                    {content.constraints.map((c: string, i: number) => <li key={i}>{c}</li>)}
-                  </ul>
-                </div>
+{(() => {
+                  const visibleConstraints = filterConstraints(content.constraints)
+                  return visibleConstraints.length > 0 ? (
+                    <div className="space-y-8">
+                      <h2 className="text-[32px] font-semibold text-white">Constraints</h2>
+                      <ul className="list-disc list-inside space-y-3 body pl-4">
+                        {visibleConstraints.map((c: string, i: number) => <li key={i}>{c}</li>)}
+                      </ul>
+                    </div>
+                  ) : null
+                })()}
 
                 <div className="space-y-8">
                   <h2 className="text-[32px] font-semibold text-white">Architecture</h2>
@@ -139,19 +154,23 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                   </div>
                 </div>
 
-                <div className="space-y-8">
-                  <h2 className="text-[32px] font-semibold text-white">Post-Mortem: What Broke</h2>
-                  <div className="p-8 bg-surface/50 border-l-4 border-secondary rounded-r-[12px] border-y border-r border-surface-2 body">
-                    <p>{content.whatBroke}</p>
+{content.whatBroke && !hasPlaceholder(content.whatBroke) && (
+                  <div className="space-y-8">
+                    <h2 className="text-[32px] font-semibold text-white">Post-Mortem: What Broke</h2>
+                    <div className="p-8 bg-surface/50 border-l-4 border-secondary rounded-r-[12px] border-y border-r border-surface-2 body">
+                      <p>{content.whatBroke}</p>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="space-y-8">
-                  <h2 className="text-[32px] font-semibold text-white">Reflection: What Changed</h2>
-                  <div className="p-8 bg-surface/50 border border-surface-2 rounded-[12px] body italic">
-                    <p>{content.whatChanged}</p>
+                {content.whatChanged && !hasPlaceholder(content.whatChanged) && (
+                  <div className="space-y-8">
+                    <h2 className="text-[32px] font-semibold text-white">Reflection: What Changed</h2>
+                    <div className="p-8 bg-surface/50 border border-surface-2 rounded-[12px] body italic">
+                      <p>{content.whatChanged}</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </>
             ) : (
               <>

@@ -22,6 +22,9 @@ The following slots have been created in the codebase and require candidate-prov
 - **ServiceBridge Case Study Post-Mortem (`lib/case-study-content.ts`)**
   - **Placeholder `whatBroke`:** Outline a specific post-mortem event demonstrating engineering reality.
   - **Placeholder `whatChanged`:** Outline reflection on what you would do differently in hindsight.
+  - **Placeholder constraint — concurrent sessions scale:** The constraint "Scale to [PLACEHOLDER: scale numbers] concurrent sessions" has been removed from the list pending a real figure. Supply the verified concurrent-session count and add it back as `"Scale to <N> concurrent sessions"`.
+
+> **Launch blocker**: The Post-Mortem and Reflection sections on `/case-studies/servicebridge` will not render until `whatBroke` and `whatChanged` in `lib/case-study-content.ts` contain real, non-placeholder text.
 
 ## Launch Blockers (Deferred)
 *These items are explicitly deferred to the dedicated Launch Phase after Phase 4.*
