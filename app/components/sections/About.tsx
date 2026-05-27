@@ -62,24 +62,10 @@ export function About() {
 
           {/* Right Column / Body */}
           <div className="lg:col-span-7 font-mono text-[14px] text-text-primary/80 leading-[1.8] space-y-8 mt-2 lg:mt-0">
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              {/* PLACEHOLDER 1: Two sentences on career trajectory — where the candidate started, what they've shipped, where they are now */}
-            </motion.p>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              {/* PLACEHOLDER 2: Two sentences on technical focus — what problems they like solving, what stacks they reach for */}
-            </motion.p>
-            
+            {/* TODO: Two sentences on career trajectory — where you started, what you've shipped, where you are now */}
+
+            {/* TODO: Two sentences on technical focus — what problems you like solving, what stacks you reach for */}
+
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -88,8 +74,7 @@ export function About() {
               className="pt-8 mt-8 border-t-[0.5px] border-border-wire"
             >
               <p className="font-semibold text-text-primary">
-                {/* PLACEHOLDER 3: One sentence on what they're looking for next */}
-                Open to senior and founding engineering roles. Lagos-based, working globally.
+                Lagos-based, working globally.
               </p>
             </motion.div>
           </div>

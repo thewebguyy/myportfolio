@@ -32,33 +32,12 @@ export function Manifesto() {
 
           {/* Right Column / Body */}
           <div className="lg:col-span-7 font-mono text-[14px] text-text-primary/80 leading-[1.8] space-y-8 mt-2 lg:mt-0">
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              {/* PLACEHOLDER A: What you care about in engineering practice */}
-            </motion.p>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              {/* PLACEHOLDER B: Your methodology (reliability, latency, constrained-connectivity) */}
-            </motion.p>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.25 }}
-            >
-              {/* PLACEHOLDER C: What you've built that proves it */}
-            </motion.p>
-            
+            {/* TODO: What you care about in engineering practice */}
+
+            {/* TODO: Your methodology — reliability, latency, constrained-connectivity */}
+
+            {/* TODO: What you've built that proves it */}
+
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}

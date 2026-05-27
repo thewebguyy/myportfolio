@@ -16,7 +16,7 @@ export function FloatingChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hi. I'm an AI assistant trained on Olabode's engineering work. Ask me about the projects, the stack choices, or any of the AI integrations on this site.",
+      content: "I'm Claude, configured with a short system prompt about Olabode's stack and engineering approach. Good for quick questions about how he works — for project specifics, reach out directly.",
     },
   ])
   const [input, setInput] = useState('')
@@ -30,9 +30,7 @@ export function FloatingChatbot() {
   }, [messages])
 
   const quickActions = [
-    'Tell me about ServiceBridge',
     'How do you handle rate limiting?',
-    'Walk me through the AI orchestration',
     "What's your stack?",
   ]
 
