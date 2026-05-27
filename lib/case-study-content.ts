@@ -23,8 +23,8 @@ export const caseStudyContent: Record<string, CaseStudyContent> = {
       "Zero-downtime deployment requirements"
     ],
     architectureNotes: "The architecture evolved into an event-driven system anchored by Node.js and Redis. Edge connections are terminated via WebSockets, allowing instant bidirectional communication without the overhead of HTTP headers on every payload. Behind the load balancer, Node instances fan out events using Redis Pub/Sub, while persistent state transitions are asynchronously flushed to a highly available Postgres cluster.",
-    whatBroke: "",
-    whatChanged: "",
+    whatBroke: "The hardest migration moment wasn't the rewrite itself — it was service booking state. In the original jQuery implementation, booking confirmations were fire-and-forget: a POST succeeded, a page redirected, done. When I moved to Supabase with real-time listeners and optimistic UI, I had a race condition where two concurrent booking requests for the same artisan slot would both get a success response before either had committed to the database. The first time it happened in staging it looked like a fluke. The second time, with real test data, I had two \"confirmed\" bookings for the same Saturday afternoon slot. That's the kind of bug that destroys trust in a marketplace the first week it's live.",
+    whatChanged: "I added a Postgres advisory lock on the artisan-slot combination before any booking write, and moved the confirmation state to only resolve after the DB transaction committed — not after the API returned 200. I also wrote an idempotency key pattern for the booking endpoint so retried requests couldn't create duplicates. The lesson: don't trust optimistic UI for anything with real-world contention. The UI can be optimistic. The database cannot.",
     keyDecisions: [
       {
         decision: "Migrated the client-to-server match delivery from short-polling to persistent WebSockets (Socket.io).",

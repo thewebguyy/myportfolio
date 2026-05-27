@@ -35,7 +35,7 @@ export function Hero() {
             transition={{ duration: 0.3, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="font-mono text-[14px] text-text-primary/80 leading-[1.8] max-w-[640px] mb-16"
           >
-            {/* TODO: write your own 1–2 sentence positioning here */}
+            I build production systems in Lagos — fintech, health infrastructure, marketplace platforms — and I&apos;ve learned more from the ones that broke than the ones that shipped clean.
           </motion.p>
 
           {/* CTAs */}

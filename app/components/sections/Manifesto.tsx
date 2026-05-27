@@ -32,11 +32,32 @@ export function Manifesto() {
 
           {/* Right Column / Body */}
           <div className="lg:col-span-7 font-mono text-[14px] text-text-primary/80 leading-[1.8] space-y-8 mt-2 lg:mt-0">
-            {/* TODO: What you care about in engineering practice */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              Good software is specific. The engineers I respect most can tell you exactly which edge case kept them up at night, what the fix was, and why the naive solution would have failed in three months. Vague confidence is easy. Specific knowledge is earned.
+            </motion.p>
 
-            {/* TODO: Your methodology — reliability, latency, constrained-connectivity */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              I believe the job is closer to infrastructure than craft. Your code will be read by strangers, run on machines you don&apos;t control, and stressed by users who don&apos;t behave the way you expected. That&apos;s the real specification. Everything else is prototype.
+            </motion.p>
 
-            {/* TODO: What you've built that proves it */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.25 }}
+            >
+              I also believe in finishing things. Shipped and imperfect beats polished and theoretical. The only way to know if something actually works is to let it meet production.
+            </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 10 }}

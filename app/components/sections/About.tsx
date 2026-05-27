@@ -62,9 +62,23 @@ export function About() {
 
           {/* Right Column / Body */}
           <div className="lg:col-span-7 font-mono text-[14px] text-text-primary/80 leading-[1.8] space-y-8 mt-2 lg:mt-0">
-            {/* TODO: Two sentences on career trajectory — where you started, what you've shipped, where you are now */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              I&apos;ve spent the last five years writing code that handles real money, real users, and real failure modes. My work spans fintech loan infrastructure, payment checkout systems, health data platforms, and marketplace products — mostly as the sole engineer, which means I&apos;ve owned the architecture, the security decisions, and the 2am incidents.
+            </motion.p>
 
-            {/* TODO: Two sentences on technical focus — what problems you like solving, what stacks you reach for */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              I&apos;m based in Lagos. Most of my work is for Nigerian or diaspora-facing products, which means the constraints are real: flaky networks, payment provider inconsistencies, users who don&apos;t have the luxury of a fast connection. Those constraints made me a better engineer than any greenfield project could have.
+            </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -74,7 +88,7 @@ export function About() {
               className="pt-8 mt-8 border-t-[0.5px] border-border-wire"
             >
               <p className="font-semibold text-text-primary">
-                Lagos-based, working globally.
+                Right now I&apos;m looking for a senior or founding engineer role where the problems are hard and the codebase is something to be proud of. I&apos;m most useful on teams that need someone who can move fast without leaving a mess behind.
               </p>
             </motion.div>
           </div>
