@@ -29,7 +29,7 @@ export function Footer() {
           <div className="md:col-span-3">
             <h4 className="font-mono text-[11px] uppercase text-text-accent tracking-widest mb-6">Navigation</h4>
             <ul className="space-y-4">
-              {['Work', 'AI', 'Writing', 'Contact'].map((item) => (
+              {['About', 'Work', 'AI', 'Writing', 'Contact'].map((item) => (
                 <li key={item}>
                   <Link 
                     href={`#${item.toLowerCase()}`} 
@@ -69,10 +69,9 @@ export function Footer() {
           <div className="md:col-span-1 flex justify-end items-start">
             <button 
               onClick={scrollToTop}
-              className="p-3 border-[0.5px] border-border-wire bg-surface hover:bg-text-primary text-text-primary/60 hover:text-background transition-colors uppercase font-mono text-[10px] tracking-widest flex flex-col items-center gap-2 group"
+              className="p-3 border-[0.5px] border-border-wire bg-surface hover:bg-text-primary text-text-primary/60 hover:text-background transition-colors flex items-center justify-center group"
               aria-label="Back to top"
             >
-              <span>TOP</span>
               <svg width="12" height="12" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-colors">
                 <path d="M10 15V5M10 5L5 10M10 5L15 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" />
               </svg>

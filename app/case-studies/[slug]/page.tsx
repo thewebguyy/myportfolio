@@ -17,7 +17,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getProjectById } from '@/lib/projects'
 import { ArrowLeftIcon, ServerStackIcon, CpuChipIcon, CommandLineIcon } from '@heroicons/react/24/outline'
-import { PerformanceMeter, TechnicalInsightCard, ArchitecturePanel } from '@/app/components/ui/EngineeringUI'
+import { TechnicalInsightCard, ArchitecturePanel } from '@/app/components/ui/EngineeringUI'
 // cn removed
 import { caseStudyContent } from '@/lib/case-study-content'
 import ServiceBridgeArchitecture from '@/app/components/visuals/ServiceBridgeArchitecture'
@@ -49,9 +49,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       {/* Navigation Header */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-surface-2 px-6 py-4">
         <div className="max-w-[1280px] mx-auto flex justify-between items-center">
-          <Link href="/#projects" className="text-text-muted hover:text-white transition-all text-[10px] font-mono uppercase tracking-widest flex items-center gap-2">
+          <Link href="/#work" className="text-text-muted hover:text-white transition-all text-[10px] font-mono uppercase tracking-widest flex items-center gap-2">
             <ArrowLeftIcon className="w-4 h-4" />
-            Back to projects
+            Back to work
           </Link>
           <div className="text-[10px] font-mono text-primary uppercase tracking-[0.3em]">Engineering Case Study</div>
         </div>
@@ -89,7 +89,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       {/* Technical Breakdown */}
       <section className="px-6 pb-32">
         <div className="max-w-[1280px] mx-auto grid lg:grid-cols-12 gap-12">
-          {/* Sidebar: Stack & Metrics */}
+          {/* Sidebar: Stack */}
           <aside className="lg:col-span-4 h-fit lg:sticky lg:top-32 space-y-8">
             <ArchitecturePanel title="Technical Stack">
               <div className="flex flex-wrap gap-2">
@@ -98,12 +98,30 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                 ))}
               </div>
             </ArchitecturePanel>
-
-            <ArchitecturePanel title="Performance Metrics">
-              <div className="space-y-6">
-                <PerformanceMeter score={98} label="Uptime Reliability" />
-                <PerformanceMeter score={92} label="Request Latency" />
-                <PerformanceMeter score={85} label="System Efficiency" />
+            <ArchitecturePanel title="Project Context">
+              <div className="space-y-6 font-mono text-[12px]">
+                <div>
+                  <span className="text-text-muted uppercase block text-[10px] tracking-wider mb-1">Company / Context</span>
+                  <span className="text-text-primary">{project.company}</span>
+                </div>
+                <div>
+                  <span className="text-text-muted uppercase block text-[10px] tracking-wider mb-1">Code Repository</span>
+                  {project.githubUrl ? (
+                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-1 font-semibold">
+                      Public (Open Source) ↗
+                    </a>
+                  ) : (
+                    <span className="text-text-secondary italic">Private (Proprietary Code)</span>
+                  )}
+                </div>
+                {project.liveUrl && (
+                  <div>
+                    <span className="text-text-muted uppercase block text-[10px] tracking-wider mb-1">Production Link</span>
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">
+                      {project.liveUrl.replace('https://', '').replace('http://', '').replace(/\/$/, '')} ↗
+                    </a>
+                  </div>
+                )}
               </div>
             </ArchitecturePanel>
           </aside>
@@ -208,13 +226,13 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
             {/* Footer CTA */}
             <div className="p-16 bg-surface border border-surface-2 rounded-[24px] text-center space-y-8">
-              <h2 className="text-[32px] font-semibold text-white">Scale this system?</h2>
+              <h2 className="text-[32px] font-semibold text-white">Want to discuss the architecture?</h2>
               <p className="body max-w-[520px] mx-auto">
-                Let&apos;s discuss how these patterns can be applied to your technical infrastructure.
+                Let&apos;s talk about implementing these systems, optimization strategies, or how I can help your engineering team.
               </p>
               <div className="flex justify-center gap-4 pt-4">
                 <Link href="/#contact" className="btn-primary">Get in touch</Link>
-                <Link href="/#projects" className="btn-secondary">View all projects</Link>
+                <Link href="/#work" className="btn-secondary">View all work</Link>
               </div>
             </div>
           </div>

@@ -56,10 +56,7 @@ const SKILLS = [
   {
     category: "Currently exploring",
     items: [
-      { name: "Rust", level: "learning" },
-      { name: "WebAssembly", level: "learning" },
-      { name: "Solidity", level: "learning" },
-      { name: "GraphQL Engine", level: "learning" }
+      { name: "Rust", level: "learning" }
     ]
   }
 ]

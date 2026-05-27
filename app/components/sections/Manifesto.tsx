@@ -64,9 +64,8 @@ export function Manifesto() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="pt-8 mt-8 border-t-[0.5px] border-border-wire"
+              className="pt-6 mt-6 border-t-[0.5px] border-border-wire"
             >
-
               <a href="#contact" className="inline-flex items-center gap-3 text-text-primary hover:text-text-accent transition-colors duration-300 uppercase tracking-widest text-[13px]">
                 <span className="w-2 h-2 bg-text-accent inline-block"></span>
                 Get in touch

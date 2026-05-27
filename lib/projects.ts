@@ -9,6 +9,7 @@ export interface Project {
   description: string
   longDescription: string
   category: string
+  company: string
   tags: string[]
   image: string
   liveUrl?: string
@@ -28,6 +29,7 @@ export const projects: Project[] = [
     description: 'High-availability service marketplace architected for regional connectivity challenges',
     longDescription: `Architected a high-scale marketplace platform connecting service providers in emerging markets. Engineering focus was on extreme availability (99.9% target) and data efficiency for intermittent connectivity. Implemented WebSocket matching, multi-layer Redis caching, and optimized API payloads to reduce bandwidth usage by 60% while maintaining real-time responsiveness.`,
     category: 'Marketplace Engine',
+    company: 'ServiceBridge Startup',
     tags: ['Distributed Systems', 'Real-time', 'Redis HA', 'Data Efficiency'],
     image: '/projects/servicebridge.jpg',
     liveUrl: 'https://servicebridge.netlify.app/',
@@ -47,6 +49,7 @@ export const projects: Project[] = [
     description: 'Automated recurring payment orchestration with multi-gateway support',
     longDescription: `Engineered a robust payment orchestration system for managing complex recurring billing cycles. Focused on idempotent transaction handling and webhook reliability to ensure zero-loss processing. Integrated Seerbit and Stripe APIs with custom failure recovery logic and automated reconciliation pipelines.`,
     category: 'Fintech Infrastructure',
+    company: 'Seerbit (Contract / Open Source)',
     tags: ['Payments', 'Idempotency', 'Automation', 'API Design'],
     image: '/projects/checkout.jpg',
     githubUrl: 'https://github.com/thewebguyy/seerbit-subscription-manager',
@@ -65,6 +68,7 @@ export const projects: Project[] = [
     description: 'Full-stack booking platform with real-time availability tracking',
     longDescription: `Implemented a high-performance booking system featuring real-time state synchronization across distributed clients. Solved race conditions and complex concurrency issues in reservation logic using Redis-backed locks. Optimized customer dashboards for sub-second page loads.`,
     category: 'E-commerce / Booking',
+    company: '55Lounge NG (Contract)',
     tags: ['Concurrency', 'Real-time Sync', 'Payments'],
     image: '/projects/55lounge.jpg',
     liveUrl: 'https://55lounge.ng/',
@@ -83,6 +87,7 @@ export const projects: Project[] = [
     description: 'Secure payment gateway integration for e-commerce',
     longDescription: `Developed a high-security checkout system supporting multiple global payment gateways. Engineered for PCI-DSS compliance standards with a focus on tokenization and secure request handling. Optimized the multi-step flow to maximize transaction success rates.`,
     category: 'API Integration',
+    company: 'Seerbit (Contract / Open Source)',
     tags: ['Payments', 'Security', 'API'],
     image: '/projects/checkout.jpg',
     githubUrl: 'https://github.com/thewebguyy/simpleseerbitcheckout',
@@ -96,6 +101,7 @@ export const projects: Project[] = [
     description: 'E-commerce platform for hair products',
     longDescription: `Built a performant e-commerce platform with a focus on frontend optimization and search visibility. Implemented a custom product catalog and a lightweight checkout flow optimized for high-conversion mobile traffic.`,
     category: 'E-commerce',
+    company: 'La Verita Hair (Freelance)',
     tags: ['E-commerce', 'Frontend', 'SEO'],
     image: '/projects/laveritahair.png',
     liveUrl: 'http://laveritahair.com/',

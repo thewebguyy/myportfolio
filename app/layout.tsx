@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { Cormorant_Garamond, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { ThemeProvider } from './components/ThemeProvider'
 import { Navbar } from './components/Navbar'
 import { FloatingChatbot } from './components/ai/FloatingChatbot'
 import './globals.css'
@@ -104,23 +103,15 @@ export default function RootLayout({
         />
       </head>
       <body className="font-mono antialiased bg-background text-text-primary selection:bg-text-accent selection:text-background">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          forcedTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <Navbar />
+        <Navbar />
 
-          <main id="main-content">
-            {children}
-          </main>
+        <main id="main-content">
+          {children}
+        </main>
 
-          <Analytics />
-          <SpeedInsights />
-          <FloatingChatbot />
-        </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
+        <FloatingChatbot />
       </body>
     </html>
   )

@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { projects, type Project } from '@/lib/projects'
 import { ArtifactFrame } from '../ui/ArtifactFrame'
@@ -68,9 +69,11 @@ function LedgerEntry({ project, number }: { project: Project, number: number }) 
             {project.title}
           </h3>
           
-          <div className="font-mono text-[13px] text-text-primary/70 mb-12">
-            ROLE: {(project as Project & { role?: string }).role || 'LEAD ENGINEER'}<br/>
-            DATE: {project.year}
+          <div className="font-mono text-[13px] text-text-primary/70 mb-12 space-y-1">
+            <div>ROLE: {(project as Project & { role?: string }).role || 'LEAD ENGINEER'}</div>
+            <div>CONTEXT: {project.company}</div>
+            <div>DATE: {project.year}</div>
+            <div>REPO: {project.githubUrl ? 'PUBLIC (OPEN SOURCE)' : 'PRIVATE (PROPRIETARY)'}</div>
           </div>
 
           <div className="mt-auto">
@@ -97,9 +100,9 @@ function LedgerEntry({ project, number }: { project: Project, number: number }) 
             />
 
             <div className="p-4 bg-surface border-t-[0.5px] border-border-wire flex justify-end">
-              <a href="#work" className="btn-secondary">
+              <Link href={`/case-studies/${project.id}`} className="btn-secondary">
                 View project
-              </a>
+              </Link>
             </div>
           </ArtifactFrame>
         </div>

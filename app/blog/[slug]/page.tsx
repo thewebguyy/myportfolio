@@ -59,7 +59,7 @@ export default function BlogPostPage({
   }
 
   return (
-    <main className="min-h-screen bg-gray-950">
+    <main className="min-h-screen bg-background">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -69,7 +69,7 @@ export default function BlogPostPage({
           {/* Back Link */}
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-primary 
+            className="inline-flex items-center gap-2 text-text-secondary hover:text-primary 
                      transition-colors mb-8"
           >
             <ArrowLeftIcon className="w-4 h-4" />
@@ -79,7 +79,7 @@ export default function BlogPostPage({
           {/* Header */}
           <header className="mb-12">
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-full">
+              <span className="px-3 py-1 bg-surface-2 text-text-secondary text-sm rounded-full">
                 {post.category}
               </span>
             </div>
@@ -88,7 +88,7 @@ export default function BlogPostPage({
               {post.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
               <time dateTime={post.date} className="flex items-center gap-2">
                 <CalendarIcon className="w-4 h-4" />
                 {new Date(post.date).toLocaleDateString('en-US', {
@@ -110,15 +110,15 @@ export default function BlogPostPage({
           </div>
 
           {/* Footer */}
-          <footer className="mt-16 pt-8 border-t border-gray-800">
+          <footer className="mt-16 pt-8 border-t border-border-wire">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-400 mb-2">Written by</p>
-                <p className="font-semibold text-white">Olabode Olusegun</p>
-                <p className="text-sm text-gray-500">Full-Stack Engineer</p>
+                <p className="text-sm text-text-secondary mb-2">Written by</p>
+                <p className="font-semibold text-text-primary">Olabode Olusegun</p>
+                <p className="text-sm text-text-muted">Full-Stack Engineer</p>
               </div>
 
-              <Link href="#contact" className="btn btn-primary text-sm">
+              <Link href="#contact" className="btn-primary text-sm">
                 Get in Touch
               </Link>
             </div>
@@ -140,7 +140,7 @@ function BlogContent({ slug }: { slug: string }) {
   if (slug === 'websocket-matching-layer') {
     return (
       <>
-        <p className="lead text-xl text-gray-300 leading-relaxed">
+        <p className="lead text-xl text-text-secondary leading-relaxed">
           The initial version of ServiceBridge relied on HTTP short-polling for match notifications. Under load, this caused database connection pool exhaustion and unacceptable 5+ second latency. Here is why I rewrote the matching layer with WebSockets.
         </p>
 
@@ -161,7 +161,7 @@ function BlogContent({ slug }: { slug: string }) {
         <p>
           I decided to migrate from stateless HTTP polling to persistent stateful connections using WebSockets via <code>Socket.io</code>. 
         </p>
-        <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto">
+        <pre className="bg-surface p-4 rounded-lg overflow-x-auto">
           <code>{`// Example of the new WebSocket Event Architecture
 export const setupMatchingGateway = (io: Server) => {
   io.on('connection', (socket) => {
@@ -186,9 +186,9 @@ export const setupMatchingGateway = (io: Server) => {
         <p>
           I now had to manage sticky sessions at the load balancer level. Handling connection drops on mobile devices (e.g., when a user drives through a tunnel) required aggressive client-side reconnection logic and offline-queueing. Most importantly, scaling from one Node.js instance to a fleet required implementing a Redis Pub/Sub adapter so an event published on Node A would reach a user connected to Node B.
         </p>
-        <div className="bg-gray-900 p-6 rounded-xl border border-gray-800 my-8">
-          <h4 className="text-white mb-2 italic">Hindsight / What I&apos;d do differently:</h4>
-          <p className="text-sm text-gray-400 m-0 leading-relaxed">
+        <div className="bg-surface p-6 rounded-xl border border-border-wire my-8">
+          <h4 className="text-text-primary mb-2 italic">Hindsight / What I&apos;d do differently:</h4>
+          <p className="text-sm text-text-secondary m-0 leading-relaxed">
             I would have evaluated Server-Sent Events (SSE) before committing to full bidirectional WebSockets. In the ServiceBridge architecture, the client-to-server payload volume was relatively low compared to server-to-client notifications. SSE over HTTP/2 might have delivered the same push-latency benefits without the headache of managing sticky WebSocket connections.
           </p>
         </div>
@@ -199,7 +199,7 @@ export const setupMatchingGateway = (io: Server) => {
   if (slug === 'edge-computing-2026') {
     return (
       <>
-        <p className="lead text-xl text-gray-300 leading-relaxed">
+        <p className="lead text-xl text-text-secondary leading-relaxed">
           Edge computing is no longer a distant future—it&apos;s reshaping how we build web applications
           today. As someone who&apos;s been deploying to edge networks since 2023, I&apos;ve witnessed
           firsthand how this architectural shift enables experiences that were simply impossible
@@ -239,7 +239,7 @@ export const setupMatchingGateway = (io: Server) => {
           In my ServiceBridge project, migrating to Vercel Edge Functions reduced API response
           times by <strong className="text-primary">60%</strong>. Here&apos;s the architecture:
         </p>
-        <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto">
+        <pre className="bg-surface p-4 rounded-lg overflow-x-auto">
           <code>{`// Edge function for real-time matching
 export const config = { runtime: 'edge' }
 
@@ -280,8 +280,8 @@ export default async function handler(req: Request) {
         </ul>
 
         <div className="bg-primary/10 border-l-4 border-primary p-6 rounded-r-lg my-8">
-          <p className="text-gray-300 leading-relaxed m-0">
-            <strong className="text-white">Pro Tip:</strong> Start by moving read-heavy operations
+          <p className="text-text-secondary leading-relaxed m-0">
+            <strong className="text-text-primary">Pro Tip:</strong> Start by moving read-heavy operations
             to the edge first. Profile your application to identify which endpoints have the
             highest latency and migrate those incrementally.
           </p>
@@ -293,7 +293,7 @@ export default async function handler(req: Request) {
   if (slug === 'ai-agents-production') {
     return (
       <>
-        <p className="lead text-xl text-gray-300 leading-relaxed">
+        <p className="lead text-xl text-text-secondary leading-relaxed">
           AI agents are moving beyond chat boxes and into the core logic of production systems.
           After building several autonomous systems in 2024, I&apos;ve compiled the essential
           lessons for making them reliable, cost-effective, and safe for production use.
@@ -306,7 +306,7 @@ export default async function handler(req: Request) {
           non-deterministic by nature, which is a nightmare for traditional software engineering.
         </p>
         <ul>
-          <li><strong>Strict Schema Enforcement:</strong> Use Zod or JSON Mode to ensure outputs are parsable.</li>
+          <li><strong>Strict Schema Enforcement:</strong> Use Zod or JSON Mode to ensure outputs are parsesable.</li>
           <li><strong>Retry Logic with Backoff:</strong> AI services fail frequently; handle it gracefully.</li>
           <li><strong>Human-in-the-loop (HITL):</strong> For high-stakes actions, always require approval.</li>
         </ul>
@@ -323,7 +323,7 @@ export default async function handler(req: Request) {
         </ol>
 
         <h2>3. Monitoring Agent Health</h2>
-        <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto">
+        <pre className="bg-surface p-4 rounded-lg overflow-x-auto">
           <code>{`// Example LangSmith-style logging
 export function traceAgentAction(step: string, data: unknown) {
   const d = data as any; // Cast for demo purposes
@@ -336,7 +336,7 @@ export function traceAgentAction(step: string, data: unknown) {
         </pre>
 
         <div className="bg-primary/10 border-l-4 border-primary p-6 rounded-r-lg my-8">
-          <p className="text-gray-300 leading-relaxed m-0">
+          <p className="text-text-secondary leading-relaxed m-0">
             <strong>Key Insight:</strong> An agent is only as good as its context. Spend 80% of your time
             on RAG (Retrieval Augmented Generation) and only 20% on the core prompt.
           </p>
@@ -348,7 +348,7 @@ export function traceAgentAction(step: string, data: unknown) {
   if (slug === 'green-coding-practices') {
     return (
       <>
-        <p className="lead text-xl text-gray-300 leading-relaxed">
+        <p className="lead text-xl text-text-secondary leading-relaxed">
           As software engineers, we often forget that code has a physical footprint. In 2026,
           efficiency isn&apos;t just about speed—it&apos;s about sustainability. Green coding
           is a set of practices designed to minimize the energy consumption of software.
@@ -372,9 +372,9 @@ export function traceAgentAction(step: string, data: unknown) {
           <li>Using <strong>WebP/AVIF</strong> instead of PNGs for hero assets.</li>
         </ul>
 
-        <div className="bg-gray-900 p-6 rounded-xl border border-gray-800 my-8">
-          <h4 className="text-white mb-2 italic">Why it matters:</h4>
-          <p className="text-sm text-gray-400 m-0 leading-relaxed">
+        <div className="bg-surface p-6 rounded-xl border border-border-wire my-8">
+          <h4 className="text-text-primary mb-2 italic">Why it matters:</h4>
+          <p className="text-sm text-text-secondary m-0 leading-relaxed">
             The ICT sector is responsible for an estimated 2-4% of global greenhouse gas emissions—on
             par with the aviation industry. Every KB saved and every ms of CPU time reduced adds up.
           </p>
@@ -386,11 +386,11 @@ export function traceAgentAction(step: string, data: unknown) {
   // Default content for other posts
   return (
     <div className="glass rounded-2xl p-8">
-      <p className="text-gray-300 leading-relaxed">
+      <p className="text-text-secondary leading-relaxed">
         Full article content coming soon. This post is part of my ongoing series on modern
         web development practices and emerging technologies for 2026.
       </p>
-      <p className="text-gray-300 leading-relaxed mt-4">
+      <p className="text-text-secondary leading-relaxed mt-4">
         Want to discuss this topic? <Link href="#contact" className="text-primary hover:underline">
           Get in touch</Link> or connect with me on <a href="https://twitter.com/thewebguyy"
             target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">

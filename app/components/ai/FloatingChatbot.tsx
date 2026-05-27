@@ -101,6 +101,7 @@ export function FloatingChatbot() {
         className="fixed bottom-6 right-6 z-50 no-print"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
+        aria-label={isOpen ? "Close chat assistant" : "Open chat assistant"}
       >
         <div className="relative">
           <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
@@ -133,7 +134,11 @@ export function FloatingChatbot() {
                   </div>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-white transition-colors">
+              <button 
+                onClick={() => setIsOpen(false)} 
+                className="text-gray-500 hover:text-white transition-colors"
+                aria-label="Close chat"
+              >
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>

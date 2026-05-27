@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const NAV_LINKS = [
+    { label: 'About', href: '/#about' },
     { label: 'Work', href: '/#work' },
     { label: 'AI', href: '/#ai' },
     { label: 'Writing', href: '/#writing' },
@@ -30,14 +31,22 @@ export function Navbar() {
     }, [])
 
     useEffect(() => {
-        const sectionIds = ['work', 'ai', 'writing']
+        const sectionIds = ['about', 'manifesto', 'work', 'ai', 'writing']
         const observers: IntersectionObserver[] = []
 
         sectionIds.forEach((id) => {
             const el = document.getElementById(id)
             if (!el) return
             const obs = new IntersectionObserver(
-                ([entry]) => { if (entry.isIntersecting) setActiveHash(`#${id}`) },
+                ([entry]) => { 
+                    if (entry.isIntersecting) {
+                        if (id === 'manifesto') {
+                            setActiveHash('#about')
+                        } else {
+                            setActiveHash(`#${id}`)
+                        }
+                    } 
+                },
                 { rootMargin: '-40% 0px -55% 0px' }
             )
             obs.observe(el)
