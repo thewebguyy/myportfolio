@@ -1,4 +1,4 @@
-import { AI_CONFIG, openai, DECISION_SIMULATOR_PROMPT } from '@/lib/openai'
+import { AI_CONFIG, openai } from '@/lib/openai'
 import { z } from 'zod'
 
 export type OrchestrationStep = {
@@ -21,7 +21,7 @@ export interface OrchestrationResult<T> {
 
 /**
  * AI Orchestrator Service
- * Handles multi-step reasoning pipelines instead of single prompt calls.
+ * Handles the resume analysis pipeline for the live Resume Analyzer demo.
  */
 export class AIOrchestrator {
   private startTime: number = 0
@@ -31,101 +31,8 @@ export class AIOrchestrator {
   }
 
   /**
-   * Orchestrates a complex consulting audit
-   */
-  async orchestrateAudit(params: {
-    businessType: string
-    revenue: string
-    challenge: string
-  }): Promise<OrchestrationResult<Record<string, unknown>>> {
-    const steps: OrchestrationStep[] = [
-      { id: 'parsing', label: 'Input Normalization', status: 'pending' },
-      { id: 'context', label: 'Stack Context Injection', status: 'pending' },
-      { id: 'analysis', label: 'Architecture Gap Analysis', status: 'pending' },
-      { id: 'synthesis', label: 'Recommendation Synthesis', status: 'pending' },
-    ]
-
-    this.startTime = Date.now()
-    steps[0].status = 'processing'
-    
-    const completion = await openai.chat.completions.create({
-      model: AI_CONFIG.model,
-      messages: [
-        { role: 'system', content: 'You are a Technical Audit Engine. Analyse system architecture and produce engineering recommendations.' },
-        { role: 'user', content: `Audit parameters: ${JSON.stringify(params)}` }
-      ],
-      response_format: { type: 'json_object' }
-    })
-
-    steps[0].status = 'completed'
-    steps[1].status = 'completed'
-    steps[2].status = 'completed'
-    steps[3].status = 'completed'
-
-    const parsed = JSON.parse(completion.choices[0].message.content || '{}')
-
-    return {
-      data: parsed,
-      steps,
-      confidenceScore: parsed.trustSignals?.confidenceScore || 92,
-      assumptions: ['Stable market conditions', 'Data accuracy from user input'],
-      metadata: {
-        latency: Date.now() - this.startTime,
-        tokens: completion.usage?.total_tokens || 0
-      }
-    }
-  }
-
-  /**
-   * Decision Simulation Engine
-   * Projects real-world outcomes based on economic parameters.
-   */
-  async simulateDecision(params: {
-    cost: string
-    revenue: string
-    teamSize: string
-    complexityLevel: string
-  }): Promise<OrchestrationResult<Record<string, unknown>>> {
-    const steps: OrchestrationStep[] = [
-      { id: 'modeling', label: 'Financial Modeling', status: 'pending' },
-      { id: 'scenario', label: 'Scenario Stress Testing', status: 'pending' },
-      { id: 'projection', label: 'Outcome Projection', status: 'pending' },
-    ]
-
-    this.startTime = Date.now()
-    steps[0].status = 'processing'
-
-    const completion = await openai.chat.completions.create({
-      model: AI_CONFIG.model,
-      messages: [
-        { role: 'system', content: DECISION_SIMULATOR_PROMPT },
-        { role: 'user', content: `Simulation parameters: ${JSON.stringify(params)}` }
-      ],
-      response_format: { type: 'json_object' }
-    })
-
-    steps[0].status = 'completed'
-    steps[1].status = 'processing'
-    steps[1].status = 'completed'
-    steps[2].status = 'processing'
-    steps[2].status = 'completed'
-
-    const parsed = JSON.parse(completion.choices[0].message.content || '{}')
-
-    return {
-      data: parsed,
-      steps,
-      confidenceScore: parsed.trustSignals?.confidenceScore || 85,
-      assumptions: ['Linear growth models', 'No sudden policy shifts'],
-      metadata: {
-        latency: Date.now() - this.startTime,
-        tokens: completion.usage?.total_tokens || 0
-      }
-    }
-  }
-
-  /**
    * Orchestrates Resume Analysis
+   * Used by /api/analyze-resume → CandidateScreener component
    */
   async orchestrateTalentAudit(resumeText: string): Promise<OrchestrationResult<Record<string, unknown>>> {
     const steps: OrchestrationStep[] = [
@@ -134,6 +41,7 @@ export class AIOrchestrator {
       { id: 'risk_scoring', label: 'Skill Gap Analysis', status: 'pending' },
     ]
 
+    this.startTime = Date.now()
     steps[0].status = 'processing'
     
     const completion = await openai.chat.completions.create({
