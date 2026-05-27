@@ -3,7 +3,6 @@ import { About } from './components/sections/About'
 import { Manifesto } from './components/sections/Manifesto'
 import { CaseStudies } from './components/sections/CaseStudies'
 import { SkillsGrid } from './components/sections/SkillsGrid'
-import { Testimonials } from './components/sections/Testimonials'
 import { AIShowcase } from './components/sections/AIShowcase'
 import { BlogSection } from './components/sections/BlogSection'
 import { Footer } from './components/sections/Footer'
@@ -16,7 +15,6 @@ export default function HomePage() {
       <Manifesto />
       <CaseStudies />
       <SkillsGrid />
-      <Testimonials />
       <AIShowcase />
       <BlogSection />
       <Footer />

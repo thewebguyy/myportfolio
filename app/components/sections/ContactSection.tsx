@@ -62,18 +62,6 @@ export function ContactSection() {
               I&apos;m available for engineering roles and high-impact freelance projects. Based in Lagos, working globally.
             </motion.p>
 
-            {/* Availability Status */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-3"
-            >
-              <div className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
-              <span className="font-mono text-[12px] text-secondary uppercase tracking-[0.1em]">
-                Open to senior engineering roles
-              </span>
-            </motion.div>
           </div>
 
           {/* Right Column: Form */}
