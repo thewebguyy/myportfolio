@@ -1,9 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
+const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
+const hasResumeUrl = RESUME_URL.length > 0 && !RESUME_URL.includes('drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9')
+
 export function Hero() {
+  const [headshotFailed, setHeadshotFailed] = useState(false)
   return (
     <section className="relative min-h-screen flex items-center bg-background px-6 lg:px-8 border-b-[0.5px] border-border-wire">
       <div className="w-full max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire h-screen flex flex-col justify-center px-8 lg:px-16">
@@ -50,8 +55,8 @@ export function Hero() {
                 <span className="w-2 h-2 bg-text-accent inline-block"></span>
                 Get in touch
               </a>
-              {process.env.NEXT_PUBLIC_RESUME_URL && process.env.NEXT_PUBLIC_RESUME_URL !== 'https://drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9_aHMqsAfG/view?usp=drive_link' && (
-                <a href={process.env.NEXT_PUBLIC_RESUME_URL} target="_blank" rel="noopener noreferrer" className="font-mono text-[13px] text-text-primary/70 uppercase tracking-widest hover:text-text-primary transition-colors duration-300 flex items-center gap-3">
+              {hasResumeUrl && (
+                <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className="font-mono text-[13px] text-text-primary/70 uppercase tracking-widest hover:text-text-primary transition-colors duration-300 flex items-center gap-3">
                   Download CV
                 </a>
               )}
@@ -63,17 +68,17 @@ export function Hero() {
                 <span className="font-mono text-[11px] text-text-primary/70 uppercase tracking-widest">Open to senior engineering roles</span>
               </div>
               <div className="w-12 h-12 border-[0.5px] border-border-wire overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 rounded-full bg-surface relative flex items-center justify-center">
-                <span className="font-mono text-[10px] text-text-accent">OO</span>
-                <Image 
-                  src="/headshot.jpg" 
-                  alt="Olabode Olusegun" 
-                  fill
-                  className="object-cover z-10"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+                {headshotFailed ? (
+                  <span className="font-mono text-[10px] text-text-accent">OO</span>
+                ) : (
+                  <Image
+                    src="/headshot.jpg"
+                    alt="Olabode Olusegun"
+                    fill
+                    className="object-cover"
+                    onError={() => setHeadshotFailed(true)}
+                  />
+                )}
               </div>
             </div>
           </motion.div>

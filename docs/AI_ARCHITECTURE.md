@@ -1,29 +1,40 @@
 # AI Orchestration Architecture
 
-This document outlines the architecture powering the AI modules demonstrated in this portfolio. It is designed to provide transparency into how the models are orchestrated, validated, and constrained.
-
-## Overview
-The AI layer is an orchestration service rather than a standalone chat wrapper. It connects specific frontend interfaces (Resume Analyzer, Technical Audit, Decision Simulator, and Chatbot) to LLMs via structured API routes, enforcing rigid schema validation and deterministic output formatting.
+This document covers the two live AI modules in this portfolio. Both are real endpoints — not mocked — and can be exercised via the site UI.
 
 ## Architecture Flow
+
 ```text
-Client Request -> Next.js API Route -> Rate Limiter -> Prompt Builder -> LLM (OpenAI/Anthropic) -> Zod Validator -> Client Response
+Client → Next.js API Route → Rate Limiter → Prompt Builder → LLM → Zod Validator → Client
 ```
 
-## Module Breakdown
-1. **Resume Analyzer (`/api/analyze-resume`)**: Extracts structured career data via OpenAI's JSON mode, mapped to and validated against a rigorous Zod schema.
-2. **Project Recommender (`/api/recommend-project`)**: Matches user constraints to internal project metadata using structured prompting, verified by Zod before client delivery.
-3. **Technical Audit (`/api/consult`)**: Simulates a senior engineering review of system architecture proposals.
-4. **Engineering Assistant (`/api/chat`)**: A streaming chat interface backed by Anthropic's Claude. It handles open-ended technical queries with aggressive prompt injection shielding.
+All structured outputs are validated against a Zod schema before being returned. The system uses two LLM providers, routed by task type.
+
+## Live Modules
+
+### Resume Analyzer (`/api/analyze-resume`)
+Accepts raw resume text. Uses OpenAI in JSON mode to extract structured career data, then validates the response against a strict Zod schema before returning it. Output fields: `matchScore`, `skillGap`, `alignmentSignals`, `collaborationOpportunities`, `developmentPlan`, `reasoning`, `confidenceScore`, `assumptions`.
+
+The Zod validation step is what makes this useful: if the model returns a malformed or incomplete object, the request fails explicitly rather than silently passing garbage to the client.
+
+### Engineering Assistant (`/api/chat`)
+A streaming chat interface backed by Anthropic's Claude. Configured with a short system prompt describing my stack and engineering approach. Handles open-ended questions with aggressive prompt-injection shielding — incoming messages are evaluated against known injection patterns before being forwarded to the model.
+
+Honest limitation: this is a base Claude model with a short context prompt. It can answer questions about how I work and what I've built in general terms. It does not have RAG access to case study content or project specifics.
 
 ## Cross-Cutting Concerns
-- **Rate Limiting**: Built on an Upstash/Redis pattern with an in-memory fallback mechanism to ensure demo stability.
-- **Schema Validation**: Structured outputs from `/api/recommend-project` and `/api/analyze-resume` are validated through Zod schemas. `/api/consult` and `/api/simulate` currently parse LLM responses as JSON without structural validation; extending coverage to those routes is on the backlog.
-- **Prompt Injection Defense**: Evaluates incoming text against known injection patterns (e.g., "ignore previous instructions", "system prompt") and short-circuits malicious requests.
-- **Model Routing**: The system employs a polyglot model strategy, routing structured data tasks to OpenAI and open-ended chat tasks to Anthropic.
 
-## Out of Scope
-To remain honest about the system's capabilities, the following are *not* currently implemented:
-- **No RAG / Vector Database**: The models rely entirely on in-context learning injected at runtime.
-- **No Autonomous Agent Loops**: The system is highly deterministic; there are no self-correcting autonomous agent chains.
-- **No Fine-tuning**: All models are zero-shot or few-shot prompted using base models.
+**Rate Limiting**: Built on an Upstash/Redis pattern with an in-memory fallback. The Resume Analyzer is gated at 10 requests/hour per IP.
+
+**Schema Validation**: `/api/analyze-resume` validates LLM output through Zod before any client delivery. `/api/chat` streams raw tokens; validation is handled at the prompt-injection layer rather than on the output.
+
+**Prompt Injection Defense**: Evaluates incoming text against known injection patterns (e.g., "ignore previous instructions", "system prompt override") and short-circuits flagged requests before they reach the LLM.
+
+**Model Routing**: Polyglot strategy — structured data tasks route to OpenAI (JSON mode, deterministic output); open-ended chat routes to Anthropic (Claude, better at nuanced conversation).
+
+## What This Is Not
+
+- **No RAG / vector database**: Models rely on in-context prompting. No external knowledge retrieval.
+- **No autonomous agents**: Deterministic pipelines. No self-correcting loops.
+- **No fine-tuning**: Zero-shot or few-shot with base models.
+- **No persistent memory**: Each request is stateless. Chat history is held client-side and sent on each turn.

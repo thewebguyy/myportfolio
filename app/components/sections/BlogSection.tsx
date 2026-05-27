@@ -18,7 +18,7 @@ export function BlogSection() {
             viewport={{ once: true }}
             className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
           >
-            [SYSTEM_LOG: DOCUMENTATION_ARCHIVE]
+            Writing
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
@@ -66,7 +66,7 @@ export function BlogSection() {
                   
                   {/* Category */}
                   <div className="md:col-span-2 font-mono text-[11px] text-text-accent uppercase tracking-widest mb-4 md:mb-0 pt-1">
-                    [{post.category}]
+                    {post.category}
                   </div>
                   
                   {/* Content */}
@@ -82,7 +82,7 @@ export function BlogSection() {
                   {/* Action */}
                   <div className="hidden md:flex col-span-2 justify-end pt-1">
                     <span className="font-mono text-[11px] text-text-accent/0 group-hover:text-text-accent uppercase tracking-widest transition-colors">
-                      [READ_DOC]
+                      Read →
                     </span>
                   </div>
                 </div>

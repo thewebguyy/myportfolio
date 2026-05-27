@@ -11,6 +11,11 @@ const NAV_LINKS = [
     { label: 'Writing', href: '/#writing' },
 ]
 
+// CV link appears only when the env var is set to a real URL.
+// Set NEXT_PUBLIC_RESUME_URL in .env.local to enable it.
+const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
+const hasResumeUrl = RESUME_URL.length > 0 && !RESUME_URL.includes('drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9')
+
 export function Navbar() {
     const pathname = usePathname()
     const [scrolled, setScrolled] = useState(false)
@@ -120,9 +125,9 @@ export function Navbar() {
 
                     {/* Right: CTA Button */}
                     <div className="hidden md:flex items-center gap-6">
-                        {process.env.NEXT_PUBLIC_RESUME_URL && process.env.NEXT_PUBLIC_RESUME_URL !== 'https://drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9_aHMqsAfG/view?usp=drive_link' && (
+                        {hasResumeUrl && (
                             <a
-                                href={process.env.NEXT_PUBLIC_RESUME_URL}
+                                href={RESUME_URL}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-[11px] font-mono tracking-widest uppercase text-text-primary/60 hover:text-text-primary transition-colors"
@@ -196,9 +201,9 @@ export function Navbar() {
                         </div>
 
                         <div className="py-8 border-t-[0.5px] border-border-wire flex flex-col gap-4">
-                            {process.env.NEXT_PUBLIC_RESUME_URL && process.env.NEXT_PUBLIC_RESUME_URL !== 'https://drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9_aHMqsAfG/view?usp=drive_link' && (
+                            {hasResumeUrl && (
                                 <a
-                                    href={process.env.NEXT_PUBLIC_RESUME_URL}
+                                    href={RESUME_URL}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="w-full block text-center py-4 text-text-primary font-mono text-[11px] tracking-widest uppercase hover:text-text-accent transition-colors"
