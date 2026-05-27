@@ -16,7 +16,7 @@ export function Manifesto() {
               viewport={{ once: true }}
               className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
             >
-              [HOW I WORK]
+              How I work
             </motion.div>
             
             <motion.h2
@@ -66,9 +66,7 @@ export function Manifesto() {
               transition={{ delay: 0.3 }}
               className="pt-8 mt-8 border-t-[0.5px] border-border-wire"
             >
-              <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-4">
-                [CONTACT]
-              </div>
+
               <a href="#contact" className="inline-flex items-center gap-3 text-text-primary hover:text-text-accent transition-colors duration-300 uppercase tracking-widest text-[13px]">
                 <span className="w-2 h-2 bg-text-accent inline-block"></span>
                 Get in touch

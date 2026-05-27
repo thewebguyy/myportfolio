@@ -12,7 +12,7 @@ export function TechnicalAudit({ stack, architecture, performance }: TechnicalAu
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Stack */}
         <div>
-          <div className="text-text-accent uppercase tracking-widest mb-4 opacity-80">[Tech Stack]</div>
+          <div className="text-text-accent uppercase tracking-widest mb-4 opacity-80">Tech Stack</div>
           <ul className="flex flex-col gap-2 opacity-80">
             {stack.map((item, index) => (
               <li key={index} className="flex items-center gap-2">
@@ -26,7 +26,7 @@ export function TechnicalAudit({ stack, architecture, performance }: TechnicalAu
         {/* Performance Logs */}
         {performance && (
           <div>
-            <div className="text-text-accent uppercase tracking-widest mb-4 opacity-80">[Telemetry]</div>
+            <div className="text-text-accent uppercase tracking-widest mb-4 opacity-80">Telemetry</div>
             <ul className="flex flex-col gap-2 opacity-80">
               {performance.map((item, index) => (
                 <li key={index} className="flex items-center justify-between border-b-[0.5px] border-border-wire pb-1">
@@ -41,7 +41,7 @@ export function TechnicalAudit({ stack, architecture, performance }: TechnicalAu
         {/* Architecture Spec */}
         {architecture && (
           <div>
-            <div className="text-text-accent uppercase tracking-widest mb-4 opacity-80">[Architecture]</div>
+            <div className="text-text-accent uppercase tracking-widest mb-4 opacity-80">Architecture</div>
             <div className="opacity-80 leading-relaxed">
               {architecture}
             </div>

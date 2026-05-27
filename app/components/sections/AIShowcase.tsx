@@ -47,7 +47,7 @@ export function AIShowcase() {
             viewport={{ once: true }}
             className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
           >
-            [DEMOS]
+            Demos
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
@@ -74,9 +74,7 @@ export function AIShowcase() {
               key={tool.title}
               className={`border-b-[0.5px] md:border-b-0 md:border-r-[0.5px] last:border-r-0 border-border-wire p-8 flex flex-col transition-colors duration-300 ${activeDemo === tool.id ? 'bg-surface' : 'bg-background hover:bg-surface/50'}`}
             >
-              <div className="font-mono text-[11px] text-text-accent mb-6 tracking-widest uppercase">
-                [MODULE: {tool.id.toUpperCase()}]
-              </div>
+
               
               <h3 className="font-serif text-[24px] text-text-primary mb-4">
                 {tool.title}

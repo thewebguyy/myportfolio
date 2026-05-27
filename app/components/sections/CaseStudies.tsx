@@ -22,7 +22,7 @@ export function CaseStudies() {
             viewport={{ once: true }}
             className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
           >
-            [SYSTEM_LOG: WORK_HISTORY]
+            Work
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
@@ -61,7 +61,7 @@ function LedgerEntry({ project, number }: { project: Project, number: number }) 
         {/* Left Column: Metadata */}
         <div className="lg:col-span-4 border-b-[0.5px] lg:border-b-0 lg:border-r-[0.5px] border-border-wire p-8 lg:p-12 flex flex-col">
           <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-12">
-            [LOG_ENTRY: {number.toString().padStart(2, '0')}]
+            {number.toString().padStart(2, '0')} /
           </div>
           
           <h3 className="font-serif text-[32px] text-text-primary leading-tight mb-4">
@@ -75,7 +75,7 @@ function LedgerEntry({ project, number }: { project: Project, number: number }) 
 
           <div className="mt-auto">
             <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-4">
-              [CATEGORY]
+              Category
             </div>
             <div className="font-mono text-[13px] text-text-primary uppercase">
               {project.category}
@@ -98,7 +98,7 @@ function LedgerEntry({ project, number }: { project: Project, number: number }) 
 
             <div className="p-4 bg-surface border-t-[0.5px] border-border-wire flex justify-end">
               <a href="#work" className="btn-secondary">
-                [ACCESS DEMO]
+                View project
               </a>
             </div>
           </ArtifactFrame>

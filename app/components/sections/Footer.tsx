@@ -27,7 +27,7 @@ export function Footer() {
 
           {/* Col 2: Navigation */}
           <div className="md:col-span-3">
-            <h4 className="font-mono text-[11px] uppercase text-text-accent tracking-widest mb-6">[NAVIGATION]</h4>
+            <h4 className="font-mono text-[11px] uppercase text-text-accent tracking-widest mb-6">Navigation</h4>
             <ul className="space-y-4">
               {['Work', 'AI', 'Writing', 'Contact'].map((item) => (
                 <li key={item}>
@@ -44,7 +44,7 @@ export function Footer() {
 
           {/* Col 3: Social */}
           <div className="md:col-span-3">
-            <h4 className="font-mono text-[11px] uppercase text-text-accent tracking-widest mb-6">[EXTERNAL_LINKS]</h4>
+            <h4 className="font-mono text-[11px] uppercase text-text-accent tracking-widest mb-6">Links</h4>
             <ul className="space-y-4">
               {[
                 { name: 'LinkedIn', url: 'https://linkedin.com/in/thewebguyy' },

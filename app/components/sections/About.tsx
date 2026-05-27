@@ -16,7 +16,7 @@ export function About() {
               viewport={{ once: true }}
               className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
             >
-              [ABOUT]
+              About
             </motion.div>
             
             <motion.h2
