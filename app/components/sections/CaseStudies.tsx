@@ -35,6 +35,30 @@ export function CaseStudies() {
           </motion.h2>
         </div>
 
+        {/* Global Metrics Strip */}
+        <div className="border-b-[0.5px] border-border-wire bg-background">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x-[0.5px] divide-border-wire">
+            {[
+              { value: '10k+', label: 'Peak Users' },
+              { value: '99.9%', label: 'Availability' },
+              { value: '<200ms', label: 'API Latency' },
+              { value: '99.98%', label: 'Success Rate' }
+            ].map((metric, i) => (
+              <div key={i} className="flex flex-col items-center justify-center py-16 px-4 text-center hover:bg-surface/50 transition-colors duration-500">
+                <div 
+                  className="font-serif text-text-primary tracking-tighter" 
+                  style={{ fontSize: 'clamp(4rem, 8vw, 8rem)', lineHeight: 1 }}
+                >
+                  {metric.value}
+                </div>
+                <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mt-6">
+                  {metric.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Ledger Entries */}
         <div className="flex flex-col">
           {selectedProjects.map((project, index) => (
