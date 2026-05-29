@@ -1,4 +1,5 @@
 import { Hero } from './components/sections/Hero'
+import { MarqueeSection } from './components/sections/MarqueeSection'
 import { About } from './components/sections/About'
 import { Manifesto } from './components/sections/Manifesto'
 import { CaseStudies } from './components/sections/CaseStudies'
@@ -11,6 +12,7 @@ export default function HomePage() {
   return (
     <main className="relative min-h-screen bg-background">
       <Hero />
+      <MarqueeSection />
       <About />
       <Manifesto />
       <CaseStudies />

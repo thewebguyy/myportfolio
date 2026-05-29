@@ -91,6 +91,13 @@
   .gradient-text {
     @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary;
   }
+
+  .hero-heading {
+    font-family: var(--font-kanit), sans-serif;
+    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 @layer utilities {

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { Magnet } from '../ui/Magnet'
 
 const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
 const hasResumeUrl = RESUME_URL.length > 0 && !RESUME_URL.includes('drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9')
@@ -28,7 +29,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] text-text-primary mb-12 font-serif tracking-tight"
+            className="hero-heading text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] text-text-primary mb-12 tracking-tight"
           >
             Full-stack engineer building production systems for African fintech and marketplace platforms.
           </motion.h1>
@@ -67,19 +68,21 @@ export function Hero() {
                 <span className="text-text-secondary text-[10px]">●</span>
                 <span className="font-mono text-[11px] text-text-primary/70 uppercase tracking-widest">Open to senior engineering roles</span>
               </div>
-              <div className="w-12 h-12 border-[0.5px] border-border-wire overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 rounded-full bg-surface relative flex items-center justify-center">
-                {headshotFailed ? (
-                  <span className="font-mono text-[10px] text-text-accent">OO</span>
-                ) : (
-                  <Image
-                    src="/headshot.jpg"
-                    alt="Olabode Olusegun"
-                    fill
-                    className="object-cover"
-                    onError={() => setHeadshotFailed(true)}
-                  />
-                )}
-              </div>
+              <Magnet padding={150} strength={3}>
+                <div className="w-12 h-12 border-[0.5px] border-border-wire overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 rounded-full bg-surface relative flex items-center justify-center">
+                  {headshotFailed ? (
+                    <span className="font-mono text-[10px] text-text-accent">OO</span>
+                  ) : (
+                    <Image
+                      src="/headshot.jpg"
+                      alt="Olabode Olusegun"
+                      fill
+                      className="object-cover"
+                      onError={() => setHeadshotFailed(true)}
+                    />
+                  )}
+                </div>
+              </Magnet>
             </div>
           </motion.div>
         </div>

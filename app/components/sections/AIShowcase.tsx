@@ -22,7 +22,7 @@ export function AIShowcase() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight"
+            className="hero-heading text-[40px] md:text-[56px] text-text-primary tracking-tight"
           >
             Resume Analyzer
           </motion.h2>

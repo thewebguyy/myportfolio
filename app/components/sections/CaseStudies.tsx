@@ -1,8 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useRef } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { projects, type Project } from '@/lib/projects'
 import { ArtifactFrame } from '../ui/ArtifactFrame'
 import { TechnicalAudit } from '../ui/TechnicalAudit'
@@ -29,7 +29,7 @@ export function CaseStudies() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight"
+            className="hero-heading text-[40px] md:text-[56px] text-text-primary tracking-tight"
           >
             The Ledger.
           </motion.h2>
@@ -42,6 +42,8 @@ export function CaseStudies() {
               key={project!.id} 
               project={project as Project} 
               number={index + 1} 
+              index={index}
+              totalCards={selectedProjects.length}
             />
           ))}
         </div>
@@ -50,16 +52,33 @@ export function CaseStudies() {
   )
 }
 
-function LedgerEntry({ project, number }: { project: Project, number: number }) {
+function LedgerEntry({ project, number, index, totalCards }: { project: Project, number: number, index: number, totalCards: number }) {
   const perfMetrics = project.metrics 
     ? Object.entries(project.metrics).map(([key, val]) => ({ metric: key, value: val as string }))
     : [{ metric: 'Latency', value: '< 50ms' }, { metric: 'Uptime', value: '99.99%' }];
 
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start']
+  })
+
+  const targetScale = 1 - (totalCards - 1 - index) * 0.03
+  const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale])
+
   return (
-    <div className="border-b-[0.5px] border-border-wire group">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
-        
-        {/* Left Column: Metadata */}
+    <div ref={containerRef} className="h-[85vh] w-full relative">
+      <motion.div 
+        className="sticky w-full border-[0.5px] border-border-wire bg-background group overflow-hidden"
+        style={{
+          top: `${96 + index * 28}px`,
+          scale,
+          transformOrigin: 'top center'
+        }}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+          
+          {/* Left Column: Metadata */}
         <div className="lg:col-span-4 border-b-[0.5px] lg:border-b-0 lg:border-r-[0.5px] border-border-wire p-8 lg:p-12 flex flex-col">
           <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-12">
             {number.toString().padStart(2, '0')} /
@@ -107,7 +126,9 @@ function LedgerEntry({ project, number }: { project: Project, number: number }) 
           </ArtifactFrame>
         </div>
 
-      </div>
+        </div>
+
+      </motion.div>
     </div>
   )
 }
