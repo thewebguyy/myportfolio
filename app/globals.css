@@ -4,18 +4,18 @@
 
 @layer base {
   :root {
-    --background: #020816;
-    --surface: #0a1124;
-    --surface-2: #111a32;
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
-    --text-muted: #475569;
-    --text-accent: #3A7BD5;
-    --border-wire: rgba(255, 255, 255, 0.1);
-    --primary: #3A7BD5;
-    --primary-light: #5b95e8;
-    --secondary: #f59e0b;
-    --secondary-light: #fbbf24;
+    --background: #0D0A08;
+    --surface: #141009;
+    --surface-2: #1C170E;
+    --text-primary: #F5F0EB;
+    --text-secondary: #A39688;
+    --text-muted: #6B5E52;
+    --text-accent: #C4622D;
+    --border-wire: rgba(245, 240, 235, 0.08);
+    --primary: #C4622D;
+    --primary-light: #E07A3E;
+    --secondary: #E8901A;
+    --secondary-light: #FDBA4D;
   }
 
   body {
@@ -94,7 +94,7 @@
 
   .hero-heading {
     font-family: var(--font-kanit), sans-serif;
-    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+    background: linear-gradient(180deg, #F5F0EB 0%, #A39688 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
