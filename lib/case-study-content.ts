@@ -47,5 +47,39 @@ export const caseStudyContent: Record<string, CaseStudyContent> = {
         tradeoff: "The tradeoff was a dedicated inference service and the additional latency to query it."
       }
     ]
+  },
+  servia: {
+    problem: "Restaurants managing operations using legacy single-client setups or offline tickets frequently suffer from data synchronization lag. Kitchen staff, hosts, and delivery operators work off disparate states, leading to lost orders, double-booked reservations during peak hours, and uncoordinated inventory counts that slow down table turn times.",
+    constraints: [
+      "Idempotent writes — clients on flaky restaurant Wi-Fi retry; duplicate requests must not process multiple payments or create duplicate orders.",
+      "Serializable isolation for reservations — concurrent bookings for the last available table slots must be resolved serializably to prevent overbooking.",
+      "Stateless auth that survives token leaks — short-lived access tokens combined with secure, HttpOnly refresh-token rotation.",
+      "CI gates blocking faulty code merges — mandatory automated linting, strict type-checking, integration tests, and build checks before main integration."
+    ],
+    architectureNotes: "The backend is structured as a stateless Express API interacting with a PostgreSQL database via Prisma ORM, while the frontend is a Next.js single-page application. Security relies on a custom JWT dual-token flow where short-lived access tokens verify endpoints in-memory, and long-lived refresh tokens are stored in secure, HttpOnly, SameSite=Strict cookies and matched against bcrypt hashes in the database. Concurrency control is delegated directly to PostgreSQL using Serializable transaction isolation levels to prevent race conditions during write-heavy operations.",
+    whatBroke: "During peak-hour load simulation tests on the booking engine, multiple concurrent reservation requests for the same high-contention time slot succeeded despite exceeding the restaurant's total seating capacity. Under default Read Committed isolation, concurrent database sessions queried the aggregate party size (SUM of partySize) at the same millisecond and read the same stale capacity. Both sessions proceeded to insert reservation rows, resulting in severe overbooking and corrupting the inventory state.",
+    whatChanged: "I wrapped the capacity check and booking write operations in a transaction block configured with PostgreSQL's SERIALIZABLE isolation level. Under this isolation, overlapping concurrent read-write dependencies cause the database to abort conflicting operations and throw error code P2034 (serialization failure). The service layer was updated to explicitly catch this code, map it to a standard 409 Concurrency Conflict, and trigger a clean retry flow. The lesson: do not rely on Read Committed or application-level locks to manage capacity sums; delegate concurrency validation directly to the database engine.",
+    keyDecisions: [
+      {
+        decision: "Custom JWT dual-token authentication flow over server-side session cookies.",
+        rationale: "Maintains a completely stateless backend API allowing horizontal scale-out without session store bottlenecks or database lookups on every request.",
+        tradeoff: "Increases client-side storage complexity and requires explicit refresh token database bcrypt hashing and rotation to manage active session revocation."
+      },
+      {
+        decision: "SQL SERIALIZABLE isolation level over application-level optimistic/pessimistic locking.",
+        rationale: "Guarantees absolute transactional correctness for aggregate calculations (like summing total parties per slot) without needing pre-seeded slot inventory rows.",
+        tradeoff: "Results in higher transaction abort rates under extreme write contention, requiring robust application retry logic or client failure handling."
+      },
+      {
+        decision: "Payment and order idempotency keys checked at the database layer.",
+        rationale: "Prevents double-charging on network retry requests by verifying the payment intent reference inside an atomic database block before contacting the payment gateway.",
+        tradeoff: "Introduces slight storage overhead for tracking transaction reference keys and requires API endpoints to accept client-generated UUIDs."
+      },
+      {
+        decision: "Strict pre-commit and pre-merge CI quality gates using automated Jest integration tests against live DB containers.",
+        rationale: "Ensures that schema migrations, query performance, and concurrency behavior are verified under production-like database environments before code reaches main.",
+        tradeoff: "Increases build pipeline time and requires runner resources to spin up and tear down Docker Postgres instances for each test execution."
+      }
+    ]
   }
 }

@@ -7,7 +7,7 @@ import { projects, type Project } from '@/lib/projects'
 import { ArtifactFrame } from '../ui/ArtifactFrame'
 import { TechnicalAudit } from '../ui/TechnicalAudit'
 
-const REAL_PROJECTS_IDS = ['servicebridge', '55lounge', 'subscription-manager', 'checkout-system']
+const REAL_PROJECTS_IDS = ['servicebridge', 'servia', 'subscription-manager', 'checkout-system']
 
 export function CaseStudies() {
   const selectedProjects = REAL_PROJECTS_IDS.map(id => projects.find(p => p.id === id)).filter(Boolean)

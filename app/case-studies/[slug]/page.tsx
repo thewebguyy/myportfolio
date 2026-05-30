@@ -21,6 +21,7 @@ import { TechnicalInsightCard, ArchitecturePanel } from '@/app/components/ui/Eng
 // cn removed
 import { caseStudyContent } from '@/lib/case-study-content'
 import ServiceBridgeArchitecture from '@/app/components/visuals/ServiceBridgeArchitecture'
+import ServiaArchitecture from '@/app/components/visuals/ServiaArchitecture'
 
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
   const project = getProjectById(params.slug)
@@ -154,6 +155,11 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                   {params.slug === 'servicebridge' && (
                     <div className="my-8 rounded-xl overflow-hidden border border-surface-2 bg-surface">
                       <ServiceBridgeArchitecture />
+                    </div>
+                  )}
+                  {params.slug === 'servia' && (
+                    <div className="my-8 rounded-xl overflow-hidden border border-surface-2 bg-surface">
+                      <ServiaArchitecture />
                     </div>
                   )}
                   <p className="body">{content.architectureNotes}</p>
