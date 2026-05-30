@@ -195,6 +195,34 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                     </div>
                   </div>
                 )}
+
+                {content.evidence && (
+                  <div className="space-y-8">
+                    <h2 className="text-[32px] font-semibold text-white">Load Testing Evidence</h2>
+                    <div className="p-10 bg-surface rounded-[12px] border border-surface-2 space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-[12px] border-b border-surface-2 pb-6">
+                        <div>
+                          <span className="text-text-muted uppercase block text-[10px] tracking-wider mb-1">Testing Tool</span>
+                          <span className="text-white font-semibold">{content.evidence.tool}</span>
+                        </div>
+                        <div>
+                          <span className="text-text-muted uppercase block text-[10px] tracking-wider mb-1">Peak Throughput</span>
+                          <span className="text-white font-semibold">{content.evidence.rps}</span>
+                        </div>
+                        <div>
+                          <span className="text-text-muted uppercase block text-[10px] tracking-wider mb-1">Test Environment</span>
+                          <span className="text-white font-semibold text-balance">{content.evidence.environment}</span>
+                        </div>
+                      </div>
+                      <p className="body text-text-secondary leading-relaxed pt-2">
+                        {content.evidence.details}
+                      </p>
+                      <div className="pt-2 font-mono text-[11px] text-text-accent uppercase tracking-widest">
+                        Test script documented in <a href={`${project.githubUrl}/blob/main/docs/load-test-k6.js`} target="_blank" rel="noopener noreferrer" className="underline hover:text-white transition-colors">docs/load-test-k6.js</a>.
+                      </div>
+                    </div>
+                  </div>
+                )}
               </>
             ) : (
               <>

@@ -57,10 +57,24 @@ export function ContactSection() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="text-[18px] text-text-secondary leading-[1.7] mb-12 max-w-[480px]"
+              className="text-[18px] text-text-secondary leading-[1.7] mb-8 max-w-[480px]"
             >
               I&apos;m available for engineering roles and high-impact freelance projects. Based in Lagos, working globally.
             </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-6 font-mono text-[13px] text-text-accent uppercase tracking-widest mb-12"
+            >
+              <a href="https://linkedin.com/in/thewebguyy" target="_blank" rel="noopener noreferrer" className="hover:text-text-primary transition-colors">
+                LinkedIn ↗
+              </a>
+              <a href="https://github.com/thewebguyy" target="_blank" rel="noopener noreferrer" className="hover:text-text-primary transition-colors">
+                GitHub ↗
+              </a>
+            </motion.div>
 
           </div>
 

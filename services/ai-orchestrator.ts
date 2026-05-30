@@ -54,6 +54,7 @@ export class AIOrchestrator {
           {
             "matchScore": 0-100,
             "skillGap": "Low/Medium/High",
+            "skillGapSeverity": "Brief description of domain gaps (e.g., 'No financial API experience' or 'None')",
             "alignmentSignals": { "cultural": "string", "technical": "string", "strategic": "string" },
             "collaborationOpportunities": ["string"],
             "developmentPlan": "string",
@@ -83,6 +84,7 @@ export class AIOrchestrator {
     const TalentAuditResponseSchema = z.object({
       matchScore: z.number().min(0).max(100),
       skillGap: z.enum(['Low', 'Medium', 'High']),
+      skillGapSeverity: z.string(),
       alignmentSignals: z.object({
         cultural: z.string(),
         technical: z.string(),

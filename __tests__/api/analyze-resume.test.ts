@@ -19,6 +19,7 @@ jest.mock('@/lib/openai', () => {
                                     content: JSON.stringify({
                                         matchScore: 85,
                                         skillGap: "Low",
+                                        skillGapSeverity: "None",
                                         alignmentSignals: {
                                             cultural: "Strong alignment with engineering-first culture",
                                             technical: "Deep React and TypeScript expertise",

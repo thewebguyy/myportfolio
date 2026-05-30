@@ -69,7 +69,7 @@ export function Footer() {
           <div className="md:col-span-1 flex justify-end items-start">
             <button 
               onClick={scrollToTop}
-              className="p-3 border-[0.5px] border-border-wire bg-surface hover:bg-text-primary text-text-primary/60 hover:text-background transition-colors flex items-center justify-center group"
+              className="w-12 h-12 border-[0.5px] border-border-wire bg-surface hover:bg-text-primary text-text-primary/60 hover:text-background transition-colors flex items-center justify-center group"
               aria-label="Back to top"
             >
               <svg width="12" height="12" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-colors">

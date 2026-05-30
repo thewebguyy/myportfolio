@@ -8,7 +8,7 @@ interface ArtifactFrameProps {
   children: React.ReactNode;
 }
 
-export function ArtifactFrame({ id, status = 'STABLE', location = 'LAGOS_NG', title, children }: ArtifactFrameProps) {
+export function ArtifactFrame({ id, status, location, title, children }: ArtifactFrameProps) {
   return (
     <div className="border-[0.5px] border-border-wire bg-background w-full mb-8">
       {/* Header */}
@@ -18,8 +18,8 @@ export function ArtifactFrame({ id, status = 'STABLE', location = 'LAGOS_NG', ti
           {title && <span className="opacity-90">{title}</span>}
         </div>
         <div className="flex items-center gap-4 opacity-60">
-          <span>[LOC: {location}]</span>
-          <span>[STATUS: {status}]</span>
+          {location && location.trim() ? <span>[LOC: {location}]</span> : null}
+          {status && status.trim() ? <span>[STATUS: {status}]</span> : null}
         </div>
       </div>
       {/* Content */}

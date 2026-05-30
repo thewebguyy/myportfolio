@@ -47,7 +47,7 @@ export const projects: Project[] = [
     id: 'subscription-manager',
     title: 'Subscription Manager',
     description: 'Automated recurring payment orchestration with multi-gateway support',
-    longDescription: `Engineered a robust payment orchestration system for managing complex recurring billing cycles. Focused on idempotent transaction handling and webhook reliability to ensure zero-loss processing. Integrated Seerbit and Stripe APIs with custom failure recovery logic and automated reconciliation pipelines.`,
+    longDescription: `Engineered an automated payment orchestration system for managing complex recurring billing cycles. Focused on idempotent transaction handling and webhook reliability to ensure zero-loss processing. Integrated Seerbit and Stripe APIs with custom failure recovery logic and automated reconciliation pipelines.`,
     category: 'Fintech Infrastructure',
     company: 'Seerbit (Contract / Open Source)',
     tags: ['Payments', 'Idempotency', 'Automation', 'API Design'],
@@ -71,9 +71,10 @@ export const projects: Project[] = [
     company: 'Independent project',
     tags: ['Idempotency', 'Concurrency Control', 'JWT Auth', 'CI/CD'],
     image: '/projects/servia.jpg',
+    githubUrl: 'https://github.com/thewebguyy/servia',
     metrics: {
       double_bookings: '0 since launch',
-      idempotency: '99.9% under retry',
+      idempotency: 'Zero duplicates in retry tests',
       write_latency: '<200ms p95'
     },
     tech: ['Next.js', 'Express.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'JWT', 'GitHub Actions', 'Pino'],

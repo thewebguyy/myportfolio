@@ -80,6 +80,15 @@ export function About() {
               I&apos;m based in Lagos. Most of my work is for Nigerian or diaspora-facing products, which means the constraints are real: flaky networks, payment provider inconsistencies, users who don&apos;t have the luxury of a fast connection. Those constraints made me a better engineer than any greenfield project could have.
             </motion.p>
 
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.25 }}
+            >
+              When integrated into a team, I focus on unblocking people and automating the repeatable details. On Servia, I mapped out the API contract and shared it as a mock server in the first week to let the frontend team build against stable endpoints. If I disagree with an architectural choice, I write a 1-page document detailing the concrete scaling trade-offs of both options, letting the data make the decision.
+            </motion.p>
+
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}

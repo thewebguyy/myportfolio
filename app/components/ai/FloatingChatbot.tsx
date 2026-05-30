@@ -98,7 +98,7 @@ export function FloatingChatbot() {
     <>
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 no-print"
+        className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 no-print"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         aria-label={isOpen ? "Close chat assistant" : "Open chat assistant"}
@@ -117,7 +117,7 @@ export function FloatingChatbot() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-24 right-6 w-[420px] h-[650px] bg-secondary border border-primary/20 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden no-print"
+            className="fixed bottom-36 sm:bottom-24 right-4 sm:right-6 w-[calc(100vw-32px)] sm:w-[420px] h-[calc(100vh-180px)] sm:h-[650px] bg-secondary border border-primary/20 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden no-print"
             ref={chatWindowRef}
           >
             {/* Header */}

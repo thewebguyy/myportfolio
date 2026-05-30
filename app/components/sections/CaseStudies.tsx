@@ -9,6 +9,22 @@ import { TechnicalAudit } from '../ui/TechnicalAudit'
 
 const REAL_PROJECTS_IDS = ['servicebridge', 'servia', 'subscription-manager', 'checkout-system']
 
+const statusMap: Record<string, string> = {
+  servicebridge: 'PROD',
+  servia: 'PROD',
+  'subscription-manager': 'OSS',
+  'checkout-system': 'OSS',
+  'laverita-hair': 'LIVE'
+}
+
+const locationMap: Record<string, string> = {
+  servicebridge: 'NETLIFY',
+  servia: 'RAILWAY',
+  'subscription-manager': 'GITHUB',
+  'checkout-system': 'GITHUB',
+  'laverita-hair': 'WEB'
+}
+
 export function CaseStudies() {
   const selectedProjects = REAL_PROJECTS_IDS.map(id => projects.find(p => p.id === id)).filter(Boolean)
 
@@ -90,11 +106,23 @@ function LedgerEntry({ project, number, index, totalCards }: { project: Project,
   const targetScale = 1 - (totalCards - 1 - index) * 0.03
   const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale])
 
+  const [isMobile, setIsMobile] = React.useState(false)
+
+  React.useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)')
+    setIsMobile(media.matches)
+    const listener = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    media.addEventListener('change', listener)
+    return () => media.removeEventListener('change', listener)
+  }, [])
+
   return (
-    <div ref={containerRef} className="h-[85vh] w-full relative">
+    <div ref={containerRef} className="h-auto md:h-[85vh] w-full relative mb-8 md:mb-0">
       <motion.div 
-        className="sticky w-full border-[0.5px] border-border-wire bg-background group overflow-hidden"
-        style={{
+        className="relative md:sticky w-full border-[0.5px] border-border-wire bg-background group overflow-hidden"
+        style={isMobile ? {
+          transformOrigin: 'top center'
+        } : {
           top: `${96 + index * 28}px`,
           scale,
           transformOrigin: 'top center'
@@ -131,7 +159,12 @@ function LedgerEntry({ project, number, index, totalCards }: { project: Project,
 
         {/* Right Column: Narrative & Artifact */}
         <div className="lg:col-span-8 p-8 lg:p-12">
-          <ArtifactFrame id={project.id.toUpperCase()} title={project.title}>
+          <ArtifactFrame 
+            id={project.id.toUpperCase()} 
+            title={project.title}
+            status={statusMap[project.id]}
+            location={locationMap[project.id]}
+          >
             <div className="p-8 font-mono text-[14px] text-text-primary/80 leading-[1.8] bg-surface/50 border-b-[0.5px] border-border-wire">
               {project.longDescription || project.description}
             </div>

@@ -7,6 +7,7 @@ import { Magnet } from '../ui/Magnet'
 
 const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
 const hasResumeUrl = RESUME_URL.length > 0 && !RESUME_URL.includes('drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9')
+const IS_AVAILABLE = process.env.NEXT_PUBLIC_AVAILABLE_FOR_HIRE === 'true'
 
 export function Hero() {
   const [headshotFailed, setHeadshotFailed] = useState(false)
@@ -19,9 +20,15 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-8 flex flex-wrap gap-4"
+            className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-8 flex flex-wrap items-center gap-3"
           >
             <span>OLABODE OLUSEGUN · LAGOS, NG</span>
+            {IS_AVAILABLE && (
+              <span className="flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[9px] tracking-normal font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                AVAILABLE FOR HIRE
+              </span>
+            )}
           </motion.div>
 
           {/* Name / Monolith Headline */}
@@ -41,7 +48,7 @@ export function Hero() {
             transition={{ duration: 0.3, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="font-mono text-[14px] text-text-primary/80 leading-[1.8] max-w-[640px] mb-16"
           >
-            I build production systems in Lagos — fintech, health infrastructure, marketplace platforms — and I&apos;ve learned more from the ones that broke than the ones that shipped clean.
+            I focus on implementing transactional consistency, API security, and predictable error boundaries. I design systems to survive the real-world constraints of the West African web—flaky mobile connections, payment provider inconsistencies, and intermittent network latency.
           </motion.p>
 
           {/* CTAs */}
@@ -64,10 +71,12 @@ export function Hero() {
             </div>
             
             <div className="flex items-center gap-4 sm:ml-auto">
-              <div className="flex items-center gap-3">
-                <span className="text-text-secondary text-[10px]">●</span>
-                <span className="font-mono text-[11px] text-text-primary/70 uppercase tracking-widest">Open to senior engineering roles</span>
-              </div>
+              {IS_AVAILABLE && (
+                <div className="flex items-center gap-3">
+                  <span className="text-text-secondary text-[10px]">●</span>
+                  <span className="font-mono text-[11px] text-text-primary/70 uppercase tracking-widest">Open to senior engineering roles</span>
+                </div>
+              )}
               <Magnet padding={150} strength={3}>
                 <div className="w-12 h-12 border-[0.5px] border-border-wire overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 rounded-full bg-surface relative flex items-center justify-center">
                   {headshotFailed ? (

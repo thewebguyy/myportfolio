@@ -59,13 +59,24 @@ export function BlogSection() {
               <Link href={`/blog/${post.slug}`}>
                 <div className="group grid grid-cols-1 md:grid-cols-12 border-b-[0.5px] border-border-wire px-8 lg:px-16 py-8 transition-colors hover:bg-surface/50 items-start">
                   
-                  {/* Date */}
-                  <div className="md:col-span-2 font-mono text-[13px] text-text-primary/70 mb-4 md:mb-0 pt-1">
+                  {/* Date & Category on Mobile */}
+                  <div className="flex items-center gap-3 font-mono text-[11px] mb-3 md:hidden">
+                    <span className="text-text-primary/60">
+                      {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                    </span>
+                    <span className="text-text-primary/30">•</span>
+                    <span className="text-text-accent uppercase tracking-widest">
+                      {post.category}
+                    </span>
+                  </div>
+
+                  {/* Desktop Date */}
+                  <div className="hidden md:block md:col-span-2 font-mono text-[13px] text-text-primary/70 pt-1">
                     {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                   </div>
                   
-                  {/* Category */}
-                  <div className="md:col-span-2 font-mono text-[11px] text-text-accent uppercase tracking-widest mb-4 md:mb-0 pt-1">
+                  {/* Desktop Category */}
+                  <div className="hidden md:block md:col-span-2 font-mono text-[11px] text-text-accent uppercase tracking-widest pt-1">
                     {post.category}
                   </div>
                   
