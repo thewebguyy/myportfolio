@@ -90,7 +90,7 @@ export const projects: Project[] = [
     company: 'Seerbit (Contract / Open Source)',
     tags: ['Payments', 'Security', 'API'],
     image: '/projects/checkout.jpg',
-    githubUrl: 'https://github.com/thewebguyy/simpleseerbitcheckout',
+    githubUrl: 'https://github.com/thewebguyy/checkoutsystem',
     tech: ['JavaScript', 'Payment APIs', 'Security'],
     featured: false,
     year: 2023,
