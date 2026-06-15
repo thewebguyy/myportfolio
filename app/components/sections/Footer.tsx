@@ -32,7 +32,7 @@ export function Footer() {
               {['About', 'Work', 'AI', 'Writing', 'Contact'].map((item) => (
                 <li key={item}>
                   <Link 
-                    href={`#${item.toLowerCase()}`} 
+                    href={`/#${item.toLowerCase()}`} 
                     className="font-mono text-[13px] text-text-primary/70 hover:text-text-primary transition-colors uppercase"
                   >
                     {item}

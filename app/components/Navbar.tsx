@@ -10,12 +10,13 @@ const NAV_LINKS = [
     { label: 'Work', href: '/#work' },
     { label: 'AI', href: '/#ai' },
     { label: 'Writing', href: '/#writing' },
+    { label: 'Contact', href: '/#contact' },
 ]
 
 // CV link appears only when the env var is set to a real URL.
 // Set NEXT_PUBLIC_RESUME_URL in .env.local to enable it.
 const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
-const hasResumeUrl = RESUME_URL.length > 0 && !RESUME_URL.includes('drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9')
+const hasResumeUrl = RESUME_URL.length > 0
 
 export function Navbar() {
     const pathname = usePathname()
@@ -31,7 +32,7 @@ export function Navbar() {
     }, [])
 
     useEffect(() => {
-        const sectionIds = ['about', 'manifesto', 'work', 'ai', 'writing']
+        const sectionIds = ['about', 'manifesto', 'work', 'ai', 'writing', 'currently-building', 'contact']
         const observers: IntersectionObserver[] = []
 
         sectionIds.forEach((id) => {
@@ -42,6 +43,8 @@ export function Navbar() {
                     if (entry.isIntersecting) {
                         if (id === 'manifesto') {
                             setActiveHash('#about')
+                        } else if (id === 'currently-building') {
+                            setActiveHash('#contact')
                         } else {
                             setActiveHash(`#${id}`)
                         }
@@ -59,8 +62,10 @@ export function Navbar() {
     useEffect(() => {
         if (menuOpen) {
             document.body.style.overflow = 'hidden'
+            document.body.classList.add('mobile-menu-open')
         } else {
             document.body.style.overflow = 'unset'
+            document.body.classList.remove('mobile-menu-open')
         }
     }, [menuOpen])
 

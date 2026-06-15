@@ -110,6 +110,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-mono antialiased bg-background text-text-primary selection:bg-text-accent selection:text-background">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:font-mono focus:text-[12px] focus:outline-none focus:ring-1 focus:ring-primary-light">
+          Skip to content
+        </a>
         <Navbar />
 
         <main id="main-content">

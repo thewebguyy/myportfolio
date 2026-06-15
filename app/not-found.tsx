@@ -1,70 +1,55 @@
 'use client'
 
 import Link from 'next/link'
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { useEffect, useState } from 'react'
 
-/**
- * Custom 404 Not Found Page
- * Provides helpful navigation options when users hit invalid routes
- */
 export default function NotFound() {
+  const [path, setPath] = useState('')
+  const [timestamp, setTimestamp] = useState('')
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setPath(window.location.pathname)
+      setTimestamp(new Date().toISOString())
+    }
+  }, [])
+
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
-      <div className="max-w-2xl w-full text-center">
-        {/* 404 Illustration */}
-        <div className="mb-8">
-          <MagnifyingGlassIcon className="w-24 h-24 mx-auto text-text-muted mb-4" />
-          <h1 className="text-9xl font-bold gradient-text mb-2">404</h1>
-        </div>
+    <div className="min-h-screen bg-background flex items-center justify-center p-6 border-b-[0.5px] border-border-wire">
+      <div className="w-full max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire min-h-[70vh] flex items-center justify-center">
+        <div className="max-w-xl w-full border-[0.5px] border-border-wire bg-surface/30 p-8 md:p-12 font-mono text-left">
+          
+          {/* Header */}
+          <div className="font-serif text-[48px] text-text-accent leading-none mb-8">
+            404
+          </div>
 
-        {/* Message */}
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-text-primary">
-          Page Not Found
-        </h2>
-        <p className="text-xl text-text-secondary mb-8 leading-relaxed">
-          The page you&apos;re looking for doesn&apos;t exist or has been moved.
-          Let&apos;s get you back on track.
-        </p>
+          {/* Dry Systems Log */}
+          <div className="border-[0.5px] border-border-wire bg-background/50 p-6 space-y-3 mb-8 text-[12px] text-text-secondary">
+            <div><span className="text-text-accent font-semibold">STATUS:</span> RESOURCE_NOT_FOUND</div>
+            <div><span className="text-text-accent font-semibold">PATH:</span> {path || 'unknown'}</div>
+            <div><span className="text-text-accent font-semibold">TIMESTAMP:</span> {timestamp || 'unknown'}</div>
+            <div className="pt-2 border-t-[0.5px] border-border-wire text-text-muted">
+              The requested route does not resolve to an active system path. Verify target address or return to index.
+            </div>
+          </div>
 
-        {/* Navigation Options */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Link href="/" className="btn-primary">
-            Go to Homepage
-          </Link>
-          <Link href="/case-studies" className="btn-secondary">
-            View Projects
-          </Link>
-        </div>
-
-        {/* Popular Pages */}
-        <div className="glass rounded-xl p-6">
-          <h3 className="text-lg font-semibold mb-4 text-text-primary">Popular Pages</h3>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <Link
-              href="/case-studies/servicebridge"
-              className="text-text-secondary hover:text-primary transition-colors"
+          {/* Navigation Links */}
+          <div className="flex flex-col sm:flex-row gap-6">
+            <Link 
+              href="/"
+              className="text-[11px] uppercase tracking-widest text-text-primary hover:text-text-accent transition-colors flex items-center gap-2"
             >
-              ServiceBridge Case Study
+              [← Return to Index]
             </Link>
-            <Link
-              href="/blog/edge-computing-2026"
-              className="text-text-secondary hover:text-primary transition-colors"
+            <Link 
+              href="/#work"
+              className="text-[11px] uppercase tracking-widest text-text-primary hover:text-text-accent transition-colors"
             >
-              Edge Computing Blog
-            </Link>
-            <Link
-              href="/#contact"
-              className="text-text-secondary hover:text-primary transition-colors"
-            >
-              Contact Me
-            </Link>
-            <Link
-              href="/case-studies"
-              className="text-text-secondary hover:text-primary transition-colors"
-            >
-              All Case Studies
+              [Browse Ledger]
             </Link>
           </div>
+
         </div>
       </div>
     </div>

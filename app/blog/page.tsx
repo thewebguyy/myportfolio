@@ -1,177 +1,101 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ClockIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
+import { blogPosts } from '@/lib/blog'
 
-/**
- * Blog Listing Page
- * Digital garden showcasing thought leadership on 2026 tech trends
- */
 export const metadata: Metadata = {
-  title: 'Blog - Tech Insights & Trends',
-  description: 'Technical articles on AI, system design, performance optimization, and emerging 2026 technologies.',
+  title: 'Blog - Tech Insights',
+  description: 'Technical articles on AI, system design, performance optimization, and emerging technologies.',
 }
 
-import { blogPosts, BlogPost } from '@/lib/blog'
-
 export default function BlogPage() {
-  const featuredPosts = blogPosts.filter(post => post.featured)
-  const regularPosts = blogPosts.filter(post => !post.featured)
+  // Sort posts by date descending
+  const sortedPosts = [...blogPosts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
 
   return (
-    <main className="min-h-screen bg-background">
-      {/* Header */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+    <main className="min-h-screen bg-background border-b-[0.5px] border-border-wire">
+      <div className="max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire pt-24">
+        
+        {/* Back Link */}
+        <div className="px-8 lg:px-16 pt-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-text-secondary hover:text-primary 
-                     transition-colors mb-8"
+            className="font-mono text-[11px] text-text-secondary hover:text-text-accent transition-colors uppercase tracking-widest inline-flex items-center gap-2"
           >
             ← Back to Home
           </Link>
+        </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-text-primary">
-            Tech <span className="gradient-text">Insights</span>
+        {/* Ledger Header */}
+        <div className="border-b-[0.5px] border-border-wire px-8 lg:px-16 py-16">
+          <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6">
+            Writing
+          </div>
+          <h1 className="hero-heading text-[48px] md:text-[64px] lg:text-[76px] leading-[1.05] text-text-primary tracking-tight font-serif">
+            The Complete Archive.
           </h1>
-          <p className="text-xl text-text-secondary max-w-2xl">
-            Thoughts on system design, AI integration, performance optimization, and the future
-            of web development. Updated regularly with lessons from building production systems.
+          <p className="font-mono text-[14px] text-text-primary/70 max-w-[600px] mt-6 leading-[1.8]">
+            Technical investigations, architectural tradeoffs, and performance audits. Use columns to scan details quickly.
           </p>
         </div>
-      </section>
 
-      {/* Featured Posts */}
-      {featuredPosts.length > 0 && (
-        <section className="pb-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold mb-8 text-text-primary">Featured Articles</h2>
-            <div className="space-y-8">
-              {featuredPosts.map((post) => (
-                <FeaturedPostCard key={post.slug} post={post} />
-              ))}
-            </div>
+        {/* Documentation List */}
+        <div className="flex flex-col">
+          {/* Table Header */}
+          <div className="hidden md:grid grid-cols-12 border-b-[0.5px] border-border-wire px-8 lg:px-16 py-4 font-mono text-[11px] text-text-accent/60 uppercase tracking-widest bg-surface/30">
+            <div className="col-span-2">Date</div>
+            <div className="col-span-2">Category</div>
+            <div className="col-span-6">Title & Summary</div>
+            <div className="col-span-2 text-right">Action</div>
           </div>
-        </section>
-      )}
 
-      {/* Regular Posts */}
-      {regularPosts.length > 0 && (
-        <section className="pb-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold mb-8 text-text-primary">All Articles</h2>
-            <div className="space-y-6">
-              {regularPosts.map((post) => (
-                <RegularPostCard key={post.slug} post={post} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+          {sortedPosts.map((post) => (
+            <Link key={post.slug} href={`/blog/${post.slug}`}>
+              <div className="group grid grid-cols-1 md:grid-cols-12 border-b-[0.5px] border-border-wire px-8 lg:px-16 py-8 transition-colors hover:bg-surface/50 items-start">
+                
+                {/* Date & Category on Mobile */}
+                <div className="flex items-center gap-3 font-mono text-[11px] mb-3 md:hidden">
+                  <span className="text-text-primary/60">
+                    {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                  </span>
+                  <span className="text-text-primary/30">•</span>
+                  <span className="text-text-accent uppercase tracking-widest">
+                    {post.category}
+                  </span>
+                </div>
+
+                {/* Desktop Date */}
+                <div className="hidden md:block md:col-span-2 font-mono text-[13px] text-text-primary/70 pt-1">
+                  {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                </div>
+                
+                {/* Desktop Category */}
+                <div className="hidden md:block md:col-span-2 font-mono text-[11px] text-text-accent uppercase tracking-widest pt-1">
+                  {post.category}
+                </div>
+                
+                {/* Content */}
+                <div className="md:col-span-6 pr-8">
+                  <h3 className="font-serif text-[24px] text-text-primary leading-tight mb-2 group-hover:text-text-primary transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="font-mono text-[13px] text-text-primary/60 leading-[1.6]">
+                    {post.excerpt}
+                  </p>
+                </div>
+                
+                {/* Action */}
+                <div className="hidden md:flex col-span-2 justify-end pt-1">
+                  <span className="font-mono text-[11px] text-text-accent/0 group-hover:text-text-accent uppercase tracking-widest transition-colors">
+                    Read →
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
     </main>
-  )
-}
-
-/**
- * Featured Post Card Component
- */
-function FeaturedPostCard({ post }: { post: BlogPost }) {
-  return (
-    <article className="glass overflow-hidden hover:border-primary/50 transition-all group">
-      <div className="p-8">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="px-3 py-1 bg-primary/20 text-primary text-sm font-semibold rounded-full">
-            FEATURED
-          </span>
-          <span className="px-3 py-1 bg-surface-2 text-text-secondary text-sm rounded-full">
-            {post.category}
-          </span>
-        </div>
-
-        <Link href={`/blog/${post.slug}`}>
-          <h3 className="text-3xl font-bold mb-4 text-text-primary group-hover:text-primary transition-colors">
-            {post.title}
-          </h3>
-        </Link>
-
-        <p className="text-text-secondary mb-6 leading-relaxed text-lg">
-          {post.excerpt}
-        </p>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 text-sm text-text-muted">
-            <time dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </time>
-            <span className="flex items-center gap-1">
-              <ClockIcon className="w-4 h-4" />
-              {post.readTime} min read
-            </span>
-          </div>
-
-          <Link
-            href={`/blog/${post.slug}`}
-            className="inline-flex items-center gap-2 text-primary hover:text-primary-light 
-                     font-semibold transition-colors group/link"
-          >
-            Read More
-            <ArrowRightIcon className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-      </div>
-    </article>
-  )
-}
-
-/**
- * Regular Post Card Component
- */
-function RegularPostCard({ post }: { post: BlogPost }) {
-  return (
-    <article className="glass p-6 hover:border-primary/50 transition-all group">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="px-2 py-1 bg-surface-2 text-text-secondary text-xs rounded">
-              {post.category}
-            </span>
-          </div>
-
-          <Link href={`/blog/${post.slug}`}>
-            <h3 className="text-xl font-bold mb-2 text-text-primary group-hover:text-primary transition-colors">
-              {post.title}
-            </h3>
-          </Link>
-
-          <p className="text-text-secondary text-sm mb-3 line-clamp-2">
-            {post.excerpt}
-          </p>
-
-          <div className="flex items-center gap-4 text-xs text-text-muted">
-            <time dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-              })}
-            </time>
-            <span className="flex items-center gap-1">
-              <ClockIcon className="w-3 h-3" />
-              {post.readTime} min
-            </span>
-          </div>
-        </div>
-
-        <Link
-          href={`/blog/${post.slug}`}
-          className="btn-secondary text-sm whitespace-nowrap self-start md:self-center"
-        >
-          Read Article
-        </Link>
-      </div>
-    </article>
   )
 }

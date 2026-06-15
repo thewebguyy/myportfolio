@@ -74,6 +74,32 @@ export function Manifesto() {
           </div>
 
         </div>
+
+        {/* Engineering Principles Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="mt-24 pt-16 border-t-[0.5px] border-border-wire"
+        >
+          <h3 className="font-mono text-[11px] uppercase tracking-widest text-text-accent mb-10">Engineering Principles</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border-t-[0.5px] border-l-[0.5px] border-border-wire bg-surface/20">
+            {[
+              { num: '01', title: 'Reliability before scale' },
+              { num: '02', title: 'Measure before optimizing' },
+              { num: '03', title: 'Automate repetitive work' },
+              { num: '04', title: 'Prefer simple systems' },
+              { num: '05', title: 'Ship, observe, improve' }
+            ].map((pr, idx) => (
+              <div key={idx} className="p-8 border-r-[0.5px] border-b-[0.5px] border-border-wire font-mono flex flex-col justify-between min-h-[160px]">
+                <div className="text-[36px] font-serif text-text-accent/30 leading-none">{pr.num}</div>
+                <div className="text-[13px] font-medium text-text-primary uppercase tracking-wider mt-6">{pr.title}</div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
       </div>
     </section>
   )

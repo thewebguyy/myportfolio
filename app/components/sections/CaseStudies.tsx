@@ -144,7 +144,9 @@ function LedgerEntry({ project, number, index, totalCards }: { project: Project,
             <div>ROLE: {(project as Project & { role?: string }).role || 'LEAD ENGINEER'}</div>
             <div>CONTEXT: {project.company}</div>
             <div>DATE: {project.year}</div>
-            <div>REPO: {project.githubUrl ? 'PUBLIC (OPEN SOURCE)' : 'PRIVATE (PROPRIETARY)'}</div>
+            <div>TEAM: {project.teamSize}</div>
+            <div>DURATION: {project.duration}</div>
+            <div>REPO: {project.githubUrl ? 'PUBLIC' : 'PRIVATE'}</div>
           </div>
 
           <div className="mt-auto">

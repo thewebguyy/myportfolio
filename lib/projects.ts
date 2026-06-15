@@ -20,6 +20,8 @@ export interface Project {
   tech: string[]
   featured: boolean
   year: number
+  teamSize: string
+  duration: string
 }
 
 export const projects: Project[] = [
@@ -42,6 +44,8 @@ export const projects: Project[] = [
     tech: ['React', 'Node.js', 'PostgreSQL', 'Redis Cluster', 'Socket.io', 'Kubernetes'],
     featured: true,
     year: 2023,
+    teamSize: 'Solo',
+    duration: '12 Weeks',
   },
   {
     id: 'subscription-manager',
@@ -61,6 +65,8 @@ export const projects: Project[] = [
     tech: ['Node.js', 'Express', 'PostgreSQL', 'Seerbit API', 'Stripe'],
     featured: true,
     year: 2023,
+    teamSize: 'Solo (Contract)',
+    duration: '8 Weeks',
   },
   {
     id: 'servia',
@@ -80,6 +86,8 @@ export const projects: Project[] = [
     tech: ['Next.js', 'Express.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'JWT', 'GitHub Actions', 'Pino'],
     featured: true,
     year: 2026,
+    teamSize: 'Solo',
+    duration: '6 Weeks',
   },
   {
     id: 'checkout-system',
@@ -94,6 +102,8 @@ export const projects: Project[] = [
     tech: ['JavaScript', 'Payment APIs', 'Security'],
     featured: false,
     year: 2023,
+    teamSize: 'Solo (Contract)',
+    duration: '4 Weeks',
   },
   {
     id: 'laverita-hair',
@@ -108,6 +118,8 @@ export const projects: Project[] = [
     tech: ['HTML5', 'CSS3', 'JavaScript', 'E-commerce'],
     featured: false,
     year: 2022,
+    teamSize: 'Solo',
+    duration: '4 Weeks',
   },
 ]
 
