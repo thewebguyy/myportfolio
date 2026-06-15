@@ -49,7 +49,7 @@ export function Footer() {
               {[
                 { name: 'LinkedIn', url: 'https://linkedin.com/in/thewebguyy' },
                 { name: 'GitHub', url: 'https://github.com/thewebguyy' },
-                { name: 'Twitter', url: 'https://twitter.com/thewebguyy' }
+                { name: 'X', url: 'https://x.com/BodeBillions' }
               ].map((link) => (
                 <li key={link.name}>
                   <a 

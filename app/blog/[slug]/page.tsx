@@ -392,9 +392,9 @@ export function traceAgentAction(step: string, data: unknown) {
       </p>
       <p className="text-text-secondary leading-relaxed mt-4">
         Want to discuss this topic? <Link href="#contact" className="text-primary hover:underline">
-          Get in touch</Link> or connect with me on <a href="https://twitter.com/thewebguyy"
+          Get in touch</Link> or connect with me on <a href="https://x.com/BodeBillions"
             target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-          Twitter</a>.
+          X</a>.
       </p>
     </div>
   )

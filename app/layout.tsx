@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Olabode Olusegun - Systems Architect',
     description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
-    creator: '@thewebguyy',
+    creator: '@BodeBillions',
     images: ['/twitter-image']
   },
   robots: {
@@ -89,7 +89,7 @@ const personJsonLd = {
   sameAs: [
     'https://linkedin.com/in/thewebguyy',
     'https://github.com/thewebguyy',
-    'https://twitter.com/thewebguyy',
+    'https://x.com/BodeBillions',
     'https://instagram.com/thewebguyy'
   ]
 }
