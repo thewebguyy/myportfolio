@@ -4,25 +4,49 @@
 
 @layer base {
   :root {
-    --background: #0D0A08;
-    --surface: #141009;
-    --surface-2: #1C170E;
-    --text-primary: #F5F0EB;
-    --text-secondary: #A39688;
-    --text-muted: #8F8174;
-    --text-accent: #C4622D;
-    --border-wire: rgba(245, 240, 235, 0.08);
-    --primary: #C4622D;
-    --primary-light: #E07A3E;
-    --secondary: #E8901A;
-    --secondary-light: #FDBA4D;
+    /* ── Foundation ──────────────────────────────────────────
+       Deep midnight navy — pulled from portrait attire.
+       Communicates: infrastructure, reliability, engineering rigor.
+    ── */
+    --background:  #080D1A;
+    --surface:     #0D1526;
+    --surface-2:   #131E33;
+
+    /* ── Text ────────────────────────────────────────────────
+       Warm ivory primary preserves editorial warmth.
+       Cool slate secondary harmonizes with navy foundation.
+    ── */
+    --text-primary:    #F2EDE8;
+    --text-secondary:  #8E9BAA;
+    --text-muted:      #566070;
+
+    /* ── Accent: Terracotta ──────────────────────────────────
+       Identity anchor. Preserved from original system.
+       Communicates: humanity, warmth, individuality.
+    ── */
+    --text-accent:   #C4622D;
+    --primary:       #C4622D;
+    --primary-light: #D97542;
+
+    /* ── Secondary: Warm Gold ────────────────────────────────
+       Pulled from Lagos amber background in portrait.
+       Communicates: subtle prestige, cultural context.
+    ── */
+    --secondary:       #B8870E;
+    --secondary-light: #D4A020;
+
+    /* ── Wire ────────────────────────────────────────────────
+       Slightly blue-tinted to harmonize with navy foundation.
+       Not warm. Not cold. Architectural.
+    ── */
+    --border-wire: rgba(162, 185, 220, 0.10);
   }
 
   body {
     @apply bg-background text-text-primary antialiased selection:bg-text-accent selection:text-background font-mono;
   }
 
-  /* Typography Scale */
+  /* ── Typography Scale ───────────────────────────────────── */
   .display {
     @apply font-serif font-normal text-[64px] md:text-[96px] leading-[1.0] tracking-tight;
   }
@@ -31,17 +55,9 @@
     @apply font-serif font-normal tracking-tight;
   }
 
-  h1 {
-    @apply text-[48px] md:text-[64px] leading-[1.1];
-  }
-
-  h2, .h2 {
-    @apply text-[36px] md:text-[48px] leading-[1.15];
-  }
-
-  h3 {
-    @apply text-[28px] md:text-[32px] leading-[1.2];
-  }
+  h1 { @apply text-[48px] md:text-[64px] leading-[1.1]; }
+  h2, .h2 { @apply text-[36px] md:text-[48px] leading-[1.15]; }
+  h3 { @apply text-[28px] md:text-[32px] leading-[1.2]; }
 
   p, .body {
     @apply font-mono font-normal text-[14px] leading-[1.7] text-text-primary;
@@ -65,65 +81,60 @@
     @apply max-w-[1440px] mx-auto w-full grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-0 border-x border-border-wire;
   }
 
+  /* Primary: terracotta */
   .btn-primary {
-    @apply inline-flex items-center justify-center bg-primary text-white font-semibold rounded px-6 py-3 transition-colors duration-300;
-    &:hover {
-      @apply bg-primary-light;
-    }
+    @apply inline-flex items-center justify-center bg-primary text-white font-mono text-[11px] uppercase tracking-widest px-6 py-3 transition-colors duration-200 border-[0.5px] border-primary;
+    &:hover { @apply bg-primary-light border-primary-light; }
   }
 
+  /* Secondary: warm gold */
   .btn-secondary {
-    @apply inline-flex items-center justify-center bg-secondary text-background font-semibold rounded px-6 py-3 transition-colors duration-300;
-    &:hover {
-      @apply bg-secondary-light;
-    }
+    @apply inline-flex items-center justify-center bg-secondary text-background font-mono text-[11px] uppercase tracking-widest px-6 py-3 transition-colors duration-200 border-[0.5px] border-secondary;
+    &:hover { @apply bg-secondary-light border-secondary-light; }
   }
 
   .pill-tag {
-    @apply px-3 py-1 bg-surface border border-border-wire rounded-full text-[10px] uppercase font-mono tracking-widest text-text-secondary;
+    @apply px-3 py-1 bg-surface border border-border-wire text-[10px] uppercase font-mono tracking-widest text-text-secondary;
   }
 
-  .glass {
-    background-color: rgba(10, 17, 36, 0.5);
-    @apply backdrop-blur-md border border-border-wire rounded-xl;
-  }
-
+  /* Gradient text: terracotta → gold */
   .gradient-text {
     @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary;
   }
 
+  /* Hero heading: Kanit, warm ivory → cool slate */
   .hero-heading {
     font-family: var(--font-kanit), sans-serif;
-    background: linear-gradient(180deg, #F5F0EB 0%, #A39688 100%);
+    background: linear-gradient(180deg, #F2EDE8 0%, #8E9BAA 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Surface elevated — replaces old .glass */
+  .surface-elevated {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border-wire);
+  }
+
+  /* Legacy .glass — maps to surface-elevated, no backdrop blur */
+  .glass {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border-wire);
   }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
+  .text-balance { text-wrap: balance; }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track {
   background: var(--background);
   border-left: 0.5px solid var(--border-wire);
 }
-
-::-webkit-scrollbar-thumb {
-  background: var(--border-wire);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-accent);
-}
+::-webkit-scrollbar-thumb { background: var(--border-wire); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-accent); }
