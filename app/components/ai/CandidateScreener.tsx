@@ -64,18 +64,8 @@ export function CandidateScreener() {
   }
 
   return (
-    <section id="candidate-screener" className="bg-background py-24 border-t border-surface-2">
+    <section id="candidate-screener" className="bg-background">
       <div className="max-w-[1280px] mx-auto px-6">
-        <div className="text-center space-y-4 mb-16">
-          <span className="label">Demo</span>
-          <h2 className="h2 text-white">
-            Resume Analyzer
-          </h2>
-          <p className="body max-w-2xl mx-auto">
-            Analyze technical alignment and engineering fit using multi-step semantic extraction.
-          </p>
-        </div>
-
         {!analysis && !loading ? (
           <div className="bg-surface p-8 lg:p-12 rounded-[12px] border border-surface-2 max-w-4xl mx-auto">
             <label className="block font-mono text-[10px] text-text-muted uppercase tracking-widest mb-6 flex items-center gap-2">

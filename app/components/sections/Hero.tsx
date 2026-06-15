@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Magnet } from '../ui/Magnet'
 
 const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
-const hasResumeUrl = RESUME_URL.length > 0 && !RESUME_URL.includes('drive.google.com/file/d/1wr0ECLDq7hQFMAOQYRwXix9')
+const hasResumeUrl = RESUME_URL.length > 0
 const IS_AVAILABLE = process.env.NEXT_PUBLIC_AVAILABLE_FOR_HIRE === 'true'
 
 export function Hero() {
