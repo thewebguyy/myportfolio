@@ -29,7 +29,7 @@ describe('Footer Component', () => {
         render(<Footer />)
         expect(screen.getByRole('link', { name: /LinkedIn/i })).toBeInTheDocument()
         expect(screen.getByRole('link', { name: /GitHub/i })).toBeInTheDocument()
-        expect(screen.getByRole('link', { name: /Twitter/i })).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: /X/i })).toBeInTheDocument()
     })
 
     it('renders back to top button', () => {

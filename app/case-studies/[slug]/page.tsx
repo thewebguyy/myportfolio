@@ -218,7 +218,13 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                         {content.evidence.details}
                       </p>
                       <div className="pt-2 font-mono text-[11px] text-text-accent uppercase tracking-widest">
-                        Test script documented in <a href={`${project.githubUrl}/blob/main/docs/load-test-k6.js`} target="_blank" rel="noopener noreferrer" className="underline hover:text-white transition-colors">docs/load-test-k6.js</a>.
+                        Test script documented in{' '}
+                        {project.githubUrl ? (
+                          <a href={`${project.githubUrl}/blob/main/docs/load-test-k6.js`} target="_blank" rel="noopener noreferrer" className="underline hover:text-white transition-colors">docs/load-test-k6.js</a>
+                        ) : (
+                          <span>docs/load-test-k6.js</span>
+                        )}
+                        .
                       </div>
                     </div>
                   </div>
