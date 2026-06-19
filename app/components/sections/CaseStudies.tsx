@@ -62,7 +62,7 @@ export function CaseStudies() {
             ].map((metric, i) => (
               <div key={i} className="flex flex-col items-center justify-center py-16 px-4 text-center hover:bg-surface/50 transition-colors duration-500">
                 <div 
-                  className="font-serif text-text-primary tracking-tighter" 
+                  className="font-display font-bold text-text-primary tracking-tighter" 
                   style={{ fontSize: 'clamp(4rem, 8vw, 8rem)', lineHeight: 1 }}
                 >
                   {metric.value}
@@ -136,7 +136,7 @@ function LedgerEntry({ project, number, index, totalCards }: { project: Project,
             {number.toString().padStart(2, '0')} /
           </div>
           
-          <h3 className="font-serif text-[32px] text-text-primary leading-tight mb-4">
+          <h3 className="font-display font-semibold text-[32px] text-text-primary leading-tight mb-4">
             {project.title}
           </h3>
           

@@ -15,7 +15,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           {/* Col 1: Logo & Info */}
           <div className="md:col-span-5">
-            <div className="font-serif text-[32px] text-text-primary tracking-tighter mb-6">
+            <div className="font-display font-semibold text-[32px] text-text-primary tracking-tighter mb-6">
               Olabode Olusegun.
             </div>
             <p className="font-mono text-[12px] text-text-primary/60 leading-relaxed max-w-[240px]">

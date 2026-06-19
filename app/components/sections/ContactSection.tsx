@@ -50,7 +50,7 @@ export function ContactSection() {
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight leading-[1.1] mb-8"
+              className="text-[40px] md:text-[56px] text-text-primary font-display font-semibold tracking-tight leading-[1.1] mb-8"
             >
               Let&apos;s build something real.
             </motion.h2>
@@ -125,7 +125,7 @@ export function ContactSection() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <h3 className="text-[20px] font-serif font-normal text-text-primary">Message Received.</h3>
+                    <h3 className="text-[20px] font-display font-semibold text-text-primary">Message Received.</h3>
                     <p className="text-[13px] text-text-secondary font-mono">I respond within 24 hours on weekdays.</p>
                   </div>
                 ) : status === 'formspreeUnconfigured' ? (

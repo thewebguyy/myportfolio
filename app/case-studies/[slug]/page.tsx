@@ -67,7 +67,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               {project.category}
             </div>
             <h1 className="display text-white">{project.title}</h1>
-            <p className="font-serif italic text-[24px] text-text-secondary leading-relaxed">
+            <p className="font-mono text-[16px] text-text-secondary leading-relaxed">
               {project.longDescription}
             </p>
             

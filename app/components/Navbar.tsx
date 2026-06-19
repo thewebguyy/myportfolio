@@ -207,7 +207,7 @@ export function Navbar() {
                                     key={href}
                                     href={href}
                                     onClick={() => handleNavClick(href)}
-                                    className="text-[32px] font-serif text-text-primary hover:text-text-accent transition-colors"
+                                    className="text-[32px] font-display font-semibold text-text-primary hover:text-text-accent transition-colors"
                                 >
                                     {label}
                                 </Link>

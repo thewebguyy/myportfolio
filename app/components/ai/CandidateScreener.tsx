@@ -154,7 +154,7 @@ export function CandidateScreener() {
                  </div>
                  
                  <ArchitecturePanel title="Reasoning Summary">
-                    <p className="font-serif italic text-[20px] text-text-secondary leading-relaxed mb-8">
+                  <p className="font-mono text-[14px] text-text-secondary leading-relaxed mb-8">
                       &quot;{analysis.reasoning}&quot;
                     </p>
                     <div className="pt-6 border-t border-surface-2 flex justify-between items-center font-mono text-[10px] text-text-muted uppercase tracking-widest">

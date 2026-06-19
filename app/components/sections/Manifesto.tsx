@@ -23,7 +23,7 @@ export function Manifesto() {
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight leading-[1.1]"
+              className="text-[40px] md:text-[56px] text-text-primary font-display font-semibold tracking-tight leading-[1.1]"
             >
               Build it right. Ship it fast.<br />
               <span className="opacity-70">Keep it running.</span>
@@ -93,7 +93,7 @@ export function Manifesto() {
               { num: '05', title: 'Ship, observe, improve' }
             ].map((pr, idx) => (
               <div key={idx} className="p-8 border-r-[0.5px] border-b-[0.5px] border-border-wire font-mono flex flex-col justify-between min-h-[160px]">
-                <div className="text-[36px] font-serif text-text-accent/30 leading-none">{pr.num}</div>
+                <div className="text-[36px] font-display font-bold text-text-accent/30 leading-none">{pr.num}</div>
                 <div className="text-[13px] font-medium text-text-primary uppercase tracking-wider mt-6">{pr.title}</div>
               </div>
             ))}

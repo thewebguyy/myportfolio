@@ -88,7 +88,7 @@ export function EngineeringDecisionBlock({ title, action, impact, priority }: {
           {priority} Priority
         </span>
       </div>
-      <p className="font-serif italic text-[15px] text-text-secondary mb-4">&quot;{action}&quot;</p>
+      <p className="font-mono text-[14px] text-text-secondary mb-4">&quot;{action}&quot;</p>
       <div className="flex items-center gap-2">
         <span className="font-mono text-[10px] text-primary uppercase">Impact:</span>
         <span className="text-[13px] text-text-muted">{impact}</span>

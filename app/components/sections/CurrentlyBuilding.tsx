@@ -30,7 +30,7 @@ export function CurrentlyBuilding() {
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-[40px] md:text-[56px] text-text-primary font-serif tracking-tight leading-[1.1]"
+              className="text-[40px] md:text-[56px] text-text-primary font-display font-semibold tracking-tight leading-[1.1]"
             >
               Currently<br />Building
             </motion.h2>

@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, JetBrains_Mono, Kanit } from 'next/font/google'
+import { JetBrains_Mono, Kanit } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Navbar } from './components/Navbar'
@@ -8,13 +8,6 @@ import { FloatingChatbot } from './components/ai/FloatingChatbot'
 import './globals.css'
 
 // Font configuration with display swap for performance
-const cormorant = Cormorant_Garamond({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-cormorant',
-})
-
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   display: 'swap',
@@ -100,7 +93,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${jetbrainsMono.variable} ${kanit.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${jetbrainsMono.variable} ${kanit.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

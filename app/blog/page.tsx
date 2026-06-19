@@ -32,7 +32,7 @@ export default function BlogPage() {
           <div className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6">
             Writing
           </div>
-          <h1 className="hero-heading text-[48px] md:text-[64px] lg:text-[76px] leading-[1.05] text-text-primary tracking-tight font-serif">
+          <h1 className="hero-heading text-[48px] md:text-[64px] lg:text-[76px] leading-[1.05] text-text-primary tracking-tight">
             The Complete Archive.
           </h1>
           <p className="font-mono text-[14px] text-text-primary/70 max-w-[600px] mt-6 leading-[1.8]">
@@ -77,7 +77,7 @@ export default function BlogPage() {
                 
                 {/* Content */}
                 <div className="md:col-span-6 pr-8">
-                  <h3 className="font-serif text-[24px] text-text-primary leading-tight mb-2 group-hover:text-text-primary transition-colors">
+                  <h3 className="font-display font-semibold text-[24px] text-text-primary leading-tight mb-2 group-hover:text-text-primary transition-colors">
                     {post.title}
                   </h3>
                   <p className="font-mono text-[13px] text-text-primary/60 leading-[1.6]">

@@ -23,7 +23,7 @@ export default function Error({
         <div className="max-w-xl w-full border-[0.5px] border-border-wire bg-surface/30 p-8 md:p-12 font-mono text-left">
           
           {/* Header */}
-          <div className="font-serif text-[48px] text-text-accent leading-none mb-8">
+          <div className="font-display font-bold text-[48px] text-text-accent leading-none mb-8">
             Error
           </div>
 

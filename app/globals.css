@@ -18,7 +18,7 @@
     ── */
     --text-primary:    #F2EDE8;
     --text-secondary:  #8E9BAA;
-    --text-muted:      #566070;
+    --text-muted:      #7A8799;
 
     /* ── Accent: Terracotta ──────────────────────────────────
        Identity anchor. Preserved from original system.
@@ -39,7 +39,7 @@
        Slightly blue-tinted to harmonize with navy foundation.
        Not warm. Not cold. Architectural.
     ── */
-    --border-wire: rgba(162, 185, 220, 0.10);
+    --border-wire: rgba(162, 185, 220, 0.16);
   }
 
   body {
@@ -48,11 +48,11 @@
 
   /* ── Typography Scale ───────────────────────────────────── */
   .display {
-    @apply font-serif font-normal text-[64px] md:text-[96px] leading-[1.0] tracking-tight;
+    @apply font-display font-semibold text-[64px] md:text-[96px] leading-[1.0] tracking-tight;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif font-normal tracking-tight;
+    @apply font-display font-semibold tracking-tight;
   }
 
   h1 { @apply text-[48px] md:text-[64px] leading-[1.1]; }
@@ -102,13 +102,11 @@
     @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary;
   }
 
-  /* Hero heading: Kanit, warm ivory → cool slate */
+  /* Hero heading: Kanit 800, solid ivory — precision over gradient softening */
   .hero-heading {
     font-family: var(--font-kanit), sans-serif;
-    background: linear-gradient(180deg, #F2EDE8 0%, #8E9BAA 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
+    font-weight: 800;
   }
 
   /* Surface elevated — replaces old .glass */

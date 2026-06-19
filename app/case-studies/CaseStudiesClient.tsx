@@ -23,10 +23,10 @@ export function CaseStudiesClient({ sortedProjects }: {
                         Exit to Terminal
                     </Link>
 
-                    <h1 className="text-5xl md:text-7xl font-serif mb-6 text-text-primary">
+                    <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-text-primary">
                         Strategic <span className="gradient-text">Archive</span>
                     </h1>
-                    <p className="text-xl text-text-secondary max-w-3xl font-serif italic leading-relaxed">
+                    <p className="text-[16px] text-text-secondary max-w-3xl font-mono leading-relaxed">
                         A collection of enterprise audits, operational strategies, and high-impact technical implementations.
                         Each case study represents a production system built and shipped under real constraints.
                     </p>
@@ -63,7 +63,7 @@ function TechnicalCard({ project, index }: { project: Project, index: number }) 
                 <span className="text-[10px] font-mono text-primary uppercase tracking-widest">{project.category}</span>
                 <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">{project.year}</span>
             </div>
-            <h4 className="text-xl font-serif text-text-primary mb-3 group-hover:text-primary transition-colors">{project.title}</h4>
+            <h4 className="text-xl font-display font-semibold text-text-primary mb-3 group-hover:text-primary transition-colors">{project.title}</h4>
             <p className="text-sm text-text-secondary mb-6 line-clamp-2 leading-relaxed">{project.description}</p>
             <div className="flex flex-wrap gap-2 mb-8">
                 {project.tech.slice(0, 3).map(t => (

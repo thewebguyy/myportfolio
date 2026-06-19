@@ -82,7 +82,7 @@ export function BlogSection() {
                   
                   {/* Content */}
                   <div className="md:col-span-6 pr-8">
-                    <h3 className="font-serif text-[24px] text-text-primary leading-tight mb-2 group-hover:text-text-primary transition-colors">
+                    <h3 className="font-display font-semibold text-[24px] text-text-primary leading-tight mb-2 group-hover:text-text-primary transition-colors">
                       {post.title}
                     </h3>
                     <p className="font-mono text-[13px] text-text-primary/60 leading-[1.6]">

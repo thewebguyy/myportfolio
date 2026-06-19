@@ -23,7 +23,8 @@ module.exports = {
         'secondary-light': 'var(--secondary-light)',
       },
       fontFamily: {
-        serif: ['var(--font-cormorant)', 'serif'],
+        display: ['var(--font-kanit)', 'sans-serif'],
+        serif: ['var(--font-kanit)', 'sans-serif'],
         mono: ['var(--font-jetbrains-mono)', 'monospace'],
       },
       animation: {
