@@ -28,7 +28,7 @@ export default function ServiceBridgeArchitecture() {
 
             <div className="relative w-full aspect-[16/10] max-w-5xl mx-auto border border-surface-2 bg-background p-4 overflow-x-auto">
                 {/* SVG Diagram */}
-                <svg viewBox="0 0 800 500" className="w-full h-full">
+                <svg viewBox="0 0 800 500" className="w-full min-w-[800px] h-auto">
                     {/* Definitions */}
                     <defs>
                         <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">

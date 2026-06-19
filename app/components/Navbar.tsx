@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -13,16 +13,65 @@ const NAV_LINKS = [
     { label: 'Contact', href: '/#contact' },
 ]
 
-// CV link appears only when the env var is set to a real URL.
-// Set NEXT_PUBLIC_RESUME_URL in .env.local to enable it.
-const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
-const hasResumeUrl = RESUME_URL.length > 0
-
 export function Navbar() {
+    // CV link appears only when the env var is set to a real URL.
+    // Set NEXT_PUBLIC_RESUME_URL in .env.local to enable it.
+    const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
+    const hasResumeUrl = RESUME_URL.length > 0
+
     const pathname = usePathname()
     const [scrolled, setScrolled] = useState(false)
     const [menuOpen, setMenuOpen] = useState(false)
     const [activeHash, setActiveHash] = useState('')
+    const menuRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (!menuOpen) return
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setMenuOpen(false)
+                return
+            }
+
+            if (e.key !== 'Tab') return
+
+            const container = menuRef.current
+            if (!container) return
+
+            const focusables = container.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])'
+            )
+            if (focusables.length === 0) return
+
+            const first = focusables[0]
+            const last = focusables[focusables.length - 1]
+
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    last.focus()
+                    e.preventDefault()
+                }
+            } else {
+                if (document.activeElement === last) {
+                    first.focus()
+                    e.preventDefault()
+                }
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown)
+
+        const container = menuRef.current
+        if (container) {
+            const focusables = container.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
+            if (focusables.length > 0) {
+                setTimeout(() => focusables[0].focus(), 50)
+            }
+        }
+
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [menuOpen])
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 60)
@@ -174,6 +223,7 @@ export function Navbar() {
             <AnimatePresence>
                 {menuOpen && (
                     <motion.div
+                        ref={menuRef}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}

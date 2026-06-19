@@ -10,7 +10,7 @@ export function CaseStudiesClient({ sortedProjects }: {
     sortedProjects: Project[]
 }) {
     return (
-        <main className="min-h-screen bg-background px-6 lg:px-8">
+        <div className="min-h-screen bg-background px-6 lg:px-8">
             <div className="w-full max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire min-h-screen">
                 {/* Header */}
                 <section className="pt-32 pb-16 px-8 lg:px-16 border-b-[0.5px] border-border-wire">
@@ -46,7 +46,7 @@ export function CaseStudiesClient({ sortedProjects }: {
                     </div>
                 </section>
             </div>
-        </main>
+        </div>
     )
 }
 

@@ -11,7 +11,7 @@ import { Footer } from './components/sections/Footer'
 
 export default function HomePage() {
   return (
-    <main className="relative min-h-screen bg-background">
+    <div className="relative min-h-screen bg-background">
       <Hero />
       <TrustBar />
       <About />
@@ -22,6 +22,6 @@ export default function HomePage() {
       <CurrentlyBuilding />
       <ContactSection />
       <Footer />
-    </main>
+    </div>
   )
 }

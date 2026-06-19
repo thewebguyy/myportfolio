@@ -99,4 +99,20 @@ describe('API Route: analyze-resume', () => {
             expect(data.error).toBeDefined()
         }
     })
+
+    test('should return 429 when rate limit is exceeded', async () => {
+        const resumeText = "Experienced engineer with a focus on React and System Design. I have over 5 years of experience building high-scale marketplace platforms and optimizing API payloads for efficiency across different regions."
+        let status = 0
+        
+        // Loop up to 15 times to exceed the limit (10)
+        for (let i = 0; i < 15; i++) {
+            const req = createMockRequest({ resumeText })
+            const res = await POST(req)
+            status = res.status
+            if (status === 429) {
+                break
+            }
+        }
+        expect(status).toBe(429)
+    })
 })

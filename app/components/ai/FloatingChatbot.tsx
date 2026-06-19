@@ -54,17 +54,53 @@ export function FloatingChatbot() {
     }
   }, [isMobileMenuOpen])
 
+  // Focus trap and Escape key behavior when chatbot is open
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false)
+        return
+      }
+
+      if (e.key !== 'Tab') return
+
+      const container = chatWindowRef.current
+      if (!container) return
+
+      const focusables = container.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])'
+      )
+      if (focusables.length === 0) return
+
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          last.focus()
+          e.preventDefault()
+        }
+      } else {
+        if (document.activeElement === last) {
+          first.focus()
+          e.preventDefault()
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen])
+
   const quickActions = [
     'How do you handle rate limiting?',
     "What's your stack?",
   ]
 
-  async function sendMessage() {
-    if (!input.trim() || loading) return
-
-    const userMessage: Message = { role: 'user', content: input }
+  async function executeChatStream(userMessage: Message) {
     setMessages((prev) => [...prev, userMessage])
-    setInput('')
     setLoading(true)
 
     const assistantMessagePlaceholder: Message = { role: 'assistant', content: '' }
@@ -119,63 +155,19 @@ export function FloatingChatbot() {
     }
   }
 
+  async function sendMessage() {
+    if (!input.trim() || loading) return
+
+    const userMessage: Message = { role: 'user', content: input }
+    setInput('')
+    await executeChatStream(userMessage)
+  }
+
   async function handleQuickAction(actionText: string) {
     if (loading) return
 
     const userMessage: Message = { role: 'user', content: actionText }
-    setMessages((prev) => [...prev, userMessage])
-    setLoading(true)
-
-    const assistantMessagePlaceholder: Message = { role: 'assistant', content: '' }
-    setMessages((prev) => [...prev, assistantMessagePlaceholder])
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: [...messages, userMessage],
-        }),
-      })
-
-      if (!response.ok) {
-        const data = await response.json()
-        setMessages((prev) => {
-          const next = [...prev]
-          next[next.length - 1].content = data.reply || data.error || 'Advisory service interrupted.'
-          return next
-        })
-        return
-      }
-
-      const reader = response.body?.getReader()
-      if (!reader) throw new Error('No response stream')
-
-      const decoder = new TextDecoder()
-      let done = false
-      let fullContent = ''
-
-      while (!done) {
-        const { value, done: doneReading } = await reader.read()
-        done = doneReading
-        const chunkValue = decoder.decode(value)
-        fullContent += chunkValue
-
-        setMessages((prev) => {
-          const next = [...prev]
-          next[next.length - 1].content = fullContent
-          return next
-        })
-      }
-    } catch (error) {
-      setMessages((prev) => {
-        const next = [...prev]
-        next[next.length - 1].content = "Assistant currently unavailable. Please reach out via LinkedIn."
-        return next
-      })
-    } finally {
-      setLoading(false)
-    }
+    await executeChatStream(userMessage)
   }
 
   if (isMobileMenuOpen) return null

@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true }, { status: 200 }) // silently drop
     }
 
-    const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT
+    const endpoint = process.env.FORMSPREE_ENDPOINT || process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT
     if (!endpoint) {
       return NextResponse.json(
         { error: 'Contact form is being configured. Please reach out via LinkedIn.' },

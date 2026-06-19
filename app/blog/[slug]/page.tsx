@@ -59,7 +59,7 @@ export default function BlogPostPage({
   }
 
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -124,7 +124,7 @@ export default function BlogPostPage({
           </footer>
         </div>
       </article>
-    </main>
+    </div>
   )
 }
 

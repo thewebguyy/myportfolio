@@ -42,7 +42,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   }
 
   return (
-    <main className="min-h-screen bg-background selection:bg-primary/30">
+    <div className="min-h-screen bg-background selection:bg-primary/30">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -71,7 +71,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               {project.longDescription}
             </p>
             
-            <div className="grid grid-cols-3 gap-8 pt-10 border-t border-surface-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 pt-10 border-t border-surface-2">
                {Object.entries(project.metrics || {}).slice(0, 3).map(([key, val]) => (
                  <TechnicalMetric key={key} label={key} value={val as string} />
                ))}
@@ -278,7 +278,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           </div>
         </div>
       </section>
-    </main>
+    </div>
   )
 }
 

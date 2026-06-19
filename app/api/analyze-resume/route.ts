@@ -3,6 +3,12 @@ import { z } from 'zod'
 import { orchestrator } from '@/services/ai-orchestrator'
 import { sysStorage } from '@/lib/storage'
 import { handleOpenAIError } from '@/lib/openai'
+import { createRateLimiter, getRateLimitHeaders } from '@/lib/rateLimit'
+
+const rateLimiter = createRateLimiter({
+  limit: 10,
+  windowInSeconds: 3600,
+})
 
 const requestSchema = z.object({
   resumeText: z.string().min(50),
@@ -14,6 +20,14 @@ const requestSchema = z.object({
  */
 export async function POST(req: Request) {
   try {
+    const rateLimitResult = await rateLimiter(req)
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Please try again later.' },
+        { status: 429, headers: getRateLimitHeaders(rateLimitResult) }
+      )
+    }
+
     let body;
     try {
       body = await req.json()
@@ -54,6 +68,8 @@ export async function POST(req: Request) {
       assumptions: result.assumptions,
       reportId: report.id,
       metadata: result.metadata
+    }, {
+      headers: getRateLimitHeaders(rateLimitResult)
     })
   } catch (error) {
     console.error('Resume Analysis Error:', error)

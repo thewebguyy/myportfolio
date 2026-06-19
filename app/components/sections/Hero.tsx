@@ -4,11 +4,11 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
-const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
-const hasResumeUrl = RESUME_URL.length > 0
-const IS_AVAILABLE = process.env.NEXT_PUBLIC_AVAILABLE_FOR_HIRE === 'true'
-
 export function Hero() {
+  const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
+  const hasResumeUrl = RESUME_URL.length > 0
+  const IS_AVAILABLE = process.env.NEXT_PUBLIC_AVAILABLE_FOR_HIRE === 'true'
+
   const [headshotFailed, setHeadshotFailed] = useState(false)
   return (
     <section className="relative min-h-screen flex items-center bg-background px-6 lg:px-8 border-b-[0.5px] border-border-wire">

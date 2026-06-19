@@ -68,11 +68,12 @@ export function CandidateScreener() {
       <div className="max-w-[1280px] mx-auto px-6">
         {!analysis && !loading ? (
           <div className="bg-surface p-8 lg:p-12 border border-surface-2 max-w-4xl mx-auto">
-            <label className="block font-mono text-[10px] text-text-muted uppercase tracking-widest mb-6 flex items-center gap-2">
+            <label htmlFor="resume-input" className="block font-mono text-[10px] text-text-muted uppercase tracking-widest mb-6 flex items-center gap-2">
               <CommandLineIcon className="w-4 h-4 text-primary" />
               Paste Profile / Resume Data
             </label>
             <textarea 
+              id="resume-input"
               placeholder="Paste text for technical analysis..."
               className="w-full h-64 bg-background border border-surface-2 p-6 text-white font-mono text-[13px] focus:border-primary focus:outline-none transition-all resize-none"
               value={resumeText}

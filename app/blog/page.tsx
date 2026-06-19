@@ -14,7 +14,7 @@ export default function BlogPage() {
   )
 
   return (
-    <main className="min-h-screen bg-background border-b-[0.5px] border-border-wire">
+    <div className="min-h-screen bg-background border-b-[0.5px] border-border-wire">
       <div className="max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire pt-24">
         
         {/* Back Link */}
@@ -96,6 +96,6 @@ export default function BlogPage() {
           ))}
         </div>
       </div>
-    </main>
+    </div>
   )
 }

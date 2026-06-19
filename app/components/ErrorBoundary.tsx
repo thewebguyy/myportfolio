@@ -71,7 +71,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </p>
               <button
                 onClick={() => this.setState({ hasError: false, error: null })}
-                className="btn btn-secondary text-sm"
+                className="btn-secondary"
               >
                 Try Again
               </button>
