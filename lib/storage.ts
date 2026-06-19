@@ -20,12 +20,30 @@ class SystemStorage {
   private isClient = typeof window !== 'undefined'
 
   /**
+   * Environment-safe UUID generator.
+   * Prefers globalThis.crypto.randomUUID (browser + modern Node),
+   * falls back to a Math.random UUID v4 for Jest / older runtimes.
+   */
+  private generateId(): string {
+    const globalCrypto = (globalThis as Record<string, unknown>).crypto as Crypto | undefined
+    if (globalCrypto && typeof globalCrypto.randomUUID === 'function') {
+      return globalCrypto.randomUUID()
+    }
+    // Fallback UUID v4 — sufficient for test environments and local storage simulation
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = (Math.random() * 16) | 0
+      const v = c === 'x' ? r : (r & 0x3) | 0x8
+      return v.toString(16)
+    })
+  }
+
+  /**
    * Save a generated report
    */
   async saveReport(report: Omit<SystemReport, 'id' | 'timestamp'>): Promise<SystemReport> {
     const newReport: SystemReport = {
       ...report,
-      id: crypto.randomUUID(),
+      id: this.generateId(),
       timestamp: new Date().toISOString()
     }
 
