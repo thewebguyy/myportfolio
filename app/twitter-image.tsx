@@ -10,29 +10,29 @@ export default async function Image() {
     (
       <div
         style={{
-          background: '#0a1124',
+          background: '#080D1A',
           width: '100%',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           padding: '80px',
-          fontFamily: 'serif',
-          color: '#f8fafc',
+          fontFamily: 'sans-serif',
+          color: '#F2EDE8',
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center' }}>
           <div
             style={{
               fontSize: '28px',
-              color: '#4fc3f7',
+              color: '#C4622D',
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               marginBottom: '24px',
               fontFamily: 'monospace',
             }}
           >
-            Software Engineering Portfolio
+            Fintech & AI Infrastructure
           </div>
           
           <div
@@ -50,7 +50,7 @@ export default async function Image() {
           <div
             style={{
               fontSize: '36px',
-              color: '#94a3b8',
+              color: '#8E9BAA',
               lineHeight: 1.4,
             }}
           >
@@ -63,14 +63,14 @@ export default async function Image() {
             style={{
               width: '16px',
               height: '16px',
-              background: '#4fc3f7',
+              background: '#C4622D',
               marginRight: '16px',
             }}
           />
           <div
             style={{
               fontSize: '24px',
-              color: '#cbd5e1',
+              color: '#8E9BAA',
               fontFamily: 'monospace',
             }}
           >

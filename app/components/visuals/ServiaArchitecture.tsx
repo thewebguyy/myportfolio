@@ -8,25 +8,25 @@ import React from 'react'
  */
 export default function ServiaArchitecture() {
   return (
-    <div className="w-full mt-12 mb-16 p-8 glass rounded-3xl border border-white/10 overflow-hidden bg-surface/20">
+    <div className="w-full mt-12 mb-16 p-8 bg-surface border border-surface-2 overflow-hidden">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
         <div>
-          <h3 className="text-2xl font-bold text-white mb-2">Servia Booking Concurrency Flow</h3>
-          <p className="text-gray-400 text-sm">PostgreSQL SERIALIZABLE Isolation vs. Concurrent Write Conflicts (ErrorCode P2034)</p>
+          <h3 className="text-2xl font-bold text-text-primary mb-2">Servia Booking Concurrency Flow</h3>
+          <p className="text-text-secondary text-sm">PostgreSQL SERIALIZABLE Isolation vs. Concurrent Write Conflicts (ErrorCode P2034)</p>
         </div>
         <div className="flex gap-4 font-mono text-[11px]">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-secondary rounded-full" />
-            <span className="text-gray-400">Transaction Abort / 409</span>
+            <div className="w-3 h-3 bg-secondary" />
+            <span className="text-text-secondary">Transaction Abort / 409</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-emerald-500 rounded-full" />
-            <span className="text-gray-400">Success / 201</span>
+            <div className="w-3 h-3 bg-emerald-500" />
+            <span className="text-text-secondary">Success / 201</span>
           </div>
         </div>
       </div>
 
-      <div className="relative w-full aspect-[16/10] max-w-5xl mx-auto border border-white/5 rounded-2xl bg-black/40 p-4 overflow-x-auto">
+      <div className="relative w-full aspect-[16/10] max-w-5xl mx-auto border border-surface-2 bg-background p-4 overflow-x-auto">
         <svg viewBox="0 0 850 520" className="w-full min-w-[800px] h-auto">
           {/* Definitions */}
           <defs>
@@ -44,9 +44,9 @@ export default function ServiaArchitecture() {
           </defs>
 
           {/* Grid Columns Titles */}
-          <text x="120" y="25" className="fill-text-muted text-[10px] font-mono font-bold uppercase tracking-widest text-center" textAnchor="middle">1. Client Tier (React SPA)</text>
-          <text x="425" y="25" className="fill-text-muted text-[10px] font-mono font-bold uppercase tracking-widest text-center" textAnchor="middle">2. Application Tier (Express + Prisma)</text>
-          <text x="730" y="25" className="fill-text-muted text-[10px] font-mono font-bold uppercase tracking-widest text-center" textAnchor="middle">3. Database Tier (PostgreSQL 15)</text>
+          <text x="120" y="25" className="fill-text-secondary text-[10px] font-mono font-bold uppercase tracking-widest text-center" textAnchor="middle">1. Client Tier (React SPA)</text>
+          <text x="425" y="25" className="fill-text-secondary text-[10px] font-mono font-bold uppercase tracking-widest text-center" textAnchor="middle">2. Application Tier (Express + Prisma)</text>
+          <text x="730" y="25" className="fill-text-secondary text-[10px] font-mono font-bold uppercase tracking-widest text-center" textAnchor="middle">3. Database Tier (PostgreSQL 15)</text>
 
           {/* Vertical Separator Lines */}
           <line x1="270" y1="40" x2="270" y2="480" stroke="rgba(245,240,235,0.06)" strokeWidth="1" strokeDasharray="4 4" />
@@ -56,9 +56,9 @@ export default function ServiaArchitecture() {
 
           {/* Client initiates booking */}
           <g transform="translate(40, 50)">
-            <rect x="0" y="0" width="160" height="60" rx="8" className="fill-gray-950 stroke-gray-800" strokeWidth="1.5" />
+            <rect x="0" y="0" width="160" height="60" className="fill-gray-950 stroke-gray-800" strokeWidth="1.5" />
             <text x="80" y="26" textAnchor="middle" className="fill-white text-[12px] font-bold font-sans">Submit Booking</text>
-            <text x="80" y="44" textAnchor="middle" className="fill-text-muted text-[9px] font-mono">POST /api/reservations</text>
+            <text x="80" y="44" textAnchor="middle" className="fill-text-secondary text-[9px] font-mono">POST /api/reservations</text>
           </g>
 
           {/* Arrow Client -> Express */}
@@ -67,7 +67,7 @@ export default function ServiaArchitecture() {
 
           {/* Express opens SERIALIZABLE transaction */}
           <g transform="translate(325, 50)">
-            <rect x="0" y="0" width="200" height="70" rx="8" className="fill-gray-950 stroke-blue-500/30" strokeWidth="1.5" />
+            <rect x="0" y="0" width="200" height="70" className="fill-gray-950 stroke-blue-500/30" strokeWidth="1.5" />
             <text x="100" y="26" textAnchor="middle" className="fill-white text-[12px] font-bold font-sans">Express Controller</text>
             <text x="100" y="44" textAnchor="middle" className="fill-blue-400 text-[9px] font-mono">prisma.$transaction(...,</text>
             <text x="100" y="56" textAnchor="middle" className="fill-blue-400 text-[9px] font-mono">&#123; isolationLevel: &apos;Serializable&apos; &#125;)</text>
@@ -79,10 +79,10 @@ export default function ServiaArchitecture() {
 
           {/* Postgres calculates current slot seats */}
           <g transform="translate(640, 50)">
-            <rect x="0" y="0" width="180" height="70" rx="8" className="fill-gray-950 stroke-gray-800" strokeWidth="1.5" />
+            <rect x="0" y="0" width="180" height="70" className="fill-gray-950 stroke-gray-800" strokeWidth="1.5" />
             <text x="90" y="26" textAnchor="middle" className="fill-white text-[12px] font-bold font-sans">Capacity Check</text>
-            <text x="90" y="44" textAnchor="middle" className="fill-text-muted text-[9px] font-mono">SELECT SUM(partySize)</text>
-            <text x="90" y="56" textAnchor="middle" className="fill-text-muted text-[9px] font-mono">WHERE time = target_slot</text>
+            <text x="90" y="44" textAnchor="middle" className="fill-text-secondary text-[9px] font-mono">SELECT SUM(partySize)</text>
+            <text x="90" y="56" textAnchor="middle" className="fill-text-secondary text-[9px] font-mono">WHERE time = target_slot</text>
           </g>
 
           {/* Arrow Postgres -> Express response */}
@@ -91,9 +91,9 @@ export default function ServiaArchitecture() {
 
           {/* Express validates sum */}
           <g transform="translate(325, 145)">
-            <rect x="0" y="0" width="200" height="50" rx="8" className="fill-gray-950 stroke-gray-800" strokeWidth="1.5" />
+            <rect x="0" y="0" width="200" height="50" className="fill-gray-950 stroke-gray-800" strokeWidth="1.5" />
             <text x="100" y="24" textAnchor="middle" className="fill-white text-[11px] font-sans">Evaluate Capacity Limit</text>
-            <text x="100" y="40" textAnchor="middle" className="fill-text-muted text-[9px] font-mono">Sum + Party Size &lt;= 50</text>
+            <text x="100" y="40" textAnchor="middle" className="fill-text-secondary text-[9px] font-mono">Sum + Party Size &lt;= 50</text>
           </g>
 
           {/* Arrow Express -> Postgres Write */}
@@ -102,9 +102,9 @@ export default function ServiaArchitecture() {
 
           {/* Postgres inserts reservation row and checks conflicts */}
           <g transform="translate(640, 145)">
-            <rect x="0" y="0" width="180" height="90" rx="8" className="fill-gray-950 stroke-blue-500/40" strokeWidth="1.5" />
+            <rect x="0" y="0" width="180" height="90" className="fill-gray-950 stroke-blue-500/40" strokeWidth="1.5" />
             <text x="90" y="26" textAnchor="middle" className="fill-white text-[12px] font-bold font-sans">PostgreSQL MVCC</text>
-            <text x="90" y="44" textAnchor="middle" className="fill-text-muted text-[9px] font-mono">INSERT INTO reservation</text>
+            <text x="90" y="44" textAnchor="middle" className="fill-text-secondary text-[9px] font-mono">INSERT INTO reservation</text>
             <text x="90" y="60" textAnchor="middle" className="fill-blue-300 text-[9px] font-mono font-semibold">Track Read-Write Set</text>
             <text x="90" y="74" textAnchor="middle" className="fill-blue-300/80 text-[8px] font-mono">Monitor concurrent commits</text>
           </g>
@@ -126,16 +126,16 @@ export default function ServiaArchitecture() {
 
           {/* Abort block in Postgres */}
           <g transform="translate(640, 370)">
-            <rect x="0" y="0" width="180" height="60" rx="8" className="fill-red-950/20 stroke-red-500/40" strokeWidth="1.5" />
+            <rect x="0" y="0" width="180" height="60" className="fill-red-950/20 stroke-red-500/40" strokeWidth="1.5" />
             <text x="90" y="26" textAnchor="middle" className="fill-red-400 text-[12px] font-bold font-sans">Transaction Aborted</text>
             <text x="90" y="44" textAnchor="middle" className="fill-red-400/80 text-[9px] font-mono">ErrorCode P2034</text>
           </g>
 
           {/* Success return to Express */}
           <g transform="translate(325, 275)">
-            <rect x="0" y="0" width="175" height="50" rx="6" className="fill-emerald-950/10 stroke-emerald-500/30" strokeWidth="1" />
+            <rect x="0" y="0" width="175" height="50" className="fill-emerald-950/10 stroke-emerald-500/30" strokeWidth="1" />
             <text x="87" y="24" textAnchor="middle" className="fill-emerald-400 text-[11px] font-bold font-sans">Success Handler</text>
-            <text x="87" y="38" textAnchor="middle" className="fill-text-muted text-[9px] font-mono">Returns Created Booking</text>
+            <text x="87" y="38" textAnchor="middle" className="fill-text-secondary text-[9px] font-mono">Returns Created Booking</text>
           </g>
 
           {/* Arrow Success -> Client 201 */}
@@ -144,9 +144,9 @@ export default function ServiaArchitecture() {
 
           {/* Client Success Display */}
           <g transform="translate(40, 180)">
-            <rect x="0" y="0" width="160" height="60" rx="8" className="fill-emerald-950/20 stroke-emerald-500/40" strokeWidth="1" />
+            <rect x="0" y="0" width="160" height="60" className="fill-emerald-950/20 stroke-emerald-500/40" strokeWidth="1" />
             <text x="80" y="26" textAnchor="middle" className="fill-emerald-400 text-[12px] font-bold font-sans">Confirmed</text>
-            <text x="80" y="44" textAnchor="middle" className="fill-text-muted text-[9px] font-mono">Optimistic UI Resolves</text>
+            <text x="80" y="44" textAnchor="middle" className="fill-text-secondary text-[9px] font-mono">Optimistic UI Resolves</text>
           </g>
 
           {/* Abort return to Express */}
@@ -155,10 +155,10 @@ export default function ServiaArchitecture() {
 
           {/* Express catches abort, throws 409 */}
           <g transform="translate(325, 370)">
-            <rect x="0" y="0" width="200" height="70" rx="8" className="fill-red-950/20 stroke-red-500/50" strokeWidth="1.5" />
+            <rect x="0" y="0" width="200" height="70" className="fill-red-950/20 stroke-red-500/50" strokeWidth="1.5" />
             <text x="100" y="26" textAnchor="middle" className="fill-white text-[12px] font-bold font-sans">Express Catch Block</text>
             <text x="100" y="44" textAnchor="middle" className="fill-red-400 text-[9px] font-mono">Maps P2034 → 409 Conflict</text>
-            <text x="100" y="58" textAnchor="middle" className="fill-text-muted text-[8px] font-mono">Informs client to retry</text>
+            <text x="100" y="58" textAnchor="middle" className="fill-text-secondary text-[8px] font-mono">Informs client to retry</text>
           </g>
 
           {/* Arrow Express -> Client 409 */}
@@ -167,9 +167,9 @@ export default function ServiaArchitecture() {
 
           {/* Client Retry Handler */}
           <g transform="translate(40, 440)">
-            <rect x="0" y="0" width="160" height="60" rx="8" className="fill-red-950/20 stroke-red-500/40" strokeWidth="1.5" />
+            <rect x="0" y="0" width="160" height="60" className="fill-red-950/20 stroke-red-500/40" strokeWidth="1.5" />
             <text x="80" y="26" textAnchor="middle" className="fill-red-400 text-[12px] font-bold font-sans">Automatic Retry</text>
-            <text x="80" y="44" textAnchor="middle" className="fill-text-muted text-[8px] font-mono">Triggers immediate re-submit</text>
+            <text x="80" y="44" textAnchor="middle" className="fill-text-secondary text-[8px] font-mono">Triggers immediate re-submit</text>
           </g>
 
           {/* Arrow Client Retry -> Submit Booking (Loop) */}
@@ -181,20 +181,20 @@ export default function ServiaArchitecture() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 border-t border-white/5 pt-8">
         <div>
-          <h4 className="text-white font-bold text-sm mb-2 font-sans tracking-tight">1. Client Request & Retry</h4>
-          <p className="text-xs text-gray-400 font-sans leading-relaxed">
+          <h4 className="text-text-primary font-bold text-sm mb-2 font-mono tracking-tight">1. Client Request & Retry</h4>
+          <p className="text-xs text-text-secondary font-mono leading-relaxed">
             The Next.js client submits booking parameters. In case of database conflict, the API returns a 409 status code, prompting the client UI to immediately re-fire the transaction.
           </p>
         </div>
         <div>
-          <h4 className="text-white font-bold text-sm mb-2 font-sans tracking-tight">2. Serializable Context</h4>
-          <p className="text-xs text-gray-400 font-sans leading-relaxed">
+          <h4 className="text-text-primary font-bold text-sm mb-2 font-mono tracking-tight">2. Serializable Context</h4>
+          <p className="text-xs text-text-secondary font-mono leading-relaxed">
             Prisma wraps the capacity check and creation in a transaction block set to SERIALIZABLE. Rather than placing row locks, it registers the read/write constraints.
           </p>
         </div>
         <div>
-          <h4 className="text-white font-bold text-sm mb-2 font-sans tracking-tight">3. Conflict Detection (P2034)</h4>
-          <p className="text-xs text-gray-400 font-sans leading-relaxed">
+          <h4 className="text-text-primary font-bold text-sm mb-2 font-mono tracking-tight">3. Conflict Detection (P2034)</h4>
+          <p className="text-xs text-text-secondary font-mono leading-relaxed">
             If PostgreSQL detects a concurrent transaction has inserted a record that changes the capacity sum since this transaction started, it aborts, throws Error P2034, and avoids overbooking.
           </p>
         </div>

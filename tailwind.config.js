@@ -23,6 +23,7 @@ module.exports = {
         'secondary-light': 'var(--secondary-light)',
       },
       fontFamily: {
+        sans: ['var(--font-kanit)', 'sans-serif'],
         display: ['var(--font-kanit)', 'sans-serif'],
         serif: ['var(--font-kanit)', 'sans-serif'],
         mono: ['var(--font-jetbrains-mono)', 'monospace'],
@@ -49,7 +50,9 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/typography'),
+    require('@tailwindcss/typography')({
+      // no options needed here
+    }),
   ],
 }
 

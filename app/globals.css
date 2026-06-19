@@ -126,6 +126,16 @@
   .text-balance { text-wrap: balance; }
 
   .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  /* Prose link colors — override @tailwindcss/typography defaults (was resolving to blue) */
+  .prose a {
+    color: var(--primary);
+    text-decoration-color: rgba(196, 98, 45, 0.4);
+  }
+  .prose a:hover {
+    color: var(--primary-light);
+    text-decoration-color: var(--primary-light);
+  }
 }
 
 /* Custom scrollbar */

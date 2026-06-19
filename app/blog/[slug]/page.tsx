@@ -64,32 +64,31 @@ export default function BlogPostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <article className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <article className="pt-24 md:pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           {/* Back Link */}
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-text-secondary hover:text-primary 
-                     transition-colors mb-8"
+            className="text-text-muted hover:text-text-primary transition-all text-[10px] font-mono uppercase tracking-widest flex items-center gap-2 mb-8"
           >
             <ArrowLeftIcon className="w-4 h-4" />
-            Back to Blog
+            Back to blog
           </Link>
 
           {/* Header */}
           <header className="mb-12">
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-surface-2 text-text-secondary text-sm rounded-full">
+              <span className="pill-tag">
                 {post.category}
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            <h1 className="font-display font-bold text-[48px] md:text-[64px] leading-[1.05] tracking-tight mb-6">
               {post.title}
             </h1>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
-              <time dateTime={post.date} className="flex items-center gap-2">
+              <time dateTime={post.date} className="flex items-center gap-2 font-mono text-[12px]">
                 <CalendarIcon className="w-4 h-4" />
                 {new Date(post.date).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -97,7 +96,7 @@ export default function BlogPostPage({
                   day: 'numeric'
                 })}
               </time>
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 font-mono text-[12px]">
                 <ClockIcon className="w-4 h-4" />
                 {post.readTime} min read
               </span>
@@ -105,7 +104,7 @@ export default function BlogPostPage({
           </header>
 
           {/* Content */}
-          <div className="prose prose-invert prose-primary max-w-none">
+          <div className="prose prose-invert max-w-none">
             <BlogContent slug={post.slug} />
           </div>
 
@@ -118,7 +117,7 @@ export default function BlogPostPage({
                 <p className="text-sm text-text-muted">Full-Stack Engineer</p>
               </div>
 
-              <Link href="#contact" className="btn-primary text-sm">
+              <Link href="/#contact" className="btn-primary text-sm">
                 Get in Touch
               </Link>
             </div>
@@ -161,7 +160,7 @@ function BlogContent({ slug }: { slug: string }) {
         <p>
           I decided to migrate from stateless HTTP polling to persistent stateful connections using WebSockets via <code>Socket.io</code>. 
         </p>
-        <pre className="bg-surface p-4 rounded-lg overflow-x-auto">
+        <pre className="bg-surface p-4 border border-surface-2 overflow-x-auto">
           <code>{`// Example of the new WebSocket Event Architecture
 export const setupMatchingGateway = (io: Server) => {
   io.on('connection', (socket) => {
@@ -186,7 +185,7 @@ export const setupMatchingGateway = (io: Server) => {
         <p>
           I now had to manage sticky sessions at the load balancer level. Handling connection drops on mobile devices (e.g., when a user drives through a tunnel) required aggressive client-side reconnection logic and offline-queueing. Most importantly, scaling from one Node.js instance to a fleet required implementing a Redis Pub/Sub adapter so an event published on Node A would reach a user connected to Node B.
         </p>
-        <div className="bg-surface p-6 rounded-xl border border-border-wire my-8">
+        <div className="bg-surface p-6 border border-surface-2 my-8">
           <h4 className="text-text-primary mb-2 italic">Hindsight / What I&apos;d do differently:</h4>
           <p className="text-sm text-text-secondary m-0 leading-relaxed">
             I would have evaluated Server-Sent Events (SSE) before committing to full bidirectional WebSockets. In the ServiceBridge architecture, the client-to-server payload volume was relatively low compared to server-to-client notifications. SSE over HTTP/2 might have delivered the same push-latency benefits without the headache of managing sticky WebSocket connections.
@@ -239,7 +238,7 @@ export const setupMatchingGateway = (io: Server) => {
           In my ServiceBridge project, migrating to Vercel Edge Functions reduced API response
           times by <strong className="text-primary">60%</strong>. Here&apos;s the architecture:
         </p>
-        <pre className="bg-surface p-4 rounded-lg overflow-x-auto">
+        <pre className="bg-surface p-4 border border-surface-2 overflow-x-auto">
           <code>{`// Edge function for real-time matching
 export const config = { runtime: 'edge' }
 
@@ -279,7 +278,7 @@ export default async function handler(req: Request) {
           <li><a href="https://deno.com/deploy" target="_blank">Deno Deploy</a></li>
         </ul>
 
-        <div className="bg-primary/10 border-l-4 border-primary p-6 rounded-r-lg my-8">
+        <div className="bg-primary/10 border-l-4 border-primary p-6 my-8">
           <p className="text-text-secondary leading-relaxed m-0">
             <strong className="text-text-primary">Pro Tip:</strong> Start by moving read-heavy operations
             to the edge first. Profile your application to identify which endpoints have the
@@ -323,7 +322,7 @@ export default async function handler(req: Request) {
         </ol>
 
         <h2>3. Monitoring Agent Health</h2>
-        <pre className="bg-surface p-4 rounded-lg overflow-x-auto">
+        <pre className="bg-surface p-4 border border-surface-2 overflow-x-auto">
           <code>{`// Example LangSmith-style logging
 export function traceAgentAction(step: string, data: unknown) {
   const d = data as any; // Cast for demo purposes
@@ -335,7 +334,7 @@ export function traceAgentAction(step: string, data: unknown) {
 }`}</code>
         </pre>
 
-        <div className="bg-primary/10 border-l-4 border-primary p-6 rounded-r-lg my-8">
+        <div className="bg-primary/10 border-l-4 border-primary p-6 my-8">
           <p className="text-text-secondary leading-relaxed m-0">
             <strong>Key Insight:</strong> An agent is only as good as its context. Spend 80% of your time
             on RAG (Retrieval Augmented Generation) and only 20% on the core prompt.
@@ -372,7 +371,7 @@ export function traceAgentAction(step: string, data: unknown) {
           <li>Using <strong>WebP/AVIF</strong> instead of PNGs for hero assets.</li>
         </ul>
 
-        <div className="bg-surface p-6 rounded-xl border border-border-wire my-8">
+        <div className="bg-surface p-6 border border-surface-2 my-8">
           <h4 className="text-text-primary mb-2 italic">Why it matters:</h4>
           <p className="text-sm text-text-secondary m-0 leading-relaxed">
             The ICT sector is responsible for an estimated 2-4% of global greenhouse gas emissions—on
@@ -385,13 +384,13 @@ export function traceAgentAction(step: string, data: unknown) {
 
   // Default content for other posts
   return (
-    <div className="glass rounded-2xl p-8">
+    <div className="bg-surface border border-surface-2 p-8">
       <p className="text-text-secondary leading-relaxed">
         Full article content coming soon. This post is part of my ongoing series on modern
         web development practices and emerging technologies for 2026.
       </p>
       <p className="text-text-secondary leading-relaxed mt-4">
-        Want to discuss this topic? <Link href="#contact" className="text-primary hover:underline">
+        Want to discuss this topic? <Link href="/#contact" className="text-primary hover:underline">
           Get in touch</Link> or connect with me on <a href="https://x.com/BodeBillions"
             target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
           X</a>.

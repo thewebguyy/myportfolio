@@ -57,7 +57,7 @@ function TechnicalCard({ project, index }: { project: Project, index: number }) 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.05 }}
-            className="glass rounded-xl p-6 border-[0.5px] border-border-wire hover:border-primary/40 transition-all group"
+            className="bg-surface p-6 border-[0.5px] border-border-wire hover:border-primary/40 transition-all group"
         >
             <div className="flex justify-between items-start mb-4">
                 <span className="text-[10px] font-mono text-primary uppercase tracking-widest">{project.category}</span>
@@ -67,7 +67,7 @@ function TechnicalCard({ project, index }: { project: Project, index: number }) 
             <p className="text-sm text-text-secondary mb-6 line-clamp-2 leading-relaxed">{project.description}</p>
             <div className="flex flex-wrap gap-2 mb-8">
                 {project.tech.slice(0, 3).map(t => (
-                    <span key={t} className="text-[9px] bg-surface-2 px-2 py-1 rounded-[4px] border-[0.5px] border-border-wire text-text-secondary uppercase font-mono tracking-widest">{t}</span>
+                    <span key={t} className="text-[9px] bg-surface-2 px-2 py-1 border-[0.5px] border-border-wire text-text-secondary uppercase font-mono tracking-widest">{t}</span>
                 ))}
             </div>
             <Link 

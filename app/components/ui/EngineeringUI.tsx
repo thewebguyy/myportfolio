@@ -46,7 +46,7 @@ export function TechnicalInsightCard({ title, value, description, trend, icon: I
   icon?: React.ElementType
 }) {
   return (
-    <div className="bg-surface p-6 rounded-[12px] border border-surface-2 hover:border-border-accent hover:shadow-2xl hover:shadow-primary/5 transition-all group">
+    <div className="bg-surface p-6 border border-surface-2 hover:border-text-accent hover:shadow-2xl hover:shadow-primary/5 transition-all group">
       <div className="flex justify-between items-start mb-4">
         {Icon && <Icon className="w-5 h-5 text-primary" />}
         {trend && (
@@ -81,9 +81,9 @@ export function EngineeringDecisionBlock({ title, action, impact, priority }: {
   }
 
   return (
-    <div className={cn("p-6 rounded-[8px] border-l-2 bg-surface", priorityColor[priority])}>
+    <div className={cn("p-6 border-l-2 bg-surface", priorityColor[priority])}>
       <div className="flex justify-between items-center mb-4">
-        <h4 className="font-sans font-semibold text-white text-[16px] uppercase tracking-wide">{title}</h4>
+        <h4 className="font-mono font-semibold text-text-primary text-[16px] uppercase tracking-wide">{title}</h4>
         <span className="font-mono text-[9px] uppercase px-2 py-0.5 rounded border border-surface-2 text-text-muted">
           {priority} Priority
         </span>
@@ -102,7 +102,7 @@ export function EngineeringDecisionBlock({ title, action, impact, priority }: {
  */
 export function ArchitecturePanel({ title, children, className }: { title: string, children: React.ReactNode, className?: string }) {
   return (
-    <div className={cn("bg-surface border border-surface-2 rounded-[12px] overflow-hidden", className)}>
+    <div className={cn("bg-surface border border-surface-2 overflow-hidden", className)}>
       <div className="px-6 py-4 border-b border-surface-2 flex justify-between items-center bg-background/50">
         <h3 className="font-mono text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">{title}</h3>
         <div className="flex gap-1.5">

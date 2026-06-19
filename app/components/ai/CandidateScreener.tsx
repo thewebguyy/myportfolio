@@ -67,14 +67,14 @@ export function CandidateScreener() {
     <section id="candidate-screener" className="bg-background">
       <div className="max-w-[1280px] mx-auto px-6">
         {!analysis && !loading ? (
-          <div className="bg-surface p-8 lg:p-12 rounded-[12px] border border-surface-2 max-w-4xl mx-auto">
+          <div className="bg-surface p-8 lg:p-12 border border-surface-2 max-w-4xl mx-auto">
             <label className="block font-mono text-[10px] text-text-muted uppercase tracking-widest mb-6 flex items-center gap-2">
               <CommandLineIcon className="w-4 h-4 text-primary" />
               Paste Profile / Resume Data
             </label>
             <textarea 
               placeholder="Paste text for technical analysis..."
-              className="w-full h-64 bg-background border border-surface-2 rounded-[8px] p-6 text-white font-mono text-[13px] focus:border-primary focus:outline-none transition-all resize-none"
+              className="w-full h-64 bg-background border border-surface-2 p-6 text-white font-mono text-[13px] focus:border-primary focus:outline-none transition-all resize-none"
               value={resumeText}
               onChange={e => setResumeText(e.target.value)}
             />
@@ -84,7 +84,7 @@ export function CandidateScreener() {
                 onClick={analyzeResume}
                 disabled={loading || resumeText.length < 50}
                 className={cn(
-                  "w-full py-4 rounded-[6px] font-semibold uppercase tracking-[0.1em] transition-all flex items-center justify-center gap-3 text-[12px]",
+                  "w-full py-4 font-semibold uppercase tracking-[0.1em] transition-all flex items-center justify-center gap-3 text-[12px]",
                   resumeText.length < 50 ? "bg-surface-2 text-text-muted cursor-not-allowed" : "bg-primary hover:scale-[0.98] text-background"
                 )}
               >
@@ -94,7 +94,7 @@ export function CandidateScreener() {
             </div>
           </div>
         ) : loading ? (
-          <div className="max-w-4xl mx-auto bg-surface p-16 rounded-[12px] border border-surface-2 text-center space-y-10">
+          <div className="max-w-4xl mx-auto bg-surface p-16 border border-surface-2 text-center space-y-10">
             <div className="relative w-16 h-16 mx-auto">
                <motion.div 
                  animate={{ rotate: 360 }} 
@@ -110,7 +110,7 @@ export function CandidateScreener() {
               <div className="flex justify-center gap-3">
                 {steps.map((step, i) => (
                   <div key={i} className={cn(
-                    "px-3 py-1 rounded-[4px] border text-[9px] font-mono uppercase tracking-wider",
+                    "px-3 py-1 border text-[9px] font-mono uppercase tracking-wider",
                     step.status === 'completed' ? 'border-secondary/30 text-secondary' :
                     step.status === 'processing' ? 'border-primary/30 text-primary animate-pulse' :
                     'border-surface-2 text-text-muted'
@@ -130,15 +130,15 @@ export function CandidateScreener() {
                   <div className="space-y-8 py-4">
                     <PerformanceMeter label="Overall Alignment" score={analysis.matchScore} />
                     <div className="grid grid-cols-1 gap-4">
-                      <div className="p-4 bg-background rounded-[8px] border border-surface-2">
+                      <div className="p-4 bg-background border border-surface-2">
                         <div className="font-mono text-[10px] text-text-muted uppercase mb-1">Skill Gap Analysis</div>
-                        <div className={cn("font-sans font-semibold uppercase text-[13px]", analysis.skillGap === 'Low' ? 'text-secondary' : 'text-primary')}>
+                        <div className={cn("font-mono font-semibold uppercase text-[13px]", analysis.skillGap === 'Low' ? 'text-secondary' : 'text-primary')}>
                           {analysis.skillGap} Probability
                         </div>
                       </div>
-                      <div className="p-4 bg-background rounded-[8px] border border-surface-2">
+                      <div className="p-4 bg-background border border-surface-2">
                         <div className="font-mono text-[10px] text-text-muted uppercase mb-1">Domain Gap</div>
-                        <div className="font-sans font-semibold text-white uppercase text-[13px]">{analysis.skillGapSeverity}</div>
+                        <div className="font-mono font-semibold text-white uppercase text-[13px]">{analysis.skillGapSeverity}</div>
                       </div>
                     </div>
                   </div>

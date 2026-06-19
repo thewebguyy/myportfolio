@@ -59,14 +59,14 @@ export class ErrorBoundary extends Component<Props, State> {
 
       // Default fallback UI
       return (
-        <div className="glass rounded-xl p-8 my-8">
+        <div className="bg-surface border border-surface-2 p-8 my-8">
           <div className="flex items-start gap-4">
             <ExclamationTriangleIcon className="w-8 h-8 text-red-500 flex-shrink-0" />
             <div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h3 className="text-xl font-bold text-text-primary mb-2">
                 Something went wrong in this section
               </h3>
-              <p className="text-gray-400 mb-4">
+              <p className="text-text-secondary mb-4">
                 This component encountered an error. The rest of the page should still work fine.
               </p>
               <button
@@ -78,7 +78,7 @@ export class ErrorBoundary extends Component<Props, State> {
               
               {/* Show error details in development */}
               {process.env.NODE_ENV === 'development' && this.state.error && (
-                <div className="mt-4 p-4 bg-red-500/10 rounded-lg border border-red-500/30">
+                <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30">
                   <p className="text-sm font-mono text-red-400">
                     {this.state.error.message}
                   </p>
