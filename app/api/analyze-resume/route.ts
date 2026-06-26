@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
-import { orchestrator } from '@/services/ai-orchestrator'
+import { resumeAnalyzer } from '@/services/resume-analyzer'
 import { sysStorage } from '@/lib/storage'
 import { handleOpenAIError } from '@/lib/openai'
 import { createRateLimiter, getRateLimitHeaders } from '@/lib/rateLimit'
@@ -14,10 +14,6 @@ const requestSchema = z.object({
   resumeText: z.string().min(50),
 })
 
-/**
- * Resume Analyzer — Orchestrated Version
- * Demonstrates semantic extraction and risk modeling.
- */
 export async function POST(req: Request) {
   try {
     const rateLimitResult = await rateLimiter(req)
@@ -48,9 +44,8 @@ export async function POST(req: Request) {
 
     const { resumeText } = parseResult.data
 
-    const result = await orchestrator.orchestrateTalentAudit(resumeText)
+    const result = await resumeAnalyzer.analyzeResume(resumeText)
 
-    // Persistence Layer
     const report = await sysStorage.saveReport({
       type: 'talent',
       input: { length: resumeText.length },
@@ -63,7 +58,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       analysis: result.data,
-      steps: result.steps,
       confidenceScore: result.confidenceScore,
       assumptions: result.assumptions,
       reportId: report.id,
