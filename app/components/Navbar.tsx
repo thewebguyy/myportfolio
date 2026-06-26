@@ -14,8 +14,6 @@ const NAV_LINKS = [
 ]
 
 export function Navbar() {
-    // CV link appears only when the env var is set to a real URL.
-    // Set NEXT_PUBLIC_RESUME_URL in .env.local to enable it.
     const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
     const hasResumeUrl = RESUME_URL.length > 0
 
@@ -74,7 +72,7 @@ export function Navbar() {
     }, [menuOpen])
 
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 60)
+        const onScroll = () => setScrolled(window.scrollY > 40)
         window.addEventListener('scroll', onScroll, { passive: true })
         onScroll()
         return () => window.removeEventListener('scroll', onScroll)
@@ -88,7 +86,7 @@ export function Navbar() {
             const el = document.getElementById(id)
             if (!el) return
             const obs = new IntersectionObserver(
-                ([entry]) => { 
+                ([entry]) => {
                     if (entry.isIntersecting) {
                         if (id === 'manifesto') {
                             setActiveHash('#about')
@@ -97,7 +95,7 @@ export function Navbar() {
                         } else {
                             setActiveHash(`#${id}`)
                         }
-                    } 
+                    }
                 },
                 { rootMargin: '-40% 0px -55% 0px' }
             )
@@ -139,46 +137,52 @@ export function Navbar() {
             <header
                 className={`
                     fixed top-0 left-0 right-0 z-50
-                    transition-all duration-300 h-[64px] flex items-center
+                    transition-all duration-200 h-[56px] flex items-center
                     ${scrolled
-                        ? 'bg-background/90 backdrop-blur-md border-b-[0.5px] border-border-wire'
-                        : 'bg-transparent border-b-[0.5px] border-transparent'
+                        ? 'bg-paper/95 backdrop-blur-sm border-b border-[var(--wire)]'
+                        : 'bg-transparent border-b border-transparent'
                     }
                 `}
                 role="banner"
             >
                 <nav
-                    className="max-w-[1440px] mx-auto w-full px-6 lg:px-8 flex items-center justify-between border-x-[0.5px] border-transparent h-full"
+                    className="max-w-[1440px] mx-auto w-full px-6 lg:px-8 flex items-center justify-between h-full"
                     aria-label="Main navigation"
                 >
-                    {/* Left: Logo & Name */}
+                    {/* Logo */}
                     <Link
                         href="/"
-                        className="flex items-center gap-4 group"
+                        className="flex items-center gap-3 group"
                         aria-label="Olabode Olusegun – home"
                     >
-                        <div className="w-8 h-8 border-[0.5px] border-text-accent flex items-center justify-center font-mono text-[12px] text-text-accent bg-background">
-                            OO
-                        </div>
-                        <span className="font-mono font-medium text-text-primary text-[12px] uppercase tracking-widest hidden md:block">
-                            Olabode Olusegun
+                        <span
+                            className="font-mono font-bold text-[13px] tracking-[0.18em] uppercase text-ink"
+                            style={{ fontFamily: 'var(--font-mono)' }}
+                        >
+                            OA.DEV
                         </span>
+                        {/* Signal dot — live status indicator */}
+                        <span
+                            className="w-[6px] h-[6px] rounded-full animate-pulse"
+                            style={{ background: 'var(--signal)' }}
+                            aria-label="Available for work"
+                        />
                     </Link>
 
-                    {/* Center: Navigation Links */}
+                    {/* Desktop nav links */}
                     <ul className="hidden md:flex items-center gap-8" role="list">
                         {NAV_LINKS.map(({ label, href }) => (
                             <li key={href}>
                                 <Link
                                     href={href}
                                     onClick={() => handleNavClick(href)}
-                                    className={`
-                                        text-[11px] font-mono tracking-widest transition-colors duration-150 uppercase
-                                        ${isActive(href)
-                                            ? 'text-text-accent'
-                                            : 'text-text-primary/60 hover:text-text-primary'
-                                        }
-                                    `}
+                                    className="text-[11px] tracking-[0.12em] uppercase transition-colors duration-150"
+                                    style={{
+                                        fontFamily: 'var(--font-mono)',
+                                        color: isActive(href) ? 'var(--signal)' : 'var(--ink-3)',
+                                    }}
+                                    onMouseEnter={e => { if (!isActive(href)) (e.currentTarget as HTMLElement).style.color = 'var(--ink)' }}
+                                    onMouseLeave={e => { if (!isActive(href)) (e.currentTarget as HTMLElement).style.color = 'var(--ink-3)' }}
                                 >
                                     {label}
                                 </Link>
@@ -186,91 +190,114 @@ export function Navbar() {
                         ))}
                     </ul>
 
-                    {/* Right: CTA Button */}
+                    {/* Right CTA */}
                     <div className="hidden md:flex items-center gap-6">
                         {hasResumeUrl && (
                             <a
                                 href={RESUME_URL}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[11px] font-mono tracking-widest uppercase text-text-primary/60 hover:text-text-primary transition-colors"
+                                className="text-[11px] tracking-[0.12em] uppercase transition-colors"
+                                style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink-3)' }}
+                                onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+                                onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
                             >
                                 CV
                             </a>
                         )}
                         <Link
                             href="/#contact"
-                            className="px-4 py-2 text-[11px] font-mono tracking-widest uppercase border-[0.5px] border-border-wire bg-surface text-text-primary transition-colors duration-300 hover:bg-text-primary hover:text-background"
+                            className="px-5 py-2 text-[11px] tracking-[0.12em] uppercase border transition-all duration-150"
+                            style={{
+                                fontFamily: 'var(--font-mono)',
+                                background: 'var(--ink)',
+                                color: 'var(--paper)',
+                                borderColor: 'var(--ink)',
+                            }}
+                            onMouseEnter={e => {
+                                const el = e.currentTarget as HTMLElement
+                                el.style.background = 'var(--signal)'
+                                el.style.borderColor = 'var(--signal)'
+                            }}
+                            onMouseLeave={e => {
+                                const el = e.currentTarget as HTMLElement
+                                el.style.background = 'var(--ink)'
+                                el.style.borderColor = 'var(--ink)'
+                            }}
                         >
-                            Contact
+                            Hire me →
                         </Link>
                     </div>
 
-                    {/* Mobile Hamburger */}
+                    {/* Mobile hamburger */}
                     <button
-                        className="md:hidden text-text-primary/60 hover:text-text-primary transition-colors"
+                        className="md:hidden transition-colors"
+                        style={{ color: 'var(--ink-3)' }}
                         onClick={() => setMenuOpen(true)}
                         aria-label="Open menu"
+                        onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+                        onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
                     >
-                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
                 </nav>
             </header>
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Menu */}
             <AnimatePresence>
                 {menuOpen && (
                     <motion.div
                         ref={menuRef}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="fixed inset-0 z-[60] bg-background flex flex-col p-6"
+                        initial={{ opacity: 0, x: '100%' }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: '100%' }}
+                        transition={{ duration: 0.2, ease: 'easeInOut' }}
+                        className="fixed inset-0 z-[60] flex flex-col p-6"
+                        style={{ background: 'var(--paper)' }}
                     >
-                        <div className="flex justify-between items-center h-[64px]">
-                            <Link
-                                href="/"
-                                onClick={() => setMenuOpen(false)}
-                                className="flex items-center gap-4"
-                            >
-                                <div className="w-8 h-8 border-[0.5px] border-text-accent flex items-center justify-center font-mono text-[12px] text-text-accent">
-                                    OO
-                                </div>
-                            </Link>
+                        <div className="flex justify-between items-center h-[56px]">
+                            <span className="font-mono font-bold text-[13px] tracking-[0.18em] uppercase" style={{ color: 'var(--ink)' }}>
+                                OA.DEV
+                            </span>
                             <button
-                                className="text-text-primary/60 hover:text-text-primary transition-colors"
+                                style={{ color: 'var(--ink-3)' }}
                                 onClick={() => setMenuOpen(false)}
                                 aria-label="Close menu"
                             >
-                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
 
-                        <div className="flex-1 flex flex-col justify-center gap-8">
+                        <div className="flex-1 flex flex-col justify-center gap-10" style={{ borderTop: '1px solid var(--wire)', paddingTop: '3rem' }}>
                             {NAV_LINKS.map(({ label, href }) => (
                                 <Link
                                     key={href}
                                     href={href}
                                     onClick={() => handleNavClick(href)}
-                                    className="text-[32px] font-display font-semibold text-text-primary hover:text-text-accent transition-colors"
+                                    className="text-[40px] font-semibold leading-none transition-colors"
+                                    style={{
+                                        fontFamily: 'var(--font-sans)',
+                                        color: isActive(href) ? 'var(--signal)' : 'var(--ink)',
+                                        letterSpacing: '-0.02em',
+                                    }}
                                 >
                                     {label}
                                 </Link>
                             ))}
                         </div>
 
-                        <div className="py-8 border-t-[0.5px] border-border-wire flex flex-col gap-4">
+                        <div className="pt-8 flex flex-col gap-3" style={{ borderTop: '1px solid var(--wire)' }}>
                             {hasResumeUrl && (
                                 <a
                                     href={RESUME_URL}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-full block text-center py-4 text-text-primary font-mono text-[11px] tracking-widest uppercase hover:text-text-accent transition-colors"
+                                    className="w-full text-center py-4 text-[11px] tracking-[0.12em] uppercase"
+                                    style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink-3)' }}
                                 >
                                     CV
                                 </a>
@@ -278,9 +305,15 @@ export function Navbar() {
                             <Link
                                 href="/#contact"
                                 onClick={() => setMenuOpen(false)}
-                                className="w-full block text-center py-4 border-[0.5px] border-border-wire bg-surface text-text-primary font-mono text-[11px] tracking-widest uppercase hover:bg-text-primary hover:text-background transition-colors"
+                                className="w-full text-center py-4 text-[11px] tracking-[0.12em] uppercase"
+                                style={{
+                                    fontFamily: 'var(--font-mono)',
+                                    background: 'var(--ink)',
+                                    color: 'var(--paper)',
+                                    border: '1px solid var(--ink)',
+                                }}
                             >
-                                Contact
+                                Hire me →
                             </Link>
                         </div>
                     </motion.div>
@@ -289,4 +322,3 @@ export function Navbar() {
         </>
     )
 }
-
