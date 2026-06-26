@@ -2,147 +2,413 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────────
+   ENGINEERING PRINCIPIA — Design System
+
+   Every rule here answers a design question.
+   Nothing is decorative.
+   ───────────────────────────────────────────────────────────── */
+
 @layer base {
   :root {
-    /* ── Foundation ──────────────────────────────────────────
-       Deep midnight navy — pulled from portrait attire.
-       Communicates: infrastructure, reliability, engineering rigor.
-    ── */
-    --background:  #080D1A;
-    --surface:     #0D1526;
-    --surface-2:   #131E33;
+    /* Colour */
+    --ink:     #0a0a0a;
+    --ink-2:   #3a3a3a;
+    --ink-3:   #7a7a7a;
+    --ink-4:   #b0aca7;
+    --paper:   #f5f2ed;
+    --paper-2: #ece8e1;
+    --paper-3: #e2ddd6;
+    --wire:    rgba(10, 10, 10, 0.10);
+    --wire-2:  rgba(10, 10, 10, 0.05);
+    --signal:  #e8440a;
 
-    /* ── Text ────────────────────────────────────────────────
-       Warm ivory primary preserves editorial warmth.
-       Cool slate secondary harmonizes with navy foundation.
-    ── */
-    --text-primary:    #F2EDE8;
-    --text-secondary:  #8E9BAA;
-    --text-muted:      #7A8799;
+    /* Legacy aliases — existing components */
+    --background:      var(--paper);
+    --surface:         var(--paper-2);
+    --surface-2:       var(--paper-3);
+    --text-primary:    var(--ink);
+    --text-secondary:  var(--ink-2);
+    --text-muted:      var(--ink-3);
+    --text-accent:     var(--signal);
+    --border-wire:     var(--wire);
+    --primary:         var(--signal);
+    --primary-light:   #f05a28;
+    --secondary:       var(--ink-2);
+    --secondary-light: var(--ink);
 
-    /* ── Accent: Terracotta ──────────────────────────────────
-       Identity anchor. Preserved from original system.
-       Communicates: humanity, warmth, individuality.
-    ── */
-    --text-accent:   #C4622D;
-    --primary:       #C4622D;
-    --primary-light: #D97542;
+    /* Typography */
+    --font-sans: 'Space Grotesk', system-ui, sans-serif;
+    --font-mono: 'Space Mono', 'Courier New', monospace;
 
-    /* ── Secondary: Warm Gold ────────────────────────────────
-       Pulled from Lagos amber background in portrait.
-       Communicates: subtle prestige, cultural context.
-    ── */
-    --secondary:       #B8870E;
-    --secondary-light: #D4A020;
+    /* Grid */
+    --page-max:    1440px;
+    --page-gutter: clamp(24px, 5vw, 80px);
+    --col-gap:     1px;          /* wire-width column separator */
 
-    /* ── Wire ────────────────────────────────────────────────
-       Slightly blue-tinted to harmonize with navy foundation.
-       Not warm. Not cold. Architectural.
-    ── */
-    --border-wire: rgba(162, 185, 220, 0.16);
+    /* Rhythm — 8px base unit */
+    --unit: 8px;
+  }
+
+  html {
+    background: var(--paper);
+    color: var(--ink);
+    /* Prevent layout shift on scrollbar appear */
+    scrollbar-gutter: stable;
   }
 
   body {
-    @apply bg-background text-text-primary antialiased selection:bg-text-accent selection:text-background font-mono;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* ── Typography Scale ───────────────────────────────────── */
+  ::selection {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ── Typographic roles ───────────────────────────────────── */
+
+  /* Chapter index: enormous numeral, purely structural */
+  .type-index {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(80px, 14vw, 180px);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Chapter word: the single governing word */
+  .type-chapter {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(48px, 9vw, 120px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+  }
+
+  /* Editorial headline: thesis statement */
+  .type-thesis {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(22px, 3vw, 36px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  /* Section title */
+  .type-section {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+
+  /* Display headline (hero) */
   .display {
-    @apply font-display font-semibold text-[64px] md:text-[96px] leading-[1.0] tracking-tight;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(52px, 8vw, 112px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--ink);
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-semibold tracking-tight;
-  }
-
-  h1 { @apply text-[48px] md:text-[64px] leading-[1.1]; }
-  h2, .h2 { @apply text-[36px] md:text-[48px] leading-[1.15]; }
-  h3 { @apply text-[28px] md:text-[32px] leading-[1.2]; }
-
+  /* Body: long-form prose */
   p, .body {
-    @apply font-mono font-normal text-[14px] leading-[1.7] text-text-primary;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.78;
+    color: var(--ink-2);
   }
+
+  /* Axiom: the aphorism displayed large */
+  .type-axiom {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(20px, 2.8vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    white-space: pre-line;
+  }
+
+  /* Label: uppercase mono label */
+  .label, .type-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* Caption */
+  .type-caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--ink-4);
+    letter-spacing: 0.02em;
+  }
+
+  /* Headings fallback */
+  h1 { font-family: var(--font-sans); font-weight: 700; font-size: clamp(36px, 5vw, 64px); line-height: 1.05; letter-spacing: -0.03em; color: var(--ink); }
+  h2 { font-family: var(--font-sans); font-weight: 600; font-size: clamp(24px, 3vw, 40px); line-height: 1.1;  letter-spacing: -0.025em; color: var(--ink); }
+  h3 { font-family: var(--font-sans); font-weight: 600; font-size: clamp(18px, 2vw, 26px); line-height: 1.2;  letter-spacing: -0.015em; color: var(--ink); }
 
   .small {
-    @apply font-mono font-normal text-[12px] leading-[1.5] text-text-primary/70;
-  }
-
-  .label {
-    @apply font-mono font-medium text-[11px] uppercase tracking-[0.1em] text-text-accent;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-3);
   }
 }
 
 @layer components {
+  /* ── Page shell ─────────────────────────────────────────── */
+
+  .page-container {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding-left: var(--page-gutter);
+    padding-right: var(--page-gutter);
+    border-left: 1px solid var(--wire);
+    border-right: 1px solid var(--wire);
+  }
+
   .section-padding {
-    @apply py-24 lg:py-32 px-6 lg:px-8;
+    padding-top: clamp(80px, 12vw, 160px);
+    padding-bottom: clamp(80px, 12vw, 160px);
   }
 
+  /* Legacy */
   .container-grid {
-    @apply max-w-[1440px] mx-auto w-full grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-0 border-x border-border-wire;
+    max-width: var(--page-max);
+    margin: 0 auto;
+    width: 100%;
   }
 
-  /* Primary: terracotta */
+  /* ── Buttons ─────────────────────────────────────────────── */
+
   .btn-primary {
-    @apply inline-flex items-center justify-center bg-primary text-white font-mono text-[11px] uppercase tracking-widest px-6 py-3 transition-colors duration-200 border-[0.5px] border-primary;
-    &:hover { @apply bg-primary-light border-primary-light; }
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 13px 28px;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+  }
+  .btn-primary:hover {
+    background: var(--signal);
+    border-color: var(--signal);
   }
 
-  /* Secondary: warm gold */
   .btn-secondary {
-    @apply inline-flex items-center justify-center bg-secondary text-background font-mono text-[11px] uppercase tracking-widest px-6 py-3 transition-colors duration-200 border-[0.5px] border-secondary;
-    &:hover { @apply bg-secondary-light border-secondary-light; }
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 13px 28px;
+    border: 1px solid var(--wire);
+    border-radius: 0;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
   }
+  .btn-secondary:hover {
+    border-color: var(--ink-2);
+    color: var(--ink);
+  }
+
+  /* ── Chips / tags ───────────────────────────────────────── */
 
   .pill-tag {
-    @apply px-3 py-1 bg-surface border border-border-wire text-[10px] uppercase font-mono tracking-widest text-text-secondary;
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--paper-2);
+    border: 1px solid var(--wire);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-radius: 0;
   }
 
-  /* Gradient text: terracotta → gold */
-  .gradient-text {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary;
+  /* ── Divider lines ──────────────────────────────────────── */
+
+  .rule {
+    border: none;
+    border-top: 1px solid var(--wire);
+    margin: 0;
   }
 
-  /* Hero heading: Kanit 800, solid ivory — precision over gradient softening */
+  /* ── Signal tag ─────────────────────────────────────────── */
+  .tag-signal {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal);
+    border: 1px solid var(--signal);
+    padding: 3px 10px;
+  }
+
+  /* ── Legacy surface/glass ───────────────────────────────── */
+  .surface-elevated, .glass {
+    background: var(--paper-2);
+    border: 1px solid var(--wire);
+  }
+
+  /* ── Gradient text (no longer gradient, keeps class) ────── */
+  .gradient-text { color: var(--ink); }
   .hero-heading {
-    font-family: var(--font-kanit), sans-serif;
-    color: var(--text-primary);
-    font-weight: 800;
-  }
-
-  /* Surface elevated — replaces old .glass */
-  .surface-elevated {
-    background: var(--surface-2);
-    border: 0.5px solid var(--border-wire);
-  }
-
-  /* Legacy .glass — maps to surface-elevated, no backdrop blur */
-  .glass {
-    background: var(--surface-2);
-    border: 0.5px solid var(--border-wire);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--ink);
   }
 }
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
 
   .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-  /* Prose link colors — override @tailwindcss/typography defaults (was resolving to blue) */
+  /* Prose typography overrides */
+  .prose {
+    color: var(--ink-2);
+  }
   .prose a {
-    color: var(--primary);
-    text-decoration-color: rgba(196, 98, 45, 0.4);
+    color: var(--signal);
+    text-decoration-color: rgba(232, 68, 10, 0.3);
   }
   .prose a:hover {
-    color: var(--primary-light);
-    text-decoration-color: var(--primary-light);
+    color: var(--ink);
+    text-decoration-color: var(--ink);
+  }
+  .prose h2, .prose h3, .prose h4 {
+    color: var(--ink);
+    font-family: var(--font-sans);
+    letter-spacing: -0.02em;
+  }
+  .prose pre {
+    background: var(--paper-2);
+    border: 1px solid var(--wire);
+    border-radius: 0;
+  }
+  .prose code {
+    background: var(--paper-2);
+    color: var(--ink);
+    border-radius: 0;
+  }
+  .prose blockquote {
+    border-left-color: var(--signal);
+    color: var(--ink-2);
+    font-style: italic;
   }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track {
-  background: var(--background);
-  border-left: 0.5px solid var(--border-wire);
+/* ── Nav back link (server component, CSS hover only) ───── */
+.blog-nav-back {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  transition: color 0.15s;
 }
-::-webkit-scrollbar-thumb { background: var(--border-wire); }
-::-webkit-scrollbar-thumb:hover { background: var(--text-accent); }
+.blog-nav-back:hover { color: var(--signal); }
+
+/* ── ChapterIndex hover arrow ───────────────────────────── */
+.chapter-row:hover .chapter-arrow { opacity: 1; color: var(--signal); }
+.chapter-row:focus-within .chapter-arrow { opacity: 1; color: var(--signal); }
+
+/* ── Global focus-visible ───────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* ── Proof shared styles ─────────────────────────────────── */
+.proof-btn {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.proof-btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.proof-btn-primary:hover { background: var(--signal); border-color: var(--signal); }
+.proof-btn-primary:disabled {
+  background: var(--paper-3);
+  color: var(--ink-4);
+  border-color: var(--wire);
+  cursor: not-allowed;
+}
+.proof-btn-ghost {
+  background: transparent;
+  color: var(--ink-3);
+  border-color: var(--wire);
+}
+.proof-btn-ghost:hover { border-color: var(--ink-3); color: var(--ink); }
+.proof-btn-signal {
+  background: var(--signal);
+  color: var(--paper);
+  border-color: var(--signal);
+}
+.proof-btn-signal:hover { background: #c93a08; border-color: #c93a08; }
+
+/* ── Reduced motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--paper-2); }
+::-webkit-scrollbar-thumb { background: var(--wire); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-3); }

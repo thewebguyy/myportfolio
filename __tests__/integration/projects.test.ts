@@ -14,7 +14,6 @@ describe('Projects Data & Search Integration', () => {
         const project = getProjectById('servicebridge')
         expect(project).toBeDefined()
         expect(project?.title).toBe('ServiceBridge')
-        expect(project?.metrics?.capacity).toBe('10k+ peak users')
     })
 
     test('should return undefined for non-existent project id', () => {

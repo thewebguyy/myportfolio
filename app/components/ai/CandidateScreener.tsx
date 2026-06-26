@@ -11,12 +11,6 @@ import {
 import { cn } from '@/lib/utils'
 import { ArchitecturePanel, TechnicalInsightCard, PerformanceMeter } from '@/app/components/ui/EngineeringUI'
 
-interface OrchestrationStep {
-  id: string
-  label: string
-  status: 'pending' | 'processing' | 'completed' | 'failed'
-}
-
 interface AuditMetadata {
   latency: number
   tokens: number
@@ -27,21 +21,15 @@ export function CandidateScreener() {
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [analysis, setAnalysis] = useState<TalentAnalysis | null>(null)
-  const [steps, setSteps] = useState<OrchestrationStep[]>([])
   const [metadata, setMetadata] = useState<AuditMetadata | null>(null)
   const [resumeText, setResumeText] = useState('')
 
-  async function analyzeResume() {
+  async function runAnalysis() {
     if (resumeText.length < 50) return
 
     setLoading(true)
     setErrorMsg(null)
     setAnalysis(null)
-    setSteps([
-      { id: 'extraction', label: 'Processing...', status: 'processing' },
-      { id: 'benchmarking', label: 'Mapping skills...', status: 'pending' },
-      { id: 'risk_scoring', label: 'Analyzing fit...', status: 'pending' },
-    ])
 
     try {
       const response = await fetch('/api/analyze-resume', {
@@ -52,9 +40,8 @@ export function CandidateScreener() {
 
       const data = await response.json()
       if (!response.ok) throw new Error(data.error || 'Analysis failed')
-      
+
       setAnalysis(data.analysis)
-      setSteps(data.steps)
       setMetadata(data.metadata)
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : 'Analysis failed')
@@ -82,7 +69,7 @@ export function CandidateScreener() {
             
             <div className="mt-8">
               <button
-                onClick={analyzeResume}
+                onClick={runAnalysis}
                 disabled={loading || resumeText.length < 50}
                 className={cn(
                   "w-full py-4 font-semibold uppercase tracking-[0.1em] transition-all flex items-center justify-center gap-3 text-[12px]",
@@ -95,32 +82,18 @@ export function CandidateScreener() {
             </div>
           </div>
         ) : loading ? (
-          <div className="max-w-4xl mx-auto bg-surface p-16 border border-surface-2 text-center space-y-10">
+          <div className="max-w-4xl mx-auto bg-surface p-16 border border-surface-2 text-center space-y-6">
             <div className="relative w-16 h-16 mx-auto">
-               <motion.div 
-                 animate={{ rotate: 360 }} 
-                 transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                 className="absolute inset-0 border-2 border-surface-2 border-t-primary rounded-full" 
-               />
-               <div className="absolute inset-0 flex items-center justify-center">
-                 <CpuChipIcon className="w-6 h-6 text-primary animate-pulse" />
-               </div>
-            </div>
-            <div className="space-y-4">
-              <h3 className="font-mono text-[11px] text-white uppercase tracking-widest">Orchestrating Model...</h3>
-              <div className="flex justify-center gap-3">
-                {steps.map((step, i) => (
-                  <div key={i} className={cn(
-                    "px-3 py-1 border text-[9px] font-mono uppercase tracking-wider",
-                    step.status === 'completed' ? 'border-secondary/30 text-secondary' :
-                    step.status === 'processing' ? 'border-primary/30 text-primary animate-pulse' :
-                    'border-surface-2 text-text-muted'
-                  )}>
-                    {step.label}
-                  </div>
-                ))}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-0 border-2 border-surface-2 border-t-primary rounded-full"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <CpuChipIcon className="w-6 h-6 text-primary animate-pulse" />
               </div>
             </div>
+            <p className="font-mono text-[11px] text-white uppercase tracking-widest">Analyzing resume…</p>
           </div>
         ) : analysis && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">

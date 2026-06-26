@@ -259,8 +259,8 @@ temp/
 # .cache/
 
 # Ignore playwright test results
-# test-results/
-# playwright-report/
+test-results/
+playwright-report/
 
 # Ignore lighthouse reports
 # lighthouse-reports/

@@ -8,14 +8,10 @@ import { ArrowLeftIcon, ClockIcon, CalendarIcon } from '@heroicons/react/24/outl
  * Displays full article content with proper formatting
  */
 
-import { blogPosts, getBlogPostBySlug } from '@/lib/blog'
+import { getBlogPostBySlug } from '@/lib/blog'
 
-// Generate static params
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }))
-}
+// Skip static generation — blog content is inline JSX that exceeds the worker timeout
+export const dynamic = 'force-dynamic'
 
 // Generate metadata
 export async function generateMetadata({
@@ -59,36 +55,55 @@ export default function BlogPostPage({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ background: 'var(--paper)' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <article className="pt-24 md:pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          {/* Back Link */}
-          <Link
-            href="/blog"
-            className="text-text-muted hover:text-text-primary transition-all text-[10px] font-mono uppercase tracking-widest flex items-center gap-2 mb-8"
-          >
-            <ArrowLeftIcon className="w-4 h-4" />
-            Back to blog
-          </Link>
+
+      {/* Nav strip */}
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 h-[56px]"
+        style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
+      >
+        <Link
+          href="/#writing"
+          className="flex items-center gap-2 blog-nav-back"
+        >
+          <ArrowLeftIcon className="w-4 h-4" />
+          Back to writing
+        </Link>
+        <span
+          style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--signal)' }}
+        >
+          Writing
+        </span>
+      </nav>
+
+      <article className="pt-28 pb-24 px-6">
+        <div className="max-w-[720px] mx-auto">
 
           {/* Header */}
-          <header className="mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="pill-tag">
+          <header className="mb-16" style={{ borderBottom: '1px solid var(--wire)', paddingBottom: '40px' }}>
+            <div className="flex items-center gap-3 mb-6">
+              <span
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--signal)', border: '1px solid var(--signal)', padding: '2px 10px' }}
+              >
                 {post.category}
               </span>
             </div>
 
-            <h1 className="font-display font-bold text-[48px] md:text-[64px] leading-[1.05] tracking-tight mb-6">
+            <h1
+              style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 'clamp(30px, 5vw, 52px)', letterSpacing: '-0.03em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '20px' }}
+            >
               {post.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
-              <time dateTime={post.date} className="flex items-center gap-2 font-mono text-[12px]">
+            <div
+              className="flex flex-wrap items-center gap-4"
+              style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)' }}
+            >
+              <time dateTime={post.date} className="flex items-center gap-2">
                 <CalendarIcon className="w-4 h-4" />
                 {new Date(post.date).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -96,7 +111,7 @@ export default function BlogPostPage({
                   day: 'numeric'
                 })}
               </time>
-              <span className="flex items-center gap-2 font-mono text-[12px]">
+              <span className="flex items-center gap-2">
                 <ClockIcon className="w-4 h-4" />
                 {post.readTime} min read
               </span>
@@ -104,23 +119,18 @@ export default function BlogPostPage({
           </header>
 
           {/* Content */}
-          <div className="prose prose-invert max-w-none">
+          <div className="prose max-w-none">
             <BlogContent slug={post.slug} />
           </div>
 
           {/* Footer */}
-          <footer className="mt-16 pt-8 border-t border-border-wire">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-text-secondary mb-2">Written by</p>
-                <p className="font-semibold text-text-primary">Olabode Olusegun</p>
-                <p className="text-sm text-text-muted">Full-Stack Engineer</p>
-              </div>
-
-              <Link href="/#contact" className="btn-primary text-sm">
-                Get in Touch
-              </Link>
+          <footer className="mt-16 pt-8 flex items-center justify-between" style={{ borderTop: '1px solid var(--wire)' }}>
+            <div>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--ink-3)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Written by</p>
+              <p style={{ fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: '15px', color: 'var(--ink)' }}>Olabode Olusegun</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)' }}>Full-Stack Engineer</p>
             </div>
+            <Link href="/#contact" className="btn-primary">Get in Touch</Link>
           </footer>
         </div>
       </article>
@@ -211,14 +221,12 @@ export const setupMatchingGateway = (io: Server) => {
           For a user in Lagos accessing a server in Virginia, this means:
         </p>
         <ul>
-          <li><strong>~150ms</strong> base latency just from geographic distance</li>
-          <li><strong>Additional 50-100ms</strong> for database queries and processing</li>
-          <li><strong>Unpredictable spikes</strong> during high traffic periods</li>
+          <li><strong>High base latency</strong> from geographic distance alone — a user in Lagos hitting a server in Virginia crosses the Atlantic twice per request.</li>
+          <li><strong>Database query time</strong> added on top of the network round-trip.</li>
+          <li><strong>Unpredictable spikes</strong> during high traffic periods with no regional failover.</li>
         </ul>
         <p>
-          This adds up to a <strong className="text-primary">200-300ms delay</strong> before
-          users even see initial content. In 2026, where users expect sub-100ms interactions,
-          this is unacceptable.
+          For users in regions far from your origin server, this stacks into noticeable delays before they see initial content.
         </p>
 
         <h2>How Edge Computing Solves This</h2>
@@ -228,15 +236,15 @@ export const setupMatchingGateway = (io: Server) => {
           what I&apos;ve achieved in production:
         </p>
         <ul>
-          <li><strong>P50 latency: 45ms</strong> (down from 180ms)</li>
-          <li><strong>P99 latency: 120ms</strong> (down from 450ms)</li>
-          <li><strong>99.99% uptime</strong> through automatic failover</li>
+          <li><strong>Meaningfully lower P50 latency</strong> — requests served from nearby edge nodes instead of routing across continents.</li>
+          <li><strong>Reduced P99 tail latency</strong> — automatic failover removes single-region outage spikes.</li>
+          <li><strong>Simpler failure isolation</strong> — a single region going down no longer takes the whole service with it.</li>
         </ul>
 
         <h2>Real-World Implementation: ServiceBridge</h2>
         <p>
-          In my ServiceBridge project, migrating to Vercel Edge Functions reduced API response
-          times by <strong className="text-primary">60%</strong>. Here&apos;s the architecture:
+          In my ServiceBridge project, migrating to Vercel Edge Functions measurably reduced API response
+          times for users in regions far from the origin server. Here&apos;s the architecture:
         </p>
         <pre className="bg-surface p-4 border border-surface-2 overflow-x-auto">
           <code>{`// Edge function for real-time matching
@@ -362,8 +370,7 @@ export function traceAgentAction(step: string, data: unknown) {
 
         <h2>Practical Optimization Wins</h2>
         <p>
-          In a recent project, I reduced energy consumption by <span className="text-primary font-semibold">35%</span>
-          by implementing these changes:
+          In a recent project, I reduced measurable page weight and server CPU usage by applying these changes:
         </p>
         <ul>
           <li>Migrating from heavy client-side rendering to <strong>React Server Components</strong>.</li>

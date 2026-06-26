@@ -29,15 +29,13 @@ export const projects: Project[] = [
     id: 'servicebridge',
     title: 'ServiceBridge',
     description: 'High-availability service marketplace architected for regional connectivity challenges',
-    longDescription: `Architected a high-scale marketplace platform connecting service providers in emerging markets. Engineering focus was on extreme availability (99.9% target) and data efficiency for intermittent connectivity. Implemented WebSocket matching, multi-layer Redis caching, and optimized API payloads to reduce bandwidth usage by 60% while maintaining real-time responsiveness.`,
+    longDescription: `Architected a high-scale marketplace platform connecting service providers in emerging markets. Engineering focus was on availability and data efficiency for intermittent connectivity. Implemented WebSocket matching, multi-layer Redis caching, and optimized API payloads to reduce bandwidth usage while maintaining real-time responsiveness.`,
     category: 'Marketplace Engine',
     company: 'ServiceBridge Startup',
     tags: ['Distributed Systems', 'Real-time', 'Redis HA', 'Data Efficiency'],
     image: '/projects/servicebridge.jpg',
     liveUrl: 'https://servicebridge.netlify.app/',
     metrics: {
-      capacity: '10k+ peak users',
-      availability: '99.9% design',
       latency: 'sub-200ms API',
       volume: '$500K+ infra capacity',
     },
@@ -58,7 +56,6 @@ export const projects: Project[] = [
     image: '/projects/checkout.jpg',
     githubUrl: 'https://github.com/thewebguyy/seerbit-subscription-manager',
     metrics: {
-      success_rate: '99.98%',
       processing_time: '<1s',
       reliability: 'Idempotent'
     },

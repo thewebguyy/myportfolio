@@ -1,24 +1,24 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { JetBrains_Mono, Kanit } from 'next/font/google'
+import { Space_Grotesk, Space_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { Navbar } from './components/Navbar'
+import { PrincipiaNav } from './components/principia/PrincipiaNav'
 import { FloatingChatbot } from './components/ai/FloatingChatbot'
 import './globals.css'
 
-// Font configuration with display swap for performance
-const jetbrainsMono = JetBrains_Mono({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-jetbrains-mono',
+  variable: '--font-space-grotesk',
+  weight: ['300', '400', '500', '600', '700'],
 })
 
-const kanit = Kanit({
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
+const spaceMono = Space_Mono({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-kanit',
+  variable: '--font-space-mono',
+  weight: ['400', '700'],
 })
 
 // SEO Metadata
@@ -93,7 +93,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${jetbrainsMono.variable} ${kanit.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${spaceGrotesk.variable} ${spaceMono.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -102,11 +102,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
-      <body className="font-mono antialiased bg-background text-text-primary selection:bg-text-accent selection:text-background">
+      <body className="font-mono antialiased bg-paper text-ink">
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:font-mono focus:text-[12px] focus:outline-none focus:ring-1 focus:ring-primary-light">
           Skip to content
         </a>
-        <Navbar />
+        <PrincipiaNav />
 
         <main id="main-content">
           {children}

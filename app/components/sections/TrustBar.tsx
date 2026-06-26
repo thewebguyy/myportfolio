@@ -5,15 +5,13 @@ import { motion } from 'framer-motion'
 export function TrustBar() {
   const items = [
     { value: '5+ Years', label: 'Experience' },
-    { value: '10K+', label: 'Peak Users Served' },
-    { value: '99.9%', label: 'Availability' },
     { value: 'Fintech + AI', label: 'Systems Built' },
     { value: 'Lagos / Remote', label: 'Global Delivery' },
   ]
 
   return (
     <section id="trust-bar" className="bg-background border-b-[0.5px] border-border-wire">
-      <div className="max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire grid grid-cols-1 md:grid-cols-5">
+      <div className="max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire grid grid-cols-1 md:grid-cols-3">
         {items.map((item, idx) => (
           <motion.div
             key={idx}

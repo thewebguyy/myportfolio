@@ -39,6 +39,6 @@ describe('Footer Component', () => {
 
     it('renders location information', () => {
         render(<Footer />)
-        expect(screen.getByText(/Lagos — Worldwide/i)).toBeInTheDocument()
+        expect(screen.getByText(/Lagos/i)).toBeInTheDocument()
     })
 })

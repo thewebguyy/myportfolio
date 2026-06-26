@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     if (!rateLimitResult.success) {
       return NextResponse.json({
-        reply: "You've reached the message limit. Please try again later or contact me directly at olabodewebdesigns02@gmail.com.",
+        reply: "You've reached the message limit. Please try again in a few minutes.",
       }, {
         status: 429,
         headers: getRateLimitHeaders(rateLimitResult),
