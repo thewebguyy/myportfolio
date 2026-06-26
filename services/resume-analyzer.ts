@@ -1,3 +1,4 @@
+import { createHash } from 'crypto'
 import { AI_CONFIG, openai } from '@/lib/openai'
 import { z } from 'zod'
 
@@ -29,12 +30,41 @@ const TalentAuditResponseSchema = z.object({
 
 export type TalentAuditData = z.infer<typeof TalentAuditResponseSchema>
 
+// In-memory cache for resume analysis results.
+// Key: SHA-256 hex digest of the raw resume text.
+// Value: the validated AnalysisResult returned by the LLM.
+//
+// Strategy: FIFO eviction at 100 entries. Identical resume text produces the
+// same hash and is served from cache without an API call. The cache lives in
+// process memory and is intentionally reset on server restart — acceptable for
+// a portfolio demo where cost reduction matters more than cross-restart persistence.
+const MAX_CACHE_SIZE = 100
+const analysisCache = new Map<string, AnalysisResult<TalentAuditData>>()
+
+function getCacheKey(text: string): string {
+  return createHash('sha256').update(text).digest('hex')
+}
+
+function cacheSet(key: string, value: AnalysisResult<TalentAuditData>): void {
+  if (analysisCache.size >= MAX_CACHE_SIZE) {
+    // Evict the oldest entry (Map insertion order is guaranteed in JS)
+    const oldestKey = analysisCache.keys().next().value
+    if (oldestKey !== undefined) analysisCache.delete(oldestKey)
+  }
+  analysisCache.set(key, value)
+}
+
 /**
  * Resume Analyzer
  * Makes a single structured OpenAI call and validates the response with Zod.
+ * Results are cached by SHA-256 hash of the resume text to avoid redundant API calls.
  */
 export class ResumeAnalyzer {
   async analyzeResume(resumeText: string): Promise<AnalysisResult<TalentAuditData>> {
+    const cacheKey = getCacheKey(resumeText)
+    const cached = analysisCache.get(cacheKey)
+    if (cached) return cached
+
     const start = Date.now()
 
     const completion = await openai.chat.completions.create({
@@ -76,7 +106,7 @@ export class ResumeAnalyzer {
 
     const data = validated.data
 
-    return {
+    const result: AnalysisResult<TalentAuditData> = {
       data,
       confidenceScore: data.confidenceScore,
       assumptions: data.assumptions,
@@ -85,6 +115,9 @@ export class ResumeAnalyzer {
         tokens: completion.usage?.total_tokens || 0
       }
     }
+
+    cacheSet(cacheKey, result)
+    return result
   }
 }
 
