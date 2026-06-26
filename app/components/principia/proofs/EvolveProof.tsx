@@ -54,7 +54,7 @@ export function EvolveProof() {
         aria-label="Engineering decisions"
       >
         {/* Left — the plan */}
-        <div style={{ borderRight: '1px solid var(--wire)' }}>
+        <div className="lg:border-r" style={{ borderColor: 'var(--wire)' }}>
           <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--wire)', fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-4)' }}>
             The Plan
           </div>
@@ -85,7 +85,7 @@ export function EvolveProof() {
         </div>
 
         {/* Right — what production said */}
-        <div>
+        <div className="border-t lg:border-t-0" style={{ borderColor: 'var(--wire)' }}>
           <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--wire)', fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--signal)' }}>
             What Production Said
           </div>

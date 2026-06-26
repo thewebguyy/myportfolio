@@ -1,28 +1,20 @@
 'use client'
 
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { type Principle } from '@/lib/principles'
 import { projects } from '@/lib/projects'
-import { ObserveProof } from './proofs/ObserveProof'
-import { ModelProof } from './proofs/ModelProof'
-import { IsolateProof } from './proofs/IsolateProof'
-import { StressProof } from './proofs/StressProof'
-import { RecoverProof } from './proofs/RecoverProof'
-import { ConstrainProof } from './proofs/ConstrainProof'
-import { ShipProof } from './proofs/ShipProof'
-import { EvolveProof } from './proofs/EvolveProof'
 
 const PROOFS: Partial<Record<string, React.ComponentType>> = {
-  observe: ObserveProof,
-  model: ModelProof,
-  isolate: IsolateProof,
-  stress: StressProof,
-  recover: RecoverProof,
-  constrain: ConstrainProof,
-  ship: ShipProof,
-  evolve: EvolveProof,
+  observe: lazy(() => import('./proofs/ObserveProof').then(m => ({ default: m.ObserveProof }))),
+  model:   lazy(() => import('./proofs/ModelProof').then(m => ({ default: m.ModelProof }))),
+  isolate: lazy(() => import('./proofs/IsolateProof').then(m => ({ default: m.IsolateProof }))),
+  stress:  lazy(() => import('./proofs/StressProof').then(m => ({ default: m.StressProof }))),
+  recover: lazy(() => import('./proofs/RecoverProof').then(m => ({ default: m.RecoverProof }))),
+  constrain: lazy(() => import('./proofs/ConstrainProof').then(m => ({ default: m.ConstrainProof }))),
+  ship:    lazy(() => import('./proofs/ShipProof').then(m => ({ default: m.ShipProof }))),
+  evolve:  lazy(() => import('./proofs/EvolveProof').then(m => ({ default: m.EvolveProof }))),
 }
 
 interface ChapterProps {
@@ -46,7 +38,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
       >
         {/* Chapter header — the number and word at editorial scale */}
         <div
-          className="px-[var(--page-gutter)] pt-24 pb-16 grid grid-cols-12 items-end gap-8"
+          className="px-[var(--page-gutter)] pt-16 lg:pt-24 pb-12 lg:pb-16 grid grid-cols-12 items-end gap-8"
           style={{ borderBottom: '1px solid var(--wire)' }}
         >
           {/* Chapter number — monumental */}
@@ -112,7 +104,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
         </div>
 
         {/* Body: two-column layout */}
-        <div className="px-[var(--page-gutter)] py-16 grid grid-cols-12 gap-12">
+        <div className="px-[var(--page-gutter)] py-10 lg:py-16 grid grid-cols-12 gap-8 lg:gap-12">
 
           {/* Left column: prose */}
           <div className="col-span-12 lg:col-span-7 space-y-6">
@@ -194,18 +186,6 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                         {c.year} · {c.role}
                       </span>
                     </div>
-                    {/* Meta */}
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '10px',
-                        color: 'var(--ink-4)',
-                        letterSpacing: '0.06em',
-                        marginBottom: '8px',
-                      }}
-                    >
-                      {c.category} · {c.duration}
-                    </div>
                     {/* First-person quote */}
                     <blockquote
                       style={{
@@ -237,12 +217,18 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
           </div>
         </div>
 
-        {/* Interactive proof — chapter-specific */}
-        {PROOFS[p.id] && (
-          <div className="px-[var(--page-gutter)] pb-16">
-            {(() => { const Proof = PROOFS[p.id]!; return <Proof /> })()}
-          </div>
-        )}
+        {/* Interactive proof — chapter-specific, lazy-loaded */}
+        {(() => {
+          const Proof = PROOFS[p.id]
+          if (!Proof) return null
+          return (
+            <div className="px-[var(--page-gutter)] pb-16">
+              <Suspense fallback={null}>
+                <Proof />
+              </Suspense>
+            </div>
+          )
+        })()}
       </div>
     </section>
   )

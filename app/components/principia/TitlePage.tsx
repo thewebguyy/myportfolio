@@ -29,7 +29,7 @@ export function TitlePage() {
     <section
       id="top"
       aria-label="Introduction"
-      className="relative min-h-screen flex flex-col"
+      className="relative min-h-[100dvh] flex flex-col"
       style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
     >
       <div
@@ -41,7 +41,7 @@ export function TitlePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="pt-32 pb-16 flex items-center justify-between"
+          className="pt-20 lg:pt-32 pb-12 lg:pb-16 flex items-center justify-between"
           style={{ borderBottom: '1px solid var(--wire)' }}
         >
           <div className="type-label">
@@ -61,7 +61,7 @@ export function TitlePage() {
         </motion.div>
 
         {/* Title block */}
-        <div className="flex-1 flex flex-col justify-center py-24 lg:py-32">
+        <div className="flex-1 flex flex-col justify-center py-12 lg:py-32">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -80,8 +80,13 @@ export function TitlePage() {
                 Olabode<br />Olusegun.
               </h1>
               <p
-                className="type-thesis max-w-[480px] mb-16"
-                style={{ color: 'var(--ink-3)' }}
+                className="max-w-[480px] mb-12 lg:mb-16"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 'clamp(14px, 1.5vw, 16px)',
+                  lineHeight: 1.75,
+                  color: 'var(--ink-3)',
+                }}
               >
                 I build production systems that stay up. Three years shipping
                 fintech and marketplace infrastructure across West Africa —
@@ -145,7 +150,7 @@ export function TitlePage() {
             </div>
 
             {/* Right: what the Principia is */}
-            <div className="lg:col-span-5 lg:pl-16 lg:pt-24">
+            <div className="lg:col-span-5 lg:pl-16 lg:pt-24 mt-10 lg:mt-0">
               <div
                 className="p-8"
                 style={{ border: '1px solid var(--wire)', background: 'var(--paper-2)' }}

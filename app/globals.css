@@ -407,6 +407,16 @@ a:focus-visible {
   }
 }
 
+/* ── Safe-area insets (iOS notch / Dynamic Island) ──────── */
+header[role="banner"] {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Minimum 44px tap targets for all interactive proof elements */
+.proof-btn {
+  min-height: 44px;
+}
+
 /* ── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--paper-2); }

@@ -159,9 +159,9 @@ export function ObserveProof() {
 
       <button
         type="button"
-        onClick={running ? undefined : (done ? reset : runBatch)}
+        onClick={done ? reset : runBatch}
         disabled={running}
-        className={`proof-btn ${running || !done && results.length === 0 ? 'proof-btn-primary' : done ? 'proof-btn-ghost' : 'proof-btn-primary'}`}
+        className={`proof-btn ${done ? 'proof-btn-ghost' : 'proof-btn-primary'}`}
         aria-busy={running}
       >
         {running ? 'Sending…' : done ? 'Run again' : 'Send 10 requests'}

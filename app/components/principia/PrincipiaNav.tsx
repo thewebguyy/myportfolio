@@ -59,7 +59,7 @@ export function PrincipiaNav() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50 h-[56px] flex items-center transition-colors duration-200"
+        className="fixed top-0 left-0 right-0 z-50 min-h-[56px] flex items-center transition-colors duration-200"
         style={{
           background: scrolled ? 'rgba(245, 242, 237, 0.96)' : 'transparent',
           backdropFilter: scrolled ? 'blur(8px)' : 'none',
@@ -262,7 +262,7 @@ export function PrincipiaNav() {
             ))}
           </div>
 
-          <div className="px-6 py-6" style={{ borderTop: '1px solid var(--wire)' }}>
+          <div className="px-6 py-6" style={{ borderTop: '1px solid var(--wire)', paddingBottom: 'max(24px, env(safe-area-inset-bottom))' }}>
             <Link
               href="#contact"
               onClick={() => setMenuOpen(false)}
