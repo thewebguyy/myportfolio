@@ -211,14 +211,12 @@ export const setupMatchingGateway = (io: Server) => {
           For a user in Lagos accessing a server in Virginia, this means:
         </p>
         <ul>
-          <li><strong>~150ms</strong> base latency just from geographic distance</li>
-          <li><strong>Additional 50-100ms</strong> for database queries and processing</li>
-          <li><strong>Unpredictable spikes</strong> during high traffic periods</li>
+          <li><strong>High base latency</strong> from geographic distance alone — a user in Lagos hitting a server in Virginia crosses the Atlantic twice per request.</li>
+          <li><strong>Database query time</strong> added on top of the network round-trip.</li>
+          <li><strong>Unpredictable spikes</strong> during high traffic periods with no regional failover.</li>
         </ul>
         <p>
-          This adds up to a <strong className="text-primary">200-300ms delay</strong> before
-          users even see initial content. In 2026, where users expect sub-100ms interactions,
-          this is unacceptable.
+          For users in regions far from your origin server, this stacks into noticeable delays before they see initial content.
         </p>
 
         <h2>How Edge Computing Solves This</h2>
@@ -228,15 +226,15 @@ export const setupMatchingGateway = (io: Server) => {
           what I&apos;ve achieved in production:
         </p>
         <ul>
-          <li><strong>P50 latency: 45ms</strong> (down from 180ms)</li>
-          <li><strong>P99 latency: 120ms</strong> (down from 450ms)</li>
-          <li><strong>99.99% uptime</strong> through automatic failover</li>
+          <li><strong>Meaningfully lower P50 latency</strong> — requests served from nearby edge nodes instead of routing across continents.</li>
+          <li><strong>Reduced P99 tail latency</strong> — automatic failover removes single-region outage spikes.</li>
+          <li><strong>Simpler failure isolation</strong> — a single region going down no longer takes the whole service with it.</li>
         </ul>
 
         <h2>Real-World Implementation: ServiceBridge</h2>
         <p>
-          In my ServiceBridge project, migrating to Vercel Edge Functions reduced API response
-          times by <strong className="text-primary">60%</strong>. Here&apos;s the architecture:
+          In my ServiceBridge project, migrating to Vercel Edge Functions measurably reduced API response
+          times for users in regions far from the origin server. Here&apos;s the architecture:
         </p>
         <pre className="bg-surface p-4 border border-surface-2 overflow-x-auto">
           <code>{`// Edge function for real-time matching
@@ -362,8 +360,7 @@ export function traceAgentAction(step: string, data: unknown) {
 
         <h2>Practical Optimization Wins</h2>
         <p>
-          In a recent project, I reduced energy consumption by <span className="text-primary font-semibold">35%</span>
-          by implementing these changes:
+          In a recent project, I reduced measurable page weight and server CPU usage by applying these changes:
         </p>
         <ul>
           <li>Migrating from heavy client-side rendering to <strong>React Server Components</strong>.</li>
