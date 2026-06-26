@@ -1,27 +1,22 @@
-import { Hero } from './components/sections/Hero'
-import { TrustBar } from './components/sections/TrustBar'
-import { About } from './components/sections/About'
-import { Manifesto } from './components/sections/Manifesto'
-import { CaseStudies } from './components/sections/CaseStudies'
-import { AIShowcase } from './components/sections/AIShowcase'
-import { BlogSection } from './components/sections/BlogSection'
-import { CurrentlyBuilding } from './components/sections/CurrentlyBuilding'
-import { ContactSection } from './components/sections/ContactSection'
-import { Footer } from './components/sections/Footer'
+import { TitlePage } from './components/principia/TitlePage'
+import { ChapterIndex } from './components/principia/ChapterIndex'
+import { Chapter } from './components/principia/Chapter'
+import { Colophon } from './components/principia/Colophon'
+import { principles } from '@/lib/principles'
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen bg-background">
-      <Hero />
-      <TrustBar />
-      <About />
-      <Manifesto />
-      <CaseStudies />
-      <AIShowcase />
-      <BlogSection />
-      <CurrentlyBuilding />
-      <ContactSection />
-      <Footer />
+    <div style={{ background: 'var(--paper)' }}>
+      <TitlePage />
+      <ChapterIndex />
+      {principles.map((p, i) => (
+        <Chapter
+          key={p.id}
+          principle={p}
+          isLast={i === principles.length - 1}
+        />
+      ))}
+      <Colophon />
     </div>
   )
 }

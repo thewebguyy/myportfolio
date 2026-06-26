@@ -2,21 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────────
+   ENGINEERING PRINCIPIA — Design System
+
+   Every rule here answers a design question.
+   Nothing is decorative.
+   ───────────────────────────────────────────────────────────── */
+
 @layer base {
   :root {
+    /* Colour */
     --ink:     #0a0a0a;
     --ink-2:   #3a3a3a;
     --ink-3:   #7a7a7a;
+    --ink-4:   #b0aca7;
     --paper:   #f5f2ed;
     --paper-2: #ece8e1;
-    --wire:    rgba(10, 10, 10, 0.12);
-    --wire-2:  rgba(10, 10, 10, 0.06);
+    --paper-3: #e2ddd6;
+    --wire:    rgba(10, 10, 10, 0.10);
+    --wire-2:  rgba(10, 10, 10, 0.05);
     --signal:  #e8440a;
 
-    /* Legacy token aliases — consumed by existing components */
+    /* Legacy aliases — existing components */
     --background:      var(--paper);
     --surface:         var(--paper-2);
-    --surface-2:       rgba(10, 10, 10, 0.08);
+    --surface-2:       var(--paper-3);
     --text-primary:    var(--ink);
     --text-secondary:  var(--ink-2);
     --text-muted:      var(--ink-3);
@@ -27,22 +37,34 @@
     --secondary:       var(--ink-2);
     --secondary-light: var(--ink);
 
+    /* Typography */
     --font-sans: 'Space Grotesk', system-ui, sans-serif;
     --font-mono: 'Space Mono', 'Courier New', monospace;
+
+    /* Grid */
+    --page-max:    1440px;
+    --page-gutter: clamp(24px, 5vw, 80px);
+    --col-gap:     1px;          /* wire-width column separator */
+
+    /* Rhythm — 8px base unit */
+    --unit: 8px;
   }
 
   html {
     background: var(--paper);
     color: var(--ink);
+    /* Prevent layout shift on scrollbar appear */
+    scrollbar-gutter: stable;
   }
 
   body {
-    @apply antialiased;
     background: var(--paper);
     color: var(--ink);
     font-family: var(--font-mono);
-    selection-color: var(--paper);
+    font-size: 14px;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
@@ -50,33 +72,102 @@
     color: var(--paper);
   }
 
-  /* ── Typography Scale ───────────────────────────────────── */
+  /* ── Typographic roles ───────────────────────────────────── */
+
+  /* Chapter index: enormous numeral, purely structural */
+  .type-index {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(80px, 14vw, 180px);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Chapter word: the single governing word */
+  .type-chapter {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(48px, 9vw, 120px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+  }
+
+  /* Editorial headline: thesis statement */
+  .type-thesis {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(22px, 3vw, 36px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  /* Section title */
+  .type-section {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+
+  /* Display headline (hero) */
   .display {
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: clamp(48px, 7vw, 96px);
-    line-height: 1.0;
-    letter-spacing: -0.03em;
+    font-size: clamp(52px, 8vw, 112px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
     color: var(--ink);
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-
-  h1 { font-size: clamp(36px, 5vw, 64px); line-height: 1.1; }
-  h2, .h2 { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.15; }
-  h3 { font-size: clamp(22px, 2.5vw, 32px); line-height: 1.2; }
-
+  /* Body: long-form prose */
   p, .body {
     font-family: var(--font-mono);
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: 15px;
+    line-height: 1.78;
     color: var(--ink-2);
   }
+
+  /* Axiom: the aphorism displayed large */
+  .type-axiom {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(20px, 2.8vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    white-space: pre-line;
+  }
+
+  /* Label: uppercase mono label */
+  .label, .type-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* Caption */
+  .type-caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--ink-4);
+    letter-spacing: 0.02em;
+  }
+
+  /* Headings fallback */
+  h1 { font-family: var(--font-sans); font-weight: 700; font-size: clamp(36px, 5vw, 64px); line-height: 1.05; letter-spacing: -0.03em; color: var(--ink); }
+  h2 { font-family: var(--font-sans); font-weight: 600; font-size: clamp(24px, 3vw, 40px); line-height: 1.1;  letter-spacing: -0.025em; color: var(--ink); }
+  h3 { font-family: var(--font-sans); font-weight: 600; font-size: clamp(18px, 2vw, 26px); line-height: 1.2;  letter-spacing: -0.015em; color: var(--ink); }
 
   .small {
     font-family: var(--font-mono);
@@ -84,40 +175,33 @@
     line-height: 1.5;
     color: var(--ink-3);
   }
-
-  .label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-3);
-  }
 }
 
 @layer components {
-  .section-padding {
-    @apply py-24 lg:py-32 px-6 lg:px-8;
-  }
+  /* ── Page shell ─────────────────────────────────────────── */
 
-  .container-grid {
-    max-width: 1440px;
+  .page-container {
+    max-width: var(--page-max);
     margin: 0 auto;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
+    padding-left: var(--page-gutter);
+    padding-right: var(--page-gutter);
     border-left: 1px solid var(--wire);
     border-right: 1px solid var(--wire);
   }
 
-  @media (min-width: 768px) {
-    .container-grid { grid-template-columns: repeat(8, 1fr); }
+  .section-padding {
+    padding-top: clamp(80px, 12vw, 160px);
+    padding-bottom: clamp(80px, 12vw, 160px);
   }
 
-  @media (min-width: 1024px) {
-    .container-grid { grid-template-columns: repeat(12, 1fr); }
+  /* Legacy */
+  .container-grid {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    width: 100%;
   }
+
+  /* ── Buttons ─────────────────────────────────────────────── */
 
   .btn-primary {
     display: inline-flex;
@@ -127,17 +211,17 @@
     color: var(--paper);
     font-family: var(--font-mono);
     font-size: 11px;
-    text-transform: uppercase;
     letter-spacing: 0.12em;
-    padding: 12px 24px;
+    text-transform: uppercase;
+    padding: 13px 28px;
     border: 1px solid var(--ink);
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
     border-radius: 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
   }
   .btn-primary:hover {
     background: var(--signal);
     border-color: var(--signal);
-    color: var(--paper);
   }
 
   .btn-secondary {
@@ -148,17 +232,20 @@
     color: var(--ink);
     font-family: var(--font-mono);
     font-size: 11px;
-    text-transform: uppercase;
     letter-spacing: 0.12em;
-    padding: 12px 24px;
+    text-transform: uppercase;
+    padding: 13px 28px;
     border: 1px solid var(--wire);
-    transition: border-color 0.15s, color 0.15s;
     border-radius: 0;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
   }
   .btn-secondary:hover {
-    border-color: var(--ink);
+    border-color: var(--ink-2);
     color: var(--ink);
   }
+
+  /* ── Chips / tags ───────────────────────────────────────── */
 
   .pill-tag {
     display: inline-block;
@@ -167,34 +254,87 @@
     border: 1px solid var(--wire);
     font-family: var(--font-mono);
     font-size: 10px;
-    text-transform: uppercase;
     letter-spacing: 0.1em;
+    text-transform: uppercase;
     color: var(--ink-3);
     border-radius: 0;
   }
 
-  .gradient-text {
-    color: var(--ink);
+  /* ── Divider lines ──────────────────────────────────────── */
+
+  .rule {
+    border: none;
+    border-top: 1px solid var(--wire);
+    margin: 0;
   }
 
+  /* ── Signal tag ─────────────────────────────────────────── */
+  .tag-signal {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal);
+    border: 1px solid var(--signal);
+    padding: 3px 10px;
+  }
+
+  /* ── Legacy surface/glass ───────────────────────────────── */
+  .surface-elevated, .glass {
+    background: var(--paper-2);
+    border: 1px solid var(--wire);
+  }
+
+  /* ── Gradient text (no longer gradient, keeps class) ────── */
+  .gradient-text { color: var(--ink); }
   .hero-heading {
     font-family: var(--font-sans);
-    color: var(--ink);
     font-weight: 700;
-  }
-
-  .surface-elevated {
-    background: var(--paper-2);
-    border: 1px solid var(--wire);
-  }
-
-  .glass {
-    background: var(--paper-2);
-    border: 1px solid var(--wire);
+    color: var(--ink);
   }
 }
 
-/* Blog/case-study nav back link — CSS hover without JS */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  /* Prose typography overrides */
+  .prose {
+    color: var(--ink-2);
+  }
+  .prose a {
+    color: var(--signal);
+    text-decoration-color: rgba(232, 68, 10, 0.3);
+  }
+  .prose a:hover {
+    color: var(--ink);
+    text-decoration-color: var(--ink);
+  }
+  .prose h2, .prose h3, .prose h4 {
+    color: var(--ink);
+    font-family: var(--font-sans);
+    letter-spacing: -0.02em;
+  }
+  .prose pre {
+    background: var(--paper-2);
+    border: 1px solid var(--wire);
+    border-radius: 0;
+  }
+  .prose code {
+    background: var(--paper-2);
+    color: var(--ink);
+    border-radius: 0;
+  }
+  .prose blockquote {
+    border-left-color: var(--signal);
+    color: var(--ink-2);
+    font-style: italic;
+  }
+}
+
+/* ── Nav back link (server component, CSS hover only) ───── */
 .blog-nav-back {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -203,30 +343,19 @@
   color: var(--ink-3);
   transition: color 0.15s;
 }
-.blog-nav-back:hover {
-  color: var(--signal);
-}
+.blog-nav-back:hover { color: var(--signal); }
 
-@layer utilities {
-  .text-balance { text-wrap: balance; }
-
-  .scrollbar-hide::-webkit-scrollbar { display: none; }
-
-  .prose a {
-    color: var(--signal);
-    text-decoration-color: rgba(232, 68, 10, 0.4);
-  }
-  .prose a:hover {
-    color: var(--ink);
-    text-decoration-color: var(--ink);
+/* ── Reduced motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track {
-  background: var(--paper-2);
-  border-left: 1px solid var(--wire);
-}
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--paper-2); }
 ::-webkit-scrollbar-thumb { background: var(--wire); }
 ::-webkit-scrollbar-thumb:hover { background: var(--ink-3); }
