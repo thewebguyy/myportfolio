@@ -77,7 +77,7 @@ export function Hero() {
           I ship production systems from{' '}
           <span style={{ color: 'var(--signal)', fontStyle: 'italic' }}>real</span>{' '}
           constraints.{' '}
-          <span style={{ color: 'var(--ink-3)', fontWeight: 400, fontSize: '0.7em' }}>// not sandbox pressure.</span>
+          <span style={{ color: 'var(--ink-3)', fontWeight: 400, fontSize: '0.7em' }}>{`// not sandbox pressure.`}</span>
         </motion.h1>
 
         {/* Description */}

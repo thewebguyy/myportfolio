@@ -11,7 +11,7 @@ const CONSTRAINTS = [
   {
     icon: '🔒',
     title: 'Payment inconsistency',
-    body: 'African payment providers have async webhooks, partial settlements, and undocumented failure modes. I\'ve built reconciliation loops that catch the edge cases their SDKs don\'t document.',
+    body: "African payment providers have async webhooks, partial settlements, and undocumented failure modes. I've built reconciliation loops that catch the edge cases their SDKs don't document.",
   },
   {
     icon: '⏱',
@@ -54,7 +54,7 @@ export function Manifesto() {
             <div className="lg:col-span-7 space-y-6 mt-2 lg:mt-0">
               {[
                 'Good software is specific. The engineers I respect most can tell you exactly which edge case kept them up at night, what the fix was, and why the naive solution would have failed in three months.',
-                'I believe the job is closer to infrastructure than craft. Your code will be read by strangers, run on machines you don\'t control, and stressed by users who don\'t behave the way you expected. That\'s the real specification.',
+                "I believe the job is closer to infrastructure than craft. Your code will be read by strangers, run on machines you don’t control, and stressed by users who don’t behave the way you expected. That’s the real specification.",
                 'I also believe in finishing things. Shipped and imperfect beats polished and theoretical. The only way to know if something actually works is to let it meet production.',
               ].map((para, i) => (
                 <motion.p
@@ -87,7 +87,7 @@ export function Manifesto() {
               viewport={{ once: true }}
               style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--signal)' }}
             >
-              Real constraints I've shipped against
+              Real constraints I&apos;ve shipped against
             </motion.p>
           </div>
 
