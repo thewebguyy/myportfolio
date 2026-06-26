@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { principles } from '@/lib/principles'
 
@@ -37,6 +37,22 @@ export function PrincipiaNav() {
     else document.body.style.overflow = ''
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
+
+  const drawerRef = useRef<HTMLDivElement>(null)
+
+  // Focus trap for mobile drawer
+  const handleDrawerKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') { setMenuOpen(false); return }
+    if (e.key !== 'Tab') return
+    const focusable = drawerRef.current?.querySelectorAll<HTMLElement>(
+      'a[href],button:not([disabled]),input,textarea,[tabindex]:not([tabindex="-1"])'
+    )
+    if (!focusable || focusable.length === 0) return
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus() } }
+    else { if (document.activeElement === last) { e.preventDefault(); first.focus() } }
+  }, [])
 
   const activeP = principles.find(p => p.id === activeChapter)
 
@@ -159,11 +175,13 @@ export function PrincipiaNav() {
       {/* Mobile chapter drawer */}
       {menuOpen && (
         <div
+          ref={drawerRef}
           className="fixed inset-0 z-[60] flex flex-col"
           style={{ background: 'var(--paper)' }}
           role="dialog"
           aria-modal="true"
           aria-label="Chapter navigation"
+          onKeyDown={handleDrawerKeyDown}
         >
           <div
             className="flex items-center justify-between h-[56px] px-6"
@@ -185,6 +203,8 @@ export function PrincipiaNav() {
               onClick={() => setMenuOpen(false)}
               style={{ color: 'var(--ink-3)' }}
               aria-label="Close navigation"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.25" strokeLinecap="square" />

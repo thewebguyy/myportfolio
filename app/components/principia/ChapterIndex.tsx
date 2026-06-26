@@ -42,7 +42,7 @@ export function ChapterIndex() {
             aria-label={`Chapter ${p.index}: ${p.word} — ${p.thesis}`}
           >
             <div
-              className="px-[var(--page-gutter)] py-6 grid grid-cols-12 items-baseline gap-4 transition-colors duration-150"
+              className="chapter-row px-[var(--page-gutter)] py-6 grid grid-cols-12 items-baseline gap-4 transition-colors duration-150"
               style={{ borderBottom: '1px solid var(--wire)' }}
               onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper-2)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
@@ -83,9 +83,8 @@ export function ChapterIndex() {
 
               {/* Arrow */}
               <div
-                className="col-span-2 flex justify-end"
-                style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--ink-4)', transition: 'color 0.15s', opacity: 0 }}
-                data-arrow
+                className="chapter-arrow col-span-2 flex justify-end"
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--ink-4)', transition: 'opacity 0.15s, color 0.15s', opacity: 0 }}
               >
                 →
               </div>

@@ -37,17 +37,17 @@ export function IsolateProof() {
     setRunning(true)
     setHasRun(true)
 
-    const c1: Cursor = { id: 'A', result: null, animating: true }
-    const c2: Cursor = { id: 'B', result: null, animating: true }
-    setCursors([c1, c2])
+    setCursors([
+      { id: 'A', result: null, animating: true },
+      { id: 'B', result: null, animating: true },
+    ])
 
     await new Promise(r => setTimeout(r, DEMO_DELAY))
 
     if (isolation === 'read-committed') {
-      // Both read seat=1 before either commits — race condition
-      setSeats(s => s - 1) // first commit: 0
+      setSeats(s => s - 1) // both read 1, first commits: 0
       await new Promise(r => setTimeout(r, 180))
-      setSeats(s => s - 1) // second commit: -1
+      setSeats(s => s - 1) // second commits: -1
       await new Promise(r => setTimeout(r, 240))
       setCursors([
         { id: 'A', result: 'confirmed', animating: false },
@@ -55,8 +55,7 @@ export function IsolateProof() {
       ])
       setShowToggle(true)
     } else {
-      // Serializable: second transaction blocked until first commits
-      setSeats(s => s - 1) // first commit: 0
+      setSeats(s => s - 1)
       await new Promise(r => setTimeout(r, 300))
       setCursors([
         { id: 'A', result: 'confirmed', animating: false },
@@ -77,62 +76,32 @@ export function IsolateProof() {
   const seatsNegative = seats < 0
 
   return (
-    <div
-      className="proof-container"
-      style={{
-        borderTop: '1px solid var(--wire)',
-        paddingTop: '48px',
-        marginTop: '48px',
-      }}
-    >
-      <div className="type-label mb-8" style={{ color: 'var(--ink-4)' }}>
+    <div style={{ borderTop: '1px solid var(--wire)', paddingTop: '48px', marginTop: '48px' }}>
+      <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>
         Interactive Proof · 03
       </div>
 
-      {/* Isolation level indicator */}
       <div className="flex items-center gap-3 mb-10">
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: 'var(--ink-4)',
-          }}
-        >
-          Transaction isolation:
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-4)' }}>
+          Isolation:
         </span>
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: isolation === 'serializable' ? 'var(--signal)' : 'var(--ink-2)',
-            fontWeight: 600,
-          }}
-        >
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', color: isolation === 'serializable' ? 'var(--signal)' : 'var(--ink-2)', fontWeight: 600 }}>
           {isolation === 'read-committed' ? 'Read Committed' : 'Serializable'}
         </span>
       </div>
 
-      {/* Seats counter — the main event */}
+      {/* Seats counter */}
       <div className="flex flex-col items-start gap-2 mb-12">
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '13px',
-            letterSpacing: '0.06em',
-            color: 'var(--ink-4)',
-            textTransform: 'uppercase',
-          }}
-        >
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-4)' }}>
           Seats remaining
         </span>
         <motion.div
           key={seats}
           animate={{ scale: [1.08, 1] }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
+          aria-live="assertive"
+          aria-atomic="true"
+          aria-label={`Seats remaining: ${seats}`}
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: 'clamp(72px, 12vw, 128px)',
@@ -148,15 +117,11 @@ export function IsolateProof() {
         <AnimatePresence>
           {seatsNegative && (
             <motion.div
+              role="alert"
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '12px',
-                color: '#d63030',
-                letterSpacing: '0.04em',
-              }}
+              style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#d63030', letterSpacing: '0.04em' }}
             >
               Double booking. Two people confirmed for one seat.
             </motion.div>
@@ -164,14 +129,17 @@ export function IsolateProof() {
         </AnimatePresence>
       </div>
 
-      {/* Concurrent cursors — the two simultaneous requests */}
+      {/* Concurrent request boxes */}
       <AnimatePresence>
         {cursors.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex gap-6 mb-10"
+            className="flex gap-4 mb-10"
+            role="status"
+            aria-live="polite"
+            aria-label="Request results"
           >
             {cursors.map(c => (
               <motion.div
@@ -180,48 +148,15 @@ export function IsolateProof() {
                 animate={{ opacity: 1, y: 0 }}
                 style={{
                   padding: '12px 18px',
-                  border: `1px solid ${
-                    c.result === 'confirmed'
-                      ? 'var(--signal)'
-                      : c.result === 'rejected'
-                      ? 'var(--wire)'
-                      : 'var(--wire)'
-                  }`,
+                  border: `1px solid ${c.result === 'confirmed' ? 'var(--signal)' : c.result === 'rejected' ? 'var(--wire)' : 'var(--wire)'}`,
                   background: 'var(--paper-2)',
                 }}
               >
-                <div
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '10px',
-                    letterSpacing: '0.1em',
-                    color: 'var(--ink-4)',
-                    textTransform: 'uppercase',
-                    marginBottom: '6px',
-                  }}
-                >
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', color: 'var(--ink-4)', textTransform: 'uppercase', marginBottom: '6px' }}>
                   Request {c.id}
                 </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '12px',
-                    color:
-                      c.result === 'confirmed'
-                        ? 'var(--signal)'
-                        : c.result === 'rejected'
-                        ? 'var(--ink-3)'
-                        : 'var(--ink-3)',
-                    fontWeight: c.result ? 600 : 400,
-                  }}
-                >
-                  {c.result === 'confirmed'
-                    ? '200 Confirmed'
-                    : c.result === 'rejected'
-                    ? '409 Rejected'
-                    : c.animating
-                    ? 'reading...'
-                    : '—'}
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: c.result ? 600 : 400, color: c.result === 'confirmed' ? 'var(--signal)' : c.result === 'rejected' ? 'var(--ink-3)' : 'var(--ink-3)' }}>
+                  {c.result === 'confirmed' ? '200 Confirmed' : c.result === 'rejected' ? '409 Rejected' : c.animating ? 'reading…' : '—'}
                 </div>
               </motion.div>
             ))}
@@ -229,104 +164,66 @@ export function IsolateProof() {
         )}
       </AnimatePresence>
 
-      {/* Book Now button */}
-      {!hasRun || running ? (
-        <button
-          onClick={runSimulation}
-          disabled={running}
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '12px',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            padding: '12px 28px',
-            background: running ? 'var(--paper-3)' : 'var(--ink)',
-            color: running ? 'var(--ink-4)' : 'var(--paper)',
-            border: '1px solid var(--ink)',
-            cursor: running ? 'not-allowed' : 'pointer',
-            transition: 'all 0.15s',
-          }}
-        >
-          {running ? 'Booking...' : 'Book Now'}
-        </button>
-      ) : (
-        <div className="flex flex-wrap items-center gap-4">
+      {/* Actions */}
+      <div className="flex flex-wrap items-center gap-4">
+        {(!hasRun || running) && (
           <button
-            onClick={reset}
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '12px',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              padding: '12px 28px',
-              background: 'transparent',
-              color: 'var(--ink-3)',
-              border: '1px solid var(--wire)',
-              cursor: 'pointer',
-            }}
+            type="button"
+            onClick={runSimulation}
+            disabled={running}
+            className="proof-btn proof-btn-primary"
+            aria-busy={running}
           >
-            Reset
+            {running ? 'Booking…' : 'Book Now'}
           </button>
+        )}
 
-          <AnimatePresence>
-            {showToggle && (
-              <motion.button
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0 }}
-                onClick={switchToSerializable}
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '12px',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  padding: '12px 28px',
-                  background: 'var(--signal)',
-                  color: 'var(--paper)',
-                  border: '1px solid var(--signal)',
-                  cursor: 'pointer',
-                }}
-              >
-                Switch to Serializable →
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
+        {hasRun && !running && (
+          <>
+            <button type="button" onClick={reset} className="proof-btn proof-btn-ghost">
+              Reset
+            </button>
+            <AnimatePresence>
+              {showToggle && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0 }}
+                  onClick={switchToSerializable}
+                  className="proof-btn proof-btn-signal"
+                >
+                  Switch to Serializable →
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </>
+        )}
+      </div>
 
-      {/* Explanation — only after interaction */}
       <AnimatePresence>
         {hasRun && !running && (
-          <motion.div
+          <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            style={{
-              marginTop: '32px',
-              paddingTop: '24px',
-              borderTop: '1px solid var(--wire)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '12px',
-              lineHeight: 1.75,
-              color: 'var(--ink-3)',
-              maxWidth: '480px',
-            }}
+            aria-live="polite"
+            style={{ marginTop: '28px', fontFamily: 'var(--font-mono)', fontSize: '12px', lineHeight: 1.75, color: 'var(--ink-3)', maxWidth: '460px' }}
           >
             {isolation === 'read-committed' ? (
               <>
-                Both transactions read <code style={{ color: 'var(--ink-2)' }}>seats = 1</code> before
-                either committed. Both decremented. The database allowed it.{' '}
-                <span style={{ color: 'var(--ink-2)' }}>This is the default in PostgreSQL.</span>
+                Both transactions read <code style={{ color: 'var(--ink-2)' }}>seats = 1</code> before either committed.
+                Both decremented.{' '}
+                <span style={{ color: 'var(--ink-2)' }}>This is the PostgreSQL default.</span>
               </>
             ) : (
               <>
-                Transaction B was blocked until A committed.
-                It then re-read <code style={{ color: 'var(--ink-2)' }}>seats = 0</code> and
-                returned 409.{' '}
+                Transaction B blocked until A committed. Re-read:{' '}
+                <code style={{ color: 'var(--ink-2)' }}>seats = 0</code>. Returned 409.{' '}
                 <span style={{ color: 'var(--ink-2)' }}>Zero double bookings.</span>
               </>
             )}
-          </motion.div>
+          </motion.p>
         )}
       </AnimatePresence>
     </div>

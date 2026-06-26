@@ -345,6 +345,59 @@
 }
 .blog-nav-back:hover { color: var(--signal); }
 
+/* ── ChapterIndex hover arrow ───────────────────────────── */
+.chapter-row:hover .chapter-arrow { opacity: 1; color: var(--signal); }
+.chapter-row:focus-within .chapter-arrow { opacity: 1; color: var(--signal); }
+
+/* ── Global focus-visible ───────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* ── Proof shared styles ─────────────────────────────────── */
+.proof-btn {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.proof-btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.proof-btn-primary:hover { background: var(--signal); border-color: var(--signal); }
+.proof-btn-primary:disabled {
+  background: var(--paper-3);
+  color: var(--ink-4);
+  border-color: var(--wire);
+  cursor: not-allowed;
+}
+.proof-btn-ghost {
+  background: transparent;
+  color: var(--ink-3);
+  border-color: var(--wire);
+}
+.proof-btn-ghost:hover { border-color: var(--ink-3); color: var(--ink); }
+.proof-btn-signal {
+  background: var(--signal);
+  color: var(--paper);
+  border-color: var(--signal);
+}
+.proof-btn-signal:hover { background: #c93a08; border-color: #c93a08; }
+
 /* ── Reduced motion ─────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 type Mode = 'without' | 'with'
-type TxState = 'idle' | 'paying' | 'timeout' | 'confirmed' | 'duplicate-charge' | 'rejected-idempotent'
+type TxState = 'idle' | 'paying' | 'timeout' | 'confirmed' | 'double-charged' | 'rejected-idempotent'
 
 export function RecoverProof() {
   const [mode, setMode] = useState<Mode>('without')
@@ -21,41 +21,34 @@ export function RecoverProof() {
     idempotencyKey.current = `idem_${Math.random().toString(36).slice(2, 9)}`
   }
 
+  const switchMode = (m: Mode) => { setMode(m); reset() }
+
   const pay = async () => {
     if (txState === 'paying') {
-      // Double click during inflight
+      // Second click during inflight — the interesting moment
       setClickCount(c => c + 1)
       if (mode === 'without') {
-        // No protection — duplicate charge
         setChargeCount(c => c + 1)
-        setTimeout(() => setTxState('duplicate-charge'), 400)
+        setTimeout(() => setTxState('double-charged'), 400)
       } else {
-        // Idempotency key already in flight — server rejects duplicate
         setTimeout(() => setTxState('rejected-idempotent'), 300)
       }
       return
     }
-
     if (txState !== 'idle') return
 
     setClickCount(1)
     setChargeCount(0)
     setTxState('paying')
 
-    // Simulate network timeout after 1.8s
-    await new Promise(r => setTimeout(r, 1800))
+    await new Promise(r => setTimeout(r, 2000))
 
     if (mode === 'without') {
-      // Timed out — user doesn't know
       setChargeCount(1)
       setTxState('timeout')
     } else {
-      // With idempotency: server processed it once
       const key = idempotencyKey.current
-      if (!usedKeys.current.has(key)) {
-        usedKeys.current.add(key)
-        setChargeCount(1)
-      }
+      if (!usedKeys.current.has(key)) { usedKeys.current.add(key); setChargeCount(1) }
       setTxState('timeout')
     }
   }
@@ -66,36 +59,30 @@ export function RecoverProof() {
       setClickCount(c => c + 1)
       await new Promise(r => setTimeout(r, 800))
       setChargeCount(c => c + 1)
-      setTxState('duplicate-charge')
+      setTxState('double-charged')
     } else {
       setTxState('paying')
       setClickCount(c => c + 1)
       await new Promise(r => setTimeout(r, 600))
-      // Idempotent: same key, same result, no new charge
       setTxState('confirmed')
     }
   }
 
-
   return (
     <div style={{ borderTop: '1px solid var(--wire)', paddingTop: '48px', marginTop: '48px' }}>
-      <div className="type-label mb-8" style={{ color: 'var(--ink-4)' }}>
+      <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>
         Interactive Proof · 05
       </div>
 
-      <div className="flex gap-3 mb-10">
+      {/* Mode toggle */}
+      <div className="flex gap-3 mb-10" role="group" aria-label="Idempotency mode">
         {(['without', 'with'] as Mode[]).map(m => (
           <button
             key={m}
-            onClick={() => { setMode(m); reset() }}
-            style={{
-              fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em',
-              textTransform: 'uppercase', padding: '8px 16px',
-              background: mode === m ? (m === 'with' ? 'var(--signal)' : 'var(--ink)') : 'transparent',
-              color: mode === m ? 'var(--paper)' : 'var(--ink-3)',
-              border: `1px solid ${mode === m ? (m === 'with' ? 'var(--signal)' : 'var(--ink)') : 'var(--wire)'}`,
-              cursor: 'pointer',
-            }}
+            type="button"
+            onClick={() => switchMode(m)}
+            aria-pressed={mode === m}
+            className={`proof-btn ${mode === m ? (m === 'with' ? 'proof-btn-signal' : 'proof-btn-primary') : 'proof-btn-ghost'}`}
           >
             {m === 'without' ? 'Without idempotency' : 'With idempotency key'}
           </button>
@@ -108,25 +95,33 @@ export function RecoverProof() {
         </div>
       )}
 
-      {/* Pay button */}
-      <div style={{ marginBottom: '24px' }}>
-        <button
-          onClick={pay}
-          disabled={txState === 'duplicate-charge' || txState === 'confirmed' || txState === 'rejected-idempotent'}
-          style={{
-            fontFamily: 'var(--font-mono)', fontSize: '13px', letterSpacing: '0.06em',
-            textTransform: 'uppercase', padding: '16px 40px',
-            background: txState === 'paying' ? 'var(--paper-3)' : 'var(--ink)',
-            color: txState === 'paying' ? 'var(--ink-4)' : 'var(--paper)',
-            border: '1px solid var(--ink)', cursor: txState === 'paying' ? 'wait' : 'pointer',
-          }}
+      {/* Hint */}
+      {txState === 'paying' && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{ marginBottom: '12px', fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--signal)', letterSpacing: '0.06em' }}
         >
-          {txState === 'paying' ? 'Processing...' : 'Pay $50'}
+          → Click &quot;Pay $50&quot; again to simulate a duplicate request
+        </motion.div>
+      )}
+
+      {/* Pay button */}
+      <div style={{ marginBottom: '28px' }}>
+        <button
+          type="button"
+          onClick={pay}
+          disabled={txState === 'double-charged' || txState === 'confirmed' || txState === 'rejected-idempotent'}
+          className="proof-btn proof-btn-primary"
+          style={{ fontSize: '14px', padding: '16px 40px' }}
+          aria-busy={txState === 'paying'}
+        >
+          {txState === 'paying' ? 'Processing…' : 'Pay $50'}
         </button>
       </div>
 
       {/* Metrics */}
-      <div className="flex gap-8 mb-8">
+      <div className="flex gap-10 mb-8" aria-live="polite" aria-atomic="true">
         <div>
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: '4px' }}>Clicks</div>
           <div style={{ fontFamily: 'var(--font-sans)', fontSize: '32px', fontWeight: 700, color: 'var(--ink)' }}>{clickCount}</div>
@@ -143,60 +138,52 @@ export function RecoverProof() {
         </div>
       </div>
 
-      {/* Status + next action */}
+      {/* State machine output */}
       <AnimatePresence mode="wait">
         {txState === 'timeout' && (
           <motion.div key="timeout" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)', marginBottom: '16px' }}>
               Network timeout. Did it go through?
             </div>
-            <button
-              onClick={retry}
-              style={{
-                fontFamily: 'var(--font-mono)', fontSize: '12px', letterSpacing: '0.1em',
-                textTransform: 'uppercase', padding: '10px 24px',
-                background: 'var(--ink)', color: 'var(--paper)',
-                border: '1px solid var(--ink)', cursor: 'pointer',
-              }}
-            >
+            <button type="button" onClick={retry} className="proof-btn proof-btn-primary">
               Retry payment
             </button>
           </motion.div>
         )}
 
-        {txState === 'duplicate-charge' && (
-          <motion.div key="dupe" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+        {txState === 'double-charged' && (
+          <motion.div key="dupe" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} role="alert">
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: '#d63030', marginBottom: '8px', fontWeight: 600 }}>
               Charged twice. $100 deducted.
             </div>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)', marginBottom: '16px' }}>
               The retry was treated as a new request.
             </div>
-            <button onClick={reset} style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '10px 24px', background: 'transparent', color: 'var(--ink-3)', border: '1px solid var(--wire)', cursor: 'pointer' }}>Reset</button>
+            <button type="button" onClick={reset} className="proof-btn proof-btn-ghost">Reset</button>
           </motion.div>
         )}
 
         {txState === 'confirmed' && (
-          <motion.div key="ok" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+          <motion.div key="ok" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} role="status">
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--signal)', marginBottom: '8px', fontWeight: 600 }}>
               Confirmed. $50 charged once.
             </div>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)', marginBottom: '16px' }}>
-              The retry returned the same result — no new charge.
+              The retry returned the same result. No new charge.
             </div>
-            <button onClick={reset} style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '10px 24px', background: 'transparent', color: 'var(--ink-3)', border: '1px solid var(--wire)', cursor: 'pointer' }}>Reset</button>
+            <button type="button" onClick={reset} className="proof-btn proof-btn-ghost">Reset</button>
           </motion.div>
         )}
 
         {txState === 'rejected-idempotent' && (
-          <motion.div key="idem" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+          <motion.div key="idem" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} role="status">
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--signal)', marginBottom: '8px', fontWeight: 600 }}>
               Duplicate request blocked.
             </div>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)', marginBottom: '16px' }}>
-              The key matched an in-flight request. The server ignored the second.
+              Key matched an in-flight request. The server ignored the second.
             </div>
-            <button onClick={reset} style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '10px 24px', background: 'transparent', color: 'var(--ink-3)', border: '1px solid var(--wire)', cursor: 'pointer' }}>Reset</button>
+            <button type="button" onClick={reset} className="proof-btn proof-btn-ghost">Reset</button>
           </motion.div>
         )}
       </AnimatePresence>
