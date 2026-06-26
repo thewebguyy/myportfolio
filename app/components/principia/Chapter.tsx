@@ -79,7 +79,19 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
             >
               {p.question}
             </div>
-            <h2 className="type-chapter">{p.word}</h2>
+            <h2 className="type-chapter mb-6">{p.word}</h2>
+            <p
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '13px',
+                lineHeight: 1.7,
+                color: 'var(--ink-3)',
+                fontStyle: 'italic',
+                maxWidth: '480px',
+              }}
+            >
+              {p.incident}
+            </p>
           </motion.div>
 
           {/* Thesis — right column */}
@@ -144,7 +156,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="space-y-4"
+              className="space-y-6"
               style={{ borderTop: '1px solid var(--wire)', paddingTop: '24px' }}
             >
               <div className="type-label" style={{ color: 'var(--ink-4)' }}>Evidence</div>
@@ -153,24 +165,67 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                 return (
                   <div
                     key={i}
-                    className="space-y-1"
                     style={{ paddingLeft: '16px', borderLeft: '2px solid var(--wire)' }}
                   >
-                    {project && (
-                      <Link
-                        href={`/case-studies/${project.id}`}
-                        className="type-label block transition-colors"
-                        style={{ color: 'var(--signal)' }}
+                    {/* Project header */}
+                    <div className="flex items-baseline justify-between gap-4 mb-2">
+                      {project ? (
+                        <Link
+                          href={`/case-studies/${project.id}`}
+                          className="type-label block transition-colors"
+                          style={{ color: 'var(--signal)' }}
+                        >
+                          {c.projectTitle}
+                        </Link>
+                      ) : (
+                        <span className="type-label" style={{ color: 'var(--ink-3)' }}>
+                          {c.projectTitle}
+                        </span>
+                      )}
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '10px',
+                          color: 'var(--ink-4)',
+                          letterSpacing: '0.06em',
+                          flexShrink: 0,
+                        }}
                       >
-                        {project.title}
-                      </Link>
-                    )}
-                    <p
+                        {c.year} · {c.role}
+                      </span>
+                    </div>
+                    {/* Meta */}
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '10px',
+                        color: 'var(--ink-4)',
+                        letterSpacing: '0.06em',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      {c.category} · {c.duration}
+                    </div>
+                    {/* First-person quote */}
+                    <blockquote
                       style={{
                         fontFamily: 'var(--font-mono)',
                         fontSize: '12px',
-                        lineHeight: 1.65,
-                        color: 'var(--ink-3)',
+                        lineHeight: 1.7,
+                        color: 'var(--ink-2)',
+                        fontStyle: 'italic',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      &ldquo;{c.quote}&rdquo;
+                    </blockquote>
+                    {/* Outcome metric */}
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '11px',
+                        lineHeight: 1.6,
+                        color: 'var(--ink-4)',
                       }}
                     >
                       {c.claim}

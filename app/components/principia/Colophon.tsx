@@ -5,7 +5,10 @@ import Link from 'next/link'
 import { blogPosts } from '@/lib/blog'
 
 export function Colophon() {
-  const recentPosts = blogPosts.slice(0, 3)
+  // Only show posts directly tied to Olabode's production work
+  const recentPosts = blogPosts.filter(p =>
+    p.slug === 'websocket-matching-layer'
+  )
 
   return (
     <section
@@ -67,7 +70,7 @@ export function Colophon() {
               </div>
               <div className="pt-6">
                 <Link
-                  href="/#writing"
+                  href="/blog"
                   className="type-label"
                   style={{ color: 'var(--signal)' }}
                 >
@@ -124,7 +127,7 @@ export function Colophon() {
               I want to hear about it.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/#contact" className="btn-primary">Start a conversation</Link>
+              <a href="mailto:support@mycardglobal.com" className="btn-primary">Email Olabode</a>
             </div>
             <div
               className="pt-6 space-y-2"

@@ -58,6 +58,9 @@ export function ModelProof() {
       <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>
         Interactive Proof · 02
       </div>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.08em', color: 'var(--ink-4)', marginBottom: '4px' }}>
+        FROM: <span style={{ color: 'var(--signal)' }}>Servia</span> · Operations Platform · 2026
+      </div>
 
       {/* Mode toggle */}
       <div className="flex gap-3 mb-8" role="group" aria-label="Schema mode">

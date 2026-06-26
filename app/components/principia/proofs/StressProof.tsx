@@ -29,6 +29,9 @@ export function StressProof() {
       <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>
         Interactive Proof · 04
       </div>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.08em', color: 'var(--ink-4)', marginBottom: '4px' }}>
+        FROM: <span style={{ color: 'var(--signal)' }}>Servia</span> · Operations Platform · 2026
+      </div>
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--ink-3)', marginBottom: '32px' }}>
         Two systems. One is running at 14.5% error rate. Which one?
       </div>
