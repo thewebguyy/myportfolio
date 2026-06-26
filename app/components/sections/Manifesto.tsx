@@ -2,104 +2,122 @@
 
 import { motion } from 'framer-motion'
 
+const CONSTRAINTS = [
+  {
+    icon: '⚡',
+    title: 'Flaky infrastructure',
+    body: 'West African mobile connections drop mid-transaction. I design retry logic, idempotency keys, and graceful degradation so a network hiccup never means a lost order or a duplicate charge.',
+  },
+  {
+    icon: '🔒',
+    title: 'Payment inconsistency',
+    body: 'African payment providers have async webhooks, partial settlements, and undocumented failure modes. I\'ve built reconciliation loops that catch the edge cases their SDKs don\'t document.',
+  },
+  {
+    icon: '⏱',
+    title: 'Concurrency at scale',
+    body: 'Double-bookings under Read Committed isolation. Serializable transactions caught the race. 14.5% P2034 collision rate during load tests — zero double bookings in production.',
+  },
+]
+
 export function Manifesto() {
   return (
-    <section id="manifesto" className="border-b-[0.5px] border-border-wire bg-background">
-      <div className="max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire px-8 lg:px-16 py-24 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          
-          {/* Left Column / Header */}
-          <div className="lg:col-span-5">
-            <motion.div
+    <section id="manifesto">
+      {/* Manifesto text — paper background */}
+      <div style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}>
+        <div
+          className="max-w-[1440px] mx-auto px-8 lg:px-16 py-24 lg:py-32"
+          style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)' }}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+
+            <div className="lg:col-span-5">
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--signal)', marginBottom: '16px' }}
+              >
+                How I work
+              </motion.p>
+              <motion.h2
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 'clamp(30px, 4vw, 48px)', letterSpacing: '-0.03em', lineHeight: 1.1, color: 'var(--ink)' }}
+              >
+                Build it right. Ship it fast.{' '}
+                <span style={{ opacity: 0.45 }}>Keep it running.</span>
+              </motion.h2>
+            </div>
+
+            <div className="lg:col-span-7 space-y-6 mt-2 lg:mt-0">
+              {[
+                'Good software is specific. The engineers I respect most can tell you exactly which edge case kept them up at night, what the fix was, and why the naive solution would have failed in three months.',
+                'I believe the job is closer to infrastructure than craft. Your code will be read by strangers, run on machines you don\'t control, and stressed by users who don\'t behave the way you expected. That\'s the real specification.',
+                'I also believe in finishing things. Shipped and imperfect beats polished and theoretical. The only way to know if something actually works is to let it meet production.',
+              ].map((para, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', lineHeight: 1.8, color: 'var(--ink-2)' }}
+                >
+                  {para}
+                </motion.p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Constraint band — dark inversion, ONLY dark section on the page */}
+      <div style={{ background: 'var(--ink)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+        <div
+          className="max-w-[1440px] mx-auto"
+          style={{ borderLeft: '1px solid rgba(255,255,255,0.06)', borderRight: '1px solid rgba(255,255,255,0.06)' }}
+        >
+          {/* Band header */}
+          <div className="px-8 lg:px-16 py-12" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
+              style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--signal)' }}
             >
-              How I work
-            </motion.div>
-            
-            <motion.h2
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-[40px] md:text-[56px] text-text-primary font-display font-semibold tracking-tight leading-[1.1]"
-            >
-              Build it right. Ship it fast.<br />
-              <span className="opacity-70">Keep it running.</span>
-            </motion.h2>
+              Real constraints I've shipped against
+            </motion.p>
           </div>
 
-          {/* Right Column / Body */}
-          <div className="lg:col-span-7 font-mono text-[14px] text-text-primary/80 leading-[1.8] space-y-8 mt-2 lg:mt-0">
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              Good software is specific. The engineers I respect most can tell you exactly which edge case kept them up at night, what the fix was, and why the naive solution would have failed in three months. Vague confidence is easy. Specific knowledge is earned.
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              I believe the job is closer to infrastructure than craft. Your code will be read by strangers, run on machines you don&apos;t control, and stressed by users who don&apos;t behave the way you expected. That&apos;s the real specification. Everything else is prototype.
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.25 }}
-            >
-              I also believe in finishing things. Shipped and imperfect beats polished and theoretical. The only way to know if something actually works is to let it meet production.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="pt-6 mt-6 border-t-[0.5px] border-border-wire"
-            >
-              <a href="#contact" className="inline-flex items-center gap-3 text-text-primary hover:text-text-accent transition-colors duration-300 uppercase tracking-widest text-[13px]">
-                <span className="w-2 h-2 bg-text-accent inline-block"></span>
-                Get in touch
-              </a>
-            </motion.div>
-          </div>
-
-        </div>
-
-        {/* Engineering Principles Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-24 pt-16 border-t-[0.5px] border-border-wire"
-        >
-          <h3 className="font-mono text-[11px] uppercase tracking-widest text-text-accent mb-10">Engineering Principles</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border-t-[0.5px] border-l-[0.5px] border-border-wire bg-surface/20">
-            {[
-              { num: '01', title: 'Reliability before scale' },
-              { num: '02', title: 'Measure before optimizing' },
-              { num: '03', title: 'Automate repetitive work' },
-              { num: '04', title: 'Prefer simple systems' },
-              { num: '05', title: 'Ship, observe, improve' }
-            ].map((pr, idx) => (
-              <div key={idx} className="p-8 border-r-[0.5px] border-b-[0.5px] border-border-wire font-mono flex flex-col justify-between min-h-[160px]">
-                <div className="text-[36px] font-display font-bold text-text-accent/30 leading-none">{pr.num}</div>
-                <div className="text-[13px] font-medium text-text-primary uppercase tracking-wider mt-6">{pr.title}</div>
-              </div>
+          {/* 3-cell grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            {CONSTRAINTS.map((c, i) => (
+              <motion.div
+                key={c.title}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="p-8 lg:p-10 flex flex-col gap-4"
+                style={{ borderRight: i < 2 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}
+              >
+                <span style={{ fontSize: '24px', color: 'var(--signal)' }}>{c.icon}</span>
+                <h3
+                  style={{ fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: '18px', color: '#f5f2ed', letterSpacing: '-0.01em', lineHeight: 1.2 }}
+                >
+                  {c.title}
+                </h3>
+                <p
+                  style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', lineHeight: 1.75, color: 'rgba(245, 242, 237, 0.55)' }}
+                >
+                  {c.body}
+                </p>
+              </motion.div>
             ))}
           </div>
-        </motion.div>
-
+        </div>
       </div>
     </section>
   )
