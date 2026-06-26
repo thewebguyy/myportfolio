@@ -1,158 +1,155 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+import Link from 'next/link'
+
+const TICKER_ITEMS = [
+  { label: 'YRS EXP', value: '5+' },
+  { label: 'PEAK RPS', value: '350' },
+  { label: 'LATEST SHIP', value: '2am' },
+  { label: 'DOUBLE BOOKINGS', value: '0' },
+]
 
 export function Hero() {
   const RESUME_URL = process.env.NEXT_PUBLIC_RESUME_URL?.trim() || ''
   const hasResumeUrl = RESUME_URL.length > 0
   const IS_AVAILABLE = process.env.NEXT_PUBLIC_AVAILABLE_FOR_HIRE === 'true'
 
-  const [headshotFailed, setHeadshotFailed] = useState(false)
+  const [tick, setTick] = useState(0)
+  useEffect(() => {
+    const t = setInterval(() => setTick(n => (n + 1) % TICKER_ITEMS.length), 3000)
+    return () => clearInterval(t)
+  }, [])
+
   return (
-    <section className="relative min-h-screen flex items-center bg-background px-6 lg:px-8 border-b-[0.5px] border-border-wire">
-      <div className="w-full max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire h-screen flex flex-col justify-center px-8 lg:px-16">
-        <div className="max-w-[1000px]">
-          {/* Mobile Profile Block: Inline portrait + Name */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden flex items-center gap-4 mb-8 font-mono text-[11px] uppercase tracking-widest text-text-accent"
-          >
-            <div className="w-10 h-10 border-[0.5px] border-border-wire bg-surface relative overflow-hidden flex-shrink-0">
-              <div className="absolute inset-0 bg-[#080D1A]/25 mix-blend-color z-10 pointer-events-none" />
-              {headshotFailed ? (
-                <span className="font-mono text-[10px] text-text-accent flex items-center justify-center h-full">OO</span>
-              ) : (
-                <Image
-                  src="/headshot.jpg"
-                  alt="Olabode Olusegun"
-                  fill
-                  className="object-cover object-top"
-                  onError={() => setHeadshotFailed(true)}
+    <section
+      className="relative min-h-screen flex items-center px-6 lg:px-8"
+      style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
+    >
+      <div className="w-full max-w-[1440px] mx-auto h-screen flex flex-col justify-center px-4 md:px-12 lg:px-16" style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)' }}>
+
+        {/* Top meta strip */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+          className="flex flex-wrap items-center gap-x-6 gap-y-1 mb-12"
+          style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-3)' }}
+        >
+          <span>OLABODE OLUSEGUN</span>
+          <span style={{ color: 'var(--wire)' }}>·</span>
+          <span>LAGOS, NG</span>
+          <span style={{ color: 'var(--wire)' }}>·</span>
+          {/* Coordinate block */}
+          <span style={{ fontVariantNumeric: 'tabular-nums' }}>6.5244° N, 3.3792° E</span>
+          <span style={{ color: 'var(--wire)' }}>·</span>
+          <span>FINTECH · MARKETPLACE · AI SYSTEMS</span>
+          {IS_AVAILABLE && (
+            <>
+              <span style={{ color: 'var(--wire)' }}>·</span>
+              <span className="flex items-center gap-1.5" style={{ color: 'var(--signal)' }}>
+                <span
+                  className="inline-block w-[6px] h-[6px] rounded-full animate-pulse"
+                  style={{ background: 'var(--signal)' }}
                 />
-              )}
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-semibold text-text-primary">OLABODE OLUSEGUN</span>
-                {IS_AVAILABLE && (
-                  <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[8px] tracking-normal font-semibold">
-                    <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-                    ACTIVE
-                  </span>
-                )}
-              </div>
-              <span className="text-text-secondary text-[9px] lowercase">lagos, ng · 5 yrs · fintech & ai</span>
-            </div>
-          </motion.div>
+                OPEN TO WORK
+              </span>
+            </>
+          )}
+        </motion.div>
 
-          {/* Desktop Label / Status / Seniority Strip */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden md:flex flex-wrap items-center gap-3 mb-8 font-mono text-[11px] uppercase tracking-widest"
+        {/* Main headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-[900px] mb-10"
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontWeight: 700,
+            fontSize: 'clamp(42px, 6.5vw, 88px)',
+            lineHeight: 1.0,
+            letterSpacing: '-0.03em',
+            color: 'var(--ink)',
+          }}
+        >
+          I ship production systems from{' '}
+          <span style={{ color: 'var(--signal)', fontStyle: 'italic' }}>real</span>{' '}
+          constraints.{' '}
+          <span style={{ color: 'var(--ink-3)', fontWeight: 400, fontSize: '0.7em' }}>// not sandbox pressure.</span>
+        </motion.h1>
+
+        {/* Description */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.18 }}
+          className="mb-12 max-w-[560px]"
+          style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', lineHeight: 1.75, color: 'var(--ink-2)' }}
+        >
+          Transactional consistency, API security, and predictable error boundaries — designed to survive flaky mobile connections, payment provider inconsistencies, and intermittent network latency across West Africa.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.24 }}
+          className="flex flex-col sm:flex-row items-start gap-4 mb-16"
+        >
+          <Link
+            href="/#contact"
+            className="btn-primary"
           >
-            <span className="text-text-accent font-semibold">OLABODE OLUSEGUN</span>
-            <span className="text-text-primary/30">·</span>
-            <span className="text-text-secondary">LAGOS, NG</span>
-            <span className="text-text-primary/30">·</span>
-            <span className="text-text-secondary font-medium">5 YRS · FINTECH · MARKETPLACE · AI SYSTEMS</span>
-            {IS_AVAILABLE && (
-              <>
-                <span className="text-text-primary/30">·</span>
-                <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[9px] tracking-normal font-semibold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  AVAILABLE FOR HIRE
-                </span>
-              </>
-            )}
-          </motion.div>
-
-          {/* Headline and Desktop Portrait Inline Row */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-12">
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="hero-heading text-[44px] md:text-[64px] lg:text-[76px] leading-[1.05] text-text-primary tracking-tight max-w-[820px]"
+            Get in touch
+          </Link>
+          <Link
+            href="/#work"
+            className="btn-secondary"
+          >
+            See the work
+          </Link>
+          {hasResumeUrl && (
+            <a
+              href={RESUME_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
             >
-              Building production systems for fintech, AI, and marketplace platforms.
-            </motion.h1>
+              Download CV
+            </a>
+          )}
+        </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-              className="hidden md:block flex-shrink-0"
+        {/* Ticker strip */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.32 }}
+          className="flex items-center gap-8 pt-8"
+          style={{ borderTop: '1px solid var(--wire)' }}
+        >
+          {TICKER_ITEMS.map((item, i) => (
+            <div
+              key={item.label}
+              className="flex flex-col gap-1 transition-opacity duration-500"
+              style={{ opacity: tick === i ? 1 : 0.35 }}
             >
-              <div className="w-14 h-14 border-[0.5px] border-border-wire bg-surface relative overflow-hidden">
-                <div className="absolute inset-0 bg-[#080D1A]/25 mix-blend-color z-10 pointer-events-none" />
-                {headshotFailed ? (
-                  <span className="font-mono text-[10px] text-text-accent flex items-center justify-center h-full">OO</span>
-                ) : (
-                  <Image
-                    src="/headshot.jpg"
-                    alt="Olabode Olusegun"
-                    fill
-                    className="object-cover object-top"
-                    onError={() => setHeadshotFailed(true)}
-                  />
-                )}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="font-mono text-[14px] text-text-primary/80 leading-[1.8] max-w-[640px] mb-12"
-          >
-            I focus on implementing transactional consistency, API security, and predictable error boundaries. I design systems to survive the real-world constraints of the West African web—flaky mobile connections, payment provider inconsistencies, and intermittent network latency.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-8"
-          >
-            <div className="flex items-center gap-6">
-              <a href="#contact" className="font-mono text-[13px] text-text-accent uppercase tracking-widest hover:text-text-primary transition-colors duration-300 flex items-center gap-3">
-                <span className="w-2 h-2 bg-text-accent inline-block"></span>
-                Get in touch
-              </a>
-              {hasResumeUrl && (
-                <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className="font-mono text-[13px] text-text-primary/70 uppercase tracking-widest hover:text-text-primary transition-colors duration-300 flex items-center gap-3">
-                  Download CV
-                </a>
-              )}
+              <span
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-3)' }}
+              >
+                {item.label}
+              </span>
+              <span
+                style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: '20px', color: tick === i ? 'var(--signal)' : 'var(--ink)', transition: 'color 0.3s' }}
+              >
+                {item.value}
+              </span>
             </div>
-          </motion.div>
-
-          {/* Minimal Tech strip */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-16 pt-8 border-t-[0.5px] border-border-wire font-mono text-[11px] text-text-muted uppercase tracking-widest flex flex-wrap gap-x-8 gap-y-2"
-          >
-            <span>TypeScript</span>
-            <span>Node.js</span>
-            <span>PostgreSQL</span>
-            <span>Redis</span>
-            <span>AWS</span>
-            <span>Docker</span>
-          </motion.div>
-        </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   )
 }
-
