@@ -8,7 +8,7 @@ import { ArrowLeftIcon, ClockIcon, CalendarIcon } from '@heroicons/react/24/outl
  * Displays full article content with proper formatting
  */
 
-import { blogPosts, getBlogPostBySlug } from '@/lib/blog'
+import { getBlogPostBySlug } from '@/lib/blog'
 
 // Skip static generation — blog content is inline JSX that exceeds the worker timeout
 export const dynamic = 'force-dynamic'

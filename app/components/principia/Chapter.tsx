@@ -4,6 +4,25 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { type Principle } from '@/lib/principles'
 import { projects } from '@/lib/projects'
+import { ObserveProof } from './proofs/ObserveProof'
+import { ModelProof } from './proofs/ModelProof'
+import { IsolateProof } from './proofs/IsolateProof'
+import { StressProof } from './proofs/StressProof'
+import { RecoverProof } from './proofs/RecoverProof'
+import { ConstrainProof } from './proofs/ConstrainProof'
+import { ShipProof } from './proofs/ShipProof'
+import { EvolveProof } from './proofs/EvolveProof'
+
+const PROOFS: Partial<Record<string, React.ComponentType>> = {
+  observe: ObserveProof,
+  model: ModelProof,
+  isolate: IsolateProof,
+  stress: StressProof,
+  recover: RecoverProof,
+  constrain: ConstrainProof,
+  ship: ShipProof,
+  evolve: EvolveProof,
+}
 
 interface ChapterProps {
   principle: Principle
@@ -104,7 +123,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
           </div>
 
           {/* Right column: axiom + citations */}
-          <div className="col-span-12 lg:col-span-5 space-y-12">
+          <div className="col-span-12 lg:col-span-5 space-y-12" id={`${p.id}-right`}>
             {/* Axiom */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -161,6 +180,13 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
             </motion.div>
           </div>
         </div>
+
+        {/* Interactive proof — chapter-specific */}
+        {PROOFS[p.id] && (
+          <div className="px-[var(--page-gutter)] pb-16">
+            {(() => { const Proof = PROOFS[p.id]!; return <Proof /> })()}
+          </div>
+        )}
       </div>
     </section>
   )
