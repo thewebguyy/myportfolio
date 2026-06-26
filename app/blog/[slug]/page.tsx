@@ -59,36 +59,58 @@ export default function BlogPostPage({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ background: 'var(--paper)' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <article className="pt-24 md:pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          {/* Back Link */}
-          <Link
-            href="/blog"
-            className="text-text-muted hover:text-text-primary transition-all text-[10px] font-mono uppercase tracking-widest flex items-center gap-2 mb-8"
-          >
-            <ArrowLeftIcon className="w-4 h-4" />
-            Back to blog
-          </Link>
+
+      {/* Nav strip */}
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 h-[56px]"
+        style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
+      >
+        <Link
+          href="/#writing"
+          className="flex items-center gap-2 transition-colors"
+          style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-3)' }}
+          onMouseEnter={e => (e.currentTarget.style.color = 'var(--signal)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
+        >
+          <ArrowLeftIcon className="w-4 h-4" />
+          Back to writing
+        </Link>
+        <span
+          style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--signal)' }}
+        >
+          Writing
+        </span>
+      </nav>
+
+      <article className="pt-28 pb-24 px-6">
+        <div className="max-w-[720px] mx-auto">
 
           {/* Header */}
-          <header className="mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="pill-tag">
+          <header className="mb-16" style={{ borderBottom: '1px solid var(--wire)', paddingBottom: '40px' }}>
+            <div className="flex items-center gap-3 mb-6">
+              <span
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--signal)', border: '1px solid var(--signal)', padding: '2px 10px' }}
+              >
                 {post.category}
               </span>
             </div>
 
-            <h1 className="font-display font-bold text-[48px] md:text-[64px] leading-[1.05] tracking-tight mb-6">
+            <h1
+              style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 'clamp(30px, 5vw, 52px)', letterSpacing: '-0.03em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '20px' }}
+            >
               {post.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
-              <time dateTime={post.date} className="flex items-center gap-2 font-mono text-[12px]">
+            <div
+              className="flex flex-wrap items-center gap-4"
+              style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)' }}
+            >
+              <time dateTime={post.date} className="flex items-center gap-2">
                 <CalendarIcon className="w-4 h-4" />
                 {new Date(post.date).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -96,7 +118,7 @@ export default function BlogPostPage({
                   day: 'numeric'
                 })}
               </time>
-              <span className="flex items-center gap-2 font-mono text-[12px]">
+              <span className="flex items-center gap-2">
                 <ClockIcon className="w-4 h-4" />
                 {post.readTime} min read
               </span>
@@ -104,23 +126,18 @@ export default function BlogPostPage({
           </header>
 
           {/* Content */}
-          <div className="prose prose-invert max-w-none">
+          <div className="prose max-w-none">
             <BlogContent slug={post.slug} />
           </div>
 
           {/* Footer */}
-          <footer className="mt-16 pt-8 border-t border-border-wire">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-text-secondary mb-2">Written by</p>
-                <p className="font-semibold text-text-primary">Olabode Olusegun</p>
-                <p className="text-sm text-text-muted">Full-Stack Engineer</p>
-              </div>
-
-              <Link href="/#contact" className="btn-primary text-sm">
-                Get in Touch
-              </Link>
+          <footer className="mt-16 pt-8 flex items-center justify-between" style={{ borderTop: '1px solid var(--wire)' }}>
+            <div>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--ink-3)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Written by</p>
+              <p style={{ fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: '15px', color: 'var(--ink)' }}>Olabode Olusegun</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)' }}>Full-Stack Engineer</p>
             </div>
+            <Link href="/#contact" className="btn-primary">Get in Touch</Link>
           </footer>
         </div>
       </article>
