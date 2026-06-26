@@ -43,7 +43,7 @@ export default function ServiceBridgeArchitecture() {
                     {/* Users Layer */}
                     <g transform="translate(40, 50)">
                         <rect x="0" y="0" width="120" height="60" className="fill-gray-900 stroke-gray-700" strokeWidth="1" />
-                        <text x="60" y="38" textAnchor="middle" className="fill-white text-[14px] font-medium font-sans">10k+ Customers</text>
+                        <text x="60" y="38" textAnchor="middle" className="fill-white text-[14px] font-medium font-sans">Customers</text>
                         <circle cx="60" cy="-5" r="4" className="fill-primary animate-pulse" />
                     </g>
 
