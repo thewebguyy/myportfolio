@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { resumeAnalyzer } from '@/services/resume-analyzer'
-import { sysStorage } from '@/lib/storage'
 import { handleOpenAIError } from '@/lib/openai'
 import { createRateLimiter, getRateLimitHeaders } from '@/lib/rateLimit'
 
@@ -46,21 +45,10 @@ export async function POST(req: Request) {
 
     const result = await resumeAnalyzer.analyzeResume(resumeText)
 
-    const report = await sysStorage.saveReport({
-      type: 'talent',
-      input: { length: resumeText.length },
-      output: result.data,
-      metadata: {
-        latency: result.metadata.latency,
-        userId: 'anon-sim-user'
-      }
-    })
-
     return NextResponse.json({
       analysis: result.data,
       confidenceScore: result.confidenceScore,
       assumptions: result.assumptions,
-      reportId: report.id,
       metadata: result.metadata
     }, {
       headers: getRateLimitHeaders(rateLimitResult)
