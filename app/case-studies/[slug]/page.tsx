@@ -247,7 +247,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                    <div className="grid md:grid-cols-2 gap-6">
                       <TechnicalInsightCard 
                         title="Scale Isolation"
-                        value="10k+ Users"
+                        value="Active users"
                         description="Implemented multi-tenant request isolation to prevent cascading failures."
                         trend={{ value: 'Stable', positive: true }}
                         icon={ServerStackIcon}
