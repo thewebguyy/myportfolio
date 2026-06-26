@@ -8,23 +8,26 @@ export function BlogSection() {
   const featuredPosts = blogPosts.slice(0, 5)
 
   return (
-    <section id="writing" className="border-b-[0.5px] border-border-wire bg-background">
-      <div className="max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire">
-        {/* Archive Header */}
-        <div className="border-b-[0.5px] border-border-wire px-8 lg:px-16 py-16">
-          <motion.div
+    <section id="writing" style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}>
+      <div
+        className="max-w-[1440px] mx-auto"
+        style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)' }}
+      >
+        {/* Header */}
+        <div className="px-8 lg:px-16 py-16" style={{ borderBottom: '1px solid var(--wire)' }}>
+          <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="font-mono text-[11px] text-text-accent uppercase tracking-widest mb-6"
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--signal)', marginBottom: '16px' }}
           >
             Writing
-          </motion.div>
+          </motion.p>
           <motion.h2
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="hero-heading text-[40px] md:text-[56px] text-text-primary tracking-tight"
+            style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 'clamp(32px, 4vw, 52px)', letterSpacing: '-0.03em', color: 'var(--ink)', marginBottom: '16px' }}
           >
             The Archive.
           </motion.h2>
@@ -32,69 +35,90 @@ export function BlogSection() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="font-mono text-[14px] text-text-primary/70 max-w-[600px] mt-6 leading-[1.8]"
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--ink-3)', lineHeight: 1.7, maxWidth: '520px' }}
           >
-            Technical thinking, architectural decisions, and post-mortems. High-density scanning enabled.
+            Technical thinking, architectural decisions, and post-mortems.
           </motion.p>
         </div>
 
-        {/* Documentation List */}
-        <div className="flex flex-col">
-          {/* Table Header */}
-          <div className="hidden md:grid grid-cols-12 border-b-[0.5px] border-border-wire px-8 lg:px-16 py-4 font-mono text-[11px] text-text-accent/60 uppercase tracking-widest bg-surface/30">
-            <div className="col-span-2">Date</div>
-            <div className="col-span-2">Category</div>
-            <div className="col-span-6">Title & Summary</div>
-            <div className="col-span-2 text-right">Action</div>
-          </div>
+        {/* Column headers */}
+        <div
+          className="hidden md:grid grid-cols-12 px-8 lg:px-16 py-3"
+          style={{ borderBottom: '1px solid var(--wire)', fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-3)' }}
+        >
+          <div className="col-span-2">Date</div>
+          <div className="col-span-2">Category</div>
+          <div className="col-span-7">Title</div>
+          <div className="col-span-1 text-right">→</div>
+        </div>
 
+        {/* Post rows */}
+        <div className="flex flex-col">
           {featuredPosts.map((post, index) => (
             <motion.div
               key={post.slug}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.05, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: index * 0.04 }}
             >
-              <Link href={`/blog/${post.slug}`}>
-                <div className="group grid grid-cols-1 md:grid-cols-12 border-b-[0.5px] border-border-wire px-8 lg:px-16 py-8 transition-colors hover:bg-surface/50 items-start">
-                  
-                  {/* Date & Category on Mobile */}
-                  <div className="flex items-center gap-3 font-mono text-[11px] mb-3 md:hidden">
-                    <span className="text-text-primary/60">
-                      {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                    </span>
-                    <span className="text-text-primary/30">•</span>
-                    <span className="text-text-accent uppercase tracking-widest">
-                      {post.category}
-                    </span>
+              <Link
+                href={`/blog/${post.slug}`}
+                className="group block"
+              >
+                <div
+                  className="grid grid-cols-1 md:grid-cols-12 px-8 lg:px-16 py-6 transition-colors duration-150 items-baseline"
+                  style={{ borderBottom: '1px solid var(--wire)' }}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper-2)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                >
+                  {/* Mobile: date + category inline */}
+                  <div
+                    className="flex items-center gap-3 md:hidden mb-2"
+                    style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-3)' }}
+                  >
+                    <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+                    <span style={{ color: 'var(--wire)' }}>·</span>
+                    <span style={{ color: 'var(--signal)' }}>{post.category}</span>
                   </div>
 
-                  {/* Desktop Date */}
-                  <div className="hidden md:block md:col-span-2 font-mono text-[13px] text-text-primary/70 pt-1">
+                  {/* Desktop date */}
+                  <div
+                    className="hidden md:block md:col-span-2"
+                    style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)', letterSpacing: '0.04em' }}
+                  >
                     {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                   </div>
-                  
-                  {/* Desktop Category */}
-                  <div className="hidden md:block md:col-span-2 font-mono text-[11px] text-text-accent uppercase tracking-widest pt-1">
+
+                  {/* Desktop category */}
+                  <div
+                    className="hidden md:block md:col-span-2"
+                    style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--signal)' }}
+                  >
                     {post.category}
                   </div>
-                  
-                  {/* Content */}
-                  <div className="md:col-span-6 pr-8">
-                    <h3 className="font-display font-semibold text-[24px] text-text-primary leading-tight mb-2 group-hover:text-text-primary transition-colors">
+
+                  {/* Title + excerpt */}
+                  <div className="md:col-span-7">
+                    <h3
+                      style={{ fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 'clamp(16px, 1.5vw, 20px)', letterSpacing: '-0.01em', color: 'var(--ink)', lineHeight: 1.25 }}
+                    >
                       {post.title}
                     </h3>
-                    <p className="font-mono text-[13px] text-text-primary/60 leading-[1.6]">
+                    <p
+                      className="mt-1"
+                      style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.6 }}
+                    >
                       {post.excerpt}
                     </p>
                   </div>
-                  
-                  {/* Action */}
-                  <div className="hidden md:flex col-span-2 justify-end pt-1">
-                    <span className="font-mono text-[11px] text-text-accent/0 group-hover:text-text-accent uppercase tracking-widest transition-colors">
-                      Read →
-                    </span>
+
+                  {/* Arrow */}
+                  <div
+                    className="hidden md:flex col-span-1 justify-end items-center transition-opacity duration-150 opacity-0 group-hover:opacity-100"
+                    style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--signal)' }}
+                  >
+                    →
                   </div>
                 </div>
               </Link>
