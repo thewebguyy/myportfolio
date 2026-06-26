@@ -194,6 +194,19 @@
   }
 }
 
+/* Blog/case-study nav back link — CSS hover without JS */
+.blog-nav-back {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  transition: color 0.15s;
+}
+.blog-nav-back:hover {
+  color: var(--signal);
+}
+
 @layer utilities {
   .text-balance { text-wrap: balance; }
 

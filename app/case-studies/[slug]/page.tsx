@@ -51,13 +51,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 h-[56px]"
         style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
       >
-        <Link
-          href="/#work"
-          className="flex items-center gap-2 transition-colors"
-          style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-3)' }}
-          onMouseEnter={e => (e.currentTarget.style.color = 'var(--signal)')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
-        >
+        <Link href="/#work" className="blog-nav-back flex items-center gap-2">
           <ArrowLeftIcon className="w-4 h-4" />
           Back to work
         </Link>

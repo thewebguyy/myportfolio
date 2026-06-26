@@ -10,12 +10,8 @@ import { ArrowLeftIcon, ClockIcon, CalendarIcon } from '@heroicons/react/24/outl
 
 import { blogPosts, getBlogPostBySlug } from '@/lib/blog'
 
-// Generate static params
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }))
-}
+// Skip static generation — blog content is inline JSX that exceeds the worker timeout
+export const dynamic = 'force-dynamic'
 
 // Generate metadata
 export async function generateMetadata({
@@ -72,10 +68,7 @@ export default function BlogPostPage({
       >
         <Link
           href="/#writing"
-          className="flex items-center gap-2 transition-colors"
-          style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-3)' }}
-          onMouseEnter={e => (e.currentTarget.style.color = 'var(--signal)')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
+          className="flex items-center gap-2 blog-nav-back"
         >
           <ArrowLeftIcon className="w-4 h-4" />
           Back to writing
