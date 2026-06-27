@@ -177,8 +177,8 @@ export function PrincipiaNav() {
               )}
             </AnimatePresence>
             <button
-              className="lg:hidden flex items-center"
-              style={{ color: 'var(--ink-3)' }}
+              className="lg:hidden flex items-center justify-center -mr-[10px]"
+              style={{ color: 'var(--ink-3)', width: '44px', height: '44px' }}
               onClick={() => setMenuOpen(true)}
               aria-label="Open navigation"
             >
@@ -191,9 +191,14 @@ export function PrincipiaNav() {
       </header>
 
       {/* Mobile drawer */}
+      <AnimatePresence>
       {menuOpen && (
-        <div
+        <motion.div
           ref={drawerRef}
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[60] flex flex-col"
           style={{ background: 'var(--paper)' }}
           role="dialog"
@@ -218,7 +223,7 @@ export function PrincipiaNav() {
             </span>
             <button
               onClick={() => setMenuOpen(false)}
-              style={{ color: 'var(--ink-3)' }}
+              style={{ color: 'var(--ink-3)', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               aria-label="Close navigation"
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
@@ -305,8 +310,9 @@ export function PrincipiaNav() {
               {CONTACT_EMAIL}
             </a>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </>
   )
 }

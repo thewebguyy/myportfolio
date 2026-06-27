@@ -73,12 +73,12 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
             <p
               className="text-pretty"
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(13px, 1.2vw, 14px)',
-                lineHeight: 1.8,
-                color: 'var(--ink-3)',
-                fontStyle: 'italic',
-                maxWidth: '52ch',
+                fontFamily: 'var(--font-sans)',
+                fontSize: 'clamp(15px, 1.4vw, 17px)',
+                lineHeight: 1.6,
+                color: 'var(--ink-2)',
+                fontWeight: 400,
+                maxWidth: '46ch',
               }}
             >
               {p.incident}
@@ -116,11 +116,11 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                 transition={{ duration: 0.4 }}
                 className="text-pretty"
                 style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 'clamp(14px, 1.2vw, 15px)',
-                  lineHeight: 1.85,
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 'clamp(15px, 1.3vw, 17px)',
+                  lineHeight: 1.7,
                   color: 'var(--ink-2)',
-                  maxWidth: '60ch',
+                  maxWidth: '56ch',
                 }}
               >
                 {para}
@@ -139,7 +139,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
               className="pt-5"
               style={{ borderTop: '1px solid var(--wire)' }}
             >
-              <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>Axiom</div>
+              <div className="type-label mb-4" style={{ color: 'var(--ink-3)' }}>Axiom</div>
               <blockquote className="type-axiom">{p.axiom}</blockquote>
             </motion.div>
 
@@ -152,7 +152,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
               className="space-y-7"
               style={{ borderTop: '1px solid var(--wire)', paddingTop: '20px' }}
             >
-              <div className="type-label" style={{ color: 'var(--ink-4)' }}>Evidence</div>
+              <div className="type-label" style={{ color: 'var(--ink-3)' }}>Evidence</div>
               {p.citations.map((c, i) => {
                 const project = projects.find(proj => proj.id === c.project)
                 return (
@@ -188,12 +188,13 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                     </div>
                     <blockquote
                       style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '13px',
-                        lineHeight: 1.75,
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '14px',
+                        lineHeight: 1.65,
                         color: 'var(--ink-2)',
                         fontStyle: 'italic',
-                        marginBottom: '6px',
+                        fontWeight: 400,
+                        marginBottom: '8px',
                       }}
                     >
                       &ldquo;{c.quote}&rdquo;
@@ -203,7 +204,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                         fontFamily: 'var(--font-mono)',
                         fontSize: '12px',
                         lineHeight: 1.65,
-                        color: 'var(--ink-4)',
+                        color: 'var(--ink-3)',
                       }}
                     >
                       {c.claim}

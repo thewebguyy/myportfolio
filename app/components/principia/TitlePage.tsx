@@ -50,11 +50,18 @@ export function TitlePage() {
             Full-Stack Engineer
           </div>
           <div
-            className="type-label flex items-center gap-2"
-            style={{ color: 'var(--signal)' }}
+            className="flex items-center gap-2"
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '13px',
+              letterSpacing: '0.07em',
+              textTransform: 'uppercase',
+              color: 'var(--signal)',
+              fontWeight: 400,
+            }}
           >
             <span
-              className="inline-block w-[5px] h-[5px] rounded-full"
+              className="inline-block w-[6px] h-[6px] rounded-full flex-shrink-0"
               style={{ background: 'var(--signal)' }}
               aria-hidden="true"
             />
@@ -87,12 +94,13 @@ export function TitlePage() {
               </h1>
               <p
                 style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 'clamp(14px, 1.3vw, 16px)',
-                  lineHeight: 1.82,
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 'clamp(16px, 1.5vw, 18px)',
+                  lineHeight: 1.62,
                   color: 'var(--ink-2)',
-                  maxWidth: '44ch',
+                  maxWidth: '40ch',
                   marginBottom: '40px',
+                  fontWeight: 400,
                 }}
               >
                 I build production systems that stay up. 5+ years shipping
@@ -126,7 +134,6 @@ export function TitlePage() {
                         {proj.name}
                       </span>
                       <span
-                        className="hidden sm:inline truncate"
                         style={{
                           fontFamily: 'var(--font-mono)',
                           fontSize: '11px',
@@ -197,7 +204,7 @@ export function TitlePage() {
                         {p.word}
                       </span>
                       <span
-                        className="hidden sm:block truncate"
+                        className="truncate"
                         style={{
                           fontFamily: 'var(--font-mono)',
                           fontSize: '11px',

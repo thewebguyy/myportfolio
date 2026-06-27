@@ -128,16 +128,17 @@ export function Colophon() {
           >
             <p
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(13px, 1.2vw, 14px)',
-                lineHeight: 1.78,
+                fontFamily: 'var(--font-sans)',
+                fontSize: 'clamp(15px, 1.3vw, 17px)',
+                lineHeight: 1.62,
                 color: 'var(--ink-2)',
                 maxWidth: '38ch',
+                fontWeight: 400,
               }}
             >
-              Fintech infrastructure, marketplace platforms, systems that need
-              to stay correct under concurrency. If you have a hard problem,
-              I want to hear about it.
+              Building a fintech product, a marketplace, or an MVP that needs
+              to be right from day one — I&apos;ve shipped all of it. If you
+              have something that matters, let&apos;s talk.
             </p>
             <div>
               <a href={CONTACT_HREF} className="btn-primary">

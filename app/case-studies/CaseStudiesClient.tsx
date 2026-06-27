@@ -69,8 +69,8 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
             transition={{ delay: index * 0.04, duration: 0.4 }}
             style={{ background: 'var(--paper)' }}
         >
-            <Link href={`/case-studies/${project.id}`} className="group block p-8 h-full transition-colors" style={{ background: 'var(--paper)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper-2)')}
+            <Link href={`/case-studies/${project.id}`} className="group block p-8 h-full" style={{ background: 'var(--paper)', transition: 'background 0.2s ease' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper-3)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'var(--paper)')}
             >
                 <div className="flex justify-between items-start mb-6">

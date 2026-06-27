@@ -61,9 +61,9 @@ export default function BlogPage() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group flex flex-col md:flex-row md:items-start gap-4 md:gap-10 px-[var(--page-gutter)] py-10 transition-colors"
-              style={{ borderBottom: '1px solid var(--wire)', background: 'var(--paper)' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper-2)')}
+              className="group flex flex-col md:flex-row md:items-start gap-4 md:gap-10 px-[var(--page-gutter)] py-10"
+              style={{ borderBottom: '1px solid var(--wire)', background: 'var(--paper)', transition: 'background 0.2s ease' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper-3)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'var(--paper)')}
             >
               <div

@@ -175,7 +175,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                 </ContentBlock>
 
                 {content.whatBroke && !hasPlaceholder(content.whatBroke) && (
-                  <ContentBlock title="Post-Mortem: What Broke">
+                  <ContentBlock title="Post-Mortem: What I Learned">
                     <div className="p-6" style={{ background: 'var(--paper-2)', borderLeft: '3px solid var(--signal)', border: '1px solid var(--wire)' }}>
                       <p style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', lineHeight: 1.8, color: 'var(--ink-2)' }}>{content.whatBroke}</p>
                     </div>
@@ -230,10 +230,10 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             {/* Footer CTA */}
             <div className="p-12 text-center space-y-6" style={{ background: 'var(--paper-2)', border: '1px solid var(--wire)' }}>
               <h2 style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: '28px', letterSpacing: '-0.02em', color: 'var(--ink)' }}>
-                Want to discuss the architecture?
+                Ready to build something like this?
               </h2>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '480px', margin: '0 auto' }}>
-                Let&apos;s talk about implementing these systems, optimization strategies, or how I can help your engineering team.
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '16px', color: 'var(--ink-2)', lineHeight: 1.6, maxWidth: '420px', margin: '0 auto', fontWeight: 400 }}>
+                Whether you need a production backend, a marketplace, or a fintech product built right — let&apos;s talk about your project.
               </p>
               <div className="flex justify-center gap-4 pt-4">
                 <Link href="/#contact" className="btn-primary">Get in touch</Link>
