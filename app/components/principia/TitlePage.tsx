@@ -108,9 +108,10 @@ export function TitlePage() {
                   fontWeight: 400,
                 }}
               >
-                I build production systems that stay up. 5+ years shipping
-                fintech and marketplace infrastructure — including contracted
-                work for Seerbit — across West Africa.
+                I build production systems that stay up. Seven years of client
+                work, a CTO role, and contracted fintech engineering — now
+                focused on production correctness: concurrency, reliability,
+                recovery.
               </p>
 
               {/* Primary CTA — visible above fold, no scroll required */}
