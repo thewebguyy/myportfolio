@@ -18,50 +18,56 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-6 border-b-[0.5px] border-border-wire">
-      <div className="w-full max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire min-h-[70vh] flex items-center justify-center">
-        <div className="max-w-xl w-full border-[0.5px] border-border-wire bg-surface/30 p-8 md:p-12 font-mono text-left">
-          
-          {/* Header */}
-          <div className="font-display font-bold text-[48px] text-text-accent leading-none mb-8">
-            Error
-          </div>
+    <div
+      className="min-h-screen flex items-center justify-center p-6"
+      style={{ background: 'var(--paper)' }}
+    >
+      <div
+        className="max-w-[480px] w-full p-8"
+        style={{ border: '1px solid var(--wire)', background: 'var(--paper-2)' }}
+      >
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontWeight: 700,
+            fontSize: '48px',
+            letterSpacing: '-0.04em',
+            lineHeight: 1,
+            color: 'var(--signal)',
+            marginBottom: '32px',
+          }}
+        >
+          Error
+        </div>
 
-          {/* Dry Systems Log */}
-          <div className="border-[0.5px] border-border-wire bg-background/50 p-6 space-y-3 mb-8 text-[12px] text-text-secondary">
-            <div><span className="text-text-accent font-semibold">STATUS:</span> EXECUTION_FAILURE</div>
-            <div><span className="text-text-accent font-semibold">MESSAGE:</span> {error.message || 'An unexpected client-side error occurred.'}</div>
-            {error.digest && (
-              <div><span className="text-text-accent font-semibold">DIGEST:</span> {error.digest}</div>
-            )}
-            <div><span className="text-text-accent font-semibold">TIMESTAMP:</span> {timestamp || 'unknown'}</div>
-            <div className="pt-2 border-t-[0.5px] border-border-wire text-text-muted">
-              An unhandled exception occurred in the rendering pipeline. The event has been captured.
-            </div>
-          </div>
+        <div
+          className="space-y-3 mb-8 p-5"
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '12px',
+            lineHeight: 1.7,
+            color: 'var(--ink-3)',
+            border: '1px solid var(--wire)',
+            background: 'var(--paper)',
+          }}
+        >
+          <div><span style={{ color: 'var(--signal)' }}>STATUS:</span> {' '}EXECUTION_FAILURE</div>
+          <div><span style={{ color: 'var(--signal)' }}>MESSAGE:</span> {' '}{error.message || 'An unexpected error occurred.'}</div>
+          {error.digest && <div><span style={{ color: 'var(--signal)' }}>DIGEST:</span> {' '}{error.digest}</div>}
+          <div><span style={{ color: 'var(--signal)' }}>TIMESTAMP:</span> {' '}{timestamp || '—'}</div>
+        </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6">
-            <button
-              onClick={() => reset()}
-              className="text-[11px] uppercase tracking-widest text-text-accent hover:text-text-primary transition-colors text-left"
-            >
-              [Retry Operation]
-            </button>
-            <Link 
-              href="/"
-              className="text-[11px] uppercase tracking-widest text-text-primary hover:text-text-accent transition-colors"
-            >
-              [Return to Index]
-            </Link>
-            <a
-              href="mailto:olabodewebdesigns02@gmail.com?subject=Portfolio%20Error%20Report"
-              className="text-[11px] uppercase tracking-widest text-text-primary hover:text-text-accent transition-colors"
-            >
-              [Contact Engineering]
-            </a>
-          </div>
-
+        <div className="flex flex-col gap-4">
+          <button
+            onClick={() => reset()}
+            className="proof-btn proof-btn-primary"
+            style={{ width: '100%', justifyContent: 'center' }}
+          >
+            Retry
+          </button>
+          <Link href="/" className="proof-btn proof-btn-ghost" style={{ width: '100%', justifyContent: 'center' }}>
+            Back to home
+          </Link>
         </div>
       </div>
     </div>
