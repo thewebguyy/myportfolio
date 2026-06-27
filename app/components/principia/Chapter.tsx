@@ -165,7 +165,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                         <Link
                           href={`/case-studies/${project.id}`}
                           className="type-label transition-colors hover:text-[var(--signal)]"
-                          style={{ color: 'var(--signal)' }}
+                          style={{ color: 'var(--ink-2)' }}
                         >
                           {c.projectTitle}
                         </Link>

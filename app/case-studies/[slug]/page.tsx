@@ -53,7 +53,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           <div className="lg:col-span-7 space-y-8">
             <div
               className="inline-flex items-center gap-2 px-3 py-1"
-              style={{ border: '1px solid var(--signal)', color: 'var(--signal)', fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase' }}
+              style={{ border: '1px solid var(--wire)', color: 'var(--ink-3)', fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase' }}
             >
               {project.category}
             </div>

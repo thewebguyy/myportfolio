@@ -80,7 +80,7 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
                             fontSize: '10px',
                             letterSpacing: '0.1em',
                             textTransform: 'uppercase',
-                            color: 'var(--signal)',
+                            color: 'var(--ink-3)',
                         }}
                     >
                         {project.category}

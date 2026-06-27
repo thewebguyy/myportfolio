@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { principles } from '@/lib/principles'
 import { CONTACT_EMAIL, CONTACT_HREF } from '@/lib/constants'
 
 const PROJECTS = [
@@ -24,6 +23,12 @@ const PROJECTS = [
     category: 'Fintech Infrastructure',
     metric: 'Idempotent webhooks · wallet fallback',
   },
+]
+
+const OUTCOMES = [
+  { stat: '0', label: 'double-bookings under concurrent load' },
+  { stat: '350 RPS', label: 'baseline before any optimisation' },
+  { stat: '100%', label: 'duplicate retries return original response' },
 ]
 
 export function TitlePage() {
@@ -77,7 +82,7 @@ export function TitlePage() {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="grid lg:grid-cols-12 gap-10 lg:gap-0 items-start"
           >
-            {/* Left: name + bio + projects */}
+            {/* Left: name + bio + CTA + projects */}
             <div className="lg:col-span-7">
               <h1
                 style={{
@@ -99,15 +104,34 @@ export function TitlePage() {
                   lineHeight: 1.62,
                   color: 'var(--ink-2)',
                   maxWidth: '40ch',
-                  marginBottom: '40px',
+                  marginBottom: '32px',
                   fontWeight: 400,
                 }}
               >
                 I build production systems that stay up. 5+ years shipping
-                fintech and marketplace infrastructure across West Africa —
-                database isolation, payment webhook recovery, real-time
-                WebSocket matching engines.
+                fintech and marketplace infrastructure — including contracted
+                work for Seerbit — across West Africa.
               </p>
+
+              {/* Primary CTA — visible above fold, no scroll required */}
+              <div className="flex flex-wrap items-center gap-4 mb-12">
+                <Link href="#contact" className="btn-primary">
+                  Work together →
+                </Link>
+                <a
+                  href={CONTACT_HREF}
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '13px',
+                    color: 'var(--ink-3)',
+                    transition: 'color 0.15s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
+                >
+                  {CONTACT_EMAIL}
+                </a>
+              </div>
 
               {/* Projects */}
               <div role="list" aria-label="Production projects" style={{ borderTop: '1px solid var(--wire)' }}>
@@ -160,84 +184,52 @@ export function TitlePage() {
               </div>
             </div>
 
-            {/* Right: principles + contact */}
+            {/* Right: outcome stats + contact detail */}
             <div className="lg:col-span-5 lg:pl-16 lg:pt-16">
+              {/* Outcome stats — replaces principles table-of-contents */}
               <div className="mb-10">
                 <div className="type-label mb-5" style={{ color: 'var(--ink-4)' }}>
-                  Engineering principles
+                  Production outcomes
                 </div>
-                <div style={{ borderTop: '1px solid var(--wire)' }} role="list" aria-label="Principles">
-                  {principles.map((p) => (
-                    <a
-                      key={p.id}
-                      href={`#${p.id}`}
-                      role="listitem"
-                      className="group flex items-baseline gap-4 py-[9px]"
+                <div style={{ borderTop: '1px solid var(--wire)' }}>
+                  {OUTCOMES.map((o, i) => (
+                    <div
+                      key={i}
+                      className="py-4"
                       style={{ borderBottom: '1px solid var(--wire)' }}
                     >
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: '10px',
-                          color: 'var(--ink-4)',
-                          fontVariantNumeric: 'tabular-nums',
-                          flexShrink: 0,
-                          letterSpacing: '0.04em',
-                          minWidth: '24px',
-                        }}
-                      >
-                        {p.index}
-                      </span>
-                      <span
+                      <div
                         style={{
                           fontFamily: 'var(--font-sans)',
-                          fontWeight: 600,
-                          fontSize: '13px',
-                          letterSpacing: '-0.01em',
+                          fontWeight: 700,
+                          fontSize: 'clamp(22px, 2.4vw, 30px)',
+                          letterSpacing: '-0.03em',
                           color: 'var(--ink)',
-                          transition: 'color 0.15s',
-                          flexShrink: 0,
-                          minWidth: '68px',
+                          lineHeight: 1.1,
+                          marginBottom: '4px',
                         }}
-                        className="group-hover:text-[var(--signal)]"
                       >
-                        {p.word}
-                      </span>
-                      <span
-                        className="truncate"
+                        {o.stat}
+                      </div>
+                      <div
                         style={{
                           fontFamily: 'var(--font-mono)',
                           fontSize: '11px',
-                          color: 'var(--ink-4)',
-                          lineHeight: 1.5,
+                          color: 'var(--ink-3)',
+                          letterSpacing: '0.03em',
                         }}
                       >
-                        {p.thesis}
-                      </span>
-                    </a>
+                        {o.label}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
 
-              {/* Contact */}
-              <div className="space-y-2">
-                <div className="type-label" style={{ color: 'var(--ink-4)' }}>Contact</div>
-                <a
-                  href={CONTACT_HREF}
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '13px',
-                    color: 'var(--ink-2)',
-                    display: 'block',
-                    transition: 'color 0.15s',
-                    wordBreak: 'break-all',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--signal)')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-2)')}
-                >
-                  {CONTACT_EMAIL}
-                </a>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-4)' }}>
+              {/* Location + contact detail */}
+              <div className="space-y-1">
+                <div className="type-label" style={{ color: 'var(--ink-4)' }}>Location</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--ink-3)' }}>
                   Lagos · Nigeria · Open to remote
                 </div>
               </div>
@@ -257,7 +249,7 @@ export function TitlePage() {
             href="#observe"
             className="type-label flex items-center gap-2 transition-colors"
             style={{ color: 'var(--ink-3)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--signal)')}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
           >
             Read the principles ↓

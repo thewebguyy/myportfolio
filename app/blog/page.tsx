@@ -81,7 +81,7 @@ export default function BlogPage() {
               <div className="flex-1">
                 <div
                   className="type-label mb-3"
-                  style={{ color: 'var(--signal)' }}
+                  style={{ color: 'var(--ink-3)' }}
                 >
                   {post.category}
                 </div>

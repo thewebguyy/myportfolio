@@ -171,7 +171,7 @@ export function PrincipiaNav() {
                       el.style.borderColor = 'var(--ink)'
                     }}
                   >
-                    Hire me →
+                    Work together →
                   </Link>
                 </motion.div>
               )}
@@ -293,7 +293,7 @@ export function PrincipiaNav() {
               onClick={() => setMenuOpen(false)}
               className="btn-primary w-full justify-center"
             >
-              Hire me →
+              Work together →
             </Link>
             <a
               href={CONTACT_HREF}

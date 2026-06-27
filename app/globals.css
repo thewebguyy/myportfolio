@@ -293,13 +293,14 @@
 /* ── Reading progress bar ───────────────────────────────── */
 .reading-progress {
   position: fixed;
-  top: 0;
+  top: 56px;
   left: 0;
   right: 0;
-  height: 2px;
-  background: var(--signal);
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.18;
   transform-origin: left;
-  z-index: 51;
+  z-index: 49;
   pointer-events: none;
 }
 

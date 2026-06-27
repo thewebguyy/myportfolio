@@ -2,96 +2,19 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { blogPosts } from '@/lib/blog'
 import { CONTACT_HREF } from '@/lib/constants'
 
 export function Colophon() {
-  const post = blogPosts[0]
-
   return (
     <section
       id="contact"
-      aria-label="Contact and writing"
+      aria-label="Contact"
       style={{ background: 'var(--paper)', borderTop: '1px solid var(--wire)' }}
     >
       <div
         className="max-w-[1440px] mx-auto"
         style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)' }}
       >
-        {/* Writing */}
-        {post && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="px-[var(--page-gutter)] py-12 lg:py-16 grid grid-cols-12 gap-8 lg:gap-12"
-            style={{ borderBottom: '1px solid var(--wire)' }}
-          >
-            <div className="col-span-12 lg:col-span-4">
-              <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>Long-form</div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontWeight: 600,
-                  fontSize: 'clamp(20px, 2.4vw, 30px)',
-                  lineHeight: 1.15,
-                  letterSpacing: '-0.02em',
-                  color: 'var(--ink)',
-                }}
-              >
-                One piece<br />worth your time.
-              </p>
-            </div>
-            <div className="col-span-12 lg:col-span-8">
-              <Link
-                href={`/blog/${post.slug}`}
-                className="group flex items-baseline gap-6 py-5 transition-colors"
-                style={{ borderTop: '1px solid var(--wire)', borderBottom: '1px solid var(--wire)' }}
-              >
-                <span
-                  className="type-label flex-shrink-0"
-                  style={{ color: 'var(--ink-4)', fontVariantNumeric: 'tabular-nums' }}
-                >
-                  01
-                </span>
-                <div className="flex-1 min-w-0">
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontWeight: 500,
-                      fontSize: 'clamp(16px, 1.8vw, 20px)',
-                      letterSpacing: '-0.01em',
-                      color: 'var(--ink)',
-                      transition: 'color 0.15s',
-                      display: 'block',
-                    }}
-                    className="group-hover:text-[var(--signal)]"
-                  >
-                    {post.title}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '12px',
-                      color: 'var(--ink-4)',
-                      display: 'block',
-                      marginTop: '4px',
-                    }}
-                  >
-                    {post.readTime} min read · {post.category}
-                  </span>
-                </div>
-                <span
-                  className="type-label flex-shrink-0 transition-colors"
-                  style={{ color: 'var(--ink-4)' }}
-                >
-                  Read →
-                </span>
-              </Link>
-            </div>
-          </motion.div>
-        )}
-
         {/* Contact */}
         <div className="px-[var(--page-gutter)] py-16 lg:py-24 grid grid-cols-12 items-end gap-8 lg:gap-12">
           <motion.div
@@ -114,9 +37,9 @@ export function Colophon() {
                 color: 'var(--ink)',
               }}
             >
-              Let&apos;s talk<br />
-              about the<br />
-              hard problem.
+              You have a<br />
+              problem.<br />
+              Let&apos;s solve it.
             </h2>
           </motion.div>
           <motion.div
@@ -136,9 +59,9 @@ export function Colophon() {
                 fontWeight: 400,
               }}
             >
-              Building a fintech product, a marketplace, or an MVP that needs
-              to be right from day one — I&apos;ve shipped all of it. If you
-              have something that matters, let&apos;s talk.
+              Payment systems that fail under retry. Marketplaces that can&apos;t
+              scale. Booking systems that double-charge. These are solvable
+              problems. I&apos;ve solved all of them in production.
             </p>
             <div>
               <a href={CONTACT_HREF} className="btn-primary">
@@ -187,6 +110,15 @@ export function Colophon() {
                 >
                   X
                 </a>
+                <Link
+                  href="/blog"
+                  className="transition-colors"
+                  style={{ color: 'inherit' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
+                >
+                  Writing
+                </Link>
               </div>
             </div>
           </motion.div>
