@@ -32,9 +32,9 @@ export function Colophon() {
             className="grid grid-cols-12 gap-12"
           >
             <div className="col-span-12 lg:col-span-4">
-              <div className="type-label mb-6" style={{ color: 'var(--ink-4)' }}>Further Reading</div>
+              <div className="type-label mb-6" style={{ color: 'var(--ink-4)' }}>Long-form</div>
               <h2 className="type-section" style={{ fontSize: 'clamp(24px, 3vw, 36px)' }}>
-                The thinking<br />continues.
+                One piece<br />worth reading.
               </h2>
             </div>
             <div className="col-span-12 lg:col-span-8">
@@ -127,7 +127,7 @@ export function Colophon() {
               I want to hear about it.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="mailto:support@mycardglobal.com" className="btn-primary">Email Olabode</a>
+              <a href="mailto:olabode@mycardglobal.com" className="btn-primary">Email Olabode</a>
             </div>
             <div
               className="pt-6 space-y-2"

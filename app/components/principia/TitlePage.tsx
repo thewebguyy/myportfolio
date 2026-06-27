@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { principles } from '@/lib/principles'
 
 const PROJECTS = [
   {
@@ -29,7 +30,7 @@ export function TitlePage() {
     <section
       id="top"
       aria-label="Introduction"
-      className="relative min-h-screen flex flex-col"
+      className="relative min-h-[100dvh] flex flex-col"
       style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
     >
       <div
@@ -41,10 +42,10 @@ export function TitlePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="pt-32 pb-16 flex items-center justify-between"
+          className="pt-20 lg:pt-32 pb-10 lg:pb-14 flex items-center justify-between"
           style={{ borderBottom: '1px solid var(--wire)' }}
         >
-          <div className="type-label">
+          <div className="type-label" style={{ color: 'var(--ink-4)' }}>
             Engineering Principia — Vol. I
           </div>
           <div
@@ -61,27 +62,32 @@ export function TitlePage() {
         </motion.div>
 
         {/* Title block */}
-        <div className="flex-1 flex flex-col justify-center py-24 lg:py-32">
+        <div className="flex-1 flex flex-col justify-center py-10 lg:py-28">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="grid lg:grid-cols-12 gap-16 lg:gap-0 items-start"
+            className="grid lg:grid-cols-12 gap-12 lg:gap-0 items-start"
           >
-            {/* Left: name + role + what was built */}
+            {/* Left: name + role + projects */}
             <div className="lg:col-span-7">
               <div
-                className="type-label mb-6"
+                className="type-label mb-5"
                 style={{ color: 'var(--ink-4)' }}
               >
                 Full-Stack Engineer · Lagos, Nigeria
               </div>
-              <h1 className="display mb-10" style={{ lineHeight: 1.02 }}>
+              <h1 className="display mb-8" style={{ lineHeight: 1.02 }}>
                 Olabode<br />Olusegun.
               </h1>
               <p
-                className="type-thesis max-w-[480px] mb-16"
-                style={{ color: 'var(--ink-3)' }}
+                className="max-w-[480px] mb-10 lg:mb-14"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 'clamp(13px, 1.4vw, 15px)',
+                  lineHeight: 1.78,
+                  color: 'var(--ink-3)',
+                }}
               >
                 I build production systems that stay up. Three years shipping
                 fintech and marketplace infrastructure across West Africa —
@@ -93,7 +99,6 @@ export function TitlePage() {
               <div
                 role="list"
                 aria-label="Production projects"
-                className="space-y-0"
                 style={{ borderTop: '1px solid var(--wire)' }}
               >
                 {PROJECTS.map((proj) => (
@@ -101,29 +106,31 @@ export function TitlePage() {
                     key={proj.id}
                     href={`/case-studies/${proj.id}`}
                     role="listitem"
-                    className="flex items-baseline justify-between py-5 group"
+                    className="flex items-baseline justify-between py-4 lg:py-5 group"
                     style={{ borderBottom: '1px solid var(--wire)' }}
                   >
-                    <div>
+                    <div className="flex items-baseline gap-3 min-w-0 mr-4">
                       <span
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontWeight: 600,
-                          fontSize: '18px',
+                          fontSize: 'clamp(15px, 1.5vw, 18px)',
                           color: 'var(--ink)',
                           transition: 'color 0.15s',
+                          flexShrink: 0,
                         }}
                         className="group-hover:text-[var(--signal)]"
                       >
                         {proj.name}
                       </span>
                       <span
+                        className="hidden sm:inline"
                         style={{
                           fontFamily: 'var(--font-mono)',
                           fontSize: '11px',
                           color: 'var(--ink-4)',
                           letterSpacing: '0.08em',
-                          marginLeft: '12px',
+                          whiteSpace: 'nowrap',
                         }}
                       >
                         {proj.category}
@@ -135,6 +142,8 @@ export function TitlePage() {
                         fontSize: '11px',
                         color: 'var(--ink-3)',
                         letterSpacing: '0.04em',
+                        flexShrink: 0,
+                        whiteSpace: 'nowrap',
                       }}
                     >
                       {proj.metric}
@@ -144,55 +153,77 @@ export function TitlePage() {
               </div>
             </div>
 
-            {/* Right: what the Principia is */}
-            <div className="lg:col-span-5 lg:pl-16 lg:pt-24">
-              <div
-                className="p-8"
-                style={{ border: '1px solid var(--wire)', background: 'var(--paper-2)' }}
-              >
-                <div className="type-label mb-6" style={{ color: 'var(--ink-4)' }}>
-                  About this document
+            {/* Right: chapter list + contact */}
+            <div className="lg:col-span-5 lg:pl-16 lg:pt-20">
+              {/* Chapter reference */}
+              <div className="mb-10">
+                <div className="type-label mb-5" style={{ color: 'var(--ink-4)' }}>
+                  Eight principles
                 </div>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '13px',
-                    lineHeight: 1.78,
-                    color: 'var(--ink-2)',
-                    marginBottom: '20px',
-                  }}
+                <div
+                  style={{ borderTop: '1px solid var(--wire)' }}
+                  role="list"
+                  aria-label="Chapter list"
                 >
-                  This is a record of eight engineering principles I derived
-                  from production failures, load tests, and architectural rewrites
-                  across three systems — Servia, ServiceBridge, and the
-                  Subscription Manager.
-                </p>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '13px',
-                    lineHeight: 1.78,
-                    color: 'var(--ink-3)',
-                    marginBottom: '28px',
-                  }}
-                >
-                  Each chapter opens with a production incident. The principle
-                  follows from the failure — not from first principles, but from
-                  what production actually taught me.
-                </p>
-                <Link
-                  href="#index"
-                  className="type-label flex items-center gap-2 transition-colors"
-                  style={{ color: 'var(--signal)' }}
-                >
-                  Read the eight principles ↓
-                </Link>
+                  {principles.map((p) => (
+                    <a
+                      key={p.id}
+                      href={`#${p.id}`}
+                      role="listitem"
+                      className="group flex items-baseline gap-4 py-[10px] transition-colors"
+                      style={{ borderBottom: '1px solid var(--wire)' }}
+                    >
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '10px',
+                          color: 'var(--ink-4)',
+                          fontVariantNumeric: 'tabular-nums',
+                          flexShrink: 0,
+                          letterSpacing: '0.06em',
+                        }}
+                      >
+                        {p.index}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontWeight: 600,
+                          fontSize: '14px',
+                          letterSpacing: '-0.01em',
+                          color: 'var(--ink)',
+                          transition: 'color 0.15s',
+                          flexShrink: 0,
+                          minWidth: '72px',
+                        }}
+                        className="group-hover:text-[var(--signal)]"
+                      >
+                        {p.word}
+                      </span>
+                      <span
+                        className="hidden sm:block"
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '11px',
+                          color: 'var(--ink-4)',
+                          lineHeight: 1.5,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {p.thesis}
+                      </span>
+                    </a>
+                  ))}
+                </div>
               </div>
 
-              <div className="mt-8 space-y-3">
+              {/* Contact */}
+              <div className="space-y-3">
                 <div className="type-label" style={{ color: 'var(--ink-4)' }}>Contact</div>
                 <a
-                  href="mailto:support@mycardglobal.com"
+                  href="mailto:olabode@mycardglobal.com"
                   style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '13px',
@@ -203,7 +234,7 @@ export function TitlePage() {
                   onMouseEnter={e => (e.currentTarget.style.color = 'var(--signal)')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-2)')}
                 >
-                  support@mycardglobal.com
+                  olabode@mycardglobal.com
                 </a>
                 <div
                   style={{
@@ -224,21 +255,21 @@ export function TitlePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="pb-12 flex items-center justify-between"
-          style={{ borderTop: '1px solid var(--wire)', paddingTop: '24px' }}
+          className="pb-10 lg:pb-12 flex items-center justify-between"
+          style={{ borderTop: '1px solid var(--wire)', paddingTop: '20px' }}
         >
-          <Link
-            href="#index"
+          <a
+            href="#observe"
             className="type-label flex items-center gap-3 transition-colors"
             style={{ color: 'var(--ink-3)' }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--signal)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
           >
-            <span>Eight chapters below</span>
+            <span>Read the principles</span>
             <span aria-hidden>↓</span>
-          </Link>
+          </a>
           <div className="type-label" style={{ color: 'var(--ink-4)' }}>
-            2026 · First Edition
+            © 2026 Olabode Olusegun
           </div>
         </motion.div>
       </div>

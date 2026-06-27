@@ -4,6 +4,7 @@ import { Space_Grotesk, Space_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { PrincipiaNav } from './components/principia/PrincipiaNav'
+import { ReadingProgress } from './components/principia/ReadingProgress'
 import { FloatingChatbot } from './components/ai/FloatingChatbot'
 import './globals.css'
 
@@ -106,6 +107,7 @@ export default function RootLayout({
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:font-mono focus:text-[12px] focus:outline-none focus:ring-1 focus:ring-primary-light">
           Skip to content
         </a>
+        <ReadingProgress />
         <PrincipiaNav />
 
         <main id="main-content">

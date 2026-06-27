@@ -345,9 +345,43 @@
 }
 .blog-nav-back:hover { color: var(--signal); }
 
+/* ── Skip-to-content link ───────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--page-gutter);
+  z-index: 100;
+  padding: 10px 20px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: top 0.15s;
+}
+.skip-link:focus {
+  top: 8px;
+}
+
+/* ── Reading progress bar ───────────────────────────────── */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--signal);
+  transform-origin: left;
+  z-index: 51;
+  pointer-events: none;
+}
+
 /* ── ChapterIndex hover arrow ───────────────────────────── */
 .chapter-row:hover .chapter-arrow { opacity: 1; color: var(--signal); }
 .chapter-row:focus-within .chapter-arrow { opacity: 1; color: var(--signal); }
+/* Always visible at rest — subtle signal of interactivity */
+.chapter-arrow { opacity: 0.3; }
 
 /* ── Global focus-visible ───────────────────────────────── */
 :focus-visible {
@@ -412,3 +446,38 @@ a:focus-visible {
 ::-webkit-scrollbar-track { background: var(--paper-2); }
 ::-webkit-scrollbar-thumb { background: var(--wire); }
 ::-webkit-scrollbar-thumb:hover { background: var(--ink-3); }
+
+/* ── Safe-area insets ───────────────────────────────────── */
+/* Already handled above for header, keep for completeness */
+
+/* ── Print stylesheet ───────────────────────────────────── */
+@media print {
+  header[role="banner"],
+  .reading-progress,
+  .skip-link { display: none !important; }
+
+  body {
+    background: white;
+    color: black;
+    font-size: 12pt;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  section { break-inside: avoid; page-break-inside: avoid; }
+  h1, h2, .type-chapter { color: black; }
+  .type-label { color: #666; }
+  a { color: black; text-decoration: none; }
+
+  /* Hide interactive proof widgets */
+  [class*="proof-btn"],
+  button { display: none !important; }
+
+  .max-w-\[1440px\] { max-width: 100%; border: none !important; }
+  [style*="border-left: 1px solid var(--wire)"],
+  [style*="border-right: 1px solid var(--wire)"] {
+    border-left: none !important;
+    border-right: none !important;
+  }
+}

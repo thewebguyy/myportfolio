@@ -131,33 +131,35 @@ export function PrincipiaNav() {
             ))}
           </div>
 
-          {/* Right: hire CTA + mobile menu */}
+          {/* Right: hire CTA (only shown once scrolled) + mobile menu */}
           <div className="flex items-center gap-6">
-            <Link
-              href="#contact"
-              className="hidden md:inline-flex items-center px-5 py-2 transition-all duration-150"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                background: 'var(--ink)',
-                color: 'var(--paper)',
-                border: '1px solid var(--ink)',
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.background = 'var(--signal)'
-                el.style.borderColor = 'var(--signal)'
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.background = 'var(--ink)'
-                el.style.borderColor = 'var(--ink)'
-              }}
-            >
-              Hire me →
-            </Link>
+            {scrolled && (
+              <Link
+                href="#contact"
+                className="hidden md:inline-flex items-center px-5 py-2 transition-all duration-150"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  background: 'var(--ink)',
+                  color: 'var(--paper)',
+                  border: '1px solid var(--ink)',
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.background = 'var(--signal)'
+                  el.style.borderColor = 'var(--signal)'
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.background = 'var(--ink)'
+                  el.style.borderColor = 'var(--ink)'
+                }}
+              >
+                Hire me →
+              </Link>
+            )}
             <button
               className="lg:hidden"
               style={{ color: 'var(--ink-3)' }}
