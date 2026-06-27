@@ -4,7 +4,7 @@ import { Space_Grotesk, Space_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { PrincipiaNav } from './components/principia/PrincipiaNav'
-import { FloatingChatbot } from './components/ai/FloatingChatbot'
+import { ReadingProgress } from './components/principia/ReadingProgress'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -28,16 +28,16 @@ export const metadata: Metadata = {
     default: 'Olabode Olusegun — Full-Stack Engineer',
     template: '%s | Olabode Olusegun'
   },
-  description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
-  keywords: ['Full-Stack Engineer', 'Fintech', 'Marketplace', 'Design Engineer', 'Lagos', 'Nigeria', 'React', 'Node.js', 'TypeScript', 'Engineering'],
+  description: 'Olabode Olusegun — full-stack engineer with 5+ years building fintech and marketplace infrastructure across West Africa.',
+  keywords: ['Full-Stack Engineer', 'Fintech', 'Marketplace', 'Lagos', 'Nigeria', 'React', 'Node.js', 'TypeScript', 'PostgreSQL', 'WebSockets'],
   authors: [{ name: 'Olabode Olusegun' }],
   creator: 'Olabode Olusegun',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://olabodeolusegun.com',
-    title: 'Olabode Olusegun - Systems Architect',
-    description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
+    title: 'Olabode Olusegun — Full-Stack Engineer',
+    description: 'Olabode Olusegun — full-stack engineer with 5+ years building fintech and marketplace infrastructure across West Africa.',
     siteName: 'Olabode Olusegun',
     images: [
       {
@@ -50,8 +50,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Olabode Olusegun - Systems Architect',
-    description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
+    title: 'Olabode Olusegun — Full-Stack Engineer',
+    description: 'Olabode Olusegun — full-stack engineer with 5+ years building fintech and marketplace infrastructure across West Africa.',
     creator: '@BodeBillions',
     images: ['/twitter-image']
   },
@@ -107,6 +107,7 @@ export default function RootLayout({
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:font-mono focus:text-[12px] focus:outline-none focus:ring-1 focus:ring-primary-light">
           Skip to content
         </a>
+        <ReadingProgress />
         <PrincipiaNav />
 
         <main id="main-content">
@@ -115,8 +116,7 @@ export default function RootLayout({
 
         <Analytics />
         <SpeedInsights />
-        <FloatingChatbot />
       </body>
     </html>
   )
-}
+}

@@ -32,7 +32,7 @@ export default async function Image() {
               fontFamily: 'monospace',
             }}
           >
-            Fintech & AI Infrastructure
+            Full-Stack Engineer · Lagos, Nigeria
           </div>
           
           <div
@@ -54,7 +54,7 @@ export default async function Image() {
               lineHeight: 1.4,
             }}
           >
-            Full-stack engineer building production systems for African fintech and marketplace platforms.
+            5+ years shipping fintech and marketplace infrastructure across West Africa.
           </div>
         </div>
 
@@ -74,7 +74,7 @@ export default async function Image() {
               fontFamily: 'monospace',
             }}
           >
-            Lagos, NG · Working Globally
+            olabodeolusegun.com
           </div>
         </div>
       </div>

@@ -2,144 +2,123 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { blogPosts } from '@/lib/blog'
+import { CONTACT_HREF } from '@/lib/constants'
 
 export function Colophon() {
-  // Only show posts directly tied to Olabode's production work
-  const recentPosts = blogPosts.filter(p =>
-    p.slug === 'websocket-matching-layer'
-  )
-
   return (
     <section
       id="contact"
-      aria-label="Colophon and contact"
+      aria-label="Contact"
       style={{ background: 'var(--paper)', borderTop: '1px solid var(--wire)' }}
     >
       <div
         className="max-w-[1440px] mx-auto"
         style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)' }}
       >
-        {/* Writing — the evidence that thinking is ongoing */}
-        <div
-          className="px-[var(--page-gutter)] py-16"
-          style={{ borderBottom: '1px solid var(--wire)' }}
-        >
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-12 gap-12"
-          >
-            <div className="col-span-12 lg:col-span-4">
-              <div className="type-label mb-6" style={{ color: 'var(--ink-4)' }}>Further Reading</div>
-              <h2 className="type-section" style={{ fontSize: 'clamp(24px, 3vw, 36px)' }}>
-                The thinking<br />continues.
-              </h2>
-            </div>
-            <div className="col-span-12 lg:col-span-8">
-              <div className="space-y-0">
-                {recentPosts.map((post, i) => (
-                  <Link
-                    key={post.slug}
-                    href={`/blog/${post.slug}`}
-                    className="group flex items-baseline gap-6 py-5 transition-colors"
-                    style={{ borderBottom: '1px solid var(--wire)' }}
-                  >
-                    <span
-                      className="type-label flex-shrink-0"
-                      style={{ color: 'var(--ink-4)', fontVariantNumeric: 'tabular-nums' }}
-                    >
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontWeight: 500,
-                        fontSize: 'clamp(16px, 1.8vw, 20px)',
-                        letterSpacing: '-0.01em',
-                        color: 'var(--ink)',
-                        transition: 'color 0.15s',
-                      }}
-                      className="group-hover:text-[var(--signal)]"
-                    >
-                      {post.title}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-              <div className="pt-6">
-                <Link
-                  href="/blog"
-                  className="type-label"
-                  style={{ color: 'var(--signal)' }}
-                >
-                  All writing →
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Contact — the call */}
-        <div className="px-[var(--page-gutter)] py-24 grid grid-cols-12 items-end gap-12">
+        {/* Contact */}
+        <div className="px-[var(--page-gutter)] py-16 lg:py-24 grid grid-cols-12 items-end gap-8 lg:gap-12">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="col-span-12 lg:col-span-7"
           >
-            <div className="type-label mb-8" style={{ color: 'var(--ink-4)' }}>
+            <div className="type-label mb-6 lg:mb-8" style={{ color: 'var(--ink-4)' }}>
               Available for work · Lagos / Remote
             </div>
             <h2
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontWeight: 700,
-                fontSize: 'clamp(36px, 6vw, 80px)',
-                lineHeight: 0.95,
+                fontSize: 'clamp(32px, 5.5vw, 76px)',
+                lineHeight: 0.96,
                 letterSpacing: '-0.04em',
                 color: 'var(--ink)',
               }}
             >
-              Let&apos;s talk<br />
-              about the<br />
-              hard problem.
+              You have a<br />
+              problem.<br />
+              Let&apos;s solve it.
             </h2>
           </motion.div>
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="col-span-12 lg:col-span-5 space-y-8"
+            transition={{ delay: 0.15, duration: 0.5 }}
+            className="col-span-12 lg:col-span-5 space-y-6 lg:space-y-8"
           >
             <p
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '14px',
-                lineHeight: 1.75,
+                fontFamily: 'var(--font-sans)',
+                fontSize: 'clamp(15px, 1.3vw, 17px)',
+                lineHeight: 1.62,
                 color: 'var(--ink-2)',
+                maxWidth: '38ch',
+                fontWeight: 400,
               }}
             >
-              Fintech infrastructure, marketplace platforms, systems that need
-              to stay correct under concurrency. If you have a hard problem,
-              I want to hear about it.
+              Payment systems that fail under retry. Marketplaces that can&apos;t
+              scale. Booking systems that double-charge. These are solvable
+              problems. I&apos;ve solved all of them in production.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <a href="mailto:support@mycardglobal.com" className="btn-primary">Email Olabode</a>
+            <div>
+              <a href={CONTACT_HREF} className="btn-primary">
+                Email Olabode
+              </a>
             </div>
             <div
-              className="pt-6 space-y-2"
-              style={{ borderTop: '1px solid var(--wire)' }}
+              className="space-y-3"
+              style={{ borderTop: '1px solid var(--wire)', paddingTop: '24px' }}
             >
               <div className="type-label" style={{ color: 'var(--ink-4)' }}>Elsewhere</div>
               <div
+                className="flex gap-6"
                 style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--ink-3)' }}
               >
-                <a href="https://github.com/thewebguyy" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--ink)] transition-colors mr-6">GitHub</a>
-                <a href="https://linkedin.com/in/thewebguyy" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--ink)] transition-colors mr-6">LinkedIn</a>
-                <a href="https://x.com/BodeBillions" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--ink)] transition-colors">X</a>
+                <a
+                  href="https://github.com/thewebguyy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors"
+                  style={{ color: 'inherit' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
+                >
+                  GitHub
+                </a>
+                <a
+                  href="https://linkedin.com/in/thewebguyy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors"
+                  style={{ color: 'inherit' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href="https://x.com/BodeBillions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors"
+                  style={{ color: 'inherit' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
+                >
+                  X
+                </a>
+                <Link
+                  href="/blog"
+                  className="transition-colors"
+                  style={{ color: 'inherit' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
+                >
+                  Writing
+                </Link>
               </div>
             </div>
           </motion.div>
