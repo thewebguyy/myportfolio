@@ -2,9 +2,13 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
-import { getBlogPostBySlug } from '@/lib/blog'
+import { blogPosts, getBlogPostBySlug } from '@/lib/blog'
 
-export const dynamic = 'force-dynamic'
+export async function generateStaticParams() {
+  return blogPosts.map((post) => ({
+    slug: post.slug,
+  }))
+}
 
 export async function generateMetadata({
   params

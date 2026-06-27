@@ -1,5 +1,0 @@
-Jane Smith — Senior Software Engineer
-5 years experience in React, TypeScript, and Node.js
-Built and scaled distributed payment systems handling $2M monthly volume
-Led backend architecture for a multi-tenant SaaS platform with 99.5% uptime
-Open source contributor: maintainer of a popular React hooks library with 3k GitHub stars

@@ -8,17 +8,15 @@ import { NextResponse } from 'next/server'
  * @route GET /api/health
  * @returns { status: string, timestamp: string }
  */
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
-    // Check if OpenAI API key is configured
-    const hasOpenAIKey = !!process.env.OPENAI_API_KEY
-
     return NextResponse.json({
       status: 'healthy',
       timestamp: new Date().toISOString(),
       services: {
         api: 'operational',
-        openai: hasOpenAIKey ? 'configured' : 'not-configured',
       },
       version: '1.0.0',
     })
