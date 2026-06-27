@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.98.0",
-    "@heroicons/react": "^2.1.0",
     "@tailwindcss/typography": "^0.5.10",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.3",

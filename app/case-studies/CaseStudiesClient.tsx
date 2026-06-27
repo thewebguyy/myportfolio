@@ -4,44 +4,54 @@ import React from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Project } from '@/lib/projects'
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 
 export function CaseStudiesClient({ sortedProjects }: {
     sortedProjects: Project[]
 }) {
     return (
-        <div className="min-h-screen bg-background px-6 lg:px-8">
-            <div className="w-full max-w-[1440px] mx-auto border-x-[0.5px] border-border-wire min-h-screen">
+        <div className="min-h-screen" style={{ background: 'var(--paper)' }}>
+            <div className="max-w-[1440px] mx-auto" style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)', minHeight: '100vh' }}>
                 {/* Header */}
-                <section className="pt-32 pb-16 px-8 lg:px-16 border-b-[0.5px] border-border-wire">
-                    <Link
-                        href="/"
-                        className="inline-flex items-center gap-2 text-text-secondary hover:text-primary 
-                                 transition-colors mb-8 text-[11px] font-mono uppercase tracking-widest"
-                    >
-                        <ArrowLeftIcon className="w-3.5 h-3.5" />
-                        Exit to Terminal
+                <section
+                    className="pt-32 pb-16 px-[var(--page-gutter)]"
+                    style={{ borderBottom: '1px solid var(--wire)' }}
+                >
+                    <Link href="/" className="blog-nav-back inline-flex items-center gap-2 mb-10 block">
+                        ← Back to home
                     </Link>
 
-                    <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-text-primary">
-                        Strategic <span className="gradient-text">Archive</span>
+                    <div className="type-label mb-6" style={{ color: 'var(--ink-4)' }}>Work</div>
+                    <h1
+                        style={{
+                            fontFamily: 'var(--font-sans)',
+                            fontWeight: 700,
+                            fontSize: 'clamp(40px, 6vw, 80px)',
+                            lineHeight: 0.96,
+                            letterSpacing: '-0.04em',
+                            color: 'var(--ink)',
+                        }}
+                    >
+                        Case Studies
                     </h1>
-                    <p className="text-[16px] text-text-secondary max-w-3xl font-mono leading-relaxed">
-                        A collection of enterprise audits, operational strategies, and high-impact technical implementations.
-                        Each case study represents a production system built and shipped under real constraints.
+                    <p
+                        style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '14px',
+                            lineHeight: 1.78,
+                            color: 'var(--ink-2)',
+                            maxWidth: '52ch',
+                            marginTop: '24px',
+                        }}
+                    >
+                        Production systems built and shipped under real constraints. Each case study documents the problem, the decision, and what broke.
                     </p>
                 </section>
 
-                {/* Technical Implementation Archive */}
-                <section className="py-20 px-8 lg:px-16">
-                    <div className="flex items-center gap-4 mb-12">
-                        <h2 className="text-[11px] font-mono text-text-primary uppercase tracking-[0.4em]">Technical Implementations</h2>
-                        <div className="flex-1 h-[0.5px] bg-border-wire" />
-                    </div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Project list */}
+                <section className="px-[var(--page-gutter)] py-16">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: 'var(--wire)' }}>
                         {sortedProjects.map((project, index) => (
-                            <TechnicalCard key={project.id} project={project} index={index} />
+                            <ProjectCard key={project.id} project={project} index={index} />
                         ))}
                     </div>
                 </section>
@@ -50,32 +60,88 @@ export function CaseStudiesClient({ sortedProjects }: {
     )
 }
 
-function TechnicalCard({ project, index }: { project: Project, index: number }) {
+function ProjectCard({ project, index }: { project: Project, index: number }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.05 }}
-            className="bg-surface p-6 border-[0.5px] border-border-wire hover:border-primary/40 transition-all group"
+            transition={{ delay: index * 0.04, duration: 0.4 }}
+            style={{ background: 'var(--paper)' }}
         >
-            <div className="flex justify-between items-start mb-4">
-                <span className="text-[10px] font-mono text-primary uppercase tracking-widest">{project.category}</span>
-                <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">{project.year}</span>
-            </div>
-            <h4 className="text-xl font-display font-semibold text-text-primary mb-3 group-hover:text-primary transition-colors">{project.title}</h4>
-            <p className="text-sm text-text-secondary mb-6 line-clamp-2 leading-relaxed">{project.description}</p>
-            <div className="flex flex-wrap gap-2 mb-8">
-                {project.tech.slice(0, 3).map(t => (
-                    <span key={t} className="text-[9px] bg-surface-2 px-2 py-1 border-[0.5px] border-border-wire text-text-secondary uppercase font-mono tracking-widest">{t}</span>
-                ))}
-            </div>
-            <Link 
-                href={`/case-studies/${project.id}`}
-                className="inline-flex items-center gap-2 text-[10px] font-mono text-text-primary uppercase tracking-widest group/link hover:text-primary transition-colors"
+            <Link href={`/case-studies/${project.id}`} className="group block p-8 h-full transition-colors" style={{ background: 'var(--paper)' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper-2)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'var(--paper)')}
             >
-                View Implementation
-                <ArrowRightIcon className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                <div className="flex justify-between items-start mb-6">
+                    <span
+                        style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '10px',
+                            letterSpacing: '0.1em',
+                            textTransform: 'uppercase',
+                            color: 'var(--signal)',
+                        }}
+                    >
+                        {project.category}
+                    </span>
+                    <span
+                        style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '10px',
+                            color: 'var(--ink-4)',
+                            letterSpacing: '0.06em',
+                        }}
+                    >
+                        {project.year}
+                    </span>
+                </div>
+                <h3
+                    className="mb-3"
+                    style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontWeight: 600,
+                        fontSize: 'clamp(18px, 2vw, 22px)',
+                        letterSpacing: '-0.02em',
+                        lineHeight: 1.15,
+                        color: 'var(--ink)',
+                    }}
+                >
+                    {project.title}
+                </h3>
+                <p
+                    className="mb-8"
+                    style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '13px',
+                        lineHeight: 1.72,
+                        color: 'var(--ink-3)',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                    } as React.CSSProperties}
+                >
+                    {project.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-8">
+                    {project.tech.slice(0, 3).map(t => (
+                        <span key={t} className="pill-tag">{t}</span>
+                    ))}
+                </div>
+                <span
+                    style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '10px',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        color: 'var(--ink-3)',
+                        transition: 'color 0.15s',
+                    }}
+                    className="group-hover:text-[var(--signal)]"
+                >
+                    Read case study →
+                </span>
             </Link>
         </motion.div>
     )

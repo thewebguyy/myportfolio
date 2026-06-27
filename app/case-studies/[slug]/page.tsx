@@ -16,7 +16,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getProjectById } from '@/lib/projects'
-import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { caseStudyContent } from '@/lib/case-study-content'
 import ServiceBridgeArchitecture from '@/app/components/visuals/ServiceBridgeArchitecture'
 import ServiaArchitecture from '@/app/components/visuals/ServiaArchitecture'
@@ -52,8 +51,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
       >
         <Link href="/#work" className="blog-nav-back flex items-center gap-2">
-          <ArrowLeftIcon className="w-4 h-4" />
-          Back to work
+          ← Back to work
         </Link>
         <span
           style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--signal)' }}

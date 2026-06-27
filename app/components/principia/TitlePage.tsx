@@ -106,10 +106,10 @@ export function TitlePage() {
                     key={proj.id}
                     href={`/case-studies/${proj.id}`}
                     role="listitem"
-                    className="flex items-baseline justify-between py-4 lg:py-5 group"
+                    className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-4 lg:py-5 group gap-1 sm:gap-0"
                     style={{ borderBottom: '1px solid var(--wire)' }}
                   >
-                    <div className="flex items-baseline gap-3 min-w-0 mr-4">
+                    <div className="flex items-baseline gap-3">
                       <span
                         style={{
                           fontFamily: 'var(--font-sans)',
@@ -130,7 +130,6 @@ export function TitlePage() {
                           fontSize: '11px',
                           color: 'var(--ink-4)',
                           letterSpacing: '0.08em',
-                          whiteSpace: 'nowrap',
                         }}
                       >
                         {proj.category}
@@ -142,8 +141,6 @@ export function TitlePage() {
                         fontSize: '11px',
                         color: 'var(--ink-3)',
                         letterSpacing: '0.04em',
-                        flexShrink: 0,
-                        whiteSpace: 'nowrap',
                       }}
                     >
                       {proj.metric}
