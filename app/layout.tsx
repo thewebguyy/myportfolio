@@ -5,7 +5,6 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { PrincipiaNav } from './components/principia/PrincipiaNav'
 import { ReadingProgress } from './components/principia/ReadingProgress'
-import { FloatingChatbot } from './components/ai/FloatingChatbot'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -37,7 +36,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://olabodeolusegun.com',
-    title: 'Olabode Olusegun - Systems Architect',
+    title: 'Olabode Olusegun — Full-Stack Engineer',
     description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
     siteName: 'Olabode Olusegun',
     images: [
@@ -51,7 +50,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Olabode Olusegun - Systems Architect',
+    title: 'Olabode Olusegun — Full-Stack Engineer',
     description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
     creator: '@BodeBillions',
     images: ['/twitter-image']
@@ -116,7 +115,6 @@ export default function RootLayout({
 
         <Analytics />
         <SpeedInsights />
-        <FloatingChatbot />
       </body>
     </html>
   )

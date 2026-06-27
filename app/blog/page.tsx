@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { blogPosts } from '@/lib/blog'
 
 export const metadata: Metadata = {
-  title: 'Blog - Tech Insights',
-  description: 'Technical articles on AI, system design, performance optimization, and emerging technologies.',
+  title: 'Writing',
+  description: 'Technical writing from Olabode Olusegun — production incidents, architectural decisions, and engineering tradeoffs.',
 }
 
 export default function BlogPage() {
@@ -33,10 +33,10 @@ export default function BlogPage() {
             Writing
           </div>
           <h1 className="hero-heading text-[48px] md:text-[64px] lg:text-[76px] leading-[1.05] text-text-primary tracking-tight">
-            The Complete Archive.
+            Long-form.
           </h1>
           <p className="font-mono text-[14px] text-text-primary/70 max-w-[600px] mt-6 leading-[1.8]">
-            Technical investigations, architectural tradeoffs, and performance audits. Use columns to scan details quickly.
+            Technical writing derived from production systems — incidents, architectural decisions, and what each system forced me to understand.
           </p>
         </div>
 

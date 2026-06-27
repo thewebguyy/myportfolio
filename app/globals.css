@@ -345,25 +345,6 @@
 }
 .blog-nav-back:hover { color: var(--signal); }
 
-/* ── Skip-to-content link ───────────────────────────────── */
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: var(--page-gutter);
-  z-index: 100;
-  padding: 10px 20px;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition: top 0.15s;
-}
-.skip-link:focus {
-  top: 8px;
-}
-
 /* ── Reading progress bar ───────────────────────────────── */
 .reading-progress {
   position: fixed;
@@ -376,12 +357,6 @@
   z-index: 51;
   pointer-events: none;
 }
-
-/* ── ChapterIndex hover arrow ───────────────────────────── */
-.chapter-row:hover .chapter-arrow { opacity: 1; color: var(--signal); }
-.chapter-row:focus-within .chapter-arrow { opacity: 1; color: var(--signal); }
-/* Always visible at rest — subtle signal of interactivity */
-.chapter-arrow { opacity: 0.3; }
 
 /* ── Global focus-visible ───────────────────────────────── */
 :focus-visible {

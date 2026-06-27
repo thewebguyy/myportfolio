@@ -53,7 +53,7 @@ export function TitlePage() {
             style={{ color: 'var(--signal)' }}
           >
             <span
-              className="inline-block w-[6px] h-[6px] rounded-full animate-pulse"
+              className="inline-block w-[5px] h-[5px] rounded-full"
               style={{ background: 'var(--signal)' }}
               aria-hidden="true"
             />
