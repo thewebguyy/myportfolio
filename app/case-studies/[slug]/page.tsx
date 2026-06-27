@@ -1,17 +1,6 @@
 'use client'
 
 import React from 'react'
-
-const PLACEHOLDER_RE = /\[PLACEHOLDER[^\]]*\]/
-
-function hasPlaceholder(value: string): boolean {
-  return PLACEHOLDER_RE.test(value)
-}
-
-function filterConstraints(items: string[]): string[] {
-  return items.filter(item => !hasPlaceholder(item))
-}
-// Metadata removed
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -20,9 +9,12 @@ import { caseStudyContent } from '@/lib/case-study-content'
 import ServiceBridgeArchitecture from '@/app/components/visuals/ServiceBridgeArchitecture'
 import ServiaArchitecture from '@/app/components/visuals/ServiaArchitecture'
 
+const PLACEHOLDER_RE = /\[PLACEHOLDER[^\]]*\]/
+const hasPlaceholder = (v: string) => PLACEHOLDER_RE.test(v)
+const filterConstraints = (items: string[]) => items.filter(item => !hasPlaceholder(item))
+
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
   const project = getProjectById(params.slug)
-
   if (!project) notFound()
 
   const content = caseStudyContent[params.slug]
@@ -32,10 +24,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
     '@type': 'TechArticle',
     headline: project.title,
     description: project.longDescription || project.description,
-    author: {
-      '@type': 'Person',
-      name: 'Olabode Olusegun'
-    }
+    author: { '@type': 'Person', name: 'Olabode Olusegun' }
   }
 
   return (
@@ -50,12 +39,10 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 h-[56px]"
         style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
       >
-        <Link href="/#work" className="blog-nav-back flex items-center gap-2">
-          ← Back to work
+        <Link href="/case-studies" className="blog-nav-back flex items-center gap-2">
+          ← All case studies
         </Link>
-        <span
-          style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--signal)' }}
-        >
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--signal)' }}>
           Case Study
         </span>
       </nav>
@@ -70,9 +57,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             >
               {project.category}
             </div>
-            <h1
-              style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.03em', lineHeight: 1.0, color: 'var(--ink)' }}
-            >
+            <h1 style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.03em', lineHeight: 1.0, color: 'var(--ink)' }}>
               {project.title}
             </h1>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.8 }}>
@@ -149,11 +134,11 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                 </ContentBlock>
 
                 {(() => {
-                  const visibleConstraints = filterConstraints(content.constraints)
-                  return visibleConstraints.length > 0 ? (
+                  const visible = filterConstraints(content.constraints)
+                  return visible.length > 0 ? (
                     <ContentBlock title="Constraints">
                       <ul className="space-y-3 pl-4" style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', lineHeight: 1.8, color: 'var(--ink-2)', listStyleType: 'disc' }}>
-                        {visibleConstraints.map((c: string, i: number) => <li key={i}>{c}</li>)}
+                        {visible.map((c: string, i: number) => <li key={i}>{c}</li>)}
                       </ul>
                     </ContentBlock>
                   ) : null
@@ -252,7 +237,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               </p>
               <div className="flex justify-center gap-4 pt-4">
                 <Link href="/#contact" className="btn-primary">Get in touch</Link>
-                <Link href="/#work" className="btn-secondary">View all work</Link>
+                <Link href="/case-studies" className="btn-secondary">All case studies</Link>
               </div>
             </div>
           </div>

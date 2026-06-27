@@ -86,7 +86,7 @@ export default function BlogPage() {
                   {post.category}
                 </div>
                 <h2
-                  className="mb-3"
+                  className="mb-3 group-hover:text-[var(--signal)]"
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontWeight: 600,

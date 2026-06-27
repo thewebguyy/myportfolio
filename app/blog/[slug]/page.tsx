@@ -38,8 +38,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 h-[56px]"
         style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
       >
-        <Link href="/" className="blog-nav-back flex items-center gap-2">
-          ← Back to home
+        <Link href="/blog" className="blog-nav-back flex items-center gap-2">
+          ← All writing
         </Link>
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--signal)' }}>
           Writing
@@ -65,7 +65,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               <time dateTime={post.date}>
                 {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </time>
-              <span style={{ color: 'var(--wire)' }}>·</span>
+              <span style={{ color: 'var(--ink-4)' }}>·</span>
               <span>{post.readTime} min read</span>
             </div>
           </header>
