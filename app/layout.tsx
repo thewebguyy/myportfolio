@@ -28,8 +28,8 @@ export const metadata: Metadata = {
     default: 'Olabode Olusegun — Full-Stack Engineer',
     template: '%s | Olabode Olusegun'
   },
-  description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
-  keywords: ['Full-Stack Engineer', 'Fintech', 'Marketplace', 'Design Engineer', 'Lagos', 'Nigeria', 'React', 'Node.js', 'TypeScript', 'Engineering'],
+  description: 'Olabode Olusegun — full-stack engineer with 5+ years building fintech and marketplace infrastructure across West Africa.',
+  keywords: ['Full-Stack Engineer', 'Fintech', 'Marketplace', 'Lagos', 'Nigeria', 'React', 'Node.js', 'TypeScript', 'PostgreSQL', 'WebSockets'],
   authors: [{ name: 'Olabode Olusegun' }],
   creator: 'Olabode Olusegun',
   openGraph: {
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://olabodeolusegun.com',
     title: 'Olabode Olusegun — Full-Stack Engineer',
-    description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
+    description: 'Olabode Olusegun — full-stack engineer with 5+ years building fintech and marketplace infrastructure across West Africa.',
     siteName: 'Olabode Olusegun',
     images: [
       {
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Olabode Olusegun — Full-Stack Engineer',
-    description: 'Lagos-based full-stack engineer specialising in African fintech infrastructure and marketplace platforms.',
+    description: 'Olabode Olusegun — full-stack engineer with 5+ years building fintech and marketplace infrastructure across West Africa.',
     creator: '@BodeBillions',
     images: ['/twitter-image']
   },

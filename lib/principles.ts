@@ -1,7 +1,5 @@
 /**
- * Engineering Principia — chapter data
- *
- * Eight principles derived from Olabode Olusegun's production work.
+ * Eight engineering principles derived from Olabode Olusegun's production work.
  * Every chapter opens with a named production incident.
  * Projects are the subject. Principles are what they taught.
  */

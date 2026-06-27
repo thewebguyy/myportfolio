@@ -41,32 +41,29 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
       >
         {/* Chapter header */}
         <div
-          className="px-[var(--page-gutter)] pt-16 lg:pt-24 pb-12 lg:pb-16 grid grid-cols-12 items-end gap-6 lg:gap-8"
+          className="px-[var(--page-gutter)] pt-16 lg:pt-24 pb-10 lg:pb-16 grid grid-cols-12 items-end gap-6 lg:gap-8"
           style={{ borderBottom: '1px solid var(--wire)' }}
         >
-          {/* Chapter number */}
+          {/* Index numeral — decorative, desktop only */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.5 }}
-            className="col-span-12 lg:col-span-2"
+            className="hidden lg:block lg:col-span-2"
+            aria-hidden="true"
           >
-            <div
-              className="type-index select-none"
-              style={{ color: 'var(--paper-3)', lineHeight: 1 }}
-              aria-hidden="true"
-            >
+            <div className="type-index" style={{ color: 'var(--paper-3)', lineHeight: 1 }}>
               {p.index}
             </div>
           </motion.div>
 
           {/* Chapter word + incident */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="col-span-12 lg:col-span-7"
           >
             <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>
@@ -74,13 +71,14 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
             </div>
             <h2 className="type-chapter mb-5">{p.word}</h2>
             <p
+              className="text-pretty"
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '13px',
-                lineHeight: 1.72,
+                fontSize: 'clamp(13px, 1.2vw, 14px)',
+                lineHeight: 1.8,
                 color: 'var(--ink-3)',
                 fontStyle: 'italic',
-                maxWidth: '460px',
+                maxWidth: '52ch',
               }}
             >
               {p.incident}
@@ -92,12 +90,12 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1, duration: 0.5 }}
+            transition={{ delay: 0.1, duration: 0.45 }}
             className="col-span-12 lg:col-span-3 lg:pb-1"
           >
             <p
-              className="type-thesis"
-              style={{ color: 'var(--ink-2)', fontSize: 'clamp(15px, 1.6vw, 20px)' }}
+              className="type-thesis text-pretty"
+              style={{ fontSize: 'clamp(15px, 1.5vw, 20px)' }}
             >
               {p.thesis}
             </p>
@@ -108,21 +106,21 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
         <div className="px-[var(--page-gutter)] py-10 lg:py-16 grid grid-cols-12 gap-8 lg:gap-12">
 
           {/* Left: prose */}
-          <div className="col-span-12 lg:col-span-7 space-y-5">
+          <div className="col-span-12 lg:col-span-7 space-y-6">
             {p.body.map((para, i) => (
               <motion.p
                 key={i}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                viewport={{ once: true, margin: '-32px' }}
-                transition={{ duration: 0.45 }}
+                viewport={{ once: true, margin: '-24px' }}
+                transition={{ duration: 0.4 }}
                 className="text-pretty"
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: 'clamp(13px, 1.2vw, 15px)',
-                  lineHeight: 1.82,
+                  fontSize: 'clamp(14px, 1.2vw, 15px)',
+                  lineHeight: 1.85,
                   color: 'var(--ink-2)',
-                  maxWidth: '62ch',
+                  maxWidth: '60ch',
                 }}
               >
                 {para}
@@ -137,11 +135,11 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.45 }}
+              transition={{ duration: 0.4 }}
               className="pt-5"
               style={{ borderTop: '1px solid var(--wire)' }}
             >
-              <div className="type-label mb-5" style={{ color: 'var(--ink-4)' }}>Axiom</div>
+              <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>Axiom</div>
               <blockquote className="type-axiom">{p.axiom}</blockquote>
             </motion.div>
 
@@ -150,8 +148,8 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.45 }}
-              className="space-y-6"
+              transition={{ duration: 0.4 }}
+              className="space-y-7"
               style={{ borderTop: '1px solid var(--wire)', paddingTop: '20px' }}
             >
               <div className="type-label" style={{ color: 'var(--ink-4)' }}>Evidence</div>
@@ -162,7 +160,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                     key={i}
                     style={{ paddingLeft: '14px', borderLeft: '2px solid var(--wire)' }}
                   >
-                    <div className="flex items-baseline justify-between gap-4 mb-2">
+                    <div className="flex items-baseline justify-between gap-4 mb-2 flex-wrap">
                       {project ? (
                         <Link
                           href={`/case-studies/${project.id}`}
@@ -181,7 +179,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                           fontFamily: 'var(--font-mono)',
                           fontSize: '10px',
                           color: 'var(--ink-4)',
-                          letterSpacing: '0.06em',
+                          letterSpacing: '0.04em',
                           flexShrink: 0,
                         }}
                       >
@@ -191,8 +189,8 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                     <blockquote
                       style={{
                         fontFamily: 'var(--font-mono)',
-                        fontSize: '12px',
-                        lineHeight: 1.72,
+                        fontSize: '13px',
+                        lineHeight: 1.75,
                         color: 'var(--ink-2)',
                         fontStyle: 'italic',
                         marginBottom: '6px',
@@ -203,8 +201,8 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                     <p
                       style={{
                         fontFamily: 'var(--font-mono)',
-                        fontSize: '11px',
-                        lineHeight: 1.6,
+                        fontSize: '12px',
+                        lineHeight: 1.65,
                         color: 'var(--ink-4)',
                       }}
                     >

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { principles } from '@/lib/principles'
+import { CONTACT_EMAIL, CONTACT_HREF } from '@/lib/constants'
 
 export function PrincipiaNav() {
   const [scrolled, setScrolled] = useState(false)
@@ -18,7 +19,6 @@ export function PrincipiaNav() {
 
   useEffect(() => {
     const observers: IntersectionObserver[] = []
-
     for (const p of principles) {
       const el = document.getElementById(p.id)
       if (!el) continue
@@ -29,7 +29,6 @@ export function PrincipiaNav() {
       obs.observe(el)
       observers.push(obs)
     }
-
     return () => observers.forEach(o => o.disconnect())
   }, [])
 
@@ -41,12 +40,11 @@ export function PrincipiaNav() {
 
   const drawerRef = useRef<HTMLDivElement>(null)
 
-  // Focus trap for mobile drawer
   const handleDrawerKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') { setMenuOpen(false); return }
     if (e.key !== 'Tab') return
     const focusable = drawerRef.current?.querySelectorAll<HTMLElement>(
-      'a[href],button:not([disabled]),input,textarea,[tabindex]:not([tabindex="-1"])'
+      'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])'
     )
     if (!focusable || focusable.length === 0) return
     const first = focusable[0]
@@ -60,10 +58,10 @@ export function PrincipiaNav() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50 h-[56px] flex items-center transition-colors duration-200"
+        className="fixed top-0 left-0 right-0 z-50 h-[56px] flex items-center transition-all duration-200"
         style={{
           background: scrolled ? 'rgba(245, 242, 237, 0.96)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(8px)' : 'none',
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
           borderBottom: scrolled ? '1px solid var(--wire)' : '1px solid transparent',
         }}
         role="banner"
@@ -73,43 +71,50 @@ export function PrincipiaNav() {
           style={{ padding: '0 var(--page-gutter)' }}
           aria-label="Site navigation"
         >
-          {/* Left: wordmark */}
+          {/* Left: name / active chapter */}
           <Link
             href="#top"
-            className="flex items-center gap-3"
-            aria-label="Engineering Principia — back to top"
+            className="flex items-center gap-3 min-w-0"
+            aria-label="Olabode Olusegun — back to top"
           >
             <span
               style={{
-                fontFamily: 'var(--font-mono)',
+                fontFamily: 'var(--font-sans)',
                 fontWeight: 700,
-                fontSize: '12px',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
+                fontSize: '14px',
+                letterSpacing: '-0.01em',
                 color: 'var(--ink)',
+                flexShrink: 0,
               }}
             >
-              Principia
+              Olabode Olusegun
             </span>
-            {/* Active chapter indicator */}
-            {activeP && (
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '11px',
-                  letterSpacing: '0.08em',
-                  color: 'var(--ink-4)',
-                  borderLeft: '1px solid var(--wire)',
-                  paddingLeft: '12px',
-                }}
-              >
-                {activeP.index} · {activeP.word}
-              </span>
-            )}
+            <AnimatePresence>
+              {activeP && (
+                <motion.span
+                  key={activeP.id}
+                  initial={{ opacity: 0, x: -4 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -4 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '11px',
+                    letterSpacing: '0.06em',
+                    color: 'var(--ink-4)',
+                    borderLeft: '1px solid var(--wire)',
+                    paddingLeft: '12px',
+                    flexShrink: 0,
+                  }}
+                >
+                  {activeP.index} · {activeP.word}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </Link>
 
-          {/* Center: chapter strip (desktop) */}
-          <div className="hidden lg:flex items-center gap-6" role="list" aria-label="Chapters">
+          {/* Center: chapter strip (desktop only) */}
+          <div className="hidden lg:flex items-center gap-5" role="list" aria-label="Chapters">
             {principles.map(p => (
               <a
                 key={p.id}
@@ -119,7 +124,7 @@ export function PrincipiaNav() {
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '10px',
-                  letterSpacing: '0.1em',
+                  letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                   color: activeChapter === p.id ? 'var(--signal)' : 'var(--ink-4)',
                   transition: 'color 0.15s',
@@ -132,8 +137,8 @@ export function PrincipiaNav() {
             ))}
           </div>
 
-          {/* Right: hire CTA (fades in after scrolling) + mobile menu */}
-          <div className="flex items-center gap-6">
+          {/* Right: hire CTA + mobile menu */}
+          <div className="flex items-center gap-5">
             <AnimatePresence>
               {scrolled && (
                 <motion.div
@@ -145,11 +150,11 @@ export function PrincipiaNav() {
                 >
                   <Link
                     href="#contact"
-                    className="inline-flex items-center px-5 py-2 transition-colors duration-150"
+                    className="inline-flex items-center px-4 py-[7px] transition-colors duration-150"
                     style={{
                       fontFamily: 'var(--font-mono)',
                       fontSize: '11px',
-                      letterSpacing: '0.12em',
+                      letterSpacing: '0.1em',
                       textTransform: 'uppercase',
                       background: 'var(--ink)',
                       color: 'var(--paper)',
@@ -172,10 +177,10 @@ export function PrincipiaNav() {
               )}
             </AnimatePresence>
             <button
-              className="lg:hidden"
+              className="lg:hidden flex items-center"
               style={{ color: 'var(--ink-3)' }}
               onClick={() => setMenuOpen(true)}
-              aria-label="Open chapter navigation"
+              aria-label="Open navigation"
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.25" strokeLinecap="square" />
@@ -185,7 +190,7 @@ export function PrincipiaNav() {
         </nav>
       </header>
 
-      {/* Mobile chapter drawer */}
+      {/* Mobile drawer */}
       {menuOpen && (
         <div
           ref={drawerRef}
@@ -193,7 +198,7 @@ export function PrincipiaNav() {
           style={{ background: 'var(--paper)' }}
           role="dialog"
           aria-modal="true"
-          aria-label="Chapter navigation"
+          aria-label="Navigation"
           onKeyDown={handleDrawerKeyDown}
         >
           <div
@@ -202,15 +207,14 @@ export function PrincipiaNav() {
           >
             <span
               style={{
-                fontFamily: 'var(--font-mono)',
+                fontFamily: 'var(--font-sans)',
                 fontWeight: 700,
-                fontSize: '12px',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
+                fontSize: '14px',
+                letterSpacing: '-0.01em',
                 color: 'var(--ink)',
               }}
             >
-              Chapters
+              Olabode Olusegun
             </span>
             <button
               onClick={() => setMenuOpen(false)}
@@ -231,8 +235,8 @@ export function PrincipiaNav() {
                 key={p.id}
                 href={`#${p.id}`}
                 onClick={() => setMenuOpen(false)}
-                className="flex items-baseline gap-5 px-6 py-5 transition-colors"
-                style={{ borderBottom: '1px solid var(--wire)' }}
+                className="flex items-baseline gap-5 px-6 py-5"
+                style={{ borderBottom: '1px solid var(--wire)', transition: 'background 0.1s' }}
                 onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper-2)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
@@ -240,10 +244,11 @@ export function PrincipiaNav() {
                   style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '10px',
-                    letterSpacing: '0.1em',
+                    letterSpacing: '0.06em',
                     color: 'var(--ink-4)',
                     fontVariantNumeric: 'tabular-nums',
                     flexShrink: 0,
+                    minWidth: '24px',
                   }}
                 >
                   {p.index}
@@ -253,9 +258,10 @@ export function PrincipiaNav() {
                     style={{
                       fontFamily: 'var(--font-sans)',
                       fontWeight: 600,
-                      fontSize: '22px',
+                      fontSize: '20px',
                       letterSpacing: '-0.02em',
                       color: activeChapter === p.id ? 'var(--signal)' : 'var(--ink)',
+                      lineHeight: 1.2,
                     }}
                   >
                     {p.word}
@@ -263,9 +269,10 @@ export function PrincipiaNav() {
                   <div
                     style={{
                       fontFamily: 'var(--font-mono)',
-                      fontSize: '11px',
+                      fontSize: '12px',
                       color: 'var(--ink-4)',
-                      marginTop: '2px',
+                      marginTop: '3px',
+                      lineHeight: 1.5,
                     }}
                   >
                     {p.thesis}
@@ -275,7 +282,7 @@ export function PrincipiaNav() {
             ))}
           </div>
 
-          <div className="px-6 py-6" style={{ borderTop: '1px solid var(--wire)' }}>
+          <div className="px-6 py-6 space-y-3" style={{ borderTop: '1px solid var(--wire)' }}>
             <Link
               href="#contact"
               onClick={() => setMenuOpen(false)}
@@ -283,6 +290,20 @@ export function PrincipiaNav() {
             >
               Hire me →
             </Link>
+            <a
+              href={CONTACT_HREF}
+              onClick={() => setMenuOpen(false)}
+              style={{
+                display: 'block',
+                textAlign: 'center',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '12px',
+                color: 'var(--ink-3)',
+                paddingTop: '4px',
+              }}
+            >
+              {CONTACT_EMAIL}
+            </a>
           </div>
         </div>
       )}

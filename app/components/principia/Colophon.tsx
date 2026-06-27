@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { blogPosts } from '@/lib/blog'
+import { CONTACT_HREF } from '@/lib/constants'
 
 export function Colophon() {
   const post = blogPosts[0]
@@ -139,7 +140,7 @@ export function Colophon() {
               I want to hear about it.
             </p>
             <div>
-              <a href="mailto:olabode@mycardglobal.com" className="btn-primary">
+              <a href={CONTACT_HREF} className="btn-primary">
                 Email Olabode
               </a>
             </div>
