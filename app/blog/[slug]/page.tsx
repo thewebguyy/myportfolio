@@ -149,11 +149,6 @@ function BlogContent({ slug }: { slug: string }) {
           As the requirements compounded, the initial architecture—a messy tangle of Next.js Server Actions calling the database directly—began to crack. I found myself writing the same authorization checks in five different places. The UI became sluggish; <strong>p95 latency was hovering around ~3.1–3.4 seconds</strong> because single requests were doing too much synchronous work.
         </p>
 
-        <img src="/blog/crm_dashboard_mockup.png" alt="The CRM-Platform Dashboard: Glassmorphic UI, real-time activity feeds, and adoption metrics." />
-        <p>
-          <em>The CRM-Platform Dashboard: Glassmorphic UI, real-time activity feeds, and adoption metrics.</em>
-        </p>
-
         <hr />
 
         <h2>3. The Architecture Evolution</h2>
