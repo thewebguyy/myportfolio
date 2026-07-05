@@ -99,7 +99,7 @@ function BlogContent({ slug }: { slug: string }) {
     return (
       <>
         <p>
-          <em>By Oluwakayode (Lead Engineer) | June 2026 | Status: V3 Live in Production</em>
+          <em>By Olabode Olusegun (Lead Engineer) | June 2026 | Status: V3 Live in Production</em>
         </p>
         <p>
           Every software project starts with a delusion. For me, it was thinking that the Campus Revival Movement (what we internally call CRM-Platform) would just be a &quot;simple website.&quot;
