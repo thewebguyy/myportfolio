@@ -33,7 +33,7 @@ export const projects: Project[] = [
     category: 'Marketplace Engine',
     company: 'Solo build · production specification',
     tags: ['Distributed Systems', 'Real-time', 'Redis HA', 'Data Efficiency'],
-    image: '/projects/servicebridge.jpg',
+    image: '/projects/servicebridge.png',
     liveUrl: 'https://servicebridge.netlify.app/',
     metrics: {
       latency: 'sub-200ms API',
@@ -53,7 +53,7 @@ export const projects: Project[] = [
     category: 'Fintech Infrastructure',
     company: 'Seerbit (Contract / Open Source)',
     tags: ['Payments', 'Idempotency', 'Automation', 'API Design'],
-    image: '/projects/checkout.jpg',
+    image: '/projects/checkout.png',
     githubUrl: 'https://github.com/thewebguyy/seerbit-subscription-manager',
     metrics: {
       processing_time: '<1s',
@@ -94,7 +94,7 @@ export const projects: Project[] = [
     category: 'API Integration',
     company: 'Seerbit (Contract / Open Source)',
     tags: ['Payments', 'Security', 'API'],
-    image: '/projects/checkout.jpg',
+    image: '/projects/checkout.png',
     githubUrl: 'https://github.com/thewebguyy/checkoutsystem',
     tech: ['JavaScript', 'Payment APIs', 'Security'],
     featured: false,

@@ -139,6 +139,22 @@ export function PrincipiaNav() {
 
           {/* Right: hire CTA + mobile menu */}
           <div className="flex items-center gap-5">
+            <Link
+              href="/blog"
+              className="hidden md:block"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'var(--ink-4)',
+                transition: 'color 0.15s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--ink)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--ink-4)' }}
+            >
+              Writing
+            </Link>
             <AnimatePresence>
               {scrolled && (
                 <motion.div
@@ -288,6 +304,29 @@ export function PrincipiaNav() {
           </div>
 
           <div className="px-6 py-6 space-y-3" style={{ borderTop: '1px solid var(--wire)', paddingBottom: 'max(24px, env(safe-area-inset-bottom))' }}>
+            <Link
+              href="/blog"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center justify-center w-full py-[7px] transition-colors duration-150"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: 'var(--ink)',
+                border: '1px solid var(--wire)',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.background = 'var(--paper-2)'
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.background = 'transparent'
+              }}
+            >
+              Writing
+            </Link>
             <Link
               href="#contact"
               onClick={() => setMenuOpen(false)}

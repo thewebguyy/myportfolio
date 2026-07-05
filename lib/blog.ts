@@ -10,6 +10,15 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
     {
+        slug: 'campus-revival-engineering',
+        title: 'Building an Operating System for a Movement: The Engineering Journey Behind Campus Revival',
+        excerpt: 'The story of how CRM-Platform evolved from a simple website to a complete Operating System supporting over 250 verified campuses.',
+        date: '2026-06-15',
+        readTime: 8,
+        category: 'Architecture',
+        featured: true,
+    },
+    {
         slug: 'websocket-matching-layer',
         title: 'Why I Rewrote the Matching Layer with WebSockets',
         excerpt: 'Migrating from stateless polling to persistent stateful connections to achieve sub-100ms latency in a multi-sided marketplace.',

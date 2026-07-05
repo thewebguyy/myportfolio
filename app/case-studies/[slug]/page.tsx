@@ -1,10 +1,25 @@
-'use client'
-
+import { Metadata } from 'next'
 import React from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getProjectById } from '@/lib/projects'
+import { projects, getProjectById } from '@/lib/projects'
+
+export async function generateMetadata({
+  params
+}: {
+  params: { slug: string }
+}): Promise<Metadata> {
+  const project = getProjectById(params.slug)
+  if (!project) return { title: 'Project Not Found' }
+  return { title: project.title, description: project.longDescription || project.description }
+}
+
+export async function generateStaticParams() {
+  return projects.map((project) => ({
+    slug: project.id,
+  }))
+}
 import { caseStudyContent } from '@/lib/case-study-content'
 import ServiceBridgeArchitecture from '@/app/components/visuals/ServiceBridgeArchitecture'
 import ServiaArchitecture from '@/app/components/visuals/ServiaArchitecture'

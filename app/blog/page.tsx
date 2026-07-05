@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { blogPosts } from '@/lib/blog'
 
-export const dynamic = 'force-dynamic'
+
 
 export const metadata: Metadata = {
   title: 'Writing',
@@ -61,10 +61,8 @@ export default function BlogPage() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group flex flex-col md:flex-row md:items-start gap-4 md:gap-10 px-[var(--page-gutter)] py-10"
-              style={{ borderBottom: '1px solid var(--wire)', background: 'var(--paper)', transition: 'background 0.2s ease' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper-3)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'var(--paper)')}
+              className="group flex flex-col md:flex-row md:items-start gap-4 md:gap-10 px-[var(--page-gutter)] py-10 bg-[var(--paper)] hover:bg-[var(--paper-3)] transition-colors duration-200"
+              style={{ borderBottom: '1px solid var(--wire)' }}
             >
               <div
                 style={{
