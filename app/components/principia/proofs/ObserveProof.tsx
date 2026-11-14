@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 interface RequestResult {
   id: number
@@ -23,6 +23,7 @@ function shuffle(arr: number[]) {
 }
 
 export function ObserveProof() {
+  const prefersReducedMotion = useReducedMotion()
   const [results, setResults] = useState<RequestResult[]>([])
   const [running, setRunning] = useState(false)
   const [done, setDone] = useState(false)
@@ -38,18 +39,31 @@ export function ObserveProof() {
 
     await Promise.all(
       durations.map((d, i) =>
-        new Promise<void>(resolve => setTimeout(() => {
-          if (runIdRef.current !== run) return resolve()
-          setResults(prev => prev.map(r => r.id === i ? { ...r, status: 'done' } : r))
-          resolve()
-        }, d))
+        new Promise<void>(resolve =>
+          setTimeout(
+            () => {
+              if (runIdRef.current !== run) return resolve()
+              setResults(prev => prev.map(r => (r.id === i ? { ...r, status: 'done' } : r)))
+              resolve()
+            },
+            prefersReducedMotion ? Math.min(d, 150) : Math.min(d, 2200)
+          )
+        )
       )
     )
 
-    if (runIdRef.current === run) { setRunning(false); setDone(true) }
-  }, [running])
+    if (runIdRef.current === run) {
+      setRunning(false)
+      setDone(true)
+    }
+  }, [running, prefersReducedMotion])
 
-  const reset = () => { runIdRef.current++; setResults([]); setRunning(false); setDone(false) }
+  const reset = () => {
+    runIdRef.current++
+    setResults([])
+    setRunning(false)
+    setDone(false)
+  }
 
   const completed = results.filter(r => r.status === 'done')
   const sorted = [...completed].sort((a, b) => a.duration - b.duration)
@@ -58,53 +72,111 @@ export function ObserveProof() {
   const avg = completed.length > 0 ? Math.round(completed.reduce((s, r) => s + r.duration, 0) / completed.length) : null
 
   return (
-    <div style={{ borderTop: '1px solid var(--wire)', paddingTop: '48px', marginTop: '48px' }}>
-      <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>
-        Interactive Proof · 01
-      </div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.08em', color: 'var(--ink-4)', marginBottom: '4px' }}>
-        FROM: <span style={{ color: 'var(--signal)' }}>Servia</span> · Operations Platform · 2026
-      </div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--ink-3)', marginBottom: '32px' }}>
-        10 identical requests. Watch them land.
+    <div className="proof-shell">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <div className="type-label" style={{ color: 'var(--ink-2)', fontWeight: 700 }}>
+          Interactive Proof · 01 — Tail Latency vs. Mean
+        </div>
+        <span className="pill-tag">Simulated Model · Servia (2026)</span>
       </div>
 
-      {/* Request bars — two-scale: fast bars scale against 200ms max, slow bar goes full */}
+      <div className="proof-guide">
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, color: 'var(--signal)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '4px' }}>
+          What to observe
+        </div>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', lineHeight: 1.55, color: 'var(--ink-2)', margin: 0 }}>
+          Click <strong>Send 10 requests</strong> to fire a simulated batch where 9 requests complete in ~100ms and 1 request hits an unindexed query lock (8.2s). Watch how the <strong>Average (920ms)</strong> and <strong>P50 (115ms)</strong> mask the 8.2s tail spike that only <strong>P99</strong> exposes.
+        </p>
+      </div>
+
+      {/* Request bars */}
       <div
         role="list"
         aria-label="Request durations"
-        className="space-y-2 mb-10"
-        style={{ maxWidth: '520px' }}
+        className="space-y-2 mb-8"
+        style={{ maxWidth: '560px' }}
       >
-        {(results.length === 0 ? Array.from({ length: 10 }, (_, i) => ({ id: i, duration: 0, status: 'pending' as const })) : results).map(r => {
+        {(results.length === 0
+          ? Array.from({ length: 10 }, (_, i) => ({ id: i, duration: 0, status: 'pending' as const }))
+          : results
+        ).map(r => {
           const isSlow = r.status === 'done' && r.duration > 1000
-          const widthPct = r.status !== 'done' ? 0
-            : isSlow ? 100
-            : Math.max(4, (r.duration / FAST_MAX) * 60) // fast bars: max 60% width
+          const widthPct =
+            r.status !== 'done'
+              ? 0
+              : isSlow
+              ? 100
+              : Math.max(6, (r.duration / FAST_MAX) * 60)
 
           return (
             <div key={r.id} role="listitem" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '22px', fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--ink-4)', flexShrink: 0, textAlign: 'right' }}>
+              <div
+                style={{
+                  width: '24px',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  color: 'var(--ink-4)',
+                  flexShrink: 0,
+                  textAlign: 'right',
+                }}
+              >
                 {String(r.id + 1).padStart(2, '0')}
               </div>
-              <div style={{ flex: 1, height: '28px', background: 'var(--paper-2)', position: 'relative', overflow: 'hidden' }}>
+              <div
+                style={{
+                  flex: 1,
+                  height: '26px',
+                  background: 'var(--paper-2)',
+                  border: '1px solid var(--wire)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
                 {r.status === 'pending' && results.length > 0 ? (
                   <motion.div
-                    style={{ position: 'absolute', top: 0, left: 0, height: '100%', background: 'var(--wire)', width: '28%' }}
-                    animate={{ x: ['0%', '360%'] }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      height: '100%',
+                      background: 'var(--wire-strong)',
+                      width: '28%',
+                    }}
+                    animate={prefersReducedMotion ? { opacity: 0.5 } : { x: ['0%', '360%'] }}
+                    transition={{ duration: 0.9, repeat: Infinity, ease: 'linear' }}
                   />
                 ) : r.status === 'done' ? (
                   <motion.div
-                    initial={{ width: 0 }}
+                    initial={{ width: prefersReducedMotion ? `${widthPct}%` : 0 }}
                     animate={{ width: `${widthPct}%` }}
-                    transition={{ duration: 0.25 }}
-                    style={{ position: 'absolute', top: 0, left: 0, height: '100%', background: isSlow ? '#d63030' : 'var(--signal)', opacity: isSlow ? 1 : 0.7 }}
+                    transition={{ duration: 0.2 }}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      height: '100%',
+                      background: isSlow ? 'var(--danger)' : 'var(--signal)',
+                      opacity: isSlow ? 1 : 0.78,
+                    }}
                   />
                 ) : null}
               </div>
-              <div style={{ width: '52px', fontFamily: 'var(--font-mono)', fontSize: '10px', color: isSlow ? '#d63030' : 'var(--ink-4)', flexShrink: 0, textAlign: 'right' }}>
-                {r.status === 'done' ? (isSlow ? `${(r.duration / 1000).toFixed(1)}s` : `${r.duration}ms`) : ''}
+              <div
+                style={{
+                  width: '58px',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  fontWeight: isSlow ? 700 : 400,
+                  color: isSlow ? 'var(--danger)' : 'var(--ink-3)',
+                  flexShrink: 0,
+                  textAlign: 'right',
+                }}
+              >
+                {r.status === 'done'
+                  ? isSlow
+                    ? `${(r.duration / 1000).toFixed(1)}s`
+                    : `${r.duration}ms`
+                  : 'ready'}
               </div>
             </div>
           )
@@ -119,24 +191,37 @@ export function ObserveProof() {
             animate={{ opacity: 1 }}
             aria-live="polite"
             aria-atomic="true"
-            className="flex gap-8 mb-6"
+            className="flex flex-wrap gap-8 mb-6 p-4"
+            style={{ background: 'var(--paper-2)', border: '1px solid var(--wire)', maxWidth: '560px' }}
           >
             {avg !== null && (
               <div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: '4px' }}>Average</div>
-                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '26px', fontWeight: 700, color: 'var(--ink)' }}>{avg}ms</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', letterSpacing: '0.09em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: '2px' }}>
+                  Average
+                </div>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '24px', fontWeight: 700, color: 'var(--ink)' }}>
+                  {avg}ms
+                </div>
               </div>
             )}
             {p50 !== null && (
               <div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: '4px' }}>P50</div>
-                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '26px', fontWeight: 700, color: 'var(--ink)' }}>{p50}ms</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', letterSpacing: '0.09em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: '2px' }}>
+                  P50 (Median)
+                </div>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '24px', fontWeight: 700, color: 'var(--ink)' }}>
+                  {p50}ms
+                </div>
               </div>
             )}
             {p99 !== null && (
               <div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: '4px' }}>P99</div>
-                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '26px', fontWeight: 700, color: '#d63030' }}>{(p99 / 1000).toFixed(1)}s</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', letterSpacing: '0.09em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: '2px' }}>
+                  P99 (Tail)
+                </div>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '24px', fontWeight: 700, color: 'var(--danger)' }}>
+                  {(p99 / 1000).toFixed(1)}s
+                </div>
               </div>
             )}
           </motion.div>
@@ -146,26 +231,33 @@ export function ObserveProof() {
       <AnimatePresence>
         {done && p99 && avg && (
           <motion.p
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
-            style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', lineHeight: 1.75, color: 'var(--ink-3)', maxWidth: '420px', marginBottom: '24px' }}
+            style={{ fontFamily: 'var(--font-sans)', fontSize: '14.5px', lineHeight: 1.65, color: 'var(--ink-2)', maxWidth: '520px', marginBottom: '20px' }}
           >
-            Average: {avg}ms. That one request:{' '}
-            <span style={{ color: '#d63030' }}>{(p99 / 1000).toFixed(1)}s</span>.{' '}
-            <span style={{ color: 'var(--ink-2)' }}>The average hides it. The P99 doesn&apos;t.</span>
+            Average: <strong>{avg}ms</strong>. Outlier request:{' '}
+            <strong style={{ color: 'var(--danger)' }}>{(p99 / 1000).toFixed(1)}s</strong>.{' '}
+            The average hides the tail spike; P95/P99 telemetry exposes it immediately.
           </motion.p>
         )}
       </AnimatePresence>
 
-      <button
-        type="button"
-        onClick={done ? reset : runBatch}
-        disabled={running}
-        className={`proof-btn ${done ? 'proof-btn-ghost' : 'proof-btn-primary'}`}
-        aria-busy={running}
-      >
-        {running ? 'Sending…' : done ? 'Run again' : 'Send 10 requests'}
-      </button>
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={done ? reset : runBatch}
+          disabled={running}
+          className={`proof-btn ${done ? 'proof-btn-ghost' : 'proof-btn-primary'}`}
+          aria-busy={running}
+        >
+          {running ? 'Sending batch…' : done ? 'Reset simulation' : 'Send 10 requests'}
+        </button>
+        {done && (
+          <button type="button" onClick={runBatch} className="proof-btn proof-btn-signal">
+            Run another batch →
+          </button>
+        )}
+      </div>
     </div>
   )
 }
