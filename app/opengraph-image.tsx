@@ -32,7 +32,7 @@ export default async function Image() {
               fontFamily: 'monospace',
             }}
           >
-            Full-Stack Engineer · Lagos, Nigeria
+            Senior Full-Stack Engineer · Lagos, Nigeria
           </div>
           
           <div
@@ -54,7 +54,7 @@ export default async function Image() {
               lineHeight: 1.4,
             }}
           >
-            5+ years shipping fintech and marketplace infrastructure across West Africa.
+            7 years shipping fintech and marketplace infrastructure across West Africa.
           </div>
         </div>
 
@@ -74,7 +74,7 @@ export default async function Image() {
               fontFamily: 'monospace',
             }}
           >
-            olabodeolusegun.com
+            theolabodeolusegun.vercel.app
           </div>
         </div>
       </div>
