@@ -105,7 +105,7 @@ export const caseStudyContent: Record<string, CaseStudyContent> = {
       tool: "Public repository + ADR review",
       rps: "No load-test artifacts published",
       environment: "TypeScript monorepo: Express/Prisma/PostgreSQL API and Next.js frontend",
-      details: "Verified in the public repository: backend/src/services/reservation.service.ts uses a SERIALIZABLE transaction and maps P2034 to HTTP 409; auth.service.ts bcrypt-hashes and rotates refresh tokens; CI runs type-check, lint, build, and tests. Redis caching and k6 throughput/latency figures are not present and are not claimed."
+      details: "Verified in the public repository: the reservation service uses a SERIALIZABLE transaction and maps P2034 to HTTP 409; auth.service.ts bcrypt-hashes and rotates refresh tokens; CI runs type-check, lint, build, and tests. Redis caching and k6 throughput/latency figures are not present and are not claimed."
     }
   },
 

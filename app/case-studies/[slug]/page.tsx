@@ -431,7 +431,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                             <MetaField label="Measured Performance" value={content.evidence.rps} />
                             <MetaField label="Test Environment" value={content.evidence.environment} />
                           </div>
-                          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', lineHeight: 1.7, color: 'var(--ink-2)' }}>
+                          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', lineHeight: 1.7, color: 'var(--ink-2)', overflowWrap: 'anywhere' }}>
                             {content.evidence.details}
                           </p>
                         </div>
