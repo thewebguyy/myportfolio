@@ -33,7 +33,7 @@ export function StressProof() {
         <div className="type-label" style={{ color: 'var(--ink-2)', fontWeight: 700 }}>
           Interactive Proof · 04 — Unhandled Failure vs. Deliberate Conflict Signal
         </div>
-        <span className="pill-tag">Simulated Model · Servia k6 Stress Run</span>
+        <span className="pill-tag">Simulated Model · Conflict Handling</span>
       </div>
 
       <div className="proof-guide">
@@ -41,7 +41,7 @@ export function StressProof() {
           What to observe
         </div>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', lineHeight: 1.55, color: 'var(--ink-2)', margin: 0 }}>
-          Under 50-VU concurrency, one of these two systems recorded a <strong>14.5% non-200 rate</strong> while maintaining 100% data integrity. Select a response below and click <strong>Reveal</strong> to see why structured conflict responses are a passing specification.
+          Compare two ways a contended booking request can fail: an opaque <strong>500</strong> and a structured <strong>409 Conflict</strong>. Select a response below and click <strong>Reveal</strong> to see why the structured signal is easier to handle safely.
         </p>
       </div>
 
@@ -101,9 +101,9 @@ export function StressProof() {
               maxWidth: '680px',
             }}
           >
-            <strong style={{ color: 'var(--signal)' }}>System B</strong> recorded the 14.5% conflict rate during k6 load testing.
+            <strong style={{ color: 'var(--signal)' }}>System B</strong> returns a structured conflict instead of an opaque crash.
             <br /><br />
-            System A&apos;s <code>500</code> is an unhandled failure that leaves the client guessing whether to retry. System B&apos;s <code>409 Conflict</code> is a deliberate protocol signal: it names the exact domain reason (<code>SEAT_UNAVAILABLE</code>), specifies retry semantics, and attaches a correlation <code>requestId</code>.
+            System A&apos;s <code>500</code> is an unhandled failure that leaves the client guessing whether to retry. System B&apos;s <code>409 Conflict</code> is a deliberate protocol signal: it names the exact domain reason (<code>CONCURRENCY_CONFLICT</code>), specifies retry semantics, and attaches a correlation <code>requestId</code>.
             <div className="mt-4">
               <button type="button" onClick={reset} className="proof-btn proof-btn-ghost">
                 Reset comparison

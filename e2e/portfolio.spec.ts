@@ -64,8 +64,8 @@ test.describe('Portfolio Comprehensive E2E, Accessibility, Interactive Proofs & 
     // Outcomes stats — scope to the hero "Introduction" region so this asserts the
     // primary outcome stat itself, not the duplicate Servia card further down.
     const hero = page.getByRole('region', { name: 'Introduction' })
-    await expect(hero.getByText('double-bookings under concurrent load')).toBeVisible()
-    await expect(hero.getByText('350 RPS', { exact: true })).toBeVisible()
+    await expect(hero.getByText('PostgreSQL reservation transactions')).toBeVisible()
+    await expect(hero.getByText('P2034 → 409', { exact: true })).toBeVisible()
 
     // Major sections
     await expect(page.getByRole('heading', { name: 'Production Systems & Case Studies' })).toBeVisible()
@@ -161,7 +161,7 @@ test.describe('Portfolio Comprehensive E2E, Accessibility, Interactive Proofs & 
     await stressSection.scrollIntoViewIfNeeded()
     await stressSection.getByRole('button', { name: /System B/ }).click()
     await stressSection.getByRole('button', { name: /Reveal answer/ }).click()
-    await expect(stressSection.getByText(/recorded the 14\.5% conflict rate/)).toBeVisible()
+    await expect(stressSection.getByText(/returns a structured conflict instead of an opaque crash/)).toBeVisible()
 
     // Proof 05: Recover
     const recoverSection = page.locator('#recover')

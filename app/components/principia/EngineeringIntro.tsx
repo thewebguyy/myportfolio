@@ -53,7 +53,7 @@ export function EngineeringIntro() {
                 maxWidth: '46ch',
               }}
             >
-              Optional technical deep dive. Every chapter pairs a real production incident with an interactive simulation so you can test the system behavior directly in the browser.
+              Optional technical deep dive. Every chapter pairs an engineering incident with an interactive simulation so you can test the system behavior directly in the browser.
             </p>
             <a href="#contact" className="btn-secondary">
               Skip to contact ↓

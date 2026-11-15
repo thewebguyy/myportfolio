@@ -27,7 +27,7 @@ const DELTAS = [
   {
     label: 'Observability',
     plan: 'Standard application console logs',
-    reality: 'Structured JSON logs (Pino) + P95/P99 latency thresholds. Unstructured logs were unreadable during 350 RPS traffic spikes.',
+    reality: 'Structured JSON logs (Pino) + P95/P99 latency thresholds. Unstructured logs were unreadable during high-traffic spikes.',
   },
 ]
 

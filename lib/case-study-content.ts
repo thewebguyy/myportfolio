@@ -34,77 +34,78 @@ export interface CaseStudyContent {
 export const caseStudyContent: Record<string, CaseStudyContent> = {
   servia: {
     introduction:
-      "Servia is a full-stack restaurant operations platform engineered to coordinate table reservations, order lifecycles, kitchen display state, and payment processing under high dinner-hour concurrency. Rather than treating restaurant software as simple CRUD forms, Servia was designed around strict transactional isolation, end-to-end compile-time type contracts, and automated CI verification.",
+      "Servia is a full-stack restaurant operations platform with a Next.js frontend and an Express/Prisma/PostgreSQL API. The public repository focuses on two correctness problems: preventing reservation overbooking under concurrency with PostgreSQL SERIALIZABLE transactions, and keeping authentication state safe with a dual-token JWT flow.",
     problem:
-      "Restaurants managing operations using legacy single-client setups or naive web backends frequently suffer from data synchronization lag and race conditions. Kitchen staff, hosts, and diners act on stale capacity data, leading to double-booked reservations during peak hours, duplicate payment charges when mobile clients retry over weak venue Wi-Fi, and silent type mismatches between API payloads and UI state.",
+      "Two reservations can read the same remaining capacity before either commits, allowing both to proceed. Separately, short-lived access tokens and long-lived refresh tokens need a rotation strategy that limits exposure if a refresh token is reused.",
     scope: [
-      "Architected and built the complete monorepo: Next.js frontend application, stateless Express.js API server, and @packages/shared TypeScript contract package.",
-      "Designed the PostgreSQL 15 schema and Prisma ORM transaction layer, enforcing SERIALIZABLE isolation on capacity-sensitive booking paths.",
-      "Implemented custom dual-token JWT authentication (short-lived in-memory access tokens + HttpOnly rotated refresh tokens hashed with bcrypt).",
-      "Authored k6 concurrency load-testing suites and a 4-stage GitHub Actions CI pipeline (ESLint, tsc --noEmit, Jest integration suite, production build)."
+      "Built the monorepo: Next.js frontend, Express/Prisma API, and a shared @servia/shared TypeScript contract package.",
+      "Implemented capacity-sensitive reservation writes inside a Prisma SERIALIZABLE transaction.",
+      "Mapped Prisma P2034 serialization conflicts to HTTP 409 responses.",
+      "Implemented JWT access/refresh tokens with bcrypt-hashed refresh-token storage and rotation.",
+      "Configured GitHub Actions CI to run type-check, lint, build, and tests on pull requests."
     ],
     constraints: [
-      "Zero overbooking under concurrent load — simultaneous requests for the final available seats in a time slot must resolve deterministically without exceeding room capacity.",
-      "Idempotent financial and order writes — clients on flaky restaurant Wi-Fi retry requests; duplicate submissions must return the original result without double-charging.",
-      "Compile-time boundary safety — API request/response payloads must be validated against a single source of truth shared between backend and frontend.",
-      "Stateless horizontal scalability — authentication and request handling must not rely on sticky server memory."
+      "Concurrent reservations must not exceed capacity.",
+      "Serialization conflicts must be visible to the client as a retryable outcome.",
+      "Refresh tokens must be stored hashed and rotated rather than reused indefinitely.",
+      "Frontend and API payloads should share one TypeScript contract."
     ],
     architectureNotes:
-      "The system separates the Next.js presentation client from a stateless Express.js API tier, linked at build time through @packages/shared. Authentication uses a dual-token flow: short-lived access tokens verify endpoints without database lookups, while long-lived refresh tokens sit in Secure, HttpOnly, SameSite=Strict cookies matched against bcrypt hashes in PostgreSQL. Capacity-critical operations execute inside Prisma SERIALIZABLE transactions, while high-read reservation lookups use Redis caching with targeted invalidation (reducing P95 lookup latency from 180ms to 47ms).",
+      "The Next.js client and stateless Express API share types through @servia/shared. Reservations run inside a Prisma transaction at SERIALIZABLE isolation; if PostgreSQL detects a conflicting write, Prisma raises P2034 and the service returns HTTP 409. Authentication uses a 15-minute access token and a 7-day refresh token stored as a bcrypt hash in PostgreSQL and rotated on use. The public repository does not include a Redis cache or published load-test artifacts.",
     whatBroke:
-      "Two critical failures surfaced during early testing: first, a payment amount passed as the string \"100\" instead of number 100 produced silent NaN formatting in the UI. Second, when we ran a 20-client concurrency test against the reservation endpoint under PostgreSQL's default Read Committed isolation, two concurrent threads read the same seating sum (48 of 50 seats booked), both calculated room for a party of 4, and both committed—resulting in 56 seats booked in a 50-seat dining room.",
+      "Under PostgreSQL's default Read Committed isolation, two concurrent requests could read the same remaining capacity before either committed and both could proceed. The public ADR records the decision to move the capacity check-and-insert into a SERIALIZABLE transaction.",
     whatChanged:
-      "First, we extracted all DTOs and Zod schemas into @packages/shared so any string/number drift fails the TypeScript build immediately. Second, we wrapped the reservation check-and-insert flow inside a Prisma transaction block at the SERIALIZABLE isolation level. PostgreSQL now tracks read-write predicate dependencies across concurrent sessions; when a concurrent write invalidates a prior capacity read, Postgres aborts the second transaction with error code P2034. The service layer catches P2034 and returns a structured HTTP 409 Conflict, prompting clean client retry.",
+      "The reservation write now runs inside a Prisma SERIALIZABLE transaction. PostgreSQL aborts the conflicting transaction with P2034, and the service layer maps that code to HTTP 409 so the client can retry or choose another slot.",
     keyDecisions: [
       {
         decision: "PostgreSQL SERIALIZABLE isolation level for reservation writes.",
-        alternatives: "Application-level mutexes, Redis distributed locks (Redlock), or PostgreSQL Read Committed with row-level SELECT FOR UPDATE.",
-        rationale: "Capacity checks depend on an aggregate query (SUM(partySize) WHERE slot = X) rather than a single pre-existing row. SERIALIZABLE predicate locking prevents phantom reads and aggregate race conditions natively inside the database without external lock coordination.",
-        tradeoff: "Incurs a 14.5% P2034 serialization abort rate under extreme 50-VU contention on the same slot, requiring deterministic HTTP 409 mapping and client retry handling."
+        alternatives: "Application-level mutexes, distributed locks, or Read Committed with SELECT FOR UPDATE.",
+        rationale: "Capacity depends on an aggregate query over existing reservations. SERIALIZABLE predicate locking prevents two compatible-looking reads from both committing.",
+        tradeoff: "Under contention, serialization conflicts surface as Prisma P2034 and require a client retry path."
       },
       {
-        decision: "Shared @packages/shared TypeScript contract package across Express and Next.js.",
+        decision: "Shared @servia/shared TypeScript contract package across Express and Next.js.",
         alternatives: "Duplicated frontend/backend interfaces or OpenAPI codegen pipelines.",
-        rationale: "Eliminated contract drift (such as string vs. number currency amounts) with zero runtime codegen overhead; changing an API response shape immediately flags compiler errors in consuming Next.js components.",
-        tradeoff: "Couples frontend and backend TypeScript build pipelines inside a single workspace monorepo."
+        rationale: "One package defines request/response shapes for both sides and lets the compiler catch contract drift.",
+        tradeoff: "Frontend and backend builds are coupled to the same workspace package."
       },
       {
-        decision: "Database-backed idempotency key verification prior to payment execution.",
-        alternatives: "In-memory deduplication cache or relying solely on downstream payment gateway deduplication.",
-        rationale: "Checking and locking client-generated UUID idempotency keys inside an atomic database transaction guarantees that network retries never trigger a second outbound charge.",
-        tradeoff: "Adds an indexed database write/lookup on payment initiation and requires clients to generate and persist request UUIDs per checkout attempt."
+        decision: "Webhook-driven order confirmation with a status guard.",
+        alternatives: "Confirming orders optimistically on the client before gateway verification.",
+        rationale: "The Paystack webhook handler only advances orders that are still PENDING and verifies the paid amount, so duplicate success events do not re-confirm an order.",
+        tradeoff: "The public implementation does not include a general-purpose idempotency-key ledger for client-initiated order creation."
       },
       {
         decision: "Custom JWT dual-token rotation over stateful server sessions.",
-        alternatives: "Server-side Redis session store or long-lived single JWTs in localStorage.",
-        rationale: "Keeps standard API endpoints stateless and fast while protecting refresh credentials in HttpOnly cookies with database-backed revocation on token reuse detection.",
-        tradeoff: "Requires silent token-refresh interceptors on the client and bcrypt hash storage for active refresh tokens."
+        alternatives: "Long-lived JWTs in localStorage or a server-side session store.",
+        rationale: "Access tokens stay short-lived, refresh tokens live in HttpOnly/SameSite=Strict cookies, and the database stores only a bcrypt hash.",
+        tradeoff: "Silent refresh and rotation require client-side token handling."
       }
     ],
     testingAndOps: [
-      "Automated 4-gate GitHub Actions CI pipeline running on every pull request: ESLint, TypeScript strict check (tsc --noEmit), Jest integration test suite, and Next.js production build.",
-      "k6 load testing suite establishing verified baselines (350 RPS reads, 120 RPS writes) before and after Redis caching optimizations.",
-      "Structured JSON logging via Pino with request correlation IDs to trace HTTP 409 conflict retries across client and API logs."
+      "GitHub Actions runs type-check, lint, build, and Jest tests on pull requests.",
+      "Reservation and authentication behaviour are covered by backend Jest tests.",
+      "Structured JSON logging via Pino with request correlation IDs."
     ],
     outcomes: [
-      "0 double-bookings across sustained 50-VU concurrent reservation stress tests.",
-      "350 RPS read throughput and 120 RPS write throughput verified via k6 against containerized Postgres 15.",
-      "74% reduction in P95 reservation lookup latency (from 180ms down to 47ms) after introducing Redis caching.",
-      "100% of duplicate payment retry requests intercepted safely without duplicate gateway charges."
+      "Reservation capacity checks execute inside a Prisma SERIALIZABLE transaction.",
+      "Prisma P2034 conflicts are mapped to HTTP 409.",
+      "Refresh tokens are bcrypt-hashed, rotated on use, and cleared when reuse is detected.",
+      "CI covers type-check, lint, build, and tests."
     ],
     limitations:
-      "Running SERIALIZABLE isolation across all reservation writes works exceptionally well for single-venue or moderate multi-venue throughput, but under global mega-scale contention on a single table slot, serialization aborts increase retry traffic. If scaled to thousands of restaurants simultaneously, partitioning reservation predicates by venue_id + date slot or pre-allocating slot inventory rows for SELECT FOR UPDATE SKIP LOCKED would reduce retry overhead.",
+      "SERIALIZABLE isolation is appropriate for moderate single-venue throughput; high contention on one slot increases retries. The public repository does not include Redis caching, a k6 load-test suite, published throughput/latency figures, or a client-initiated payment idempotency ledger. Those claims are intentionally not made here.",
     interactiveDemo: {
       title: "Interactive Proof 03 — Read Committed vs. Serializable Concurrency",
-      description: "Trigger two simultaneous booking requests for the last remaining seat on the homepage to observe how Read Committed double-books (-1 seats) while Serializable returns HTTP 409.",
+      description: "A browser simulation of two concurrent booking requests. It is a teaching model, not a benchmark of the deployed system.",
       href: "/#isolate",
-      ctaLabel: "Run Concurrency Simulation →"
+      ctaLabel: "Run the concurrency simulation →"
     },
     evidence: {
-      tool: "k6",
-      rps: "350 RPS (Reads) / 120 RPS (Writes) · P95 47ms (Cached Reads)",
-      environment: "Docker container (1 vCPU, 1GB RAM) simulating Railway node runtime against PostgreSQL 15 (2 vCPU, 4GB RAM) & Redis",
-      details: "Tested with 50 concurrent Virtual Users (VUs) executing booking creations over 30s. Baseline P95 latency stayed under 180ms (and dropped to 47ms on cached lookup paths). Under deliberate capacity contention, 14.5% of concurrent writes triggered PostgreSQL P2034 serialization conflicts; 100% mapped cleanly to HTTP 409 and resolved without a single overbooking."
+      tool: "Public repository + ADR review",
+      rps: "No load-test artifacts published",
+      environment: "TypeScript monorepo: Express/Prisma/PostgreSQL API and Next.js frontend",
+      details: "Verified in the public repository: backend/src/services/reservation.service.ts uses a SERIALIZABLE transaction and maps P2034 to HTTP 409; auth.service.ts bcrypt-hashes and rotates refresh tokens; CI runs type-check, lint, build, and tests. Redis caching and k6 throughput/latency figures are not present and are not claimed."
     }
   },
 
@@ -186,71 +187,62 @@ export const caseStudyContent: Record<string, CaseStudyContent> = {
 
   "subscription-manager": {
     introduction:
-      "Subscription Manager is a recurring billing and payment orchestration engine developed during a contract engagement with Seerbit. It was engineered to solve the hardest problem in emerging-market recurring revenue: guaranteeing that merchants are charged accurately—and never double-charged—when payment gateway webhooks arrive late, arrive twice, or drop entirely.",
+      "Subscription Manager is a public Seerbit subscription SDK demonstration built with Python and Flask. It documents six endpoints covering subscription creation, charging, OTP validation, updates, and customer/merchant subscription queries.",
     problem:
-      "In recurring billing systems, payment webhooks are non-deterministic. A scheduled renewal charges a customer's card or account, the upstream gateway takes 40+ seconds to respond during a bank window, the client or scheduler retries, or the gateway delivers duplicate webhook callbacks. Without atomic idempotency and boundary validation, merchants suffer duplicate deductions, corrupted subscription lifecycles, and manual accounting reconciliation.",
+      "Merchant engineers need a compact reference for the call shapes and sequencing of Seerbit's subscription API. The public demo makes those calls concrete without claiming to be a production billing service.",
     scope: [
-      "Architected and implemented the recurring subscription engine, payment state machine, and idempotency layer in Node.js, TypeScript, and Express.",
-      "Designed the PostgreSQL transactional ledger ensuring atomic idempotency key locking prior to any outbound Seerbit or Stripe API call.",
-      "Implemented strict Zod runtime schema validation at every external webhook and REST API boundary.",
-      "Built the automated reconciliation worker and zero-downtime rollback health checks."
+      "Implemented six Flask routes wrapping Seerbit subscription SDK calls.",
+      "Covered subscription creation, charging a billing ID, OTP validation, updates, and customer/merchant queries.",
+      "Kept the demo runnable with placeholder credentials and no committed secrets."
     ],
     constraints: [
-      "Strict idempotency — 100% of duplicate client retries or duplicate gateway webhooks must return the original recorded outcome without re-charging.",
-      "Zero silent schema corruption — malformed or unexpected third-party gateway payloads must fail loudly at the edge before touching ledger logic.",
-      "Multi-gateway resilience — support Seerbit and Stripe recurring billing cycles with automated wallet/retry fallback when primary rails degrade.",
-      "Auditability — every state transition (INITIATED → PENDING → CONFIRMED / FAILED) must be immutably logged with correlation keys."
+      "The demo must remain small and readable as an integration reference.",
+      "Credentials and customer identifiers must stay as placeholders.",
+      "The public code must not imply persistence or production billing guarantees it does not implement."
     ],
     architectureNotes:
-      "Every payment or renewal request requires a deterministic idempotency key (client-generated UUID or hash of subscription_id + billing_cycle_date). Before contacting Seerbit or Stripe, the service opens a PostgreSQL transaction and performs an atomic insert-or-read on the idempotency_keys ledger table. If the key is already IN_FLIGHT or COMPLETED, the service short-circuits and returns the stored response immediately. Incoming webhooks pass through HMAC signature verification and Zod schema parsing before updating subscription state, backed by an asynchronous reconciliation job that queries gateway status for any transaction stuck in PENDING beyond threshold.",
+      "The public repository is a single Flask application (subscriptions.py) plus static HTML/CSS/JS. Each route maps to one Seerbit SDK call. There is no PostgreSQL database, Zod schema layer, Stripe adapter, idempotency ledger, webhook verifier, or reconciliation worker in the public code.",
     whatBroke:
-      "Early integration testing revealed two failure modes: first, checking idempotency keys in application code (SELECT then INSERT without a database constraint/transaction) allowed two simultaneous retry requests arriving within 15 milliseconds of each other to both pass the check and trigger two gateway charges. Second, an upstream gateway sandbox update slightly altered a numeric webhook field format, which would have silently written corrupted renewal timestamps if not caught at the boundary.",
+      "The public demo is not a production billing service: it has no persistence, webhook verification, idempotency ledger, or reconciliation job, and it requires real credentials to exercise end to end.",
     whatChanged:
-      "I moved idempotency enforcement strictly into the database layer using a unique constraint and atomic transactional locking before any external network I/O occurs—making race conditions structurally impossible regardless of how many Node instances are running. I also placed Zod validation middleware at every inbound webhook and API route so contract mismatches reject immediately at the perimeter with structured diagnostics.",
+      "This case study now describes only the public implementation. The production billing architecture described in earlier drafts is not present in the public repository and is therefore not claimed here.",
     keyDecisions: [
       {
-        decision: "Database-level atomic idempotency key lock before external gateway contact.",
-        alternatives: "Application-memory deduplication or post-charge webhook deduplication only.",
-        rationale: "Application code can race across concurrent requests or server restarts; PostgreSQL unique constraints and transactional locks cannot. Locking before outbound I/O guarantees a charge is never initiated twice.",
-        tradeoff: "Requires a synchronous database round-trip before initiating every payment request (<250ms total verification overhead)."
+        decision: "Small Flask SDK wrapper as an integration reference.",
+        alternatives: "A framework-heavy service with persistence and queue infrastructure.",
+        rationale: "The public repository is intended to show the Seerbit call shapes in the smallest runnable form.",
+        tradeoff: "It does not demonstrate database transactions, idempotency, webhook handling, or production operations."
       },
       {
-        decision: "Mandatory Zod runtime validation on all third-party gateway responses and webhooks.",
-        alternatives: "Trusting TypeScript compile-time interfaces (`as WebhookPayload`) on external JSON.",
-        rationale: "TypeScript types disappear at runtime. External payment gateways occasionally change payload shapes or return unexpected nulls during bank outages; Zod enforces the contract at the runtime edge.",
-        tradeoff: "Minor CPU parsing overhead on high-volume webhook ingestion (negligible compared to network I/O)."
-      },
-      {
-        decision: "Hybrid webhook + scheduled reconciliation state machine.",
-        alternatives: "Relying 100% on push webhooks to advance subscription renewal state.",
-        rationale: "When webhooks drop or time out during bank maintenance windows, the scheduled reconciliation worker polls the gateway's transaction status API by reference ID and converges the ledger automatically.",
-        tradeoff: "Requires maintaining idempotent state transitions so both a late webhook and a reconciliation poll can safely process the same transaction."
+        decision: "Placeholder credentials instead of committed secrets.",
+        alternatives: "Checking in sandbox keys or customer identifiers.",
+        rationale: "Keeps the public repository safe to share.",
+        tradeoff: "The demo cannot be exercised end to end without the reader supplying credentials."
       }
     ],
     testingAndOps: [
-      "Concurrent retry storm simulation firing duplicate payment requests and simultaneous webhook callbacks with identical idempotency keys to verify zero double-charges.",
-      "Contract boundary testing injecting malformed gateway payloads to verify Zod edge rejection and alerting.",
-      "Automated deployment health checks configured to trigger rollback if payment error rate thresholds breach after release."
+      "No automated test suite is present in the public demo.",
+      "Endpoint smoke testing requires valid Seerbit sandbox credentials.",
+      "The repository includes a one-line README and static UI files."
     ],
     outcomes: [
-      "100% of duplicate retry requests and repeated webhooks return the original cached transaction response.",
-      "0 duplicate merchant charges across retry storm testing and production billing cycles.",
-      "Sub-250ms atomic idempotency lock and ledger verification overhead.",
-      "Eliminated manual support intervention for delayed webhook settlements via automated background reconciliation."
+      "Six Flask endpoints wrap Seerbit subscription creation, charging, OTP validation, update, and query calls.",
+      "The public repository is a compact SDK integration reference.",
+      "No PostgreSQL, Zod, Stripe, idempotency, or reconciliation code is present in the public repository."
     ],
     limitations:
-      "Storing idempotency keys and cached response payloads directly in PostgreSQL works cleanly for moderate transaction volumes, but requires a TTL archival policy (e.g., pruning or partitioning keys older than 30 days) so the hot idempotency index remains compact over multi-year growth.",
+      "This is a demonstration, not a production billing engine. It does not include persistence, idempotency, webhook verification, reconciliation, or operational hardening. Any separate private implementation would need to be identified and evidenced separately before being presented as production work.",
     interactiveDemo: {
-      title: "Interactive Proof 05 — Payment Retry & Idempotency Simulator",
-      description: "Simulate a network timeout on a $50 payment and click Retry with and without an idempotency key to observe how duplicate charges happen and how atomic keys prevent them.",
+      title: "Interactive Proof 05 — Payment Retry Simulation",
+      description: "A browser simulation of idempotent retry behaviour. It is not a demonstration of the Subscription Manager repository.",
       href: "/#recover",
-      ctaLabel: "Test Idempotent Payment Retry →"
+      ctaLabel: "Open the retry simulation →"
     },
     evidence: {
-      tool: "Concurrent Retry & Webhook Replay Suite",
-      rps: "100% Idempotent Replay Consistency · <250ms Lock Overhead",
-      environment: "Node.js / Express service with PostgreSQL transactional ledger & Seerbit/Stripe sandbox harnesses",
-      details: "Verified under concurrent double-click and timeout-retry scenarios: parallel requests bearing identical idempotency keys serialized cleanly at the database layer, dispatching exactly one upstream gateway charge."
+      tool: "Public repository inspection",
+      rps: "No performance benchmarks published",
+      environment: "Python/Flask app + Seerbit SDK + static HTML/CSS/JS",
+      details: "The public repository contains six Flask routes wrapping the Seerbit SDK with placeholder credentials. It does not contain PostgreSQL, Zod, Stripe, idempotency, or reconciliation code. This page claims only what is present."
     }
   },
 
@@ -295,11 +287,10 @@ export const caseStudyContent: Record<string, CaseStudyContent> = {
     ],
     outcomes: [
       "Zero raw PAN exposure on merchant backend infrastructure.",
-      "Eliminated client-side double-submission errors via deterministic state locking.",
-      "Clean reference implementation published as open-source code for merchant engineers."
+      "Eliminated client-side double-submission errors via deterministic state locking."
     ],
     limitations:
-      "As a lightweight client-and-gateway integration module, server-side recurring billing and multi-day webhook reconciliation were intentionally scoped into the dedicated Subscription Manager service."
+      "As a lightweight client-and-gateway integration module, server-side recurring billing and multi-day webhook reconciliation were out of scope for this checkout module."
   },
 
   "laverita-hair": {

@@ -148,10 +148,10 @@ export default function ServiaArchitecture() {
           <g transform="translate(296, 176)">
             <rect x="0" y="0" width="220" height="64" fill="#f5f2ed" stroke="#0d0d0d" strokeWidth="1.25" />
             <text x="14" y="24" fill="#0d0d0d" fontSize="12" fontWeight="700" fontFamily="sans-serif">
-              Commit &amp; Invalidate Cache
+              Commit Reservation
             </text>
             <text x="14" y="43" fill="#4d4843" fontSize="10" fontFamily="monospace">
-              Redis DEL slot_cache → 201 OK
+              Serializable commit → 201 Created
             </text>
           </g>
 
@@ -162,7 +162,7 @@ export default function ServiaArchitecture() {
               201 Booking Confirmed
             </text>
             <text x="14" y="43" fill="#4d4843" fontSize="10" fontFamily="monospace">
-              Zero overbooking guaranteed
+              Capacity check passed
             </text>
           </g>
 
@@ -181,7 +181,7 @@ export default function ServiaArchitecture() {
               Postgres rollback → Prisma P2034
             </text>
             <text x="14" y="58" fill="#635d57" fontSize="9.5" fontFamily="monospace">
-              Prevents 56/50 seat overbooking
+              Conflicting write is aborted
             </text>
           </g>
 
@@ -195,7 +195,7 @@ export default function ServiaArchitecture() {
               Maps P2034 → HTTP 409 Conflict
             </text>
             <text x="14" y="58" fill="#4d4843" fontSize="9.5" fontFamily="monospace">
-              code: &quot;booking/seat-taken&quot;
+              code: &quot;CONCURRENCY_CONFLICT&quot;
             </text>
           </g>
 
@@ -203,13 +203,13 @@ export default function ServiaArchitecture() {
           <g transform="translate(32, 308)">
             <rect x="0" y="0" width="190" height="72" fill="#f5f2ed" stroke="#c83605" strokeWidth="1.5" />
             <text x="14" y="24" fill="#c83605" fontSize="12" fontWeight="700" fontFamily="sans-serif">
-              Client Backoff &amp; Retry
+              Client Receives 409
             </text>
             <text x="14" y="43" fill="#262422" fontSize="10" fontFamily="monospace">
-              Re-reads updated seat count
+              Can retry or choose a slot
             </text>
             <text x="14" y="58" fill="#635d57" fontSize="9.5" fontFamily="monospace">
-              Retries with fresh snapshot
+              No double-booking committed
             </text>
           </g>
         </svg>
@@ -221,7 +221,7 @@ export default function ServiaArchitecture() {
             01 · Shared Contract Boundary
           </div>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13.5px', lineHeight: 1.6, color: 'var(--ink-3)' }}>
-            Request payloads and currency amounts are validated at compile time via <code>@packages/shared</code> and checked against idempotency keys before execution.
+            Request and response types are shared through <code>@servia/shared</code>; the capacity check runs inside the transaction.
           </p>
         </div>
         <div>
@@ -237,7 +237,7 @@ export default function ServiaArchitecture() {
             03 · Deterministic Conflict Recovery
           </div>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13.5px', lineHeight: 1.6, color: 'var(--ink-3)' }}>
-            Under 50-VU contention, 14.5% of racing writes abort with <code>P2034</code>, translate cleanly to structured HTTP <code>409</code> responses, and resolve on retry.
+            Racing writes surface as <code>P2034</code> and map to structured HTTP <code>409</code> responses. No load-test rate is claimed because the public repository does not include the artifacts.
           </p>
         </div>
       </div>

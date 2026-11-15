@@ -52,7 +52,7 @@ export function FeaturedWork() {
                 maxWidth: '44ch',
               }}
             >
-              Three flagship systems architected from interface to database. Each case study documents the business problem, architectural trade-offs, failure modes, and verified load-test or production outcomes.
+              Three flagship systems architected from interface to database. Each case study documents the business problem, architectural trade-offs, failure modes, and the evidence available for each system.
             </p>
             <Link href="/case-studies" className="btn-secondary">
               View all 5 case studies →
@@ -245,7 +245,7 @@ export function FeaturedWork() {
                   {/* Verified Outcomes */}
                   <div style={{ border: '1px solid var(--wire)', background: 'var(--paper-2)' }}>
                     <div className="px-5 py-3" style={{ borderBottom: '1px solid var(--wire)' }}>
-                      <span className="type-label">Verified Outcomes &amp; Evidence</span>
+                      <span className="type-label">Outcomes &amp; Evidence</span>
                     </div>
                     <div className="divide-y" style={{ borderColor: 'var(--wire)' }}>
                       {(project.outcomeHighlights || []).map((outcome, i) => (

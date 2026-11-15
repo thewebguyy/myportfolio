@@ -63,7 +63,7 @@ export function ModelProof() {
         <div className="type-label" style={{ color: 'var(--ink-2)', fontWeight: 700 }}>
           Interactive Proof · 02 — Shared Domain &amp; Boundary Validation
         </div>
-        <span className="pill-tag">Simulated Model · Servia &amp; Subscription Manager</span>
+        <span className="pill-tag">Simulated Model · Shared Type Contract</span>
       </div>
 
       <div className="proof-guide">
@@ -71,7 +71,7 @@ export function ModelProof() {
           What to observe
         </div>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', lineHeight: 1.55, color: 'var(--ink-2)', margin: 0 }}>
-          Compare <strong>Diverged types</strong> (where the frontend sends <code>&quot;amount&quot;: &quot;100&quot;</code> as a string) against <strong>Shared schema</strong> (where <code>@packages/shared</code> and Zod enforce <code>number</code>). You can also edit the JSON payload directly and click <strong>Send to server</strong>.
+          Compare <strong>Diverged types</strong> (where the frontend sends <code>&quot;amount&quot;: &quot;100&quot;</code> as a string) against <strong>Shared schema</strong> (where <code>@servia/shared</code> types or a runtime validator enforce <code>number</code>). You can also edit the JSON payload directly and click <strong>Send to server</strong>.
         </p>
       </div>
 
@@ -115,7 +115,7 @@ export function ModelProof() {
               marginBottom: '8px',
             }}
           >
-            {mode === 'diverged' ? 'Client payload (untyped string amount)' : 'Shared payload (@packages/shared)'}
+            {mode === 'diverged' ? 'Client payload (untyped string amount)' : 'Shared payload (@servia/shared)'}
           </label>
           <textarea
             id="model-proof-payload"
@@ -148,7 +148,7 @@ export function ModelProof() {
               marginBottom: '8px',
             }}
           >
-            Schema (Zod contract at API boundary)
+            Schema (runtime contract at API boundary)
           </div>
           <pre
             aria-label="Expected schema"

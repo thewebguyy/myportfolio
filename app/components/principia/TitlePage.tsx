@@ -9,7 +9,7 @@ const PROJECTS = [
     id: 'servia',
     name: 'Servia',
     category: 'Operations Platform',
-    metric: '350 RPS · zero double-bookings',
+    metric: 'SERIALIZABLE · P2034 → 409',
   },
   {
     id: 'servicebridge',
@@ -21,14 +21,14 @@ const PROJECTS = [
     id: 'subscription-manager',
     name: 'Subscription Manager',
     category: 'Fintech Infrastructure',
-    metric: 'Atomic idempotency · Seerbit contract',
+    metric: 'Python/Flask Seerbit SDK demo',
   },
 ]
 
 const OUTCOMES = [
-  { stat: '0', label: 'double-bookings under concurrent load' },
-  { stat: '350 RPS', label: 'baseline before any optimisation' },
-  { stat: '100%', label: 'duplicate retries return original response' },
+  { stat: 'SERIALIZABLE', label: 'PostgreSQL reservation transactions' },
+  { stat: 'P2034 → 409', label: 'conflict handling in public code' },
+  { stat: 'JWT', label: 'rotating, hashed refresh tokens' },
 ]
 
 const STACK_DOMAINS = [
@@ -150,7 +150,7 @@ export function TitlePage() {
                 I build production systems that stay up. Seven years of full-stack
                 client delivery, a startup CTO role at PeerCars, and contracted
                 fintech engineering at Seerbit — focused on concurrency control,
-                idempotent payment architecture, and resilient product interfaces.
+                transactional integrity, and resilient product interfaces.
               </p>
 
               {/* Direct Action Buttons */}
@@ -217,12 +217,12 @@ export function TitlePage() {
               </div>
             </div>
 
-            {/* Right Column: Verified Production Outcomes + Selected Systems Index */}
+            {/* Right Column: Verified Engineering Outcomes + Selected Systems Index */}
             <div className="lg:col-span-5 min-w-0 lg:pl-10 lg:border-l" style={{ borderColor: 'var(--wire)' }}>
               {/* Production Outcomes */}
               <div className="mb-8">
                 <div className="type-label mb-3">
-                  Verified Production Outcomes
+                  Verified Engineering Outcomes
                 </div>
                 <div style={{ borderTop: '1px solid var(--wire)' }}>
                   {OUTCOMES.map((o, i) => (

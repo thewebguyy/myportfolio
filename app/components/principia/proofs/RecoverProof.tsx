@@ -81,7 +81,7 @@ export function RecoverProof() {
         <div className="type-label" style={{ color: 'var(--ink-2)', fontWeight: 700 }}>
           Interactive Proof · 05 — Atomic Payment Idempotency
         </div>
-        <span className="pill-tag">Simulated Model · Subscription Manager (2023)</span>
+        <span className="pill-tag">Simulated Model · Idempotent Payment Retry</span>
       </div>
 
       <div className="proof-guide">
@@ -89,7 +89,7 @@ export function RecoverProof() {
           What to observe
         </div>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', lineHeight: 1.55, color: 'var(--ink-2)', margin: 0 }}>
-          Click <strong>Pay $50</strong> to simulate a charge where the gateway webhook times out, then click <strong>Retry payment</strong>. Under <strong>Without idempotency</strong>, the retry triggers a second $50 deduction ($100 total). Switch to <strong>With idempotency key</strong> to see the database key lock return the original receipt with <strong>1 charge</strong>.
+          Click <strong>Pay $50</strong> to simulate a charge where the gateway webhook times out, then click <strong>Retry payment</strong>. Under <strong>Without idempotency</strong>, the retry triggers a second $50 deduction ($100 total). Switch to <strong>With idempotency key</strong> to see the database key lock return the original receipt with <strong>1 charge</strong>. This is a conceptual simulation, not the public Subscription Manager repository.
         </p>
       </div>
 
