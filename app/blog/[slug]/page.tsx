@@ -37,21 +37,17 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     <div className="min-h-screen" style={{ background: 'var(--paper)' }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      {/* Nav strip */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 h-[56px]"
-        style={{ background: 'var(--paper)', borderBottom: '1px solid var(--wire)' }}
-      >
-        <Link href="/blog" className="blog-nav-back flex items-center gap-2">
-          ← All writing
-        </Link>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--signal)' }}>
-          Writing
-        </span>
-      </nav>
-
       <article className="pt-28 pb-24 px-6">
         <div className="max-w-[720px] mx-auto">
+          {/* Breadcrumb strip */}
+          <div className="flex items-center justify-between mb-10 pb-4" style={{ borderBottom: '1px solid var(--wire)' }}>
+            <Link href="/blog" className="blog-nav-back inline-flex items-center gap-2">
+              ← All writing
+            </Link>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--signal)', fontWeight: 700 }}>
+              Writing
+            </span>
+          </div>
 
           {/* Header */}
           <header className="mb-16" style={{ borderBottom: '1px solid var(--wire)', paddingBottom: '40px' }}>

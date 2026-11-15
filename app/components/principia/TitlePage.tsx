@@ -285,9 +285,9 @@ export function TitlePage() {
                     <li key={proj.id} style={{ borderBottom: '1px solid var(--wire)' }}>
                       <Link
                         href={`/case-studies/${proj.id}`}
-                        className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-3.5 px-2 -mx-2 group gap-1 sm:gap-3 transition-colors hover:bg-[var(--paper-2)]"
+                        className="flex flex-col py-3.5 px-2 -mx-2 group gap-1 transition-colors hover:bg-[var(--paper-2)]"
                       >
-                        <div className="flex items-baseline gap-2.5 min-w-0">
+                        <div className="flex items-baseline justify-between gap-2 min-w-0">
                           <span
                             style={{
                               fontFamily: 'var(--font-sans)',
@@ -295,7 +295,6 @@ export function TitlePage() {
                               fontSize: '15.5px',
                               color: 'var(--ink)',
                               transition: 'color 0.15s',
-                              flexShrink: 0,
                             }}
                             className="group-hover:text-[var(--signal)]"
                           >
@@ -308,6 +307,7 @@ export function TitlePage() {
                               color: 'var(--ink-4)',
                               letterSpacing: '0.05em',
                               textTransform: 'uppercase',
+                              flexShrink: 0,
                             }}
                           >
                             {proj.category}
@@ -318,7 +318,6 @@ export function TitlePage() {
                             fontFamily: 'var(--font-mono)',
                             fontSize: '11px',
                             color: 'var(--ink-3)',
-                            flexShrink: 0,
                           }}
                         >
                           {proj.metric} →

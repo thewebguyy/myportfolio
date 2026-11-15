@@ -1,12 +1,25 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { CONTACT_HREF } from '@/lib/constants'
+import { CONTACT_EMAIL, CONTACT_HREF } from '@/lib/constants'
 
 export function Colophon() {
+  const [copied, setCopied] = useState(false)
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT_EMAIL)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2500)
+    } catch {
+      // Fallback if clipboard API is unavailable
+    }
+  }
+
   return (
-    <section
+    <footer
       id="contact"
       aria-label="Contact"
       style={{ background: 'var(--paper)', borderTop: '1px solid var(--wire)' }}
@@ -15,115 +28,173 @@ export function Colophon() {
         className="max-w-[1440px] mx-auto"
         style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)' }}
       >
-        {/* Contact */}
-        <div className="px-[var(--page-gutter)] py-16 lg:py-24 grid grid-cols-12 items-end gap-8 lg:gap-12">
+        {/* Main Contact Grid */}
+        <div className="px-[var(--page-gutter)] py-16 lg:py-24 grid grid-cols-12 items-start gap-10 lg:gap-12">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="col-span-12 lg:col-span-7"
           >
-            <div className="type-label mb-6 lg:mb-8" style={{ color: 'var(--ink-4)' }}>
-              Available for work · Lagos / Remote
+            <div className="flex items-center gap-2.5 mb-6">
+              <span
+                className="inline-block w-[7px] h-[7px] rounded-full"
+                style={{ background: 'var(--signal-bright)' }}
+                aria-hidden="true"
+              />
+              <span className="type-label" style={{ color: 'var(--signal)', fontWeight: 700 }}>
+                Available for work · Lagos, Nigeria &amp; Remote
+              </span>
             </div>
+
             <h2
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontWeight: 700,
-                fontSize: 'clamp(32px, 5.5vw, 76px)',
+                fontSize: 'clamp(36px, 5.5vw, 72px)',
                 lineHeight: 0.96,
                 letterSpacing: '-0.04em',
                 color: 'var(--ink)',
+                marginBottom: '24px',
               }}
             >
               You have a<br />
               problem.<br />
               Let&apos;s solve it.
             </h2>
+
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: 'clamp(16px, 1.35vw, 18px)',
+                lineHeight: 1.65,
+                color: 'var(--ink-2)',
+                maxWidth: '48ch',
+              }}
+            >
+              Payment systems that fail under retry. Marketplaces that buckle under concurrent load. Booking engines that double-charge. I architect and ship full-stack software designed to stay up.
+            </p>
           </motion.div>
+
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.15, duration: 0.5 }}
-            className="col-span-12 lg:col-span-5 space-y-6 lg:space-y-8"
+            transition={{ delay: 0.1, duration: 0.45 }}
+            className="col-span-12 lg:col-span-5 space-y-8"
           >
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(15px, 1.3vw, 17px)',
-                lineHeight: 1.62,
-                color: 'var(--ink-2)',
-                maxWidth: '38ch',
-                fontWeight: 400,
-              }}
-            >
-              Payment systems that fail under retry. Marketplaces that can&apos;t
-              scale. Booking systems that double-charge. These are solvable
-              problems. I&apos;ve solved all of them in production.
-            </p>
-            <div>
-              <a href={CONTACT_HREF} className="btn-primary">
-                Email Olabode
-              </a>
+            {/* Direct Contact Panel */}
+            <div className="p-6" style={{ background: 'var(--paper-2)', border: '1px solid var(--wire)' }}>
+              <div className="type-label mb-2">Direct Contact (Zero Form Friction)</div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 'clamp(13px, 1.2vw, 15px)',
+                  fontWeight: 700,
+                  color: 'var(--ink)',
+                  wordBreak: 'break-all',
+                  marginBottom: '16px',
+                }}
+              >
+                {CONTACT_EMAIL}
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <a href={CONTACT_HREF} className="btn-primary">
+                  Email Olabode →
+                </a>
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className="btn-secondary"
+                  aria-live="polite"
+                >
+                  {copied ? '✓ Copied address' : 'Copy email'}
+                </button>
+              </div>
             </div>
+
+            {/* Engagement Types */}
+            <div className="space-y-2">
+              <div className="type-label">Open Roles &amp; Engagements</div>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14.5px', lineHeight: 1.6, color: 'var(--ink-3)' }}>
+                Senior Full-Stack Engineer · Founding / Lead Engineer · Systems &amp; Fintech Contract Architecture
+              </p>
+            </div>
+
+            {/* Elsewhere Links */}
             <div
               className="space-y-3"
-              style={{ borderTop: '1px solid var(--wire)', paddingTop: '24px' }}
+              style={{ borderTop: '1px solid var(--wire)', paddingTop: '20px' }}
             >
-              <div className="type-label" style={{ color: 'var(--ink-4)' }}>Elsewhere</div>
-              <div
-                className="flex gap-6"
-                style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--ink-3)' }}
+              <div className="type-label">Elsewhere &amp; Archives</div>
+              <ul
+                className="flex flex-wrap gap-6 m-0 p-0 list-none"
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '12.5px', color: 'var(--ink-2)' }}
               >
-                <a
-                  href="https://github.com/thewebguyy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors"
-                  style={{ color: 'inherit' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
-                >
-                  GitHub
-                </a>
-                <a
-                  href="https://linkedin.com/in/thewebguyy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors"
-                  style={{ color: 'inherit' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
-                >
-                  LinkedIn
-                </a>
-                <a
-                  href="https://x.com/BodeBillions"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors"
-                  style={{ color: 'inherit' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
-                >
-                  X
-                </a>
-                <Link
-                  href="/blog"
-                  className="transition-colors"
-                  style={{ color: 'inherit' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
-                >
-                  Writing
-                </Link>
-              </div>
+                <li>
+                  <a
+                    href="https://github.com/thewebguyy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[var(--signal)] transition-colors"
+                  >
+                    GitHub ↗
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://linkedin.com/in/thewebguyy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[var(--signal)] transition-colors"
+                  >
+                    LinkedIn ↗
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://x.com/BodeBillions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[var(--signal)] transition-colors"
+                  >
+                    X ↗
+                  </a>
+                </li>
+                <li>
+                  <Link href="/case-studies" className="hover:text-[var(--signal)] transition-colors">
+                    Case Studies
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blog" className="hover:text-[var(--signal)] transition-colors">
+                    Writing
+                  </Link>
+                </li>
+              </ul>
             </div>
           </motion.div>
         </div>
+
+        {/* Bottom Colophon Strip */}
+        <div
+          className="px-[var(--page-gutter)] py-6 flex flex-wrap items-center justify-between gap-4"
+          style={{ borderTop: '1px solid var(--wire)', background: 'var(--paper-2)' }}
+        >
+          <span className="type-label">
+            Olabode Olusegun · Senior Full-Stack Engineer
+          </span>
+          <a
+            href="#top"
+            className="type-label hover:text-[var(--signal)] transition-colors"
+            style={{ color: 'var(--ink-2)', fontWeight: 700 }}
+          >
+            Back to top ↑
+          </a>
+        </div>
       </div>
-    </section>
+    </footer>
   )
 }

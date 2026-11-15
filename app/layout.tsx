@@ -25,19 +25,19 @@ const spaceMono = Space_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://olabodeolusegun.com'),
   title: {
-    default: 'Olabode Olusegun — Full-Stack Engineer',
+    default: 'Olabode Olusegun — Senior Full-Stack Engineer',
     template: '%s | Olabode Olusegun'
   },
-  description: 'Olabode Olusegun — full-stack engineer with 5+ years building fintech and marketplace infrastructure across West Africa.',
-  keywords: ['Full-Stack Engineer', 'Fintech', 'Marketplace', 'Lagos', 'Nigeria', 'React', 'Node.js', 'TypeScript', 'PostgreSQL', 'WebSockets'],
+  description: 'Olabode Olusegun — Senior Full-Stack Engineer with 7 years building reliable software from interface to infrastructure across fintech, marketplaces, and operations.',
+  keywords: ['Senior Full-Stack Engineer', 'Fintech', 'Marketplace', 'Lagos', 'Nigeria', 'React', 'Next.js', 'Node.js', 'TypeScript', 'PostgreSQL', 'Redis', 'WebSockets'],
   authors: [{ name: 'Olabode Olusegun' }],
   creator: 'Olabode Olusegun',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://olabodeolusegun.com',
-    title: 'Olabode Olusegun — Full-Stack Engineer',
-    description: 'Olabode Olusegun — full-stack engineer with 5+ years building fintech and marketplace infrastructure across West Africa.',
+    title: 'Olabode Olusegun — Senior Full-Stack Engineer',
+    description: 'I build reliable software from interface to infrastructure. Seven years of full-stack delivery, startup CTO leadership, and contracted fintech engineering.',
     siteName: 'Olabode Olusegun',
     images: [
       {
@@ -103,7 +103,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
-      <body className="font-mono antialiased bg-paper text-ink">
+      <body className="font-sans antialiased bg-paper text-ink">
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:font-mono focus:text-[12px] focus:outline-none focus:ring-1 focus:ring-primary-light">
           Skip to content
         </a>

@@ -84,7 +84,6 @@ export const projects: Project[] = [
     company: 'Solo build · production specification',
     tags: ['WebSockets', 'Redis Pub/Sub', 'Network Resilience', 'PostgreSQL Locks'],
     image: '/projects/servicebridge.png',
-    liveUrl: 'https://servicebridge.netlify.app/',
     metrics: {
       'Dispatch Latency': '<100ms via WebSockets',
       'API Response P95': '<200ms on 3G networks',
@@ -113,7 +112,7 @@ export const projects: Project[] = [
     interactiveProofHref: '/#recover',
     interactiveProofLabel: 'Interactive Proof 05: Idempotent Payment Retries',
     category: 'Fintech Infrastructure',
-    company: 'Seerbit (Contract / Open Source)',
+    company: 'Seerbit (Contract)',
     tags: ['Idempotency', 'Webhook Reliability', 'Zod Validation', 'Payment Ledger'],
     image: '/projects/checkout.png',
     githubUrl: 'https://github.com/thewebguyy/seerbit-subscription-manager',
@@ -143,10 +142,9 @@ export const projects: Project[] = [
     challengeSummary: 'Preserving checkout session state across asynchronous 3DS/bank redirect callbacks without exposing sensitive payment credentials or allowing double-submission on slow mobile browsers.',
     imageCaption: 'Tokenized checkout state flow and gateway handoff architecture.',
     category: 'API Integration',
-    company: 'Seerbit (Contract / Open Source)',
+    company: 'Seerbit (Contract)',
     tags: ['Payments', 'Tokenization', 'Checkout UX', 'API Integration'],
     image: '/projects/checkout.png',
-    githubUrl: 'https://github.com/thewebguyy/checkoutsystem',
     metrics: {
       'PCI Scope': 'Tokenized (Zero raw PAN)',
       'Gateway Support': 'Multi-provider adapter',
