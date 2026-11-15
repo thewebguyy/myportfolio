@@ -62,7 +62,7 @@ export function ConstrainProof() {
 
       {/* Accessible 44px touch-target buttons + range slider */}
       <div style={{ marginBottom: '24px', maxWidth: '520px' }}>
-        <div className="grid grid-cols-4 gap-2 mb-4" role="group" aria-label="Network quality presets">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4" role="group" aria-label="Network quality presets">
           {QUALITIES.map(q => {
             const active = quality === q
             return (
@@ -106,8 +106,8 @@ export function ConstrainProof() {
       </div>
 
       {/* Response panel */}
-      <div style={{ background: 'var(--paper-2)', border: '1px solid var(--wire)', padding: '20px', maxWidth: '520px' }}>
-        <div className="flex items-center justify-between mb-3">
+      <div style={{ background: 'var(--paper-2)', border: '1px solid var(--wire)', padding: '20px', maxWidth: '520px', overflowX: 'auto' }}>
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-3)', fontWeight: 700 }}>
             API Response Payload
           </span>
@@ -117,7 +117,7 @@ export function ConstrainProof() {
         </div>
 
         <div
-          style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', lineHeight: 1.75 }}
+          style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', lineHeight: 1.75, overflowWrap: 'anywhere' }}
           role="region"
           aria-live="polite"
           aria-label="API response fields"

@@ -22,10 +22,10 @@ export function FeaturedWork() {
       >
         {/* Section Header */}
         <div
-          className="px-[var(--page-gutter)] pt-16 lg:pt-24 pb-10 lg:pb-14 grid lg:grid-cols-12 gap-6 items-end"
+          className="px-[var(--page-gutter)] pt-16 lg:pt-24 pb-10 lg:pb-14 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end"
           style={{ borderBottom: '1px solid var(--wire)' }}
         >
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 min-w-0">
             <div className="type-label mb-3" style={{ color: 'var(--signal)' }}>
               Selected Engineering Work · 01 — 03
             </div>
@@ -119,9 +119,9 @@ export function FeaturedWork() {
               </div>
 
               {/* Main 12-Col Dossier Body */}
-              <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
                 {/* Left 7 Columns: What was built, Problem, Role, Engineering Challenge, Stack */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="lg:col-span-7 min-w-0 space-y-6">
                   {/* What was built */}
                   <div>
                     <div className="type-label mb-2">What Was Built</div>
@@ -139,7 +139,7 @@ export function FeaturedWork() {
                   </div>
 
                   {/* Problem & Role Grid */}
-                  <div className="grid sm:grid-cols-2 gap-6 pt-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
                     <div className="p-4" style={{ background: 'var(--paper-2)', border: '1px solid var(--wire)' }}>
                       <div className="type-label mb-2">Problem Solved</div>
                       <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14.5px', lineHeight: 1.6, color: 'var(--ink-2)' }}>
@@ -217,7 +217,7 @@ export function FeaturedWork() {
                 </div>
 
                 {/* Right 5 Columns: Visual Preview + Verified Outcomes */}
-                <div className="lg:col-span-5 space-y-6">
+                <div className="lg:col-span-5 min-w-0 space-y-6">
                   {/* Visual Preview */}
                   <Link
                     href={`/case-studies/${project.id}`}
@@ -234,10 +234,10 @@ export function FeaturedWork() {
                       />
                     </div>
                     <div
-                      className="px-4 py-2.5 flex items-center justify-between gap-2"
+                      className="px-4 py-2.5 flex items-center justify-between gap-2 min-w-0"
                       style={{ borderTop: '1px solid var(--wire)', fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--ink-3)' }}
                     >
-                      <span className="truncate">{project.imageCaption}</span>
+                      <span className="truncate min-w-0 flex-1">{project.imageCaption}</span>
                       <span style={{ color: 'var(--signal)', flexShrink: 0 }}>Inspect →</span>
                     </div>
                   </Link>

@@ -1,10 +1,33 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import path from 'path'
 import fs from 'fs'
 
 // Artifacts stay inside the repository (test-results/ is gitignored) so the suite is portable.
 const ARTIFACT_DIR = path.resolve(__dirname, '..', 'test-results', 'screenshots')
 fs.mkdirSync(ARTIFACT_DIR, { recursive: true })
+
+// `overflow-x: hidden` on html/body can make scrollWidth look clean while content is
+// still clipped. Detect real clipping: an element extending past the viewport with no
+// scrollable ancestor (horizontal scroll containers such as the architecture diagrams
+// are intentionally allowed and excluded).
+async function hasHorizontalClipping(page: Page): Promise<boolean> {
+  return page.evaluate(() => {
+    const vw = window.innerWidth
+    const hasScrollableAncestor = (el: Element) => {
+      for (let p = el.parentElement; p; p = p.parentElement) {
+        const ox = getComputedStyle(p).overflowX
+        if (ox === 'auto' || ox === 'scroll') return true
+      }
+      return false
+    }
+    if (document.documentElement.scrollWidth > vw + 1) return true
+    for (const el of Array.from(document.querySelectorAll('body *'))) {
+      const rect = el.getBoundingClientRect()
+      if (rect.width > 1 && rect.right > vw + 1 && !hasScrollableAncestor(el)) return true
+    }
+    return false
+  })
+}
 
 test.describe('Portfolio Comprehensive E2E, Accessibility, Interactive Proofs & Multi-Viewport Suite', () => {
   test('1. Homepage loads primary positioning, featured work, about, principles index, and outcomes with zero console errors', async ({ page }) => {
@@ -229,7 +252,7 @@ test.describe('Portfolio Comprehensive E2E, Accessibility, Interactive Proofs & 
     // Desktop 1440x900
     await page.setViewportSize({ width: 1440, height: 900 })
     await page.goto('/', { waitUntil: 'networkidle' })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false)
+    expect(await hasHorizontalClipping(page), 'No content may be clipped past the viewport').toBe(false)
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_desktop_1440_hero.png') })
 
     await page.locator('#work').scrollIntoViewIfNeeded()
@@ -253,21 +276,21 @@ test.describe('Portfolio Comprehensive E2E, Accessibility, Interactive Proofs & 
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_desktop_1440_contact.png') })
 
     await page.goto('/case-studies/servia', { waitUntil: 'networkidle' })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false)
+    expect(await hasHorizontalClipping(page), 'No content may be clipped past the viewport').toBe(false)
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_desktop_1440_casestudy_servia.png') })
 
     await page.goto('/case-studies/servicebridge', { waitUntil: 'networkidle' })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false)
+    expect(await hasHorizontalClipping(page), 'No content may be clipped past the viewport').toBe(false)
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_desktop_1440_casestudy_servicebridge.png') })
 
     await page.goto('/case-studies/subscription-manager', { waitUntil: 'networkidle' })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false)
+    expect(await hasHorizontalClipping(page), 'No content may be clipped past the viewport').toBe(false)
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_desktop_1440_casestudy_subscription.png') })
 
     // Tablet 768x1024
     await page.setViewportSize({ width: 768, height: 1024 })
     await page.goto('/', { waitUntil: 'networkidle' })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false)
+    expect(await hasHorizontalClipping(page), 'No content may be clipped past the viewport').toBe(false)
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_tablet_768_hero.png') })
 
     await page.locator('#work').scrollIntoViewIfNeeded()
@@ -275,13 +298,13 @@ test.describe('Portfolio Comprehensive E2E, Accessibility, Interactive Proofs & 
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_tablet_768_work.png') })
 
     await page.goto('/case-studies/subscription-manager', { waitUntil: 'networkidle' })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false)
+    expect(await hasHorizontalClipping(page), 'No content may be clipped past the viewport').toBe(false)
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_tablet_768_casestudy_subscription.png') })
 
     // Mobile 375x812
     await page.setViewportSize({ width: 375, height: 812 })
     await page.goto('/', { waitUntil: 'networkidle' })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false)
+    expect(await hasHorizontalClipping(page), 'No content may be clipped past the viewport').toBe(false)
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_mobile_375_hero.png') })
 
     await page.locator('#work').scrollIntoViewIfNeeded()
@@ -294,7 +317,7 @@ test.describe('Portfolio Comprehensive E2E, Accessibility, Interactive Proofs & 
     await page.getByRole('button', { name: 'Close navigation' }).click()
 
     await page.goto('/case-studies/servia', { waitUntil: 'networkidle' })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false)
+    expect(await hasHorizontalClipping(page), 'No content may be clipped past the viewport').toBe(false)
     await page.screenshot({ path: path.join(ARTIFACT_DIR, 'after_mobile_375_casestudy_servia.png') })
   })
 })

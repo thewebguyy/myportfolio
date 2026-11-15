@@ -109,7 +109,7 @@ export function RecoverProof() {
       </div>
 
       {mode === 'with' && (
-        <div style={{ marginBottom: '16px', fontFamily: 'var(--font-mono)', fontSize: '11.5px', color: 'var(--ink-3)' }}>
+        <div style={{ marginBottom: '16px', fontFamily: 'var(--font-mono)', fontSize: '11.5px', color: 'var(--ink-3)', overflowWrap: 'anywhere' }}>
           Active Header: <code style={{ color: 'var(--ink)', fontWeight: 700 }}>Idempotency-Key: {idempotencyKey.current}</code>
         </div>
       )}

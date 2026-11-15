@@ -7,11 +7,11 @@ import React from 'react'
 export default function ServiaArchitecture() {
   return (
     <div
-      className="w-full p-5 sm:p-8 overflow-hidden"
+      className="w-full max-w-full min-w-0 p-4 sm:p-8 overflow-hidden"
       style={{ background: 'var(--paper-2)', border: '1px solid var(--wire)' }}
     >
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 pb-5" style={{ borderBottom: '1px solid var(--wire)' }}>
-        <div>
+        <div className="min-w-0">
           <div className="type-label mb-1" style={{ color: 'var(--signal)' }}>
             System Architecture · Concurrency &amp; Isolation
           </div>
@@ -21,18 +21,24 @@ export default function ServiaArchitecture() {
         </div>
         <div className="flex flex-wrap gap-4" style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--ink-3)' }}>
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2.5 h-2.5" style={{ background: 'var(--ink)' }} />
+            <span className="inline-block w-2.5 h-2.5 flex-shrink-0" style={{ background: 'var(--ink)' }} />
             <span>Commit Path (201)</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2.5 h-2.5" style={{ background: 'var(--signal)' }} />
+            <span className="inline-block w-2.5 h-2.5 flex-shrink-0" style={{ background: 'var(--signal)' }} />
             <span>P2034 Conflict → 409 Retry</span>
           </div>
         </div>
       </div>
 
       {/* Responsive SVG Schematic */}
-      <div className="w-full overflow-x-auto" style={{ background: 'var(--paper)', border: '1px solid var(--wire)' }}>
+      <div
+        className="w-full max-w-full overflow-x-auto"
+        style={{ background: 'var(--paper)', border: '1px solid var(--wire)', WebkitOverflowScrolling: 'touch' }}
+        tabIndex={0}
+        role="region"
+        aria-label="Scrollable Servia reservation transaction flow diagram"
+      >
         <svg
           viewBox="0 0 840 430"
           className="w-full min-w-[640px] h-auto block"
