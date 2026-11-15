@@ -21,11 +21,6 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
-  // Performance optimizations
-  experimental: {
-    optimizeCss: true,
-  },
-
   // Security headers
   async headers() {
     return [

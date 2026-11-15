@@ -15,13 +15,13 @@ const PROJECTS = [
     id: 'servicebridge',
     name: 'ServiceBridge',
     category: 'Marketplace Engine',
-    metric: 'Serializable isolation · WebSocket matching',
+    metric: 'WebSocket dispatch · <100ms fan-out',
   },
   {
     id: 'subscription-manager',
     name: 'Subscription Manager',
     category: 'Fintech Infrastructure',
-    metric: 'Idempotent webhooks · wallet fallback',
+    metric: 'Atomic idempotency · Seerbit contract',
   },
 ]
 
@@ -29,6 +29,21 @@ const OUTCOMES = [
   { stat: '0', label: 'double-bookings under concurrent load' },
   { stat: '350 RPS', label: 'baseline before any optimisation' },
   { stat: '100%', label: 'duplicate retries return original response' },
+]
+
+const STACK_DOMAINS = [
+  {
+    domain: 'Interface & Product',
+    tools: 'TypeScript · React · Next.js · Tailwind CSS',
+  },
+  {
+    domain: 'Services & Real-Time',
+    tools: 'Node.js · Express · Socket.io · REST · Zod',
+  },
+  {
+    domain: 'Data & Infrastructure',
+    tools: 'PostgreSQL (Serializable) · Prisma · Redis · Docker · CI/CD',
+  },
 ]
 
 export function TitlePage() {
@@ -43,170 +58,187 @@ export function TitlePage() {
         className="flex-1 flex flex-col max-w-[1440px] mx-auto w-full px-[var(--page-gutter)]"
         style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)' }}
       >
-        {/* Status bar */}
+        {/* Top Metadata Status Bar */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="pt-20 lg:pt-32 pb-12 lg:pb-16 flex items-center justify-between"
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="pt-20 lg:pt-24 pb-6 lg:pb-8 flex flex-wrap items-center justify-between gap-4"
           style={{ borderBottom: '1px solid var(--wire)' }}
         >
-          <div className="type-label" style={{ color: 'var(--ink-4)' }}>
-            Full-Stack Engineer
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="type-label" style={{ color: 'var(--ink-2)', fontWeight: 700 }}>
+              Senior Full-Stack Engineer
+            </span>
+            <span style={{ color: 'var(--wire-strong)' }} aria-hidden="true">·</span>
+            <span className="type-label">
+              Lagos, Nigeria / Remote
+            </span>
           </div>
           <div
             className="flex items-center gap-2"
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '13px',
+              fontSize: '12px',
               letterSpacing: '0.07em',
               textTransform: 'uppercase',
               color: 'var(--signal)',
-              fontWeight: 400,
+              fontWeight: 700,
             }}
           >
             <span
-              className="inline-block w-[6px] h-[6px] rounded-full flex-shrink-0"
-              style={{ background: 'var(--signal)' }}
+              className="inline-block w-[7px] h-[7px] rounded-full flex-shrink-0"
+              style={{ background: 'var(--signal-bright)' }}
               aria-hidden="true"
             />
-            Available for work
+            <span>Available for work</span>
           </div>
         </motion.div>
 
-        {/* Title block */}
-        <div className="flex-1 flex flex-col justify-center py-12 lg:py-32">
+        {/* Main Hero Grid */}
+        <div className="flex-1 flex flex-col justify-center py-10 lg:py-16">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="grid lg:grid-cols-12 gap-10 lg:gap-0 items-start"
+            transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start"
           >
-            {/* Left: name + bio + CTA + projects */}
+            {/* Left Column: Name, Positioning Statement, Bio, Actions, Core Stack */}
             <div className="lg:col-span-7">
               <h1
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontWeight: 700,
-                  fontSize: 'clamp(56px, 10vw, 120px)',
-                  lineHeight: 0.95,
+                  fontSize: 'clamp(48px, 8.5vw, 104px)',
+                  lineHeight: 0.94,
                   letterSpacing: '-0.04em',
                   color: 'var(--ink)',
-                  marginBottom: '32px',
+                  marginBottom: '20px',
                 }}
               >
                 Olabode<br />Olusegun.
               </h1>
+
+              {/* Primary Positioning Statement */}
               <p
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: 'clamp(16px, 1.5vw, 18px)',
-                  lineHeight: 1.62,
+                  fontWeight: 600,
+                  fontSize: 'clamp(20px, 2.3vw, 28px)',
+                  lineHeight: 1.25,
+                  letterSpacing: '-0.025em',
+                  color: 'var(--ink)',
+                  maxWidth: '38ch',
+                  marginBottom: '16px',
+                }}
+              >
+                I build reliable software from interface to infrastructure.
+              </p>
+
+              {/* Supporting Bio */}
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 'clamp(15.5px, 1.35vw, 17.5px)',
+                  lineHeight: 1.65,
                   color: 'var(--ink-2)',
-                  maxWidth: '40ch',
-                  marginBottom: '32px',
+                  maxWidth: '54ch',
+                  marginBottom: '28px',
                   fontWeight: 400,
                 }}
               >
-                I build production systems that stay up. Seven years of client
-                work, a CTO role, and contracted fintech engineering — now
-                focused on production correctness: concurrency, reliability,
-                recovery.
+                I build production systems that stay up. Seven years of full-stack
+                client delivery, a startup CTO role at PeerCars, and contracted
+                fintech engineering at Seerbit — focused on concurrency control,
+                idempotent payment architecture, and resilient product interfaces.
               </p>
 
-              {/* Primary CTA — visible above fold, no scroll required */}
-              <div className="flex flex-wrap items-center gap-4 mb-12">
-                <Link href="#contact" className="btn-primary">
+              {/* Direct Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
+                <a href="#work" className="btn-primary">
+                  Explore featured work ↓
+                </a>
+                <Link href="#contact" className="btn-secondary">
                   Work together →
                 </Link>
                 <a
                   href={CONTACT_HREF}
                   style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '13px',
+                    fontSize: '12px',
                     color: 'var(--ink-3)',
+                    padding: '8px 4px',
+                    textDecoration: 'underline',
+                    textUnderlineOffset: '4px',
                     transition: 'color 0.15s',
                   }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
+                  className="hover:text-[var(--signal)]"
                 >
                   {CONTACT_EMAIL}
                 </a>
               </div>
 
-              {/* Projects */}
-              <div role="list" aria-label="Production projects" style={{ borderTop: '1px solid var(--wire)' }}>
-                {PROJECTS.map((proj) => (
-                  <Link
-                    key={proj.id}
-                    href={`/case-studies/${proj.id}`}
-                    role="listitem"
-                    className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-4 lg:py-[18px] group gap-1 sm:gap-4"
-                    style={{ borderBottom: '1px solid var(--wire)' }}
-                  >
-                    <div className="flex items-baseline gap-3 min-w-0">
-                      <span
+              {/* Core Stack Strip (30-Second Recruiter & EM Scan) */}
+              <div
+                className="p-5"
+                style={{ background: 'var(--paper-2)', border: '1px solid var(--wire)' }}
+              >
+                <div className="type-label mb-3">
+                  Core Technical Stack &amp; Scope
+                </div>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  {STACK_DOMAINS.map(item => (
+                    <div key={item.domain}>
+                      <div
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontWeight: 600,
-                          fontSize: 'clamp(15px, 1.4vw, 17px)',
+                          fontSize: '13px',
                           color: 'var(--ink)',
-                          transition: 'color 0.15s',
-                          flexShrink: 0,
+                          marginBottom: '2px',
                         }}
-                        className="group-hover:text-[var(--signal)]"
                       >
-                        {proj.name}
-                      </span>
-                      <span
+                        {item.domain}
+                      </div>
+                      <div
                         style={{
                           fontFamily: 'var(--font-mono)',
                           fontSize: '11px',
-                          color: 'var(--ink-4)',
-                          letterSpacing: '0.06em',
+                          lineHeight: 1.5,
+                          color: 'var(--ink-3)',
                         }}
                       >
-                        {proj.category}
-                      </span>
+                        {item.tools}
+                      </div>
                     </div>
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '11px',
-                        color: 'var(--ink-3)',
-                        letterSpacing: '0.02em',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {proj.metric}
-                    </div>
-                  </Link>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Right: outcome stats + contact detail */}
-            <div className="lg:col-span-5 lg:pl-16 lg:pt-24 mt-10 lg:mt-0">
-              <div className="mb-10">
-                <div className="type-label mb-5" style={{ color: 'var(--ink-4)' }}>
-                  Production outcomes
+            {/* Right Column: Verified Production Outcomes + Selected Systems Index */}
+            <div className="lg:col-span-5 lg:pl-10 lg:border-l" style={{ borderColor: 'var(--wire)' }}>
+              {/* Production Outcomes */}
+              <div className="mb-8">
+                <div className="type-label mb-3">
+                  Verified Production Outcomes
                 </div>
                 <div style={{ borderTop: '1px solid var(--wire)' }}>
                   {OUTCOMES.map((o, i) => (
                     <div
                       key={i}
-                      className="py-4"
+                      className="py-3.5 flex items-baseline justify-between gap-4"
                       style={{ borderBottom: '1px solid var(--wire)' }}
                     >
                       <div
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontWeight: 700,
-                          fontSize: 'clamp(22px, 2.4vw, 30px)',
+                          fontSize: 'clamp(22px, 2.2vw, 28px)',
                           letterSpacing: '-0.03em',
                           color: 'var(--ink)',
                           lineHeight: 1.1,
-                          marginBottom: '4px',
+                          flexShrink: 0,
                         }}
                       >
                         {o.stat}
@@ -214,9 +246,9 @@ export function TitlePage() {
                       <div
                         style={{
                           fontFamily: 'var(--font-mono)',
-                          fontSize: '11px',
+                          fontSize: '11.5px',
                           color: 'var(--ink-3)',
-                          letterSpacing: '0.03em',
+                          textAlign: 'right',
                         }}
                       >
                         {o.label}
@@ -226,35 +258,111 @@ export function TitlePage() {
                 </div>
               </div>
 
-              {/* Location + contact detail */}
-              <div className="space-y-1">
-                <div className="type-label" style={{ color: 'var(--ink-4)' }}>Location</div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--ink-3)' }}>
-                  Lagos · Nigeria · Open to remote
+              {/* Flagship Systems Quick Index */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="type-label">Flagship Case Studies</span>
+                  <Link
+                    href="/case-studies"
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      color: 'var(--signal)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.07em',
+                    }}
+                    className="hover:underline"
+                  >
+                    All 5 projects →
+                  </Link>
                 </div>
+                <ul
+                  aria-label="Production projects"
+                  className="m-0 p-0 list-none"
+                  style={{ borderTop: '1px solid var(--wire)' }}
+                >
+                  {PROJECTS.map(proj => (
+                    <li key={proj.id} style={{ borderBottom: '1px solid var(--wire)' }}>
+                      <Link
+                        href={`/case-studies/${proj.id}`}
+                        className="flex flex-col py-3.5 px-2 -mx-2 group gap-1 transition-colors hover:bg-[var(--paper-2)]"
+                      >
+                        <div className="flex items-baseline justify-between gap-2 min-w-0">
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-sans)',
+                              fontWeight: 600,
+                              fontSize: '15.5px',
+                              color: 'var(--ink)',
+                              transition: 'color 0.15s',
+                            }}
+                            className="group-hover:text-[var(--signal)]"
+                          >
+                            {proj.name}
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: '10.5px',
+                              color: 'var(--ink-4)',
+                              letterSpacing: '0.05em',
+                              textTransform: 'uppercase',
+                              flexShrink: 0,
+                            }}
+                          >
+                            {proj.category}
+                          </span>
+                        </div>
+                        <div
+                          style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '11px',
+                            color: 'var(--ink-3)',
+                          }}
+                        >
+                          {proj.metric} →
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom Navigation Bar */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="pb-10 lg:pb-12 flex items-center justify-between gap-4"
-          style={{ borderTop: '1px solid var(--wire)', paddingTop: '20px' }}
+          transition={{ duration: 0.4, delay: 0.25 }}
+          className="pb-8 lg:pb-10 flex flex-wrap items-center justify-between gap-4"
+          style={{ borderTop: '1px solid var(--wire)', paddingTop: '18px' }}
         >
-          <a
-            href="#observe"
-            className="type-label flex items-center gap-2 transition-colors"
-            style={{ color: 'var(--ink-3)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
-          >
-            Read the principles ↓
-          </a>
-          <div className="type-label" style={{ color: 'var(--ink-4)' }}>
+          <div className="flex flex-wrap items-center gap-6">
+            <a
+              href="#work"
+              className="type-label flex items-center gap-2 transition-colors hover:text-[var(--ink)]"
+              style={{ color: 'var(--ink-2)', fontWeight: 700 }}
+            >
+              01 · Featured Work ↓
+            </a>
+            <a
+              href="#about"
+              className="type-label flex items-center gap-2 transition-colors hover:text-[var(--ink)]"
+              style={{ color: 'var(--ink-3)' }}
+            >
+              02 · Background &amp; Scope ↓
+            </a>
+            <a
+              href="#engineering"
+              className="type-label flex items-center gap-2 transition-colors hover:text-[var(--ink)]"
+              style={{ color: 'var(--ink-3)' }}
+            >
+              03 · Read the 8 Principles ↓
+            </a>
+          </div>
+          <div className="type-label">
             © 2026 Olabode Olusegun
           </div>
         </motion.div>

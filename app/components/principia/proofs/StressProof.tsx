@@ -22,24 +22,33 @@ export function StressProof() {
   const [revealed, setRevealed] = useState(false)
   const [selected, setSelected] = useState<'500' | '409' | null>(null)
 
-  const reset = () => { setRevealed(false); setSelected(null) }
+  const reset = () => {
+    setRevealed(false)
+    setSelected(null)
+  }
 
   return (
-    <div style={{ borderTop: '1px solid var(--wire)', paddingTop: '48px', marginTop: '48px' }}>
-      <div className="type-label mb-4" style={{ color: 'var(--ink-4)' }}>
-        Interactive Proof · 04
-      </div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.08em', color: 'var(--ink-4)', marginBottom: '4px' }}>
-        FROM: <span style={{ color: 'var(--signal)' }}>Servia</span> · Operations Platform · 2026
-      </div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--ink-3)', marginBottom: '32px' }}>
-        Two systems. One is running at 14.5% error rate. Which one?
+    <div className="proof-shell">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <div className="type-label" style={{ color: 'var(--ink-2)', fontWeight: 700 }}>
+          Interactive Proof · 04 — Unhandled Failure vs. Deliberate Conflict Signal
+        </div>
+        <span className="pill-tag">Simulated Model · Servia k6 Stress Run</span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" role="group" aria-label="Select a system">
+      <div className="proof-guide">
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, color: 'var(--signal)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '4px' }}>
+          What to observe
+        </div>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', lineHeight: 1.55, color: 'var(--ink-2)', margin: 0 }}>
+          Under 50-VU concurrency, one of these two systems recorded a <strong>14.5% non-200 rate</strong> while maintaining 100% data integrity. Select a response below and click <strong>Reveal</strong> to see why structured conflict responses are a passing specification.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6" role="group" aria-label="Select a system response" style={{ maxWidth: '680px' }}>
         {[
-          { id: '500' as const, label: 'System A', content: GENERIC_500 },
-          { id: '409' as const, label: 'System B', content: STRUCTURED_409 },
+          { id: '500' as const, label: 'System A (Opaque Crash)', content: GENERIC_500 },
+          { id: '409' as const, label: 'System B (Structured Conflict)', content: STRUCTURED_409 },
         ].map(({ id, label, content }) => (
           <button
             key={id}
@@ -50,16 +59,16 @@ export function StressProof() {
             style={{
               textAlign: 'left',
               padding: '20px',
-              border: `1px solid ${selected === id ? (id === '500' ? '#d63030' : 'var(--signal)') : 'var(--wire)'}`,
+              border: `2px solid ${selected === id ? (id === '500' ? 'var(--danger)' : 'var(--signal)') : 'var(--wire)'}`,
               background: 'var(--paper-2)',
               transition: 'border-color 0.15s',
               cursor: revealed ? 'default' : 'pointer',
             }}
           >
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: '12px' }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: selected === id ? 'var(--signal)' : 'var(--ink-3)', marginBottom: '12px' }}>
               {label}
             </div>
-            <pre style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', lineHeight: 1.7, color: 'var(--ink-3)', margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+            <pre style={{ fontFamily: 'var(--font-mono)', fontSize: '11.5px', lineHeight: 1.65, color: 'var(--ink)', margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
               {content}
             </pre>
           </button>
@@ -67,9 +76,9 @@ export function StressProof() {
       </div>
 
       {selected && !revealed && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ marginBottom: '24px' }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ marginBottom: '20px' }}>
           <button type="button" onClick={() => setRevealed(true)} className="proof-btn proof-btn-primary">
-            Reveal →
+            Reveal answer →
           </button>
         </motion.div>
       )}
@@ -77,21 +86,29 @@ export function StressProof() {
       <AnimatePresence>
         {revealed && (
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             role="status"
             aria-live="polite"
-            style={{ padding: '20px 24px', border: '1px solid var(--wire)', background: 'var(--paper-2)', fontFamily: 'var(--font-mono)', fontSize: '12px', lineHeight: 1.75, color: 'var(--ink-3)', maxWidth: '520px' }}
+            style={{
+              padding: '20px 24px',
+              border: '1px solid var(--wire-strong)',
+              background: 'var(--paper-2)',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14.5px',
+              lineHeight: 1.65,
+              color: 'var(--ink-2)',
+              maxWidth: '680px',
+            }}
           >
-            <span style={{ color: 'var(--signal)', fontWeight: 600 }}>System B</span> has the 14.5% error rate.
+            <strong style={{ color: 'var(--signal)' }}>System B</strong> recorded the 14.5% conflict rate during k6 load testing.
             <br /><br />
-            System A&apos;s 500 is indistinguishable from a code bug. System B&apos;s 409 is a deliberate signal —
-            it names the error, marks it non-retryable, and provides a trace ID.{' '}
-            <span style={{ color: 'var(--ink-2)' }}>High error rates are observable. Undefined failure is not.</span>
-            <br /><br />
-            <button type="button" onClick={reset} className="proof-btn proof-btn-ghost" style={{ padding: '6px 16px', fontSize: '11px' }}>
-              Reset
-            </button>
+            System A&apos;s <code>500</code> is an unhandled failure that leaves the client guessing whether to retry. System B&apos;s <code>409 Conflict</code> is a deliberate protocol signal: it names the exact domain reason (<code>SEAT_UNAVAILABLE</code>), specifies retry semantics, and attaches a correlation <code>requestId</code>.
+            <div className="mt-4">
+              <button type="button" onClick={reset} className="proof-btn proof-btn-ghost">
+                Reset comparison
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

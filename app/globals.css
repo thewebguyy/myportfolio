@@ -4,17 +4,21 @@
 
 @layer base {
   :root {
-    /* Colour — every token earns its place */
-    --ink:     #0d0d0d;
-    --ink-2:   #2e2e2e;
-    --ink-3:   #6b6b6b;
-    --ink-4:   #857e78;
-    --paper:   #f5f2ed;
-    --paper-2: #edeae4;
-    --paper-3: #e4e0d9;
-    --wire:    rgba(13, 13, 13, 0.13);
-    --wire-2:  rgba(13, 13, 13, 0.06);
-    --signal:  #e8440a;
+    /* Colour — Warm archival paper & high-contrast ink tokens (WCAG 2.1 AA verified) */
+    --ink:           #0d0d0d;
+    --ink-2:         #262422;
+    --ink-3:         #4d4843;
+    --ink-4:         #635d57;
+    --paper:         #f5f2ed;
+    --paper-2:       #edeae4;
+    --paper-3:       #e4e0d9;
+    --wire:          rgba(13, 13, 13, 0.14);
+    --wire-strong:   rgba(13, 13, 13, 0.28);
+    --wire-2:        rgba(13, 13, 13, 0.06);
+    --signal:        #c83605;
+    --signal-bright: #e8440a;
+    --danger:        #b91c1c;
+    --success:       #15803d;
 
     /* Legacy aliases — architecture visuals and Tailwind config */
     --background:      var(--paper);
@@ -26,12 +30,12 @@
     --text-accent:     var(--signal);
     --border-wire:     var(--wire);
     --primary:         var(--signal);
-    --primary-light:   #f05a28;
+    --primary-light:   #e8440a;
     --secondary:       var(--ink-2);
     --secondary-light: var(--ink);
 
     /* Typography */
-    --font-sans: var(--font-space-grotesk, 'Space Grotesk'), system-ui, sans-serif;
+    --font-sans: var(--font-space-grotesk, 'Space Grotesk'), system-ui, -apple-system, sans-serif;
     --font-mono: var(--font-space-mono, 'Space Mono'), 'Courier New', monospace;
 
     /* Layout */
@@ -47,16 +51,22 @@
     color: var(--ink);
     scrollbar-gutter: stable;
     text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    scroll-padding-top: 64px;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   body {
     background: var(--paper);
     color: var(--ink);
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 16px;
-    line-height: 1.72;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   ::selection {
@@ -70,7 +80,7 @@
   .type-index {
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: clamp(72px, 12vw, 160px);
+    font-size: clamp(64px, 10vw, 148px);
     line-height: 0.9;
     letter-spacing: -0.04em;
     color: var(--ink);
@@ -81,8 +91,8 @@
   .type-chapter {
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: clamp(44px, 8vw, 108px);
-    line-height: 0.93;
+    font-size: clamp(40px, 7vw, 96px);
+    line-height: 0.94;
     letter-spacing: -0.035em;
     color: var(--ink);
   }
@@ -91,8 +101,8 @@
   .type-thesis {
     font-family: var(--font-sans);
     font-weight: 500;
-    font-size: clamp(17px, 2.2vw, 26px);
-    line-height: 1.3;
+    font-size: clamp(17px, 2vw, 24px);
+    line-height: 1.35;
     letter-spacing: -0.02em;
     color: var(--ink);
   }
@@ -101,8 +111,8 @@
   .display {
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: clamp(52px, 10vw, 120px);
-    line-height: 0.95;
+    font-size: clamp(48px, 8.5vw, 108px);
+    line-height: 0.94;
     letter-spacing: -0.04em;
     color: var(--ink);
   }
@@ -111,8 +121,8 @@
   .type-axiom {
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: clamp(18px, 2.4vw, 30px);
-    line-height: 1.2;
+    font-size: clamp(18px, 2.2vw, 28px);
+    line-height: 1.24;
     letter-spacing: -0.02em;
     color: var(--ink);
     white-space: pre-line;
@@ -121,11 +131,11 @@
   /* Label — uppercase mono, all UI chrome */
   .label, .type-label {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 400;
     letter-spacing: 0.09em;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: var(--ink-4);
   }
 
   /* Caption */
@@ -139,8 +149,8 @@
 
   /* Body prose */
   p, .body {
-    font-family: var(--font-mono);
-    font-size: 16px;
+    font-family: var(--font-sans);
+    font-size: 16.5px;
     line-height: 1.72;
     color: var(--ink-2);
   }
@@ -183,41 +193,51 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    max-width: 100%;
+    text-align: center;
     background: var(--ink);
     color: var(--paper);
     font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 14px 28px;
+    padding: 12px 20px;
     border: 1px solid var(--ink);
     border-radius: 0;
-    transition: background 0.15s ease, border-color 0.15s ease;
-    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: normal;
   }
   .btn-primary:hover {
     background: var(--signal);
     border-color: var(--signal);
+    color: var(--paper);
   }
 
   .btn-secondary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    max-width: 100%;
+    text-align: center;
     background: transparent;
     color: var(--ink);
     font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 14px 28px;
-    border: 1px solid var(--wire);
+    padding: 12px 20px;
+    border: 1px solid var(--wire-strong);
     border-radius: 0;
-    transition: border-color 0.15s ease, color 0.15s ease;
-    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: normal;
   }
   .btn-secondary:hover {
-    border-color: var(--ink-2);
+    background: var(--paper-2);
+    border-color: var(--ink);
     color: var(--ink);
   }
 
@@ -229,21 +249,38 @@
     background: var(--paper-2);
     border: 1px solid var(--wire);
     font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
+    font-size: 11px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: var(--ink-2);
     border-radius: 0;
   }
 
   .tag-signal {
     font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
+    font-size: 10.5px;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--signal);
     border: 1px solid var(--signal);
     padding: 3px 10px;
+  }
+
+  /* ── Simulation Framing ─────────────────────────────────── */
+
+  .proof-shell {
+    border-top: 1px solid var(--wire);
+    padding-top: 40px;
+    margin-top: 40px;
+  }
+
+  .proof-guide {
+    background: var(--paper-2);
+    border: 1px solid var(--wire);
+    border-left: 3px solid var(--signal);
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    max-width: 640px;
   }
 
   /* ── Rule ────────────────────────────────────────────────── */
@@ -268,10 +305,11 @@
   /* Prose overrides */
   .prose { color: var(--ink-2); font-family: var(--font-sans); font-size: 17px; line-height: 1.72; }
   .prose p { font-family: var(--font-sans); font-size: 17px; line-height: 1.72; }
-  .prose a { color: var(--signal); text-decoration-color: rgba(232, 68, 10, 0.3); }
+  .prose a { color: var(--signal); text-decoration-color: rgba(200, 54, 5, 0.35); }
   .prose a:hover { color: var(--ink); text-decoration-color: var(--ink); }
   .prose h2, .prose h3, .prose h4 { color: var(--ink); font-family: var(--font-sans); letter-spacing: -0.02em; }
-  .prose pre { background: var(--paper-2); border: 1px solid var(--wire); border-radius: 0; }
+  .prose pre { background: var(--paper-2); border: 1px solid var(--wire); border-radius: 0; overflow-x: auto; max-width: 100%; }
+  .prose pre code { padding: 0; background: transparent; }
   .prose code { background: var(--paper-2); color: var(--ink); border-radius: 0; font-size: 0.875em; padding: 2px 5px; font-family: var(--font-mono); }
   .prose blockquote { border-left-color: var(--signal); color: var(--ink-2); font-style: italic; font-family: var(--font-sans); }
   .prose ul { padding-left: 1.4em; }
@@ -282,7 +320,7 @@
 /* ── Nav back link ──────────────────────────────────────── */
 .blog-nav-back {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 11.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-3);
@@ -314,26 +352,33 @@
 .proof-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 12px 24px;
+  padding: 10px 20px;
+  min-height: 44px;
+  max-width: 100%;
+  text-align: center;
   border: 1px solid var(--ink);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
-  white-space: nowrap;
+  white-space: normal;
 }
 .proof-btn-primary { background: var(--ink); color: var(--paper); }
 .proof-btn-primary:hover { background: var(--signal); border-color: var(--signal); }
 .proof-btn-primary:disabled { background: var(--paper-3); color: var(--ink-4); border-color: var(--wire); cursor: not-allowed; }
-.proof-btn-ghost { background: transparent; color: var(--ink-3); border-color: var(--wire); }
-.proof-btn-ghost:hover { border-color: var(--ink-3); color: var(--ink); }
+.proof-btn-ghost { background: transparent; color: var(--ink-2); border-color: var(--wire-strong); }
+.proof-btn-ghost:hover { background: var(--paper-2); border-color: var(--ink); color: var(--ink); }
 .proof-btn-signal { background: var(--signal); color: var(--paper); border-color: var(--signal); }
-.proof-btn-signal:hover { background: #c93a08; border-color: #c93a08; }
+.proof-btn-signal:hover { background: #a32b04; border-color: #a32b04; }
 
 /* ── Reduced motion ──────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -344,11 +389,6 @@
 /* ── Safe-area insets (iOS notch / Dynamic Island) ──────── */
 header[role="banner"] {
   padding-top: env(safe-area-inset-top);
-}
-
-/* Minimum 44px tap targets for all interactive proof elements */
-.proof-btn {
-  min-height: 44px;
 }
 
 /* ── Scrollbar ───────────────────────────────────────────── */
@@ -363,7 +403,7 @@ header[role="banner"] {
   body { background: white; color: black; font-size: 12pt; line-height: 1.6; }
   section { break-inside: avoid; }
   h1, h2, .type-chapter { color: black; }
-  .type-label { color: #666; }
+  .type-label { color: #555; }
   a { color: black; text-decoration: none; }
   [class*="proof-btn"], button { display: none !important; }
   .max-w-\[1440px\] { max-width: 100%; border: none !important; }
