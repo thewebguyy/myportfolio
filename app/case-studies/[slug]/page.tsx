@@ -73,8 +73,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             </span>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-            <div className="lg:col-span-7 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+            <div className="lg:col-span-7 min-w-0 space-y-6">
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="tag-signal">{project.category}</span>
                 <span className="pill-tag">{project.company}</span>
@@ -143,7 +143,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               )}
             </div>
 
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-5 min-w-0">
               <figure style={{ border: '1px solid var(--wire)', background: 'var(--paper-2)' }}>
                 <div className="relative aspect-[16/10] w-full overflow-hidden">
                   <Image
@@ -173,9 +173,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
         {/* Body */}
         <section className="px-[var(--page-gutter)] py-14 lg:py-20">
-          <div className="grid lg:grid-cols-12 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Sidebar */}
-            <aside className="lg:col-span-4 h-fit lg:sticky lg:top-24 space-y-6">
+            <aside className="lg:col-span-4 min-w-0 h-fit lg:sticky lg:top-24 space-y-6">
               <SidePanel title="Technical Stack">
                 <ul className="flex flex-wrap gap-2 m-0 p-0 list-none">
                   {project.tech.map((t: string) => (
@@ -276,7 +276,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             </aside>
 
             {/* Main content */}
-            <div className="lg:col-span-8 space-y-16">
+            <div className="lg:col-span-8 min-w-0 space-y-16">
               {content ? (
                 <>
                   {/* 1. The Problem */}
@@ -431,7 +431,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                             <MetaField label="Measured Performance" value={content.evidence.rps} />
                             <MetaField label="Test Environment" value={content.evidence.environment} />
                           </div>
-                          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', lineHeight: 1.7, color: 'var(--ink-2)' }}>
+                          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', lineHeight: 1.7, color: 'var(--ink-2)', overflowWrap: 'anywhere' }}>
                             {content.evidence.details}
                           </p>
                         </div>

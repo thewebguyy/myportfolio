@@ -9,7 +9,7 @@ const PROJECTS = [
     id: 'servia',
     name: 'Servia',
     category: 'Operations Platform',
-    metric: '350 RPS · zero double-bookings',
+    metric: 'SERIALIZABLE · P2034 → 409',
   },
   {
     id: 'servicebridge',
@@ -21,14 +21,14 @@ const PROJECTS = [
     id: 'subscription-manager',
     name: 'Subscription Manager',
     category: 'Fintech Infrastructure',
-    metric: 'Atomic idempotency · Seerbit contract',
+    metric: 'Python/Flask Seerbit SDK demo',
   },
 ]
 
 const OUTCOMES = [
-  { stat: '0', label: 'double-bookings under concurrent load' },
-  { stat: '350 RPS', label: 'baseline before any optimisation' },
-  { stat: '100%', label: 'duplicate retries return original response' },
+  { stat: 'SERIALIZABLE', label: 'PostgreSQL reservation transactions' },
+  { stat: 'P2034 → 409', label: 'conflict handling in public code' },
+  { stat: 'JWT', label: 'rotating, hashed refresh tokens' },
 ]
 
 const STACK_DOMAINS = [
@@ -101,15 +101,15 @@ export function TitlePage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-            className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start"
           >
             {/* Left Column: Name, Positioning Statement, Bio, Actions, Core Stack */}
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-7 min-w-0">
               <h1
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontWeight: 700,
-                  fontSize: 'clamp(48px, 8.5vw, 104px)',
+                  fontSize: 'clamp(40px, 8.5vw, 104px)',
                   lineHeight: 0.94,
                   letterSpacing: '-0.04em',
                   color: 'var(--ink)',
@@ -150,7 +150,7 @@ export function TitlePage() {
                 I build production systems that stay up. Seven years of full-stack
                 client delivery, a startup CTO role at PeerCars, and contracted
                 fintech engineering at Seerbit — focused on concurrency control,
-                idempotent payment architecture, and resilient product interfaces.
+                transactional integrity, and resilient product interfaces.
               </p>
 
               {/* Direct Action Buttons */}
@@ -171,6 +171,7 @@ export function TitlePage() {
                     textDecoration: 'underline',
                     textUnderlineOffset: '4px',
                     transition: 'color 0.15s',
+                    wordBreak: 'break-all',
                   }}
                   className="hover:text-[var(--signal)]"
                 >
@@ -186,9 +187,9 @@ export function TitlePage() {
                 <div className="type-label mb-3">
                   Core Technical Stack &amp; Scope
                 </div>
-                <div className="grid sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {STACK_DOMAINS.map(item => (
-                    <div key={item.domain}>
+                    <div key={item.domain} className="min-w-0">
                       <div
                         style={{
                           fontFamily: 'var(--font-sans)',
@@ -216,12 +217,12 @@ export function TitlePage() {
               </div>
             </div>
 
-            {/* Right Column: Verified Production Outcomes + Selected Systems Index */}
-            <div className="lg:col-span-5 lg:pl-10 lg:border-l" style={{ borderColor: 'var(--wire)' }}>
+            {/* Right Column: Verified Engineering Outcomes + Selected Systems Index */}
+            <div className="lg:col-span-5 min-w-0 lg:pl-10 lg:border-l" style={{ borderColor: 'var(--wire)' }}>
               {/* Production Outcomes */}
               <div className="mb-8">
                 <div className="type-label mb-3">
-                  Verified Production Outcomes
+                  Verified Engineering Outcomes
                 </div>
                 <div style={{ borderTop: '1px solid var(--wire)' }}>
                   {OUTCOMES.map((o, i) => (

@@ -53,8 +53,6 @@
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
     scroll-padding-top: 64px;
-    overflow-x: hidden;
-    max-width: 100vw;
   }
 
   body {
@@ -65,8 +63,11 @@
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    max-width: 100vw;
+  }
+
+  /* Prevent CSS Grid children from defaulting to min-width: auto and overflowing 1-col mobile tracks */
+  .grid > * {
+    min-width: 0;
   }
 
   ::selection {
@@ -246,6 +247,8 @@
   .pill-tag {
     display: inline-block;
     padding: 4px 10px;
+    max-width: 100%;
+    overflow-wrap: break-word;
     background: var(--paper-2);
     border: 1px solid var(--wire);
     font-family: var(--font-mono);
@@ -257,6 +260,9 @@
   }
 
   .tag-signal {
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: break-word;
     font-family: var(--font-mono);
     font-size: 10.5px;
     letter-spacing: 0.09em;
@@ -309,8 +315,8 @@
   .prose a:hover { color: var(--ink); text-decoration-color: var(--ink); }
   .prose h2, .prose h3, .prose h4 { color: var(--ink); font-family: var(--font-sans); letter-spacing: -0.02em; }
   .prose pre { background: var(--paper-2); border: 1px solid var(--wire); border-radius: 0; overflow-x: auto; max-width: 100%; }
-  .prose pre code { padding: 0; background: transparent; }
-  .prose code { background: var(--paper-2); color: var(--ink); border-radius: 0; font-size: 0.875em; padding: 2px 5px; font-family: var(--font-mono); }
+  .prose pre code { padding: 0; background: transparent; word-break: normal; overflow-wrap: normal; }
+  .prose code { background: var(--paper-2); color: var(--ink); border-radius: 0; font-size: 0.875em; padding: 2px 5px; font-family: var(--font-mono); overflow-wrap: break-word; word-break: break-word; }
   .prose blockquote { border-left-color: var(--signal); color: var(--ink-2); font-style: italic; font-family: var(--font-sans); }
   .prose ul { padding-left: 1.4em; }
   .prose li { margin-top: 0.4em; line-height: 1.75; font-family: var(--font-sans); }

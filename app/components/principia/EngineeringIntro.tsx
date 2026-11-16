@@ -25,8 +25,8 @@ export function EngineeringIntro() {
         className="max-w-[1440px] mx-auto px-[var(--page-gutter)] py-16 lg:py-24"
         style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)' }}
       >
-        <div className="grid lg:grid-cols-12 gap-8 items-end pb-10 mb-10" style={{ borderBottom: '1px solid var(--wire)' }}>
-          <div className="lg:col-span-7">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pb-10 mb-10" style={{ borderBottom: '1px solid var(--wire)' }}>
+          <div className="lg:col-span-7 min-w-0">
             <div className="type-label mb-3" style={{ color: 'var(--signal)' }}>
               Engineering Philosophy &amp; Interactive Proofs · Chapters 01 — 08
             </div>
@@ -43,7 +43,7 @@ export function EngineeringIntro() {
               Eight Principles Extracted From Production Incidents
             </h2>
           </div>
-          <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col items-start sm:items-end lg:items-end justify-between gap-4">
+          <div className="lg:col-span-5 min-w-0 flex flex-col sm:flex-row lg:flex-col items-start sm:items-end lg:items-end justify-between gap-4">
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
@@ -53,7 +53,7 @@ export function EngineeringIntro() {
                 maxWidth: '46ch',
               }}
             >
-              Optional technical deep dive. Every chapter pairs a real production incident with an interactive simulation so you can test the system behavior directly in the browser.
+              Optional technical deep dive. Every chapter pairs an engineering incident with an interactive simulation so you can test the system behavior directly in the browser.
             </p>
             <a href="#contact" className="btn-secondary">
               Skip to contact ↓
@@ -66,12 +66,12 @@ export function EngineeringIntro() {
           Select any chapter to jump to its incident analysis &amp; interactive proof
         </div>
         <ul
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px m-0 p-0 list-none"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px m-0 p-0 list-none"
           style={{ background: 'var(--wire)', border: '1px solid var(--wire)' }}
           aria-label="Eight engineering principles directory"
         >
           {principles.map(p => (
-            <li key={p.id} style={{ background: 'var(--paper)' }}>
+            <li key={p.id} className="min-w-0" style={{ background: 'var(--paper)' }}>
               <a
                 href={`#${p.id}`}
                 className="group flex flex-col justify-between h-full p-5 transition-colors hover:bg-[var(--paper-3)]"
@@ -128,10 +128,10 @@ export function EngineeringIntro() {
                 </div>
 
                 <div
-                  className="pt-3 flex items-center justify-between gap-2"
+                  className="pt-3 flex items-center justify-between gap-2 min-w-0"
                   style={{ borderTop: '1px solid var(--wire)', fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}
                 >
-                  <span className="truncate">{SIM_LABELS[p.id]}</span>
+                  <span className="truncate min-w-0 flex-1">{SIM_LABELS[p.id]}</span>
                   <span style={{ color: 'var(--signal)', flexShrink: 0 }}>↓</span>
                 </div>
               </a>

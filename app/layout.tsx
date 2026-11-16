@@ -23,7 +23,7 @@ const spaceMono = Space_Mono({
 
 // SEO Metadata
 export const metadata: Metadata = {
-  metadataBase: new URL('https://olabodeolusegun.com'),
+  metadataBase: new URL('https://theolabodeolusegun.vercel.app'),
   title: {
     default: 'Olabode Olusegun — Senior Full-Stack Engineer',
     template: '%s | Olabode Olusegun'
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://olabodeolusegun.com',
+    url: 'https://theolabodeolusegun.vercel.app',
     title: 'Olabode Olusegun — Senior Full-Stack Engineer',
     description: 'I build reliable software from interface to infrastructure. Seven years of full-stack delivery, startup CTO leadership, and contracted fintech engineering.',
     siteName: 'Olabode Olusegun',
@@ -44,14 +44,14 @@ export const metadata: Metadata = {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'Olabode Olusegun - Full-Stack Engineer'
+        alt: 'Olabode Olusegun - Senior Full-Stack Engineer'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Olabode Olusegun — Full-Stack Engineer',
-    description: 'Olabode Olusegun — full-stack engineer with 5+ years building fintech and marketplace infrastructure across West Africa.',
+    title: 'Olabode Olusegun — Senior Full-Stack Engineer',
+    description: 'Olabode Olusegun — senior full-stack engineer with 7 years building fintech and marketplace infrastructure across West Africa.',
     creator: '@BodeBillions',
     images: ['/twitter-image']
   },
@@ -72,8 +72,8 @@ const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Olabode Olusegun',
-  url: 'https://olabodeolusegun.com',
-  jobTitle: 'Full-Stack Engineer',
+  url: 'https://theolabodeolusegun.vercel.app',
+  jobTitle: 'Senior Full-Stack Engineer',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Lagos',

@@ -61,10 +61,10 @@ export function Background() {
       >
         {/* Top Header */}
         <div
-          className="px-[var(--page-gutter)] pt-16 lg:pt-24 pb-10 lg:pb-12 grid lg:grid-cols-12 gap-6 items-end"
+          className="px-[var(--page-gutter)] pt-16 lg:pt-24 pb-10 lg:pb-12 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end"
           style={{ borderBottom: '1px solid var(--wire)' }}
         >
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 min-w-0">
             <div className="type-label mb-3" style={{ color: 'var(--signal)' }}>
               About &amp; Trajectory
             </div>
@@ -81,7 +81,7 @@ export function Background() {
               Product Ownership Meets Systems Correctness
             </h2>
           </div>
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 min-w-0">
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', lineHeight: 1.65, color: 'var(--ink-3)' }}>
               7 years building software across West Africa and remote teams — from high-conversion frontend interfaces to fault-tolerant payment and booking infrastructure.
             </p>
@@ -89,14 +89,14 @@ export function Background() {
         </div>
 
         {/* Narrative + Timeline Grid */}
-        <div className="px-[var(--page-gutter)] py-12 lg:py-16 grid lg:grid-cols-12 gap-12 lg:gap-16">
+        <div className="px-[var(--page-gutter)] py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Left: Professional Narrative */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-7 space-y-5"
+            className="lg:col-span-7 min-w-0 space-y-5"
           >
             <div className="type-label mb-4">
               Engineering Narrative

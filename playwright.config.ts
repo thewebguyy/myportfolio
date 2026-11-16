@@ -22,9 +22,10 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npx next start -p 3124 -H 127.0.0.1',
+    command: 'node node_modules/next/dist/bin/next start -p 3124 -H 127.0.0.1',
     url: 'http://127.0.0.1:3124',
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
     timeout: 60_000,
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 500 },
   },
 })

@@ -38,7 +38,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
       >
         {/* Chapter header — number, word, incident hook, and thesis */}
         <div
-          className="px-[var(--page-gutter)] pt-14 lg:pt-20 pb-10 lg:pb-14 grid grid-cols-12 items-end gap-6 lg:gap-8"
+          className="px-[var(--page-gutter)] pt-14 lg:pt-20 pb-10 lg:pb-14 grid grid-cols-1 lg:grid-cols-12 items-end gap-6 lg:gap-8"
           style={{ borderBottom: '1px solid var(--wire)' }}
         >
           {/* Chapter number — monumental */}
@@ -46,7 +46,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: '-80px' }}
-            className="col-span-12 lg:col-span-2 flex items-center justify-between lg:block"
+            className="lg:col-span-2 min-w-0 flex items-center justify-between lg:block"
           >
             <div
               className="type-index select-none"
@@ -76,7 +76,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="col-span-12 lg:col-span-6"
+            className="lg:col-span-6 min-w-0"
           >
             <div className="type-label mb-3" style={{ color: 'var(--signal)' }}>
               Chapter {p.index} · {p.question}
@@ -102,7 +102,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="col-span-12 lg:col-span-4 lg:pb-1 space-y-4"
+            className="lg:col-span-4 min-w-0 lg:pb-1 space-y-4"
           >
             <p
               className="type-thesis"
@@ -129,9 +129,9 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
         </div>
 
         {/* Body: two-column layout */}
-        <div className="px-[var(--page-gutter)] py-10 lg:py-14 grid grid-cols-12 gap-8 lg:gap-12">
+        <div className="px-[var(--page-gutter)] py-10 lg:py-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Left column: readable Space Grotesk prose */}
-          <div className="col-span-12 lg:col-span-7 space-y-5">
+          <div className="lg:col-span-7 min-w-0 space-y-5">
             {p.body.map((para, i) => (
               <motion.p
                 key={i}
@@ -153,7 +153,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
           </div>
 
           {/* Right column: axiom + project evidence citations */}
-          <div className="col-span-12 lg:col-span-5 space-y-10" id={`${p.id}-right`}>
+          <div className="lg:col-span-5 min-w-0 space-y-10" id={`${p.id}-right`}>
             {/* Axiom */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -184,7 +184,7 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                     key={i}
                     style={{ paddingLeft: '16px', borderLeft: '2px solid var(--signal)' }}
                   >
-                    <div className="flex items-baseline justify-between gap-4 mb-1.5">
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-1.5">
                       {project ? (
                         <Link
                           href={`/case-studies/${project.id}`}
@@ -204,7 +204,6 @@ export function Chapter({ principle: p, isLast }: ChapterProps) {
                           fontSize: '11px',
                           color: 'var(--ink-3)',
                           letterSpacing: '0.05em',
-                          flexShrink: 0,
                         }}
                       >
                         {c.year} · {c.role}

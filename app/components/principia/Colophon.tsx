@@ -29,17 +29,17 @@ export function Colophon() {
         style={{ borderLeft: '1px solid var(--wire)', borderRight: '1px solid var(--wire)' }}
       >
         {/* Main Contact Grid */}
-        <div className="px-[var(--page-gutter)] py-16 lg:py-24 grid grid-cols-12 items-start gap-10 lg:gap-12">
+        <div className="px-[var(--page-gutter)] py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-12 items-start gap-10 lg:gap-12">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="col-span-12 lg:col-span-7"
+            className="lg:col-span-7 min-w-0"
           >
             <div className="flex items-center gap-2.5 mb-6">
               <span
-                className="inline-block w-[7px] h-[7px] rounded-full"
+                className="inline-block w-[7px] h-[7px] rounded-full flex-shrink-0"
                 style={{ background: 'var(--signal-bright)' }}
                 aria-hidden="true"
               />
@@ -82,7 +82,7 @@ export function Colophon() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.45 }}
-            className="col-span-12 lg:col-span-5 space-y-8"
+            className="lg:col-span-5 min-w-0 space-y-8"
           >
             {/* Direct Contact Panel */}
             <div className="p-6" style={{ background: 'var(--paper-2)', border: '1px solid var(--wire)' }}>

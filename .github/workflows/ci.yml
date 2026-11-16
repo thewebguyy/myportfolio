@@ -10,10 +10,6 @@ jobs:
   test:
     name: Test & Build
     runs-on: ubuntu-latest
-    # Provide a safe default so all steps have a non-empty value even when
-    # the secret is absent (e.g. forks / external PRs).
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'mock-key-for-ci' }}
 
     strategy:
       matrix:
@@ -41,21 +37,17 @@ jobs:
 
       - name: Run linter
         run: npm run lint
-        continue-on-error: true
 
       - name: Run type check
         run: npm run type-check
-        continue-on-error: true
 
       - name: Run tests
         run: npm run test:ci
         env:
           CI: true
-          # OPENAI_API_KEY inherited from job-level env above
 
       - name: Build application
         run: npm run build
-        # OPENAI_API_KEY inherited from job-level env above
 
       - name: Upload build artifacts
         if: matrix.node-version == '20.x'
@@ -63,4 +55,41 @@ jobs:
         with:
           name: build
           path: .next
+          retention-days: 7
+
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-24.04
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run end-to-end tests
+        run: npx playwright test
+        env:
+          CI: true
+
+      - name: Upload Playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: test-results
           retention-days: 7
